@@ -3,12 +3,45 @@
 <head>
     <title>AI Feynman Expression Trees</title>
     <style>
-        /* Add your styles here if needed */
+        figure {
+              //border: 1px solid #ccc;
+              padding: 20px;
+              margin: 10px auto; /* Center-align the figure */
+              max-width: 400px; /* Set a max-width for illustration purposes */
+            }
     </style>
 </head>
 <body>
     <h1>AI Feynman Expression Trees</h1>
-    <!-- Add your content here -->
+    
+    <div id = "Images">
+    </div>
+    
+    <script>
+        // Use a for-loop to generate the embed elements for each PDF
+        for (let i = 1; i < 120; i++) {
+            //Create the img element
+            let pdfFileName = `Formula${i}`;
+            let img = document.createElement("img");
+            img.src = `${pdfFileName}.pdf`;
+            img.alt = pdfFileName;
+            img.title = `Formula ${i}`;
+            
+            //Create the figure element
+            let figure = document.createElement("figure");
+            let figcaption = document.createElement('figcaption');
+            figcaption.textContent = `Formula ${i}: `;
+
+            figure.appendChild(img);
+            figure.appendChild(figcaption);
+            //figure.align = "center";
+            
+            //Append figure to the Images div element
+            let src = document.getElementById("Images");
+            src.appendChild(figure);
+            
+            
+        }
+    </script>
 </body>
 </html>
-
