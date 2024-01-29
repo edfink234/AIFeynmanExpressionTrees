@@ -1,7 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>AI Feynman Expression Trees</title>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.js" integrity="sha512-1kNZVA50gKlorLAWU83+SdOAUwABzfFFQ4WuOAZTeS/UhNhnm9zU7rDv/Q5NEzSnr5u2L6uhR/+8icjjmHjSnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" integrity="sha512-J8je2SgrCzA7hNBeiCJiA6oETHTTdp3We3EriOgJp6POycGLcDXj5dSwWlAPQcYGeaQ4N3uf30aOg/Nt5pxW2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
+<!--    -->
+<!--    <style>-->
+<!--        figure {-->
+<!--              //border: 1px solid #ccc;-->
+<!--              padding: 20px;-->
+<!--              margin: 10px auto; /* Center-align the figure */-->
+<!--              max-width: 400px; /* Set a max-width for illustration purposes */-->
+<!--            }-->
+<!--    </style>-->
+<!--    -->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>AI Feynman Expression Trees</h1>-->
+<!--    -->
+<!--    <div id = "Images">-->
+<!--    </div>-->
+<!--    -->
+<!--    <script>// type="text/x-mathjax-config">-->
+<!--        -->
+<!--        // Use a for-loop to generate the embed elements for each PDF-->
+<!--        function PopulateDocument()-->
+<!--        {-->
+<!--            for (let i = 1; i < 120; i++) {-->
+<!--                //Create the img element-->
+<!--                let pdfFileName = `Formula${i}`;-->
+<!--                /*let img = document.createElement("embed");-->
+<!--                img.type = "application/pdf";-->
+<!--                img.src = `${pdfFileName}.pdf`;-->
+<!--                img.alt = pdfFileName;-->
+<!--                img.title = `Formula ${i}`;*/-->
+<!--                let img = document.createElement("img");-->
+<!--                img.src = `${pdfFileName}.svg`;-->
+<!--                img.alt = pdfFileName;-->
+<!--                img.title = `Formula ${i}`;-->
+<!--                -->
+<!--                //Create the figure element-->
+<!--                let figure = document.createElement("figure");-->
+<!--                let figcaption = document.createElement('figcaption');-->
+<!--                figcaption.setAttribute('id', `figcaption${i}`);-->
+<!--                -->
+<!--                figcaption.textContent = `Formula ${i}: `;-->
+<!--                -->
+<!--                figure.appendChild(img);-->
+<!--                figure.appendChild(figcaption);-->
+<!--                //figure.align = "center";-->
+<!--                -->
+<!--                //Append figure to the Images div element-->
+<!--                let src = document.getElementById("Images");-->
+<!--                src.appendChild(figure);-->
+<!--            }-->
+<!--        }-->
+<!--        PopulateDocument();-->
+<!--        -->
+<!--        -->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+<html><head>
     <title>AI Feynman Expression Trees</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         figure {
               //border: 1px solid #ccc;
@@ -10,43 +74,52 @@
               max-width: 400px; /* Set a max-width for illustration purposes */
             }
     </style>
+    
 </head>
 <body>
     <h1>AI Feynman Expression Trees</h1>
     
-    <div id = "Images">
-    </div>
+    <div id="Images">
+    <figure><img src="Formula1.svg" alt="Formula1" title="Formula 1"><figcaption id="figcaption1">Formula 1: \(f = {e^{-\theta^2/2} \over \sqrt{2\pi}}\)</figcaption></figure><figure><img src="Formula2.svg" alt="Formula2" title="Formula 2"><figcaption id="figcaption2">Formula 2: </figcaption></figure><figure><img src="Formula3.svg" alt="Formula3" title="Formula 3"><figcaption id="figcaption3">Formula 3: </figcaption></figure><figure><img src="Formula4.svg" alt="Formula4" title="Formula 4"><figcaption id="figcaption4">Formula 4: </figcaption></figure><figure><img src="Formula5.svg" alt="Formula5" title="Formula 5"><figcaption id="figcaption5">Formula 5: </figcaption></figure><figure><img src="Formula6.svg" alt="Formula6" title="Formula 6"><figcaption id="figcaption6">Formula 6: </figcaption></figure><figure><img src="Formula7.svg" alt="Formula7" title="Formula 7"><figcaption id="figcaption7">Formula 7: </figcaption></figure><figure><img src="Formula8.svg" alt="Formula8" title="Formula 8"><figcaption id="figcaption8">Formula 8: </figcaption></figure><figure><img src="Formula9.svg" alt="Formula9" title="Formula 9"><figcaption id="figcaption9">Formula 9: </figcaption></figure><figure><img src="Formula10.svg" alt="Formula10" title="Formula 10"><figcaption id="figcaption10">Formula 10: </figcaption></figure><figure><img src="Formula11.svg" alt="Formula11" title="Formula 11"><figcaption id="figcaption11">Formula 11: </figcaption></figure><figure><img src="Formula12.svg" alt="Formula12" title="Formula 12"><figcaption id="figcaption12">Formula 12: </figcaption></figure><figure><img src="Formula13.svg" alt="Formula13" title="Formula 13"><figcaption id="figcaption13">Formula 13: </figcaption></figure><figure><img src="Formula14.svg" alt="Formula14" title="Formula 14"><figcaption id="figcaption14">Formula 14: </figcaption></figure><figure><img src="Formula15.svg" alt="Formula15" title="Formula 15"><figcaption id="figcaption15">Formula 15: </figcaption></figure><figure><img src="Formula16.svg" alt="Formula16" title="Formula 16"><figcaption id="figcaption16">Formula 16: </figcaption></figure><figure><img src="Formula17.svg" alt="Formula17" title="Formula 17"><figcaption id="figcaption17">Formula 17: </figcaption></figure><figure><img src="Formula18.svg" alt="Formula18" title="Formula 18"><figcaption id="figcaption18">Formula 18: </figcaption></figure><figure><img src="Formula19.svg" alt="Formula19" title="Formula 19"><figcaption id="figcaption19">Formula 19: </figcaption></figure><figure><img src="Formula20.svg" alt="Formula20" title="Formula 20"><figcaption id="figcaption20">Formula 20: </figcaption></figure><figure><img src="Formula21.svg" alt="Formula21" title="Formula 21"><figcaption id="figcaption21">Formula 21: </figcaption></figure><figure><img src="Formula22.svg" alt="Formula22" title="Formula 22"><figcaption id="figcaption22">Formula 22: </figcaption></figure><figure><img src="Formula23.svg" alt="Formula23" title="Formula 23"><figcaption id="figcaption23">Formula 23: </figcaption></figure><figure><img src="Formula24.svg" alt="Formula24" title="Formula 24"><figcaption id="figcaption24">Formula 24: </figcaption></figure><figure><img src="Formula25.svg" alt="Formula25" title="Formula 25"><figcaption id="figcaption25">Formula 25: </figcaption></figure><figure><img src="Formula26.svg" alt="Formula26" title="Formula 26"><figcaption id="figcaption26">Formula 26: </figcaption></figure><figure><img src="Formula27.svg" alt="Formula27" title="Formula 27"><figcaption id="figcaption27">Formula 27: </figcaption></figure><figure><img src="Formula28.svg" alt="Formula28" title="Formula 28"><figcaption id="figcaption28">Formula 28: </figcaption></figure><figure><img src="Formula29.svg" alt="Formula29" title="Formula 29"><figcaption id="figcaption29">Formula 29: </figcaption></figure><figure><img src="Formula30.svg" alt="Formula30" title="Formula 30"><figcaption id="figcaption30">Formula 30: </figcaption></figure><figure><img src="Formula31.svg" alt="Formula31" title="Formula 31"><figcaption id="figcaption31">Formula 31: </figcaption></figure><figure><img src="Formula32.svg" alt="Formula32" title="Formula 32"><figcaption id="figcaption32">Formula 32: </figcaption></figure><figure><img src="Formula33.svg" alt="Formula33" title="Formula 33"><figcaption id="figcaption33">Formula 33: </figcaption></figure><figure><img src="Formula34.svg" alt="Formula34" title="Formula 34"><figcaption id="figcaption34">Formula 34: </figcaption></figure><figure><img src="Formula35.svg" alt="Formula35" title="Formula 35"><figcaption id="figcaption35">Formula 35: </figcaption></figure><figure><img src="Formula36.svg" alt="Formula36" title="Formula 36"><figcaption id="figcaption36">Formula 36: </figcaption></figure><figure><img src="Formula37.svg" alt="Formula37" title="Formula 37"><figcaption id="figcaption37">Formula 37: </figcaption></figure><figure><img src="Formula38.svg" alt="Formula38" title="Formula 38"><figcaption id="figcaption38">Formula 38: </figcaption></figure><figure><img src="Formula39.svg" alt="Formula39" title="Formula 39"><figcaption id="figcaption39">Formula 39: </figcaption></figure><figure><img src="Formula40.svg" alt="Formula40" title="Formula 40"><figcaption id="figcaption40">Formula 40: </figcaption></figure><figure><img src="Formula41.svg" alt="Formula41" title="Formula 41"><figcaption id="figcaption41">Formula 41: </figcaption></figure><figure><img src="Formula42.svg" alt="Formula42" title="Formula 42"><figcaption id="figcaption42">Formula 42: </figcaption></figure><figure><img src="Formula43.svg" alt="Formula43" title="Formula 43"><figcaption id="figcaption43">Formula 43: </figcaption></figure><figure><img src="Formula44.svg" alt="Formula44" title="Formula 44"><figcaption id="figcaption44">Formula 44: </figcaption></figure><figure><img src="Formula45.svg" alt="Formula45" title="Formula 45"><figcaption id="figcaption45">Formula 45: </figcaption></figure><figure><img src="Formula46.svg" alt="Formula46" title="Formula 46"><figcaption id="figcaption46">Formula 46: </figcaption></figure><figure><img src="Formula47.svg" alt="Formula47" title="Formula 47"><figcaption id="figcaption47">Formula 47: </figcaption></figure><figure><img src="Formula48.svg" alt="Formula48" title="Formula 48"><figcaption id="figcaption48">Formula 48: </figcaption></figure><figure><img src="Formula49.svg" alt="Formula49" title="Formula 49"><figcaption id="figcaption49">Formula 49: </figcaption></figure><figure><img src="Formula50.svg" alt="Formula50" title="Formula 50"><figcaption id="figcaption50">Formula 50: </figcaption></figure><figure><img src="Formula51.svg" alt="Formula51" title="Formula 51"><figcaption id="figcaption51">Formula 51: </figcaption></figure><figure><img src="Formula52.svg" alt="Formula52" title="Formula 52"><figcaption id="figcaption52">Formula 52: </figcaption></figure><figure><img src="Formula53.svg" alt="Formula53" title="Formula 53"><figcaption id="figcaption53">Formula 53: </figcaption></figure><figure><img src="Formula54.svg" alt="Formula54" title="Formula 54"><figcaption id="figcaption54">Formula 54: </figcaption></figure><figure><img src="Formula55.svg" alt="Formula55" title="Formula 55"><figcaption id="figcaption55">Formula 55: </figcaption></figure><figure><img src="Formula56.svg" alt="Formula56" title="Formula 56"><figcaption id="figcaption56">Formula 56: </figcaption></figure><figure><img src="Formula57.svg" alt="Formula57" title="Formula 57"><figcaption id="figcaption57">Formula 57: </figcaption></figure><figure><img src="Formula58.svg" alt="Formula58" title="Formula 58"><figcaption id="figcaption58">Formula 58: </figcaption></figure><figure><img src="Formula59.svg" alt="Formula59" title="Formula 59"><figcaption id="figcaption59">Formula 59: </figcaption></figure><figure><img src="Formula60.svg" alt="Formula60" title="Formula 60"><figcaption id="figcaption60">Formula 60: </figcaption></figure><figure><img src="Formula61.svg" alt="Formula61" title="Formula 61"><figcaption id="figcaption61">Formula 61: </figcaption></figure><figure><img src="Formula62.svg" alt="Formula62" title="Formula 62"><figcaption id="figcaption62">Formula 62: </figcaption></figure><figure><img src="Formula63.svg" alt="Formula63" title="Formula 63"><figcaption id="figcaption63">Formula 63: </figcaption></figure><figure><img src="Formula64.svg" alt="Formula64" title="Formula 64"><figcaption id="figcaption64">Formula 64: </figcaption></figure><figure><img src="Formula65.svg" alt="Formula65" title="Formula 65"><figcaption id="figcaption65">Formula 65: </figcaption></figure><figure><img src="Formula66.svg" alt="Formula66" title="Formula 66"><figcaption id="figcaption66">Formula 66: </figcaption></figure><figure><img src="Formula67.svg" alt="Formula67" title="Formula 67"><figcaption id="figcaption67">Formula 67: </figcaption></figure><figure><img src="Formula68.svg" alt="Formula68" title="Formula 68"><figcaption id="figcaption68">Formula 68: </figcaption></figure><figure><img src="Formula69.svg" alt="Formula69" title="Formula 69"><figcaption id="figcaption69">Formula 69: </figcaption></figure><figure><img src="Formula70.svg" alt="Formula70" title="Formula 70"><figcaption id="figcaption70">Formula 70: </figcaption></figure><figure><img src="Formula71.svg" alt="Formula71" title="Formula 71"><figcaption id="figcaption71">Formula 71: </figcaption></figure><figure><img src="Formula72.svg" alt="Formula72" title="Formula 72"><figcaption id="figcaption72">Formula 72: </figcaption></figure><figure><img src="Formula73.svg" alt="Formula73" title="Formula 73"><figcaption id="figcaption73">Formula 73: </figcaption></figure><figure><img src="Formula74.svg" alt="Formula74" title="Formula 74"><figcaption id="figcaption74">Formula 74: </figcaption></figure><figure><img src="Formula75.svg" alt="Formula75" title="Formula 75"><figcaption id="figcaption75">Formula 75: </figcaption></figure><figure><img src="Formula76.svg" alt="Formula76" title="Formula 76"><figcaption id="figcaption76">Formula 76: </figcaption></figure><figure><img src="Formula77.svg" alt="Formula77" title="Formula 77"><figcaption id="figcaption77">Formula 77: </figcaption></figure><figure><img src="Formula78.svg" alt="Formula78" title="Formula 78"><figcaption id="figcaption78">Formula 78: </figcaption></figure><figure><img src="Formula79.svg" alt="Formula79" title="Formula 79"><figcaption id="figcaption79">Formula 79: </figcaption></figure><figure><img src="Formula80.svg" alt="Formula80" title="Formula 80"><figcaption id="figcaption80">Formula 80: </figcaption></figure><figure><img src="Formula81.svg" alt="Formula81" title="Formula 81"><figcaption id="figcaption81">Formula 81: </figcaption></figure><figure><img src="Formula82.svg" alt="Formula82" title="Formula 82"><figcaption id="figcaption82">Formula 82: </figcaption></figure><figure><img src="Formula83.svg" alt="Formula83" title="Formula 83"><figcaption id="figcaption83">Formula 83: </figcaption></figure><figure><img src="Formula84.svg" alt="Formula84" title="Formula 84"><figcaption id="figcaption84">Formula 84: </figcaption></figure><figure><img src="Formula85.svg" alt="Formula85" title="Formula 85"><figcaption id="figcaption85">Formula 85: </figcaption></figure><figure><img src="Formula86.svg" alt="Formula86" title="Formula 86"><figcaption id="figcaption86">Formula 86: </figcaption></figure><figure><img src="Formula87.svg" alt="Formula87" title="Formula 87"><figcaption id="figcaption87">Formula 87: </figcaption></figure><figure><img src="Formula88.svg" alt="Formula88" title="Formula 88"><figcaption id="figcaption88">Formula 88: </figcaption></figure><figure><img src="Formula89.svg" alt="Formula89" title="Formula 89"><figcaption id="figcaption89">Formula 89: </figcaption></figure><figure><img src="Formula90.svg" alt="Formula90" title="Formula 90"><figcaption id="figcaption90">Formula 90: </figcaption></figure><figure><img src="Formula91.svg" alt="Formula91" title="Formula 91"><figcaption id="figcaption91">Formula 91: </figcaption></figure><figure><img src="Formula92.svg" alt="Formula92" title="Formula 92"><figcaption id="figcaption92">Formula 92: </figcaption></figure><figure><img src="Formula93.svg" alt="Formula93" title="Formula 93"><figcaption id="figcaption93">Formula 93: </figcaption></figure><figure><img src="Formula94.svg" alt="Formula94" title="Formula 94"><figcaption id="figcaption94">Formula 94: </figcaption></figure><figure><img src="Formula95.svg" alt="Formula95" title="Formula 95"><figcaption id="figcaption95">Formula 95: </figcaption></figure><figure><img src="Formula96.svg" alt="Formula96" title="Formula 96"><figcaption id="figcaption96">Formula 96: </figcaption></figure><figure><img src="Formula97.svg" alt="Formula97" title="Formula 97"><figcaption id="figcaption97">Formula 97: </figcaption></figure><figure><img src="Formula98.svg" alt="Formula98" title="Formula 98"><figcaption id="figcaption98">Formula 98: </figcaption></figure><figure><img src="Formula99.svg" alt="Formula99" title="Formula 99"><figcaption id="figcaption99">Formula 99: </figcaption></figure><figure><img src="Formula100.svg" alt="Formula100" title="Formula 100"><figcaption id="figcaption100">Formula 100: </figcaption></figure><figure><img src="Formula101.svg" alt="Formula101" title="Formula 101"><figcaption id="figcaption101">Formula 101: </figcaption></figure><figure><img src="Formula102.svg" alt="Formula102" title="Formula 102"><figcaption id="figcaption102">Formula 102: </figcaption></figure><figure><img src="Formula103.svg" alt="Formula103" title="Formula 103"><figcaption id="figcaption103">Formula 103: </figcaption></figure><figure><img src="Formula104.svg" alt="Formula104" title="Formula 104"><figcaption id="figcaption104">Formula 104: </figcaption></figure><figure><img src="Formula105.svg" alt="Formula105" title="Formula 105"><figcaption id="figcaption105">Formula 105: </figcaption></figure><figure><img src="Formula106.svg" alt="Formula106" title="Formula 106"><figcaption id="figcaption106">Formula 106: </figcaption></figure><figure><img src="Formula107.svg" alt="Formula107" title="Formula 107"><figcaption id="figcaption107">Formula 107: </figcaption></figure><figure><img src="Formula108.svg" alt="Formula108" title="Formula 108"><figcaption id="figcaption108">Formula 108: </figcaption></figure><figure><img src="Formula109.svg" alt="Formula109" title="Formula 109"><figcaption id="figcaption109">Formula 109: </figcaption></figure><figure><img src="Formula110.svg" alt="Formula110" title="Formula 110"><figcaption id="figcaption110">Formula 110: </figcaption></figure><figure><img src="Formula111.svg" alt="Formula111" title="Formula 111"><figcaption id="figcaption111">Formula 111: </figcaption></figure><figure><img src="Formula112.svg" alt="Formula112" title="Formula 112"><figcaption id="figcaption112">Formula 112: </figcaption></figure><figure><img src="Formula113.svg" alt="Formula113" title="Formula 113"><figcaption id="figcaption113">Formula 113: </figcaption></figure><figure><img src="Formula114.svg" alt="Formula114" title="Formula 114"><figcaption id="figcaption114">Formula 114: </figcaption></figure><figure><img src="Formula115.svg" alt="Formula115" title="Formula 115"><figcaption id="figcaption115">Formula 115: </figcaption></figure><figure><img src="Formula116.svg" alt="Formula116" title="Formula 116"><figcaption id="figcaption116">Formula 116: </figcaption></figure><figure><img src="Formula117.svg" alt="Formula117" title="Formula 117"><figcaption id="figcaption117">Formula 117: </figcaption></figure><figure><img src="Formula118.svg" alt="Formula118" title="Formula 118"><figcaption id="figcaption118">Formula 118: </figcaption></figure><figure><img src="Formula119.svg" alt="Formula119" title="Formula 119"><figcaption id="figcaption119">Formula 119: </figcaption></figure></div>
     
-    <script>
+    <script>// type="text/x-mathjax-config">
+        
         // Use a for-loop to generate the embed elements for each PDF
-        for (let i = 1; i < 120; i++) {
-            //Create the img element
-            let pdfFileName = `Formula${i}`;
-            /*let img = document.createElement("embed");
-            img.type = "application/pdf";
-            img.src = `${pdfFileName}.pdf`;
-            img.alt = pdfFileName;
-            img.title = `Formula ${i}`;*/
-            let img = document.createElement("img");
-            img.src = `${pdfFileName}.svg`;
-            img.alt = pdfFileName;
-            img.title = `Formula ${i}`;
-            
-            //Create the figure element
-            let figure = document.createElement("figure");
-            let figcaption = document.createElement('figcaption');
-            figcaption.textContent = `Formula ${i}: `;
-
-            figure.appendChild(img);
-            figure.appendChild(figcaption);
-            //figure.align = "center";
-            
-            //Append figure to the Images div element
-            let src = document.getElementById("Images");
-            src.appendChild(figure);
-            
-            
+        function PopulateDocument()
+        {
+            for (let i = 1; i < 120; i++) {
+                //Create the img element
+                let pdfFileName = `Formula${i}`;
+                /*let img = document.createElement("embed");
+                img.type = "application/pdf";
+                img.src = `${pdfFileName}.pdf`;
+                img.alt = pdfFileName;
+                img.title = `Formula ${i}`;*/
+                let img = document.createElement("img");
+                img.src = `${pdfFileName}.svg`;
+                img.alt = pdfFileName;
+                img.title = `Formula ${i}`;
+                
+                //Create the figure element
+                let figure = document.createElement("figure");
+                let figcaption = document.createElement('figcaption');
+                figcaption.setAttribute('id', `figcaption${i}`);
+                
+                figcaption.textContent = `Formula ${i}: `;
+                
+                figure.appendChild(img);
+                figure.appendChild(figcaption);
+                //figure.align = "center";
+                
+                //Append figure to the Images div element
+                let src = document.getElementById("Images");
+                src.appendChild(figure);
+            }
         }
+        PopulateDocument();
+        
+        
     </script>
-</body>
-</html>
+
+
+</body></html>
