@@ -171,7 +171,7 @@
             for (let firework of this.fireworks) firework.update(delta)
 
             // if enough time passed... create new new firework
-            this.counter += delta * random(1, 100) // each second
+            this.counter += delta * random(1, 10) // each second
             if (this.counter >= 1) {
               this.fireworks.push(new Firework(
                 random(this.spawnA, this.spawnB),
