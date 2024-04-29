@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Mother's Day, Mom!</title>
+    <script>
+        function HowMany()
+        {
+            let value = prompt("How Many Animations?");
+            while (value !== null && isNaN(parseInt(value, 10)))
+            {
+                value = prompt("Sorry, I didn't get that. How Many Animations?");
+            }
+            if (value === null)
+            {
+                value = 1;
+            }
+            else
+            {
+                value = parseInt(value, 10);
+            }
+            let goat = document.getElementById("goat");
+            goat.style.animationIterationCount = value;
+            goat.style.setProperty('--iteration-count', `${value}`);
+            let h1 = document.getElementById("h1");
+            h1.style.animationIterationCount = value;
+            h1.style.setProperty('--iteration-count', `${value}`);
+        }
+    </script>
+</head>
+
+<body onload = "HowMany()">
+    <div class="container">
+        <h1 id = "h1"></h1>
+        <p class="message">
+            Thank you for all the love, support, and sacrifices you've made for us.
+            You're the best mom anyone could ask for! We love you more than words can say.
+        </p>
+        <p class="love">Love,</p>
+        <p class="from">Edward and Richard</p>
+        <div id = "goat">
+        </div>
+    </div>
+<style>
+
+    #goat:before
+    {
+        content: "";
+        width: 100%;
+        animation-name: mommyGoat;
+        animation-duration: 10s;
+        animation-iteration-count: var(--iteration-count, 1);
+    }
+    
+    #h1:before
+    {
+        content: 'Happy Mother\'s Day, Mommy!';
+        font-size: 100%;
+        margin-bottom: 20%;
+        animation-name: mommyDay;
+        animation-duration: 10s;
+        animation-iteration-count: var(--iteration-count, 1);
+        color:pink;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        width: 70%;
+        margin: 0 auto;
+        padding: 2%;
+        border-radius: 10%;
+        background-color: #fff;
+        box-shadow: 0 0 10% rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes mommyDay {
+      0%   {color:pink; content: "Happy Mother's Day, Mommy!"; font-size: 100%}
+      25%  {color:green;  content: "Happy Mother's Day, Mommy!!"; font-size: 100%}
+      50%  {color:blue;  content: "Happy Mother's Day, Mommy!!!"; font-size: 100%}
+      75%  {color:purple;  content: "Happy Mother's Day, Mommy!!!!"; font-size: 100%}
+      100% {color:pink;  content: "❤️ Happy Mother's Day, Mommy!!!!! ❤️"; font-size: 150%}
+    }
+    
+    @keyframes mommyGoat {
+      0%   {content: "🐐"}
+      60% {content: "🐐🐐"; font-size: 500%}
+      70% {content: "🐐🐐🐐"; font-size: 500%}
+      80% {content: "🐐🐐🐐🐐"; font-size: 500%}
+      90% {content: "🐐🐐🐐🐐🐐"; font-size: 500%}
+      100% {content: "🐐🐐🐐🐐🐐🐐"; font-size: 500%}
+    }
+
+    .message {
+        font-size: 150%;
+        line-height: 1.5;
+        margin-bottom: 2%;
+        font-style: italic;
+    }
+
+    .love {
+        font-weight: bold;
+        font-size: 160%;
+    }
+
+    .from {
+        font-style: italic;
+        font-size: 130%;
+        margin-top: 2%;
+    }
+    </style>
+    
+</body>
+</html>
+
