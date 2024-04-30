@@ -26,11 +26,42 @@
             let h1 = document.getElementById("h1");
             h1.style.animationIterationCount = value;
             h1.style.setProperty('--iteration-count', `${value}`);
+            let koala = document.getElementById("koala");
+            koala.style.animationIterationCount = value;
+            koala.style.setProperty('--iteration-count', `${value}`);
+            let panda = document.getElementById("panda");
+            panda.style.animationIterationCount = value;
+            panda.style.setProperty('--iteration-count', `${value}`);
+            
         }
+        
+        function clickFunction()
+        {
+            // Array of emojis
+            const emojis = ['🐨', '🐼', '🐐']; // Koala, Panda, Goat
+
+            // Randomly select an emoji
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+            
+            // Create a new span element to hold the koala emoji
+            var emoji = document.createElement('span');
+            emoji.className = 'emoji';
+            emoji.textContent = randomEmoji; // Koala emoji
+
+            // Set the position of the emoji to where the mouse was clicked
+            emoji.style.left = event.clientX + 'px';
+            emoji.style.top = event.clientY + 'px';
+
+            // Append the emoji to the body of the document
+            document.body.appendChild(emoji);
+        }
+        
+        window.onclick =  clickFunction;
     </script>
 </head>
 
-<body onload = "HowMany()">
+<body onload = "HowMany();">
     <div class="container">
         <h1 id = "h1"></h1>
         <p class="message">
@@ -38,12 +69,49 @@
             You're the best mom anyone could ask for! We love you more than words can say.
         </p>
         <p class="love">Love,</p>
-        <p class="from">Edward and Richard</p>
+        <p class="from"> <span id = "koala"></span> and <span id = "panda"></span></p>
+        <p class="ps"> P.S. Have fun clicking &#128512 </p>
         <div id = "goat">
         </div>
     </div>
+    
 <style>
-
+    .emoji {
+            position: absolute;
+            user-select: none;
+            font-size: 24px; /* You can adjust the size of the emoji */
+        }
+    
+    #koala:before
+    {
+        content: "Edward";
+        display: inline;
+        animation-name: koalaPop;
+        animation-duration: 10s;
+        animation-iteration-count: var(--iteration-count, 1);
+    }
+    
+    @keyframes koalaPop
+    {
+        0% {content: "Edward";}
+        100% {content: "🐨"; font-style: "normal";}
+    }
+    
+    #panda:before
+    {
+        content: "Richard";
+        display: inline;
+        animation-name: pandaPop;
+        animation-duration: 10s;
+        animation-iteration-count: var(--iteration-count, 1);
+    }
+    
+    @keyframes pandaPop
+    {
+        0% {content: "Richard";}
+        100% {content: "🐼"; font-style: "normal";}
+    }
+    
     #goat:before
     {
         content: "";
@@ -114,6 +182,12 @@
         font-style: italic;
         font-size: 130%;
         margin-top: 2%;
+    }
+    
+    .ps {
+        font-weight: 500;
+        font-size: 140%;
+        opacity: 20%;
     }
     </style>
     
