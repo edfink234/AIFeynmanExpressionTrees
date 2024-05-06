@@ -43,7 +43,6 @@
             // Randomly select an emoji
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
-            
             // Create a new span element to hold the koala emoji
             var emoji = document.createElement('span');
             emoji.className = 'emoji';
@@ -58,6 +57,32 @@
         }
         
         window.onclick =  clickFunction;
+        
+        function MakeMoreLove()
+        {
+            var emoji = document.createElement('span');
+            emoji.className = 'emoji';
+            emoji.textContent = "❤️";
+            
+            // Assign a random left coordinate to emoji's style
+            emoji.style.left = Math.random() * window.innerWidth + 'px';
+
+            // Assign a random top coordinate to emoji's style
+            emoji.style.top = Math.random() * window.innerHeight + 'px';
+
+            // Append the emoji to the body of the document
+            document.body.appendChild(emoji);
+            
+            // Define the event listener function to create another emoji at a random position
+            function createMoreEmoji(event)
+            {
+               // Call MakeMoreLove to create another emoji
+               MakeMoreLove();
+            }
+
+            // Add a mouseover event listener to the emoji
+            emoji.addEventListener('mouseover', createMoreEmoji);
+        }
     </script>
 </head>
 
@@ -70,16 +95,26 @@
         </p>
         <p class="love">Love,</p>
         <p class="from"> <span id = "koala"></span> and <span id = "panda"></span></p>
-        <p class="ps"> P.S. Have fun clicking &#128512 </p>
+        <p class="ps"> P.S. Have fun clicking and hovering! &#128512 </p>
         <div id = "goat">
         </div>
+    </div>
+    <div id="heart-container" style="position: relative; display: inline-block;" onmouseover="MakeMoreLove()">
+        <!-- The emoji element with onmouseover event -->
+        <div id="heart"  style="font-size: 1300%;">
+            ❤️
+        </div>
+        <!-- The text element to display "Hover over me!" on top of the emoji -->
+        <span id="hover-text" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; color: black; font-size: 90%; font-weight: bold;">
+            Hover over me and my children!
+        </span>
     </div>
     
 <style>
     .emoji {
             position: absolute;
             user-select: none;
-            font-size: 24px; /* You can adjust the size of the emoji */
+            font-size: 240%; /* You can adjust the size of the emoji */
         }
     
     #koala:before
