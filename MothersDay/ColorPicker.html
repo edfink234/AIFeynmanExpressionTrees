@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <script>
+       function updateColor()
+       {
+           let square = document.getElementById("square");
+           let R_color = document.getElementById("R_val").innerText;
+           let G_color = document.getElementById("G_val").innerText;
+           let B_color = document.getElementById("B_val").innerText;
+//           alert(square.style.backgroundColor);
+           square.style.backgroundColor = `rgb(${R_color}, ${G_color}, ${B_color})`
+           square.innerText = `RGB = (${R_color}, ${G_color}, ${B_color})`;
+       }
+    </script>
+</head>
+
+<body>
+    <style>
+        .color {
+            width: 90%;
+        }
+        #square {
+            width: 20%;
+            margin: auto;
+            height: 20%;
+            background-color: rgb(255,0,0);
+            text-align: center;
+            
+            text-align: center;
+        }
+
+    </style>
+    <div class="slidecontainer">
+        <label for = "R"> R: </label>
+        <input type="range" min="1" max="255" value="255" step = "1" class="color" id = "R" oninput="R_val.innerText = this.value; updateColor();">
+        <p id="R_val">255</p>
+        <label for = "G"> G: </label>
+        <input type="range" min="1" max="255" value="0" step = "1" class="color" id = "G" oninput="G_val.innerText = this.value; updateColor();">
+            <p id="G_val">0</p>
+        <label for = "B"> B: </label>
+        <input type="range" min="1" max="255" value="0" step = "1" class="color" id = "B" oninput="B_val.innerText = this.value; updateColor();">
+            <p id="B_val">0</p>
+
+            <div id = "square">RGB=(255,0,0)</div>
+            
+    </div>
+</body>
+</html>
+
+
