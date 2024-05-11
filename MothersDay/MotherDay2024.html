@@ -88,6 +88,7 @@
             // Add a mouseover event listener to the emoji
             emoji.addEventListener('mouseover', createMoreEmoji);
         }
+        
     </script>
 </head>
 
@@ -101,18 +102,50 @@
         <p class="love">Love,</p>
         <p class="from"> <span id = "koala"></span> and <span id = "panda"></span></p>
         <p class="ps"> P.S. Have fun clicking and hovering! &#128512 </p>
-        <div id = "goat">
+        <div id = "goat"></div>
+<!--    </div>-->
+<!--    <div id="container" style="position: relative;">-->
+        <div id="heart-container" style="position: relative; display: inline-block;">
+            <!-- The emoji element with onmouseover event -->
+            <div id="heart" style="font-size: 1300%;">
+                ❤️
+            </div>
+            
+            <!-- The text element to display "Hover over me!" on top of the emoji -->
+            <span id="hover-text" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; color: black; font-size: 90%; font-weight: bold;" onmouseover = "MakeMoreLove();">
+                Hover over me and my children!
+            </span>
         </div>
-    </div>
-    <div id="heart-container" style="position: relative; display: inline-block;" onmouseover="MakeMoreLove()">
-        <!-- The emoji element with onmouseover event -->
-        <div id="heart" style="font-size: 1300%;">
-            ❤️
+        
+        <div id="ExpandHorizons" style="position: absolute; top: 0; left: 20%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for expanding our horizons';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '🌤️';">
+            <!-- Content of the other div goes here -->
+            🌤️
         </div>
-        <!-- The text element to display "Hover over me!" on top of the emoji -->
-        <span id="hover-text" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; color: black; font-size: 90%; font-weight: bold;">
-            Hover over me and my children!
-        </span>
+        
+        <div id="Foundations" style="position: absolute; top: 0; left: 70%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for laying the foundation for who we are today';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '🌎';">
+            <!-- Content of the other div goes here -->
+            🌎
+        </div>
+        
+        <div id="Fight" style="position: absolute; top: 65%; left: 70%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for fighting for us';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '🤺';">
+            <!-- Content of the other div goes here -->
+            🤺
+        </div>
+        
+        <div id="Food" style="position: absolute; top: 65%; left: 20%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for teaching us to eat healthy';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '🎂';">
+            <!-- Content of the other div goes here -->
+            🎂
+        </div>
+        
+        <div id="Wisdom" style="position: absolute; top: 37.5%; left: 15%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for giving us good advice';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '🪷';">
+            <!-- Content of the other div goes here -->
+            🪷
+        </div>
+        
+        <div id="Wisdom" style="position: absolute; top: 37.5%; left: 75%; width: 10%; font-size: 325%" onmouseover = "this.style.fontSize = '125%'; this.innerHTML = 'Thank you for teaching us the value of exercise';", onmouseout = "this.style.fontSize = '325%'; this.innerHTML = '💪';">
+            <!-- Content of the other div goes here -->
+            💪
+        </div>
     </div>
     
     <style>
