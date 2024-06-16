@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Match the Philosopher</title>
+    </head>
+    <body>
+        <script>
+            alert("Match the quote and the philosopher!");
+            window.matched = 0;
+
+            function allowDrop(event) {
+                event.preventDefault();
+            }
+
+            function drag(event) {
+                event.dataTransfer.setData("text", event.target.id);
+            }
+
+            
+            function drop(event) {
+                
+                event.preventDefault();
+                var data = event.dataTransfer.getData("text");
+                var elem = document.getElementById(data);
+                var target = event.target;
+                let matchedOne = false;
+                
+                // Save the original dimensions
+                if (!elem.dataset.originalWidth) {
+                    elem.dataset.originalWidth = elem.style.width;
+                    elem.dataset.originalHeight = elem.style.height;
+                }
+                
+                // Scale the image to fit the quote box
+                elem.style.width = '100%';
+                elem.style.height = '100%';
+                elem.style.objectFit = 'cover'; // Optional: to maintain aspect ratio
+
+                // Check if the target is a quote box or an image inside a quote box
+                if (target.classList.contains('quote') && target.id.includes(elem.id)) {
+                    target.appendChild(elem);
+                    target.style.width = "80%";
+                    elem.style.padding = "5%";
+                    
+                    window.matched = (window.matched || 0) + 1;
+
+                    // Defer the alert to the next event loop iteration
+                    if (window.matched == document.querySelectorAll('.quote').length) {
+                        setTimeout(() => {
+                            alert("Congratulations!!! You are a philosopher and will get your PhD in Political Science!");
+                            document.body.innerHTML = `
+                                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+                                                    <h1 style="font-family: 'arial'; font-size: 400%;">Happy Father's Day!</h1>
+                                                    <img src="Coffee.jpg" style="width: 50%; height: 60%; border-radius: 50%; padding: 2%">
+                                                     <h2 style="font-family: 'Arial'; font-size: 300%; font-weight: 400"><i>Love Richard and Edward</i></p>
+                                                </div>
+                                                 
+                                                
+                                            `;
+                        }, 200);
+                    }
+                    
+                } else {
+                    // Revert to original dimensions if not dropped inside the quote box
+                    elem.style.width = elem.dataset.originalWidth;
+                    elem.style.height = elem.dataset.originalHeight;
+                }
+            
+            }
+            
+        </script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                background-color: #f5f5f5;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 80%;
+            }
+
+            .quotes {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                width: 45%;
+            }
+
+            .quote {
+                background-color: #fff;
+                padding: 2%;
+                margin: 2%;
+                width: 40%;
+                height: 10%;
+                display: flex;
+                align-items: center;
+            }
+
+            .images {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                width: 45%;
+            }
+
+            .images img {
+                width: 40%;
+                height: 10%;
+                margin: 1%;
+                cursor: grab;
+            }
+        </style>
+        
+        <div class="container">
+            <div class="quotes">
+                <div class="quote" id="HannahArendtQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    "The most radical revolutionary will become a conservative the day after the revolution."
+                </div>
+                <div class="quote" id="ReneDescartesQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    "I think, therefore I am."
+                </div>
+                <div class="quote" id="SocratesQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    "The only thing I know is that I know nothing."
+                </div>
+                <div class="quote" id="JohnLockeQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    "Government has no other end, but the preservation of property."
+                </div>
+                <div class="quote" id="ConfuciusQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    "Our greatest glory is not in never falling, but in getting up every time we do."
+                </div>
+            </div>
+            <div class="images">
+                <img src="HannahArendt.jpg" alt="Hannah Arendt" id="HannahArendt" draggable="true" ondragstart="drag(event)">
+                <img src="ReneDescartes.jpg" alt="Rene Descartes" id="ReneDescartes" draggable="true" ondragstart="drag(event)">
+                <img src="Socrates.jpg" alt="Socrates" id="Socrates" draggable="true" ondragstart="drag(event)">
+                <img src="JohnLocke.jpg" alt="John Locke" id="JohnLocke" draggable="true" ondragstart="drag(event)">
+                <img src="Confucius.jpg" alt="John Locke" id="Confucius" draggable="true" ondragstart="drag(event)">
+            </div>
+        </div>
+    </body>
+</html>
+
+
+
