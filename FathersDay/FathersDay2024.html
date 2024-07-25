@@ -8,6 +8,7 @@
         <script>
             alert("Match the quote and the philosopher!");
             window.matched = 0;
+            window.clickedItem = "";
 
             function allowDrop(event) {
                 event.preventDefault();
@@ -51,7 +52,7 @@
                             alert("Congratulations!!! You are a philosopher and will get your PhD in Political Science!");
                             document.body.innerHTML = `
                                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-                                                    <h1 style="font-family: 'arial'; font-size: 400%;">Happy Father's Day!</h1>
+                                                    <h1 style="font-family: 'arial'; font-size: 350%;">Happy Father's Day!</h1>
                                                     <img src="Coffee.jpg" style="width: 50%; height: 60%; border-radius: 50%; padding: 2%">
                                                      <h2 style="font-family: 'Arial'; font-size: 300%; font-weight: 400"><i>Love Richard and Edward</i></p>
                                                 </div>
@@ -67,6 +68,23 @@
                     elem.style.height = elem.dataset.originalHeight;
                 }
             
+            }
+            
+            function myClickFunc(event)
+            {
+                //alert(event.target.id);
+                
+                //document.getElementById(event.target.id).style.borderWidth = "thick";
+                if (window.clickedItem == "")
+                {
+                    window.clickedItem = event.target.id;
+                    
+                }
+                else if ((window.clickedItem.includes(event.target.id) || event.target.id.includes(window.clickedItem)) && window.clickedItem != event.target.id)
+                {
+                    
+                }
+                
             }
             
         </script>
@@ -122,7 +140,7 @@
         
         <div class="container">
             <div class="quotes">
-                <div class="quote" id="HannahArendtQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="quote" id="HannahArendtQuote" ondrop="drop(event)" ondragover="allowDrop(event)" onclick = "myClickFunc(event)">
                     "The most radical revolutionary will become a conservative the day after the revolution."
                 </div>
                 <div class="quote" id="ReneDescartesQuote" ondrop="drop(event)" ondragover="allowDrop(event)">
