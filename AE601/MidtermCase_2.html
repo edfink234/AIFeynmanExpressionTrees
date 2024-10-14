@@ -31,8 +31,11 @@
             height: auto;
         }
         .formula {
-            font-size: 18px;
-            color: #555;
+            font-size: 28px;
+        }
+        .mse {
+            font-size: 24px;
+            font-weight: 900;
         }
     </style>
 </head>
@@ -40,6 +43,7 @@
 
     <h1>Animation Case 2.1: Fixed Z-Axes</h1>
     <p class="formula">Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
+    <p class="mse">MSE = 0.689072</p>
     <video controls>
         <source src="animationCase2_2.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -47,6 +51,7 @@
 
     <h1>Animation Case 2.2: Variable Z-Axes</h1>
     <p class="formula">Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
+    <p class="mse">MSE = 0.689072</p>
     <video controls>
         <source src="animationCase2_1.mp4" type="video/mp4">
         Your browser does not support the video tag.
