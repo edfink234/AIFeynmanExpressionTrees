@@ -23,6 +23,10 @@
         h1 {
             font-size: 32px;
             color: #333;
+            text-decoration: underline;
+        }
+        h2 {
+            text-decoration: underline;
         }
         video {
             display: block;
@@ -37,12 +41,33 @@
             font-size: 24px;
             font-weight: 900;
         }
+        h3 {
+            font-size: 40px;
+            color: #333;
+            font-weight: 700
+        }
     </style>
 </head>
 <body>
-
+    <h3>Solving the 2D Advection-Diffusion Equation
+        using Fixed-Depth Symbolic Regression and
+        Symbolic Differentiation without Expression
+        Trees</h3>
+    <br/>
+    <h2> Case 2: Problem </h2>
+    <p class="formula"> \( \frac{\partial T}{\partial t} + u_x\frac{\partial T}{\partial x} + u_y\frac{\partial T}{\partial y} - \kappa \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right) = 0 \)</p>
+    <p class="formula"> \( u_x = \sin(4y), \; u_y = \cos(4x), \; \kappa = 1  \)</p>
+    <p class="formula"> \( 0.1 \leq x \leq 2\pi, \; 0.1 \leq y \leq 2\pi, \;
+    0.1 \leq t \leq 20 \)</p>
+    <p class="formula"> \( T(x = 0.1) = T(x = 2\pi), \;
+    \frac{dT(x = 0.1)}{dx} = \frac{dT(x = 2\pi)}{dx}, \;
+    T(y = 0.1) = T(y = 2\pi), \;
+    \frac{dT(y = 0.1)}{dy} = \frac{dT(y = 2\pi)}{dy} \)</p>
+    <p class="formula">  \( \text{Initial Condition} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
+    
+    <br/>
     <h1>Animation Case 2.1: Fixed Z-Axes</h1>
-    <p class="formula">Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
+    <p class="formula">Approximate Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
     <p class="mse">MSE = 0.689072</p>
     <video controls>
         <source src="animationCase2_2.mp4" type="video/mp4">
@@ -50,12 +75,16 @@
     </video>
 
     <h1>Animation Case 2.2: Variable Z-Axes</h1>
-    <p class="formula">Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
+    <p class="formula">Approximate Formula: \( T = \mathcal{I}^{\frac{0.2^{t}}{\text{sech}(\log(\log(\pi))) + 0.2 }} \approx \mathcal{I}^{0.2^t / 1.191}, \quad \mathcal{I} = \exp{\left(\frac{-((x - \pi)^2 + (y - \pi)^2)}{0.08}\right)} \)</p>
     <p class="mse">MSE = 0.689072</p>
     <video controls>
         <source src="animationCase2_1.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    <br>
+    
+    <h1>Expression Tree for Original Formula</h1>
+    <figure><img src="Case2BestTree.svg" alt="Case2BestTree" title="Case2BestTree"><figcaption id="Case2BestTree" style="font-size: 3.5vw; margin-top: 20px; margin-bottom: -5px; width: 100%; text-align: center;"></figcaption></figure>
 
 </body>
 </html>
