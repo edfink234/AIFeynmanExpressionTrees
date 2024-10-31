@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Mom!</title>
+        <script>
+            function HowMany() {
+                let value = 3;
+                document.querySelectorAll(".animated").forEach(element => {
+                    element.style.animationIterationCount = value;
+                    element.style.setProperty('--iteration-count', `${value}`);
+                });
+            }
+
+            function clickFunction() {
+                const emojis = ['💖', '🌸', '🎉'];
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                const emoji = document.createElement('span');
+                emoji.className = 'emoji';
+                emoji.textContent = randomEmoji;
+                emoji.style.left = event.clientX + 'px';
+                emoji.style.top = event.clientY + 'px';
+                document.body.appendChild(emoji);
+            }
+
+            window.onclick = clickFunction;
+
+            function ShowMoreLove() {
+                const heart = document.createElement('span');
+                heart.className = 'emoji';
+                heart.textContent = "💖";
+                const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 255)`;
+                heart.style.color = randomColor;
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = Math.random() * window.innerHeight + 'px';
+                document.body.appendChild(heart);
+                heart.addEventListener('mouseover', ShowMoreLove);
+            }
+
+            function createAnimalTrail(event) {
+                const animals = ['🐐', '🐼', '🐨'];
+                const randomEmoji = animals[Math.floor(Math.random() * animals.length)];
+                const animalEmoji = document.createElement('span');
+                animalEmoji.textContent = randomEmoji;
+                animalEmoji.style.position = 'absolute';
+                animalEmoji.style.left = event.pageX + 'px';
+                animalEmoji.style.top = event.pageY + 'px';
+                animalEmoji.style.fontSize = '150%';
+                animalEmoji.style.pointerEvents = 'none';
+                document.body.appendChild(animalEmoji);
+                const randomTimeout = Math.floor(Math.random() * 500) + 300;
+                setTimeout(() => {
+                    animalEmoji.remove();
+                }, randomTimeout);
+            }
+
+            window.addEventListener('mousemove', createAnimalTrail);
+
+            window.onload = function () {
+                HowMany();
+
+                // Set a timeout to reveal hover messages after animations finish
+                setTimeout(() => {
+                    document.querySelectorAll('.hover-message').forEach(element => {
+                        element.style.visibility = 'visible';
+                    });
+                }, 10000); // Set timeout to match animation duration (10 seconds)
+            };
+        </script>
+</head>
+
+<body onload="HowMany();">
+    <div class="container">
+        <h1 id="h1" class="animated"></h1>
+        <p class="message">
+            Thank you for every smile, every word of wisdom, and every memory you’ve given us. You are loved beyond measure.
+            We celebrate you and all the incredible things you do!
+        </p>
+        <p class="from">With all our love, <span id="koala" class="animated"></span> and <span id="panda" class="animated"></span></p>
+        <p class="ps hover-message">Click and hover for a little extra magic! 🌟</p>
+        
+        <div id="heart-container" style="position: relative; display: inline-block;">
+            <div id="heart" style="font-size: 1300%;">🎂</div>
+            <span id="hover-text" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; color: black; font-size: 90%; font-weight: bold;" onmouseover="ShowMoreLove();" class = "hover-message">
+                Hover for a birthday surprise!
+            </span>
+        </div>
+
+        <div id="Joy" class="emoji-content" style="top: 0; left: 20%; font-size: 325%" onmouseover="this.style.fontSize = '125%'; this.innerHTML = 'Thank you for bringing us joy';" onmouseout="this.style.fontSize = '325%'; this.innerHTML = '🎈';">🎈</div>
+        <div id="Strength" class="emoji-content" style="top: 0; left: 70%; font-size: 325%" onmouseover="this.style.fontSize = '125%'; this.innerHTML = 'Thank you for your strength';" onmouseout="this.style.fontSize = '325%'; this.innerHTML = '💪';">💪</div>
+        <div id="Love" class="emoji-content" style="top: 65%; left: 70%; font-size: 325%" onmouseover="this.style.fontSize = '125%'; this.innerHTML = 'You are the heart of our family';" onmouseout="this.style.fontSize = '325%'; this.innerHTML = '❤️';">❤️</div>
+        <div id="Guidance" class="emoji-content" style="top: 65%; left: 20%; font-size: 325%" onmouseover="this.style.fontSize = '125%'; this.innerHTML = 'Thank you for guiding us';" onmouseout="this.style.fontSize = '325%'; this.innerHTML = '🌟';">🌟</div>
+    </div>
+
+    <style>
+        .emoji {
+            position: absolute;
+            user-select: none;
+            font-size: 240%;
+        }
+
+        #koala::before {
+            content: "Edward";
+            display: inline;
+            animation-name: koalaPop;
+            animation-duration: 10s;
+            animation-iteration-count: var(--iteration-count, 1);
+        }
+        
+        @keyframes koalaPop {
+            0% { content: "Edward"; }
+            100% { content: "💖"; }
+        }
+
+        #panda::before {
+            content: "Richard";
+            display: inline;
+            animation-name: pandaPop;
+            animation-duration: 10s;
+            animation-iteration-count: var(--iteration-count, 1);
+        }
+        
+        @keyframes pandaPop {
+            0% { content: "Richard"; }
+            100% { content: "🎉"; }
+        }
+
+        #h1::before {
+            content: 'Happy Birthday, Mom!';
+            font-size: 100%;
+            margin-bottom: 20%;
+            animation-name: birthdayText;
+            animation-duration: 10s;
+            animation-iteration-count: var(--iteration-count, 1);
+            color: #ff66b2;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #fff5f8;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            padding: 2%;
+            border-radius: 10%;
+            background-color: #fff;
+            box-shadow: 0 0 10% rgba(0, 0, 0, 0.2);
+        }
+
+        .message {
+            font-size: 150%;
+            line-height: 1.5;
+            margin-bottom: 2%;
+            font-style: italic;
+        }
+
+        .from {
+            font-style: italic;
+            font-size: 130%;
+            margin-top: 2%;
+        }
+
+        .ps {
+            font-weight: 500;
+            font-size: 140%;
+            opacity: 0.8;
+        }
+
+        .emoji-content {
+            position: absolute;
+            width: 10%;
+        }
+
+        .animated {
+            animation-iteration-count: 1;
+            animation-duration: 10s;
+        }
+        
+        @keyframes birthdayText {
+            0% { color: #ff66b2; }
+            25% { color: #ff3399; content: "Happy Birthday, Mom!!"; font-size: 120%; }
+            50% { color: #ff99cc; content: "Happy Birthday, Wonderful Mom!!!"; font-size: 140%; }
+            100% { color: #ff66b2; content: "💖 Happy Birthday, Mom! 💖"; font-size: 160%; }
+        }
+        
+        /* Hide hover messages initially */
+        /* Initial CSS for hover messages */
+        .hover-message {
+            visibility: hidden;
+            transition: visibility 0.3s ease-in;
+        }
+
+    </style>
+</body>
+</html>
