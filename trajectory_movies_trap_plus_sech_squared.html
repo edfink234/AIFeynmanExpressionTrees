@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" defer
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof_C + E + R + P = Movies</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1.equation {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .movie-row {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+        .movie-container {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .center-movie {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        .latex-equation {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="equation"> A Nice Title Should Go Here</h1>
+    <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_-1_point_5_.mp4" controls></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_-1_point_0_.mp4" controls></video></div>
+        </div>
+        <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_-0_point_5_.mp4" controls></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_0_point_0_.mp4" controls></video></div>
+        </div>
+        <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_0_point_5_.mp4" controls></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_1_point_0_.mp4" controls></video></div>
+        </div>
+    <div class="center-movie"><video src="trajectory_data_IC_1_point_5_.mp4" controls></video></div>
+
+    
+    <h2><u>Current Problem Formulation (will be updated soon...) </u></h2>
+    <div class="latex-equation">
+        $$\begin{align*}
+        m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
+        V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 = \frac{1}{2} x^2\\
+        V_{\text{sech}}(x-\xi) &= A^{2} \operatorname{sech}^{2}\left(A \left(x - {\xi}\right)\right) = \operatorname{sech}^{2}\left(\left(x - {\xi}\right)\right)\\
+        x(0) &= x_0 \\
+        \xi(0) &= 0 \\
+        \dot{x}(0) &= 0 \\
+        x(t = T) &= x^* = 0.5 \\
+        \xi(t=T) &= x^* = 0.5 \\
+        |\dot{x}(T)| &< \left(V_{\text{th}} = 0.01\right)\\
+        T &< \left(T_{\text{th}} = 10\text{ seconds}\right) \\
+        \end{align*}$$
+    </div>
+</body>
+</html>
