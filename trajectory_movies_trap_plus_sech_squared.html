@@ -45,29 +45,44 @@
             width: 100%;
             height: auto;
         }
+        h2 {
+            margin-bottom: 0.25em; /* Decrease bottom margin of headers */
+        }
         .latex-equation {
-            margin-top: 20px;
+            margin-top: 0; /* Remove top margin of equation container */
+            margin-bottom: 1em; /* Adjust bottom margin as needed */
             text-align: center;
         }
+        .image-row {
+                display: flex;
+                justify-content: center;
+                gap: 1em; /* Adjust spacing between images */
+                margin-bottom: 1em; /* Space between rows */
+            }
+        .image-container img {
+            max-width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+            border-radius: 5px; /* Optional: Rounded corners */
+        }
+        
+        .center-img {
+                width: 50%; /* Adjust width as needed */
+                padding: 10px;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: center;
+            }
+
+            .center-img img {
+                max-width: 100%;
+                height: auto; /* Maintain aspect ratio */
+                border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+                border-radius: 5px; /* Optional: Rounded corners */
+            }
     </style>
 </head>
 <body>
-    <h1 class="equation"> A Nice Title Should Go Here</h1>
-    <div class="movie-row">
-            <div class="movie-container"><video src="trajectory_data_IC_-1_point_5_.mp4"controls muted></video></div>
-            <div class="movie-container"><video src="trajectory_data_IC_-1_point_0_.mp4"controls muted></video></div>
-        </div>
-        <div class="movie-row">
-            <div class="movie-container"><video src="trajectory_data_IC_-0_point_5_.mp4"controls muted></video></div>
-            <div class="movie-container"><video src="trajectory_data_IC_0_point_0_.mp4"controls muted></video></div>
-        </div>
-        <div class="movie-row">
-            <div class="movie-container"><video src="trajectory_data_IC_0_point_5_.mp4"controls muted></video></div>
-            <div class="movie-container"><video src="trajectory_data_IC_1_point_0_.mp4"controls muted></video></div>
-        </div>
-    <div class="center-movie"><video src="trajectory_data_IC_1_point_5_.mp4"controls muted></video></div>
-
-    
     <h2><u>Current Problem Formulation (will be updated soon...) </u></h2>
     <div class="latex-equation">
         $$\begin{align*}
@@ -83,5 +98,34 @@
         T &< \left(T_{\text{th}} = 10\text{ seconds}\right) \\
         \end{align*}$$
     </div>
+    <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_-1_point_5_.mp4"controls muted></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_-1_point_0_.mp4"controls muted></video></div>
+        </div>
+        <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_-0_point_5_.mp4"controls muted></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_0_point_0_.mp4"controls muted></video></div>
+        </div>
+        <div class="movie-row">
+            <div class="movie-container"><video src="trajectory_data_IC_0_point_5_.mp4"controls muted></video></div>
+            <div class="movie-container"><video src="trajectory_data_IC_1_point_0_.mp4"controls muted></video></div>
+        </div>
+    <div class="center-movie"><video src="trajectory_data_IC_1_point_5_.mp4"controls muted></video></div>
+
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-1_point_5_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_1_point_5_.png"/></div>
+    </div>
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-1_point_0_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_1_point_0_.png"/></div>
+    </div>
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-0_point_5_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_0_point_5_.png"/></div>
+    </div>
+    <div class="center-img"><img src="trajectory_data_IC_0_point_0_.png"/></div>
+
+    
 </body>
 </html>
