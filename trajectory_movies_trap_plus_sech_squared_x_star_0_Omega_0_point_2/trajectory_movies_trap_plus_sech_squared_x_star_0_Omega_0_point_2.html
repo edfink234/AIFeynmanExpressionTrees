@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" defer
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script>
+        //document.querySelectorAll('video').forEach(function(el, i) { el.playbackRate = 0.25; });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Really Need a Nice Title Here!</title>
+    
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1.equation {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .movie-row {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+        .movie-container {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .center-movie {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        h2, h3 {
+            margin-bottom: 0.25em; /* Decrease bottom margin of headers */
+        }
+        .latex-equation {
+            margin-top: 0; /* Remove top margin of equation container */
+            margin-bottom: 1em; /* Adjust bottom margin as needed */
+            text-align: center;
+        }
+        .image-row {
+                display: flex;
+                justify-content: center;
+                gap: 1em; /* Adjust spacing between images */
+                margin-bottom: 1em; /* Space between rows */
+            }
+        .image-container img {
+            max-width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+            border-radius: 5px; /* Optional: Rounded corners */
+        }
+    </style>
+</head>
+<body>
+    <h2><u>Current Problem Formulation </u></h2>
+    <div class="latex-equation">
+        $$\begin{align*}
+        m \ddot{x} &= \ddot{x} = -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
+        V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 = \frac{1}{2} (0.2)^2 x^2 = 0.02 \cdot x^2\\
+        V_{\text{sech}}(x-\xi) &= A^{2} \operatorname{sech}^{2}\left(A \left(x - {\xi}\right)\right) = \operatorname{sech}^{2}\left(\left(x - {\xi}\right)\right)\\
+        \end{align*}$$
+    </div>
+    <h3><u>Constraints</u></h3>
+    <div class="latex-equation">
+        $$\begin{align*}
+        A &= 1 \\
+        m &= 1 \\
+        \Omega &= 0.02 \\
+        x(0) &= x_0 \\
+        \xi(0) &= 0 \\
+        \dot{x}(0) &= 0 \\
+        x(t \leq T) &= x^* = 0 \\
+        \xi(t \leq T) &= x^* = 0 \\
+        |\dot{x}(t \leq T)| &= 0\\
+        T_{\text{th}} &= 10\text{ seconds} \\
+        \end{align*}$$
+    </div>
+    <div class="movie-row">
+        <div class="movie-container"><video src="trajectory_data_IC_-1_point_5_.mp4"controls muted></video></div>
+        <div class="movie-container"><video src="trajectory_data_IC_1_point_5_.mp4"controls muted></video></div>
+    </div>
+    <div class="movie-row">
+        <div class="movie-container"><video src="trajectory_data_IC_-1_point_0_.mp4"controls muted></video></div>
+        <div class="movie-container"><video src="trajectory_data_IC_1_point_0_.mp4"controls muted></video></div>
+    </div>
+    <div class="movie-row">
+        <div class="movie-container"><video src="trajectory_data_IC_-0_point_5_.mp4"controls muted></video></div>
+        <div class="movie-container"><video src="trajectory_data_IC_0_point_5_.mp4"controls muted></video></div>
+    </div>
+    
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-1_point_5_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_1_point_5_.png"/></div>
+    </div>
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-1_point_0_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_1_point_0_.png"/></div>
+    </div>
+    <div class="image-row">
+        <div class="image-container"><img src="trajectory_data_IC_-0_point_5_.png"/></div>
+        <div class="image-container"><img src="trajectory_data_IC_0_point_5_.png"/></div>
+    </div>
+    
+    
+</body>
+</html>
