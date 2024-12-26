@@ -45,7 +45,7 @@
             width: 100%;
             height: auto;
         }
-        h2 {
+        h2, h3 {
             margin-bottom: 0.25em; /* Decrease bottom margin of headers */
         }
         .latex-equation {
@@ -89,13 +89,21 @@
         m \ddot{x} &= \ddot{x} = -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
         V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 = \frac{1}{2} x^2\\
         V_{\text{sech}}(x-\xi) &= A^{2} \operatorname{sech}^{2}\left(A \left(x - {\xi}\right)\right) = \operatorname{sech}^{2}\left(\left(x - {\xi}\right)\right)\\
+        \end{align*}$$
+    </div>
+    <h3><u>Constraints</u></h3>
+    <div class="latex-equation">
+        $$\begin{align*}
+        A &= 1 \\
+        m &= 1 \\
+        \Omega &= 1 \\
         x(0) &= x_0 \\
         \xi(0) &= 0 \\
         \dot{x}(0) &= 0 \\
-        x(t = T) &= x^* = 0.5 \\
-        \xi(t=T) &= x^* = 0.5 \\
-        |\dot{x}(T)| &< \left(V_{\text{th}} = 0.01\right)\\
-        T &< \left(T_{\text{th}} = 10\text{ seconds}\right) \\
+        x(t = T_{\text{th}}) &= x^* = 0.5 \\
+        \xi(t = T_{\text{th}}) &= x^* = 0.5 \\
+        |\dot{x}(t = T_{\text{th}})| &\leq 0.01\\
+        T_{\text{th}} &= 10\text{ seconds} \\
         \end{align*}$$
     </div>
     <div class="movie-row">
