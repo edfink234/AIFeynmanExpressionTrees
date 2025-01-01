@@ -218,28 +218,28 @@ html_template = r"""
     </div>
 
     <div class="control-container">
-        <label class="control-label">A:</label>
+        <label class="control-label">\(A\):</label>
         <span class="arrow" onclick="changeValue('A', -1)">←</span>
         <span id="A-value">0.0</span>
         <span class="arrow" onclick="changeValue('A', 1)">→</span>
         <input id="A-slider" type="range" min="0" max="0" step="1" class="slider" oninput="updateSliderValue('A', this.value)">
     </div>
     <div class="control-container">
-        <label class="control-label">ω:</label>
+        <label class="control-label">\(\omega\):</label>
         <span class="arrow" onclick="changeValue('omega', -1)">←</span>
         <span id="omega-value">0.0</span>
         <span class="arrow" onclick="changeValue('omega', 1)">→</span>
         <input id="omega-slider" type="range" min="0" max="0" step="1" class="slider" oninput="updateSliderValue('omega', this.value)">
     </div>
     <div class="control-container">
-        <label class="control-label">l:</label>
+        <label class="control-label">\(l\):</label>
         <span class="arrow" onclick="changeValue('l', -1)">←</span>
         <span id="l-value">0.0</span>
         <span class="arrow" onclick="changeValue('l', 1)">→</span>
         <input id="l-slider" type="range" min="0" max="0" step="1" class="slider" oninput="updateSliderValue('l', this.value)">
     </div>
     <div class="control-container">
-        <label class="control-label">θ₀:</label>
+        <label class="control-label">\(\theta_0\):</label>
         <span class="arrow" onclick="changeValue('theta_0', -1)">←</span>
         <span id="theta_0-value">0.0</span>
         <span class="arrow" onclick="changeValue('theta_0', 1)">→</span>
