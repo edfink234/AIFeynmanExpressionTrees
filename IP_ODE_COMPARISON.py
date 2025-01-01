@@ -22,7 +22,7 @@ omega_values = np.linspace(1, 10, 6)
 l_values = np.linspace(1, 10, 6)
 theta_0_values = np.linspace(np.pi - 0.125, np.pi + 0.125, 6)
 # Plot results with LaTeX-style labels
-#labels = (r"$\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)$", r"$\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t)$", r"$\ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(x-\pi)^2}{2}\right)\cos(\omega t)$")
+labels = (r"$\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)$", r"$\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t)$", r"$\ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(x-\pi)^2}{2}\right)\cos(\omega t)$")
 labels = ('Original', 'First-Order', 'Second Order')
 
 # Function to convert second-order ODE to a first-order system
@@ -111,18 +111,111 @@ html_template = r"""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulation Viewer</title>
+    <script type="text/javascript" defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <title>Inverted Pendulum Equation Viewer</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .control-container { margin-bottom: 20px; }
-        .control-label { margin-right: 10px; }
-        .arrow { cursor: pointer; font-size: 18px; padding: 5px; }
-        .slider { margin-left: 10px; width: 200px; }
-        img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; padding: 5px; }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+
+        .control-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 20px;
+            color: #555;
+            margin: 0 10px;
+            user-select: none; /* Prevent text selection */
+            border: 2px solid transparent; /* Prevent focus outline */
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .arrow:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .arrow:active {
+            transform: scale(0.9);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 200px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .slider:hover {
+            background: #ccc;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #007BFF;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #0056b3;
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
-    <h1>Simulation Viewer</h1>
+    <h1>Inverted Pendulum Viewer</h1>
+    
+    <div class="latex-equation">
+    $$\begin{align*}
+    &\text{Original: } \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)\\
+    &\text{First-Order: } \ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t) \\
+    &\text{Second-Order: } \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(x-\pi)^2}{2}\right)\cos(\omega t)
+    \end{align*}$$
+    </div>
 
     <div class="control-container">
         <label class="control-label">A:</label>
@@ -161,7 +254,7 @@ html_template = r"""
         // Available images data
         const images = {images_json};
 
-        // Get unique values for each parameter
+                // Get unique values for each parameter
         const uniqueValues = {
             A: [...new Set(images.map(img => img.A))].sort((a, b) => a - b),
             omega: [...new Set(images.map(img => img.omega))].sort((a, b) => a - b),
@@ -217,13 +310,19 @@ html_template = r"""
         function changeValue(param, direction) {
             const values = uniqueValues[param];
             const currentIndex = values.indexOf(currentValues[param]);
-            const newIndex = currentIndex + direction;
 
-            if (newIndex >= 0 && newIndex < values.length) {
-                currentValues[param] = values[newIndex];
-                document.getElementById(`${param}-slider`).value = newIndex;
-                updateImage();
+            let newIndex = currentIndex + direction;
+
+            // Wrap around to the opposite end
+            if (newIndex < 0) {
+                newIndex = values.length - 1; // Go to max
+            } else if (newIndex >= values.length) {
+                newIndex = 0; // Go to min
             }
+
+            currentValues[param] = values[newIndex];
+            document.getElementById(`${param}-slider`).value = newIndex; // Update slider value
+            updateImage(); // Update image and UI
         }
 
         // Update parameter value from slider
