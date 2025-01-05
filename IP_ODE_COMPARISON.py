@@ -1,3 +1,4 @@
+#TODO: See Prof C's email... and explain how it works in your email Tuesday.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
