@@ -285,9 +285,9 @@ def generate_html(file_data):
     <br> Where:
     $$\begin{align*}
     &\alpha = \beta = \gamma = \delta = 10^{-3} \\
-    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
-    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
-    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
+    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{th}}}] \\
+    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{th}}}] \\
+    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{th}}}] 
     \end{align*}$$
 </div>
 <br>
