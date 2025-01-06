@@ -80,6 +80,29 @@
             border: 1px solid #ccc; /* Optional: Add a border for better visualization */
             border-radius: 5px; /* Optional: Rounded corners */
         }
+        .latex-equation {
+            position: relative;
+            display: inline-block;
+        }
+
+        .latex-equation.underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px; /* Thickness of the underline */
+            background-color: currentColor; /* Matches the text color */
+        }
+        
+        h3.latex-equation {
+            margin-bottom: 0.2em; /* Add a small gap if needed */
+        }
+
+        div.latex-equation {
+            margin-top: 0; /* Ensure there's no extra space above the div */
+        }
+
     </style>
 </head>
 <body>
@@ -104,6 +127,25 @@
         \xi(t \leq T) &= x^* = 0 \\
         |\dot{x}(t \leq T)| &= 0\\
         T_{\text{th}} &= 10\text{ seconds} \\
+        \end{align*}$$
+    </div>
+    <h3 class="latex-equation underline">Loss Function \(\mathcal{L}\)</h3>
+    <div class="latex-equation">
+        $$\begin{align*}
+        &\overrightarrow{\text{MSE}} \equiv \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right) + \vec{v}\odot\vec{v} + \left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right) + \xi_{t=1}^2 \\
+        &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\
+        &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\
+        &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\
+        &\text{Max}_{v} = \max\left(\left|\vec{v}_{[t=1:t_{\text{best}}]}\right|\right) \\
+        &\text{Max}_{\xi} = \max\left(\left|\vec{\xi}_{[t=1:t_{\text{best}}]}\right|\right) \\[0.5cm]
+        &\boxed{\mathcal{L} = \text{MSE}_{\text{best}} + \alpha \cdot \text{Smoothness Penalty} + \beta \cdot t_{\text{best}} + \gamma \cdot \text{Max}_{v} + \delta \cdot \text{Max}_{\xi}}
+        \end{align*}$$
+        <br> Where:
+        $$\begin{align*}
+        &\alpha = \beta = \gamma = \delta = 10^{-3} \\
+        &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
+        &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
+        &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
         \end{align*}$$
     </div>
     <div class="movie-row">

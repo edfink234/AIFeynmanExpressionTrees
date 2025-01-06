@@ -1,0 +1,40 @@
+Time from A = 1.00 to 1.10 = 47.18 with learning rate 0.00025, target achieved
+Time from A = 1.10 to 1.20 = 99.68 with learning rate 0.00025, target achieved
+Time from A = 1.20 to 1.30 = 906.58 with learning rate 0.000125, target achieved
+Time from A = 1.30 to 1.40 = 1055.99 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.01350417360663414
+Time from A = 1.40 to 1.50 = 730.33 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 5.75135612487793
+Time from A = 1.50 to 1.60 = 653.75 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 5.883332252502441
+Time from A = 1.60 to 1.70 = 646.54 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 6.009043216705322
+Time from A = 1.70 to 1.80 = 646.98 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 6.128976821899414
+Time from A = 1.80 to 1.90 = 660.12 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 6.243572235107422
+Time from A = 1.90 to 2.00 = 742.28 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 6.3539228439331055
+Time from m = 1.00 to 1.10 = 59.20 with learning rate 0.000125, target achieved
+Time from m = 1.10 to 1.20 = 118.57 with learning rate 0.000125, target achieved
+Time from m = 1.20 to 1.30 = 115.48 with learning rate 0.000125, target achieved
+Time from m = 1.30 to 1.40 = 727.17 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954981327056885
+Time from m = 1.40 to 1.50 = 673.35 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954514503479004
+Time from m = 1.50 to 1.60 = 672.78 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954385280609131
+Time from m = 1.60 to 1.70 = 748.47 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954981327056885
+Time from m = 1.70 to 1.80 = 690.92 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954514503479004
+Time from m = 1.80 to 1.90 = 666.95 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954385280609131
+Time from m = 1.90 to 2.00 = 626.95 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 4.954385280609131
+Time from b = 1.00 to 1.10 = 1018.93 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.014538463205099106
+Time from b = 1.10 to 1.20 = 839.04 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.02534722536802292
+Time from b = 1.20 to 1.30 = 711.76 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 3.5489695072174072
+Time from b = 1.30 to 1.40 = 713.00 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 3.2199831008911133
+Time from b = 1.40 to 1.50 = 658.40 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.9375507831573486
+Time from b = 1.50 to 1.60 = 685.16 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.6936707496643066
+Time from b = 1.60 to 1.70 = 736.59 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.4818882942199707
+Time from b = 1.70 to 1.80 = 670.89 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.2950804233551025
+Time from b = 1.80 to 1.90 = 742.97 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.1310088634490967
+Time from b = 1.90 to 2.00 = 666.36 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 1.9844199419021606
+Time from Omega = 0.20 to 0.30 = 727.32 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 3.5406343936920166
+Time from Omega = 0.30 to 0.40 = 665.81 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.672985315322876
+Time from Omega = 0.40 to 0.50 = 651.15 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 2.0729479789733887
+Time from Omega = 0.50 to 0.60 = 767.62 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 1.4424456357955933
+Time from Omega = 0.60 to 0.70 = 848.02 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.7360783219337463
+Time from Omega = 0.70 to 0.80 = 892.76 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.22606731951236725
+Time from Omega = 0.80 to 0.90 = 738.73 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.7682799696922302
+Time from Omega = 0.90 to 1.00 = 701.29 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.5720362067222595
+Time from Omega = 1.00 to 1.10 = 684.75 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.40390071272850037
+Time from Omega = 1.10 to 1.20 = 786.46 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.09028565138578415

@@ -4,11 +4,6 @@ import json
 import re
 
 def extract_parts(filename):
-    """Extract the relevant parts of the filename."""
-    parts = filename.split("_")[3:]  # Skip the initial fixed parts
-    return [f"_{parts[i]}_{parts[i+1]}" for i in range(0, len(parts), 2)]
-
-def extract_parts(filename):
   """
   Extracts parts of the form '{integer}_point_{integer}' from the given filename.
 
@@ -118,6 +113,67 @@ for file_part in file_parts_display_4:
     file_parts_display_4_mp4.append(f"{temp_str}.mp4")
     file_parts_display_4_png.append(f"{temp_str}.png")
 
+titles = open("result_times.txt").readlines()
+#print(titles)
+display_1_titles = ["Base Case"] + [i.strip('\n') for i in titles[:10]]
+display_2_titles = ["Base Case"] + [i.strip('\n') for i in titles[10:20]]
+display_3_titles = ["Base Case"] + [i.strip('\n') for i in titles[20:30]]
+display_4_titles = ["Base Case"] + [i.strip('\n') for i in titles[30:]]
+
+print(*display_1_titles, sep='\n', end="\n\n")
+print(*display_2_titles, sep='\n', end="\n\n")
+print(*display_3_titles, sep='\n', end="\n\n")
+print(*display_4_titles, sep='\n', end="\n\n")
+
+display_1_title_tokens = [i.split() for i in display_1_titles[1:]]
+display_2_title_tokens = [i.split() for i in display_2_titles[1:]]
+display_3_title_tokens = [i.split() for i in display_3_titles[1:]]
+display_4_title_tokens = [i.split() for i in display_4_titles[1:]]
+
+display_1_titles = ["Base Case"]
+display_2_titles = ["Base Case"]
+display_3_titles = ["Base Case"]
+display_4_titles = ["Base Case"]
+
+print(*display_1_title_tokens, sep='\n', end="\n\n")
+print(*display_2_title_tokens, sep='\n', end="\n\n")
+print(*display_3_title_tokens, sep='\n', end="\n\n")
+print(*display_4_title_tokens, sep='\n', end="\n\n")
+
+for token_title in display_1_title_tokens:
+    temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+    display_1_titles.append(temp_str)
+
+for token_title in display_2_title_tokens:
+    temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+        
+    display_2_titles.append(temp_str)
+
+for token_title in display_3_title_tokens:
+    temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+    display_3_titles.append(temp_str)
+
+for token_title in display_4_title_tokens:
+    temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+    display_4_titles.append(temp_str)
+
+#exit()
 #print(*(file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png), sep='\n')
 #[os.system(f"ls {i}") for i in (file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png)]
 
@@ -126,8 +182,8 @@ def generate_html(file_data):
     html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="text/javascript" defer
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -162,10 +218,38 @@ def generate_html(file_data):
         button:hover {
             background-color: #0056b3;
         }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .latex-equation {
+            position: relative;
+            display: inline-block;
+        }
+
+        .latex-equation.underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px; /* Thickness of the underline */
+            background-color: currentColor; /* Matches the text color */
+        }
+        
+        h3.latex-equation {
+            margin-bottom: 0.2em; /* Add a small gap if needed */
+        }
+
+        div.latex-equation {
+            margin-top: 0; /* Ensure there's no extra space above the div */
+        }
     </style>
 </head>
 <body>
-<h1>Control Problem Displays 1/01/2025</h1>
+<h1>Control Problem Displays</h1>
 """r"""
 <h2><u>Current Problem Formulation </u></h2>
 <div class="latex-equation">
@@ -187,11 +271,33 @@ def generate_html(file_data):
     T_{\text{th}} &= 10\text{ seconds} \\
     \end{align*}$$
 </div>
+<h3 class="latex-equation underline">Loss Function \(\mathcal{L}\)</h3>
+<div class="latex-equation underline">
+    $$\begin{align*}
+    &\overrightarrow{\text{MSE}} \equiv \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right) + \vec{v}\odot\vec{v} + \left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right) + \xi_{t=1}^2 \\
+    &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\
+    &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\
+    &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\
+    &\text{Max}_{v} = \max\left(\left|\vec{v}_{[t=1:t_{\text{best}}]}\right|\right) \\
+    &\text{Max}_{\xi} = \max\left(\left|\vec{\xi}_{[t=1:t_{\text{best}}]}\right|\right) \\[0.5cm]
+    &\boxed{\mathcal{L} = \text{MSE}_{\text{best}} + \alpha \cdot \text{Smoothness Penalty} + \beta \cdot t_{\text{best}} + \gamma \cdot \text{Max}_{v} + \delta \cdot \text{Max}_{\xi}}
+    \end{align*}$$
+    <br> Where:
+    $$\begin{align*}
+    &\alpha = \beta = \gamma = \delta = 10^{-3} \\
+    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
+    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
+    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
+    \end{align*}$$
+</div>
+<br>
+<h3><u>Displays</u></h3>
 """
     for i, display in enumerate(file_data):
         first_png = display["png"][display["index"]]
         first_mp4 = display["mp4"][display["index"]]
         html_content += f"""
+        <h4 id="title{i}" class="title latex-equation">{file_data[i]['titles'][file_data[i]['index']]}</h4> 
         <div class="display" id="display{i}">
             <button onclick="cycleDisplay({i}, -1)">&#8592;</button>
             <img id="img{i}" src="{first_png}" alt="Display {i + 1} Image">
@@ -202,6 +308,23 @@ def generate_html(file_data):
 
     html_content += r"""
 <script>
+    window.onload = function() {
+        const displays = document.querySelectorAll('.display');
+        displays.forEach(display => {
+            const video = display.querySelector('video');
+            const img = display.querySelector('img');
+            
+            // Ensure video metadata is loaded to access dimensions
+            video.onloadedmetadata = () => {
+                img.style.height = `${video.videoHeight / video.videoWidth * img.clientWidth}px`;
+            };
+
+            // If metadata is already loaded (e.g., cached), set height immediately
+            if (video.readyState >= 1) {
+                img.style.height = `${video.videoHeight / video.videoWidth * img.clientWidth}px`;
+            }
+        });
+    };
     const fileData = """ + json.dumps(file_data) + r""";
 
     function cycleDisplay(displayIndex, direction) {
@@ -213,6 +336,10 @@ def generate_html(file_data):
         document.getElementById(`img${displayIndex}`).src = data.png[newIndex];
         document.getElementById(`video${displayIndex}`).src = data.mp4[newIndex];
 
+        // Update the title
+        document.getElementById(`title${displayIndex}`).innerText = data.titles[newIndex];
+        // Trigger MathJax to re-render the LaTeX in the updated element
+        MathJax.typesetPromise([document.getElementById(`title${displayIndex}`)]).catch((err) => console.error(err));
         // Update index
         fileData[displayIndex].index = newIndex;
     }
@@ -224,10 +351,10 @@ def generate_html(file_data):
 
 # Prepare data for HTML generation
 file_data = [
-    {"png": file_parts_display_1_png, "mp4": file_parts_display_1_mp4, "index": 0},
-    {"png": file_parts_display_2_png, "mp4": file_parts_display_2_mp4, "index": 0},
-    {"png": file_parts_display_3_png, "mp4": file_parts_display_3_mp4, "index": 0},
-    {"png": file_parts_display_4_png, "mp4": file_parts_display_4_mp4, "index": 0},
+    {"png": file_parts_display_1_png, "mp4": file_parts_display_1_mp4, "index": 0, "titles": display_1_titles},
+    {"png": file_parts_display_2_png, "mp4": file_parts_display_2_mp4, "index": 0, "titles": display_3_titles},
+    {"png": file_parts_display_3_png, "mp4": file_parts_display_3_mp4, "index": 0, "titles": display_2_titles},
+    {"png": file_parts_display_4_png, "mp4": file_parts_display_4_mp4, "index": 0, "titles": display_4_titles},
 ]
 
 # Generate and save HTML
