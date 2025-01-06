@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Control Displays</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .display {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        img, video {
+            width: 45%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Control Problem Displays 1/01/2025</h1>
+
+<h2><u>Current Problem Formulation </u></h2>
+<div class="latex-equation">
+    $$\begin{align*}
+    m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
+    V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\
+    V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)
+    \end{align*}$$
+</div>
+<h3><u>Constraints</u></h3>
+<div class="latex-equation">
+    $$\begin{align*}
+    x(0) &= x_0 \\
+    \xi(0) &= 0 \\
+    \dot{x}(0) &= 0 \\
+    x(t \leq T) &= x^* = 0 \\
+    \xi(t \leq T) &= x^* = 0 \\
+    |\dot{x}(t \leq T)| &= 0\\
+    T_{\text{th}} &= 10\text{ seconds} \\
+    \end{align*}$$
+</div>
+
+        <div class="display" id="display0">
+            <button onclick="cycleDisplay(0, -1)">&#8592;</button>
+            <img id="img0" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 1 Image">
+            <video id="video0" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>
+            <button onclick="cycleDisplay(0, 1)">&#8594;</button>
+        </div>
+        
+        <div class="display" id="display1">
+            <button onclick="cycleDisplay(1, -1)">&#8592;</button>
+            <img id="img1" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 2 Image">
+            <video id="video1" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>
+            <button onclick="cycleDisplay(1, 1)">&#8594;</button>
+        </div>
+        
+        <div class="display" id="display2">
+            <button onclick="cycleDisplay(2, -1)">&#8592;</button>
+            <img id="img2" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 3 Image">
+            <video id="video2" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>
+            <button onclick="cycleDisplay(2, 1)">&#8594;</button>
+        </div>
+        
+        <div class="display" id="display3">
+            <button onclick="cycleDisplay(3, -1)">&#8592;</button>
+            <img id="img3" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 4 Image">
+            <video id="video3" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>
+            <button onclick="cycleDisplay(3, 1)">&#8594;</button>
+        </div>
+        
+<script>
+    const fileData = [{"png": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_2663_1_point_1_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_3032_1_point_2_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_3372_1_point_3_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_3687_1_point_4_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_4255_1_point_6_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_4513_1_point_7_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_4757_1_point_8_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_4987_1_point_9_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_5206_2_point_0_1_point_0_1_point_0_0_point_2_.png"], "mp4": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_2663_1_point_1_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_3032_1_point_2_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_3372_1_point_3_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_3687_1_point_4_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_4255_1_point_6_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_4513_1_point_7_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_4757_1_point_8_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_4987_1_point_9_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_5206_2_point_0_1_point_0_1_point_0_0_point_2_.mp4"], "index": 0}, {"png": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_0971_1_point_0_1_point_1_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_9839_1_point_0_1_point_2_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_8837_1_point_0_1_point_3_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_7943_1_point_0_1_point_4_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_7139_1_point_0_1_point_5_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_6412_1_point_0_1_point_6_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_5752_1_point_0_1_point_7_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_5149_1_point_0_1_point_8_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_4596_1_point_0_1_point_9_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_4086_1_point_0_2_point_0_1_point_0_0_point_2_.png"], "mp4": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_0971_1_point_0_1_point_1_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_9839_1_point_0_1_point_2_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_8837_1_point_0_1_point_3_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_7943_1_point_0_1_point_4_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_7139_1_point_0_1_point_5_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_6412_1_point_0_1_point_6_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_5752_1_point_0_1_point_7_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_5149_1_point_0_1_point_8_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_4596_1_point_0_1_point_9_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_4086_1_point_0_2_point_0_1_point_0_0_point_2_.mp4"], "index": 0}, {"png": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_1_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_2_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_3_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_4_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_5_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_6_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_7_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_8_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_9_0_point_2_.png", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_2_point_0_0_point_2_.png"], "mp4": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_1_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_2_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_3_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_4_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_5_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_6_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_7_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_8_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_9_0_point_2_.mp4", "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_2_point_0_0_point_2_.mp4"], "index": 0}, {"png": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png", "trajectory_data_IC_1_point_8815_1_point_0_1_point_0_1_point_0_0_point_3_.png", "trajectory_data_IC_1_point_6349_1_point_0_1_point_0_1_point_0_0_point_4_.png", "trajectory_data_IC_1_point_4398_1_point_0_1_point_0_1_point_0_0_point_5_.png", "trajectory_data_IC_1_point_2756_1_point_0_1_point_0_1_point_0_0_point_6_.png", "trajectory_data_IC_1_point_1312_1_point_0_1_point_0_1_point_0_0_point_7_.png", "trajectory_data_IC_0_point_9998_1_point_0_1_point_0_1_point_0_0_point_8_.png", "trajectory_data_IC_0_point_8762_1_point_0_1_point_0_1_point_0_0_point_9_.png", "trajectory_data_IC_0_point_7562_1_point_0_1_point_0_1_point_0_1_point_0_.png", "trajectory_data_IC_0_point_6355_1_point_0_1_point_0_1_point_0_1_point_1_.png", "trajectory_data_IC_0_point_5077_1_point_0_1_point_0_1_point_0_1_point_2_.png"], "mp4": ["trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4", "trajectory_data_IC_1_point_8815_1_point_0_1_point_0_1_point_0_0_point_3_.mp4", "trajectory_data_IC_1_point_6349_1_point_0_1_point_0_1_point_0_0_point_4_.mp4", "trajectory_data_IC_1_point_4398_1_point_0_1_point_0_1_point_0_0_point_5_.mp4", "trajectory_data_IC_1_point_2756_1_point_0_1_point_0_1_point_0_0_point_6_.mp4", "trajectory_data_IC_1_point_1312_1_point_0_1_point_0_1_point_0_0_point_7_.mp4", "trajectory_data_IC_0_point_9998_1_point_0_1_point_0_1_point_0_0_point_8_.mp4", "trajectory_data_IC_0_point_8762_1_point_0_1_point_0_1_point_0_0_point_9_.mp4", "trajectory_data_IC_0_point_7562_1_point_0_1_point_0_1_point_0_1_point_0_.mp4", "trajectory_data_IC_0_point_6355_1_point_0_1_point_0_1_point_0_1_point_1_.mp4", "trajectory_data_IC_0_point_5077_1_point_0_1_point_0_1_point_0_1_point_2_.mp4"], "index": 0}];
+
+    function cycleDisplay(displayIndex, direction) {
+        const data = fileData[displayIndex];
+        const currentIndex = data.index;
+        const newIndex = (currentIndex + direction + data.png.length) % data.png.length;
+
+        // Update image and video sources
+        document.getElementById(`img${displayIndex}`).src = data.png[newIndex];
+        document.getElementById(`video${displayIndex}`).src = data.mp4[newIndex];
+
+        // Update index
+        fileData[displayIndex].index = newIndex;
+    }
+</script>
+</body>
+</html>
