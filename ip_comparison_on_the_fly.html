@@ -220,7 +220,10 @@
                 <input type="number" id="maxTheta0" step="0.01" value="3.4">
             </div>
         </div>
-        
+        <div class = "col my-3" align="center">
+                <label for="deltaT">\(\Delta t\):</label>
+                <input type="number" id="deltaT" value="0.01" step = "0.0001" min="0.0001" style="width: 90px;">
+        </div>
         <div class = "col my-3" align="center">
                 <label for="maxT">\(t_{\text{final}}\):</label>
                 <input type="number" id="maxT" step="0.01" value="10">
@@ -228,6 +231,20 @@
     </div>
     
     <div class="plot-container" id="plot"></div>
+    <div class="col my-3" align="center">
+        <label for="yAxisRange">Y-Axis Range:</label>
+        <select id="yAxisRange" style="width: 150px;">
+            <option value="variable">Variable</option>
+            <option value="fixed">Fixed</option>
+        </select>
+    </div>
+    <div class="col my-3" id="fixedRangeInputs" style="display: none;" align="center">
+        <label for="yMin">Min:</label>
+        <input type="number" id="yMin" step="0.1" value="-3.14" style="width: 80px;">
+        <label for="yMax">Max:</label>
+        <input type="number" id="yMax" step="0.1" value="9.42" style="width: 80px;">
+    </div>
+
 
     <script>
         const sliderA = document.getElementById("A-slider");
@@ -377,12 +394,16 @@
 
         // Plotting function
         function plotResults(t, y, secondOrderY) {
+            const yAxisRangeOption = document.getElementById("yAxisRange").value;
+            const yMin = parseFloat(document.getElementById("yMin").value);
+            const yMax = parseFloat(document.getElementById("yMax").value);
+
             const trace1 = {
                 x: t,
                 y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
                 type: 'scatter',
                 mode: 'lines',
-                name: 'Original',
+                name: '$\\text{Original}$',
                 line: { color: 'blue' }
             };
 
@@ -391,14 +412,14 @@
                 y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                 type: 'scatter',
                 mode: 'lines',
-                name: 'Second-Order',
+                name: '$\\text{Second-Order}$',
                 line: { color: 'green' }
             };
 
             const layout = {
-                title: 'Inverted Pendulum: θ(t)',
-                xaxis: { title: 'Time (s)' },
-                yaxis: { title: 'θ(t) (radians)' },
+                title: '$\\text{Inverted Pendulum: }\\theta(t)$',
+                xaxis: { title: '$\\text{Time (s)}$' },
+                yaxis: {title: '$\\theta(t)\\text{ (radians)}$', range: yAxisRangeOption === "fixed" ? [yMin, yMax] : undefined},
                 showlegend: true
             };
 
@@ -417,17 +438,21 @@
             const omega = parseFloat(document.getElementById('omega-slider').value);
             const l = parseFloat(document.getElementById('l-slider').value);
             const theta0 = parseFloat(document.getElementById('theta-slider').value);
+            const h_min = parseFloat(document.getElementById('deltaT').min);
+            let h_temp_str = document.getElementById('deltaT').value;
+            let h_temp = (!h_temp_str) ? 0.01 : parseFloat(document.getElementById('deltaT').value);
+            const h = (h_temp > h_min) ? h_temp : h_min; // Time step
+            const t0 = 0;  // Start time
+            const tf = parseFloat(document.getElementById('maxT').value); // End time
 
             // Update the displayed values for sliders
             document.getElementById('A-value').textContent = A.toFixed(2);
             document.getElementById('omega-value').textContent = omega.toFixed(2);
             document.getElementById('l-value').textContent = l.toFixed(2);
             document.getElementById('theta-value').textContent = theta0.toFixed(2);
-
+            document.getElementById('deltaT').value = h;
+            
             // Initial conditions and solver parameters
-            const h = 0.001;  // Time step
-            const t0 = 0;  // Start time
-            const tf = parseFloat(document.getElementById('maxT').value); // End time
 
             const y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
 
@@ -446,6 +471,20 @@
         document.getElementById('l-slider').addEventListener('input', updatePlot);
         document.getElementById('theta-slider').addEventListener('input', updatePlot);
         document.getElementById('maxT').addEventListener('input', updatePlot);
+        document.getElementById('deltaT').addEventListener('input', updatePlot);
+        // Show or hide the custom range inputs based on the dropdown selection
+        document.getElementById('yAxisRange').addEventListener('change', () => {
+            const yAxisRangeOption = document.getElementById('yAxisRange').value;
+            const fixedRangeInputs = document.getElementById('fixedRangeInputs');
+            fixedRangeInputs.style.display = yAxisRangeOption === "fixed" ? "block" : "none";
+            updatePlot();
+        });
+
+        // Event listeners for custom range inputs
+        document.getElementById('yMin').addEventListener('input', updatePlot);
+        document.getElementById('yMax').addEventListener('input', updatePlot);
+
+
 
         // Initial plot
         updatePlot();
