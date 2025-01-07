@@ -112,113 +112,118 @@
 
             margin: 0px 20px 0px 20px;
         }
+        
     </style>
 </head>
 <body>
     <h1>Interactive Inverted Pendulum Viewer</h1>
-    
     <div class="latex-equation">
         $$\begin{align*}
         &\text{Original: } \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)\\
         &\text{Second-Order: } \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(x-\pi)^2}{2}\right)\cos(\omega t)
         \end{align*}$$
     </div>
-    
+    <br>
     <div class="container">
-        <div class="row">
-            <div class="col">
+        <div class="row mx-5">
+            <div class="col-md">
                 <label for="minA">\(A_{\text{min}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="minA" step="0.1" value="0">
+            <div class="col-md">
+                <input type="number" id="minA" step="0.01" value="0">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label class="control-label">\(A\):</label>
             </div>
-            <div class="col">
-                <input id="A-slider" type="range" min="0" max="10" step="0.1" value="1" class="slider">
+            <div class="col-md">
+                <input id="A-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <span id="A-value" class="slider-value">1.0</span>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label for="maxA">\(A_{\text{max}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="maxA" step="0.1" value="10">
+            <div class="col-md">
+                <input type="number" id="maxA" step="0.01" value="10">
             </div>
         </div>
         
-        <div class="row">
-            <div class="col">
+        <div class="row mx-5">
+            <div class="col-md">
                 <label for="minOmega">\(\omega_{\text{min}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="minOmega" step="0.1" value="0">
+            <div class="col-md">
+                <input type="number" id="minOmega" step="0.01" value="0">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label class="control-label">\(\omega\):</label>
             </div>
-            <div class="col">
-                <input id="omega-slider" type="range" min="0" max="10" step="0.1" value="1" class="slider">
+            <div class="col-md">
+                <input id="omega-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <span id="omega-value" class="slider-value">1.0</span>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label for="maxOmega">\(\omega_{\text{max}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="maxOmega" step="0.1" value="10">
+            <div class="col-md">
+                <input type="number" id="maxOmega" step="0.01" value="10">
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
+        <div class="row mx-5">
+            <div class="col-md">
                 <label for="minL">\(l_{\text{min}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="minL" step="0.1" value="0">
+            <div class="col-md">
+                <input type="number" id="minL" step="0.01" value="0">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label class="control-label">\(l\):</label>
             </div>
-            <div class="col">
-                <input id="l-slider" type="range" min="0" max="10" step="0.1" value="1" class="slider">
+            <div class="col-md">
+                <input id="l-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <span id="l-value" class="slider-value">1.0</span>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label for="maxL">\(l_{\text{max}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="maxL" step="0.1" value="10">
+            <div class="col-md">
+                <input type="number" id="maxL" step="0.01" value="10">
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
+        <div class="row mx-5">
+            <div class="col-md">
                 <label for="minTheta0">\(\theta_{0_{\text{min}}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="minTheta0" step="0.1" value="2.8">
+            <div class="col-md">
+                <input type="number" id="minTheta0" step="0.01" value="2.8">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label class="control-label">\(\theta_0\):</label>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <input id="theta-slider" type="range" min="2.8" max="3.4" step="0.01" value="3.0" class="slider">
             </div>
-            <div class="col">
+            <div class="col-md">
                 <span id="theta-value" class="slider-value">3.0</span>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
             </div>
-            <div class="col">
-                <input type="number" id="maxTheta0" step="0.1" value="3.4">
+            <div class="col-md">
+                <input type="number" id="maxTheta0" step="0.01" value="3.4">
             </div>
+        </div>
+        
+        <div class = "col my-3" align="center">
+                <label for="maxT">\(t_{\text{final}}\):</label>
+                <input type="number" id="maxT" step="0.01" value="10">
         </div>
     </div>
     
@@ -310,8 +315,8 @@
         });
 
         maxInputTheta.addEventListener("input", () => {
-            sliderL.max = maxInputL.value;
-            if (parseFloat(sliderL.value) > parseFloat(sliderL.max)) {
+            sliderTheta.max = maxInputTheta.value;
+            if (parseFloat(sliderTheta.value) > parseFloat(sliderTheta.max)) {
                 sliderTheta.value = sliderTheta.max;
                 document.getElementById("theta-value").textContent = sliderTheta.value;
             }
@@ -414,15 +419,16 @@
             const theta0 = parseFloat(document.getElementById('theta-slider').value);
 
             // Update the displayed values for sliders
-            document.getElementById('A-value').textContent = A.toFixed(1);
-            document.getElementById('omega-value').textContent = omega.toFixed(1);
-            document.getElementById('l-value').textContent = l.toFixed(1);
+            document.getElementById('A-value').textContent = A.toFixed(2);
+            document.getElementById('omega-value').textContent = omega.toFixed(2);
+            document.getElementById('l-value').textContent = l.toFixed(2);
             document.getElementById('theta-value').textContent = theta0.toFixed(2);
 
             // Initial conditions and solver parameters
             const h = 0.001;  // Time step
             const t0 = 0;  // Start time
-            const tf = 10; // End time
+            const tf = parseFloat(document.getElementById('maxT').value); // End time
+
             const y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
 
             // Solve the system of ODEs
@@ -439,6 +445,7 @@
         document.getElementById('omega-slider').addEventListener('input', updatePlot);
         document.getElementById('l-slider').addEventListener('input', updatePlot);
         document.getElementById('theta-slider').addEventListener('input', updatePlot);
+        document.getElementById('maxT').addEventListener('input', updatePlot);
 
         // Initial plot
         updatePlot();
