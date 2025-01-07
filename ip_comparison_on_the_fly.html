@@ -1,3 +1,4 @@
+<!--TODO: Dark Mode-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -454,10 +455,12 @@
             
             // Initial conditions and solver parameters
 
-            const y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-
+            let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             // Solve the system of ODEs
+            console.log("y0 before result = "+y0);
             const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l));
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            console.log("y0 after result = "+y0);
             const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l));
 
             // Plot the results
