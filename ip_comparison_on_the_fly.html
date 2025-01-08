@@ -1,5 +1,3 @@
-<!--TODO: Dark Mode-->
-<!--TODO: Toggle between both original and second order (option to show both, one at a time or none -> checkboxes-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -445,15 +443,6 @@
                 });
             }
             
-            /*const trace1 = {
-                x: t,
-                y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
-                type: 'scatter',
-                mode: 'lines',
-                name: '$\\text{Original}$',
-                line: { color: 'blue' }
-            };*/
-            
             if (showSecondOrder)
             {
                 traces.push({
@@ -465,15 +454,6 @@
                     line: { color: 'green' }
                 });
             }
-
-            /*const trace2 = {
-                x: t,
-                y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                type: 'scatter',
-                mode: 'lines',
-                name: '$\\text{Second-Order}$',
-                line: { color: 'green' }
-            };*/
 
             const layout = {
                 title: '$\\text{Inverted Pendulum: }\\theta(t)$',
