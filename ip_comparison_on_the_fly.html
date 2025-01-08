@@ -1,4 +1,5 @@
 <!--TODO: Dark Mode-->
+<!--TODO: Toggle between both original and second order (option to show both, one at a time or none -> checkboxes-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,6 +115,22 @@
             margin: 0px 20px 0px 20px;
         }
         
+        :root {
+                --background-color: #ffffff;
+                --text-color: #333333;
+                --plot-bg-color: #ffffff;
+                --plot-grid-color: #dddddd;
+            }
+
+            body {
+                background-color: var(--background-color);
+                color: var(--text-color);
+            }
+
+            .plot-container {
+                background-color: var(--plot-bg-color);
+            }
+        
     </style>
 </head>
 <body>
@@ -126,7 +143,7 @@
     </div>
     <br>
     <div class="container">
-        <div class="row mx-5">
+        <div class="row mx-3">
             <div class="col-md">
                 <label for="minA">\(A_{\text{min}}\):</label>
             </div>
@@ -140,7 +157,7 @@
                 <input id="A-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
             <div class="col-md">
-                <span id="A-value" class="slider-value">1.0</span>
+                <input type="number" id="A-input" step="0.01" value="1" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxA">\(A_{\text{max}}\):</label>
@@ -150,7 +167,7 @@
             </div>
         </div>
         
-        <div class="row mx-5">
+        <div class="row mx-3">
             <div class="col-md">
                 <label for="minOmega">\(\omega_{\text{min}}\):</label>
             </div>
@@ -164,7 +181,7 @@
                 <input id="omega-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
             <div class="col-md">
-                <span id="omega-value" class="slider-value">1.0</span>
+                <input type="number" id="omega-input" step="0.01" value="1" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxOmega">\(\omega_{\text{max}}\):</label>
@@ -174,7 +191,7 @@
             </div>
         </div>
 
-        <div class="row mx-5">
+        <div class="row mx-3">
             <div class="col-md">
                 <label for="minL">\(l_{\text{min}}\):</label>
             </div>
@@ -188,7 +205,7 @@
                 <input id="l-slider" type="range" min="0" max="10" step="0.01" value="1" class="slider">
             </div>
             <div class="col-md">
-                <span id="l-value" class="slider-value">1.0</span>
+                <input type="number" id="l-input" step="0.01" value="1" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxL">\(l_{\text{max}}\):</label>
@@ -198,7 +215,7 @@
             </div>
         </div>
 
-        <div class="row mx-5">
+        <div class="row mx-3">
             <div class="col-md">
                 <label for="minTheta0">\(\theta_{0_{\text{min}}}\):</label>
             </div>
@@ -212,7 +229,7 @@
                 <input id="theta-slider" type="range" min="2.8" max="3.4" step="0.01" value="3.0" class="slider">
             </div>
             <div class="col-md">
-                <span id="theta-value" class="slider-value">3.0</span>
+                <input type="number" id="theta-input" step="0.01" value="1" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
@@ -245,6 +262,18 @@
         <label for="yMax">Max:</label>
         <input type="number" id="yMax" step="0.1" value="9.42" style="width: 80px;">
     </div>
+    <div class="col my-3" align="center">
+        <label>Graph Options:</label>
+        <input type="checkbox" id="showOriginal" checked>
+        <label for="showOriginal">Original</label>
+        <input type="checkbox" id="showSecondOrder" checked>
+        <label for="showSecondOrder">Second Order</label>
+    </div>
+    <div class="col my-3" align="center">
+        <label for="themeToggle">Dark Mode:</label>
+        <input type="checkbox" id="themeToggle">
+    </div>
+
 
 
     <script>
@@ -256,7 +285,7 @@
             sliderA.min = minInputA.value;
             if (parseFloat(sliderA.value) < parseFloat(sliderA.min)) {
                 sliderA.value = sliderA.min;
-                document.getElementById("A-value").textContent = sliderA.value;
+                document.getElementById("A-value").value = sliderA.value;
             }
         });
 
@@ -264,12 +293,12 @@
             sliderA.max = maxInputA.value;
             if (parseFloat(sliderA.value) > parseFloat(sliderA.max)) {
                 sliderA.value = sliderA.max;
-                document.getElementById("A-value").textContent = sliderA.value;
+                document.getElementById("A-input").value = sliderA.value;
             }
         });
 
         sliderA.addEventListener("input", () => {
-            document.getElementById("A-value").textContent = sliderA.value;
+            document.getElementById("A-input").value = sliderA.value;
         });
         
         const sliderOmega = document.getElementById("omega-slider");
@@ -280,7 +309,7 @@
             sliderOmega.min = minInputOmega.value;
             if (parseFloat(sliderOmega.value) < parseFloat(sliderOmega.min)) {
                 sliderOmega.value = sliderOmega.min;
-                document.getElementById("omega-value").textContent = sliderOmega.value;
+                document.getElementById("omega-input").textContent = sliderOmega.value;
             }
         });
 
@@ -288,12 +317,12 @@
             sliderOmega.max = maxInputOmega.value;
             if (parseFloat(sliderOmega.value) > parseFloat(sliderOmega.max)) {
                 sliderOmega.value = sliderOmega.max;
-                document.getElementById("omega-value").textContent = sliderOmega.value;
+                document.getElementById("omega-input").textContent = sliderOmega.value;
             }
         });
 
         sliderOmega.addEventListener("input", () => {
-            document.getElementById("omega-value").textContent = sliderOmega.value;
+            document.getElementById("omega-input").textContent = sliderOmega.value;
         });
         
         const sliderL = document.getElementById("l-slider");
@@ -304,7 +333,7 @@
             sliderL.min = minInputL.value;
             if (parseFloat(sliderL.value) < parseFloat(sliderL.min)) {
                 sliderL.value = sliderL.min;
-                document.getElementById("l-value").textContent = sliderL.value;
+                document.getElementById("l-input").textContent = sliderL.value;
             }
         });
 
@@ -312,12 +341,12 @@
             sliderL.max = maxInputL.value;
             if (parseFloat(sliderL.value) > parseFloat(sliderL.max)) {
                 sliderL.value = sliderL.max;
-                document.getElementById("l-value").textContent = sliderL.value;
+                document.getElementById("l-input").textContent = sliderL.value;
             }
         });
 
         sliderL.addEventListener("input", () => {
-            document.getElementById("l-value").textContent = sliderL.value;
+            document.getElementById("l-input").textContent = sliderL.value;
         });
         
         const sliderTheta = document.getElementById("theta-slider");
@@ -328,7 +357,7 @@
             sliderTheta.min = minInputTheta.value;
             if (parseFloat(sliderTheta.value) < parseFloat(sliderTheta.min)) {
                 sliderTheta.value = sliderTheta.min;
-                document.getElementById("theta-value").textContent = sliderTheta.value;
+                document.getElementById("theta-input").textContent = sliderTheta.value;
             }
         });
 
@@ -336,12 +365,12 @@
             sliderTheta.max = maxInputTheta.value;
             if (parseFloat(sliderTheta.value) > parseFloat(sliderTheta.max)) {
                 sliderTheta.value = sliderTheta.max;
-                document.getElementById("theta-value").textContent = sliderTheta.value;
+                document.getElementById("theta-input").textContent = sliderTheta.value;
             }
         });
 
         sliderTheta.addEventListener("input", () => {
-            document.getElementById("theta-value").textContent = sliderTheta.value;
+            document.getElementById("theta-input").textContent = sliderTheta.value;
         });
         
         
@@ -399,33 +428,65 @@
             const yMin = parseFloat(document.getElementById("yMin").value);
             const yMax = parseFloat(document.getElementById("yMax").value);
 
-            const trace1 = {
+            const showOriginal = document.getElementById("showOriginal").checked;
+            const showSecondOrder = document.getElementById("showSecondOrder").checked;
+
+            let traces = [];
+            
+            if (showOriginal)
+            {
+                traces.push({
+                    x: t,
+                    y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original}$',
+                    line: { color: 'blue' }
+                });
+            }
+            
+            /*const trace1 = {
                 x: t,
                 y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
                 type: 'scatter',
                 mode: 'lines',
                 name: '$\\text{Original}$',
                 line: { color: 'blue' }
-            };
+            };*/
+            
+            if (showSecondOrder)
+            {
+                traces.push({
+                    x: t,
+                    y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Second-Order}$',
+                    line: { color: 'green' }
+                });
+            }
 
-            const trace2 = {
+            /*const trace2 = {
                 x: t,
                 y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                 type: 'scatter',
                 mode: 'lines',
                 name: '$\\text{Second-Order}$',
                 line: { color: 'green' }
-            };
+            };*/
 
             const layout = {
                 title: '$\\text{Inverted Pendulum: }\\theta(t)$',
                 xaxis: { title: '$\\text{Time (s)}$' },
                 yaxis: {title: '$\\theta(t)\\text{ (radians)}$', range: yAxisRangeOption === "fixed" ? [yMin, yMax] : undefined},
+                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
+                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
                 showlegend: true
             };
 
             // Plot both traces
-            Plotly.newPlot('plot', [trace1, trace2], layout);
+            Plotly.newPlot('plot', traces, layout);
             
             window.addEventListener('resize', () => {
                 Plotly.Plots.resize('plot');
@@ -447,26 +508,126 @@
             const tf = parseFloat(document.getElementById('maxT').value); // End time
 
             // Update the displayed values for sliders
-            document.getElementById('A-value').textContent = A.toFixed(2);
-            document.getElementById('omega-value').textContent = omega.toFixed(2);
-            document.getElementById('l-value').textContent = l.toFixed(2);
-            document.getElementById('theta-value').textContent = theta0.toFixed(2);
+            document.getElementById('A-input').textContent = A;
+            document.getElementById('omega-input').textContent = omega;
+            document.getElementById('l-input').textContent = l;
+            document.getElementById('theta-input').textContent = theta0;
             document.getElementById('deltaT').value = h;
             
             // Initial conditions and solver parameters
 
             let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             // Solve the system of ODEs
-            console.log("y0 before result = "+y0);
             const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            console.log("y0 after result = "+y0);
             const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l));
 
             // Plot the results
             plotResults(result.t, result.y, secondOrderResult.y);
             
         }
+        
+        function syncSliderWithInput(sliderId, inputId, minInputId, maxInputId) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+            const minInput = document.getElementById(minInputId);
+            const maxInput = document.getElementById(maxInputId);
+
+            // Synchronize slider to input
+            slider.addEventListener("input", () => {
+                input.value = slider.value;
+                updatePlot();
+            });
+
+            // Synchronize input to slider, with delayed validation
+            input.addEventListener("input", () => {
+                const rawValue = input.value;
+
+                // Allow empty or intermediate input (e.g., "3.")
+                if (rawValue === "" || rawValue.endsWith(".")) {
+                    return;
+                }
+
+                // Parse the input value
+                const value = parseFloat(rawValue);
+
+                // If valid, update the slider
+                if (!isNaN(value)) {
+                    slider.value = value;
+                    updatePlot();
+                }
+            });
+
+            // Validate the input and constrain it to min/max on blur
+            input.addEventListener("blur", () => {
+                let value = parseFloat(input.value);
+                const minValue = parseFloat(minInput.value);
+                const maxValue = parseFloat(maxInput.value);
+
+                // Constrain to min/max if the value is valid
+                if (!isNaN(value)) {
+                    if (value < minValue) {
+                        value = minValue;
+                    } else if (value > maxValue) {
+                        value = maxValue;
+                    }
+                    input.value = value;
+                    slider.value = value;
+                } else {
+                    // If invalid, reset to the slider's current value
+                    input.value = slider.value;
+                }
+
+                updatePlot();
+            });
+
+            // Update slider bounds based on min/max inputs
+            minInput.addEventListener("input", () => {
+                slider.min = minInput.value;
+                const minValue = parseFloat(minInput.value);
+                if (parseFloat(slider.value) < minValue) {
+                    slider.value = minValue;
+                    input.value = minValue;
+                    updatePlot();
+                }
+            });
+
+            maxInput.addEventListener("input", () => {
+                slider.max = maxInput.value;
+                const maxValue = parseFloat(maxInput.value);
+                if (parseFloat(slider.value) > maxValue) {
+                    slider.value = maxValue;
+                    input.value = maxValue;
+                    updatePlot();
+                }
+            });
+        }
+        
+        document.getElementById('themeToggle').addEventListener('change', (event) => {
+            const isDarkMode = event.target.checked;
+
+            if (isDarkMode) {
+                // Apply dark mode styles
+                document.documentElement.style.setProperty('--background-color', '#1e1e1e');
+                document.documentElement.style.setProperty('--text-color', '#ffffff');
+                document.documentElement.style.setProperty('--plot-bg-color', '#1e1e1e');
+                document.documentElement.style.setProperty('--plot-grid-color', '#555555');
+            } else {
+                // Revert to light mode styles
+                document.documentElement.style.setProperty('--background-color', '#ffffff');
+                document.documentElement.style.setProperty('--text-color', '#333333');
+                document.documentElement.style.setProperty('--plot-bg-color', '#ffffff');
+                document.documentElement.style.setProperty('--plot-grid-color', '#dddddd');
+            }
+
+            updatePlot(); // Update the Plotly plot to apply the new theme
+        });
+
+        // Initialize synchronization for each parameter
+        syncSliderWithInput("A-slider", "A-input", "minA", "maxA");
+        syncSliderWithInput("omega-slider", "omega-input", "minOmega", "maxOmega");
+        syncSliderWithInput("l-slider", "l-input", "minL", "maxL");
+        syncSliderWithInput("theta-slider", "theta-input", "minTheta0", "maxTheta0");
 
         // Event listeners for sliders
         document.getElementById('A-slider').addEventListener('input', updatePlot);
@@ -486,7 +647,9 @@
         // Event listeners for custom range inputs
         document.getElementById('yMin').addEventListener('input', updatePlot);
         document.getElementById('yMax').addEventListener('input', updatePlot);
-
+        // Event listeners for checkboxes
+        document.getElementById('showOriginal').addEventListener('change', updatePlot);
+        document.getElementById('showSecondOrder').addEventListener('change', updatePlot);
 
 
         // Initial plot
