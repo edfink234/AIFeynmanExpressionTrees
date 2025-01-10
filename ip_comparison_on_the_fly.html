@@ -135,8 +135,8 @@
     <h1>Interactive Inverted Pendulum Viewer</h1>
     <div class="latex-equation">
         $$\begin{align*}
-        &\text{Original: } \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)\\
-        &\text{Second-Order: } \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(x-\pi)^2}{2}\right)\cos(\omega t)
+        &\text{Original Horizontal: } \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) - \lambda \dot{\theta} \\
+        &\text{Second-Order Horizontal: } \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t) - \lambda \dot{\theta}
         \end{align*}$$
     </div>
     <br>
@@ -227,13 +227,36 @@
                 <input id="theta-slider" type="range" min="2.8" max="3.4" step="0.01" value="3.0" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="theta-input" step="0.01" value="1" style="width: 80px;">
+                <input type="number" id="theta-input" step="0.01" value="3" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
             </div>
             <div class="col-md">
                 <input type="number" id="maxTheta0" step="0.01" value="3.4">
+            </div>
+        </div>
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minLambda">\(\lambda_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minLambda" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(\lambda\):</label>
+            </div>
+            <div class="col-md">
+                <input id="lambda-slider" type="range" min="0" max="3.4" step="0.01" value="0.0" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="lambda-input" step="0.01" value="0" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxLambda">\(\lambda_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxLambda" step="0.01" value="3.4">
             </div>
         </div>
         <div class = "col my-3" align="center">
@@ -263,16 +286,14 @@
     <div class="col my-3" align="center">
         <label>Graph Options:</label>
         <input type="checkbox" id="showOriginal" checked>
-        <label for="showOriginal">Original</label>
+        <label for="showOriginal">Original Horizontal</label>
         <input type="checkbox" id="showSecondOrder" checked>
-        <label for="showSecondOrder">Second Order</label>
+        <label for="showSecondOrder">Second Order Horizontal</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
         <input type="checkbox" id="themeToggle">
     </div>
-
-
 
     <script>
         const sliderA = document.getElementById("A-slider");
@@ -371,6 +392,29 @@
             document.getElementById("theta-input").textContent = sliderTheta.value;
         });
         
+        const sliderLambda = document.getElementById("lambda-slider");
+        const minInputLambda = document.getElementById("minLambda");
+        const maxInputLambda = document.getElementById("maxLambda");
+
+        minInputLambda.addEventListener("input", () => {
+            sliderLambda.min = minInputLambda.value;
+            if (parseFloat(sliderLambda.value) < parseFloat(sliderLambda.min)) {
+                sliderLambda.value = sliderLambda.min;
+                document.getElementById("lambda-input").textContent = sliderLambda.value;
+            }
+        });
+
+        maxInputLambda.addEventListener("input", () => {
+            sliderLambda.max = maxInputLambda.value;
+            if (parseFloat(sliderLambda.value) > parseFloat(sliderLambda.max)) {
+                sliderLambda.value = sliderLambda.max;
+                document.getElementById("lambda-input").textContent = sliderLambda.value;
+            }
+        });
+
+        sliderLambda.addEventListener("input", () => {
+            document.getElementById("lambda-input").textContent = sliderLambda.value;
+        });
         
         // Differential equation: θ''(t) + (g/l) * sin(θ) = A * ω² * cos(ωt) * cos(θ)
         const g = 9.8; // gravitational acceleration
@@ -402,20 +446,20 @@
         }
 
         // System of ODEs: [θ, θ']
-        function pendulumODE(t, y, A, omega, l) {
+        function pendulumODE(t, y, A, omega, l, lambda) {
             const theta = y[0];
             const thetaDot = y[1];
-            const thetaDDot = -(g / l) * Math.sin(theta) + (A * omega**2 / l) * Math.cos(omega * t) * Math.cos(theta);
+            const thetaDDot = -(g / l) * Math.sin(theta) + (A * omega**2 / l) * Math.cos(omega * t) * Math.cos(theta) - lambda * thetaDot;
             return [thetaDot, thetaDDot];
         }
         
-        function pendulumODESecondOrder(t, y, A, omega, l) {
+        function pendulumODESecondOrder(t, y, A, omega, l, lambda) {
             const theta = y[0];
             const thetaDot = y[1];
 
             // Second-order approximation
             const thetaDDot = -(g / l) * ((Math.PI - theta) + Math.pow((theta - Math.PI), 3) / 6)
-                              + (A * omega**2 / l) * (-1 + Math.pow((theta - Math.PI), 2) / 2) * Math.cos(omega * t);
+                              + (A * omega**2 / l) * (-1 + Math.pow((theta - Math.PI), 2) / 2) * Math.cos(omega * t) - lambda * thetaDot;
 
             return [thetaDot, thetaDDot];
         }
@@ -438,7 +482,7 @@
                     y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Original}$',
+                    name: '$\\text{Original Horizontal}$',
                     line: { color: 'blue' }
                 });
             }
@@ -450,7 +494,7 @@
                     y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Second-Order}$',
+                    name: '$\\text{Second-Order Horizontal}$',
                     line: { color: 'green' }
                 });
             }
@@ -480,6 +524,8 @@
             const omega = parseFloat(document.getElementById('omega-slider').value);
             const l = parseFloat(document.getElementById('l-slider').value);
             const theta0 = parseFloat(document.getElementById('theta-slider').value);
+            const lambda = parseFloat(document.getElementById('lambda-slider').value);
+            
             const h_min = parseFloat(document.getElementById('deltaT').min);
             let h_temp_str = document.getElementById('deltaT').value;
             let h_temp = (!h_temp_str) ? 0.01 : parseFloat(document.getElementById('deltaT').value);
@@ -492,15 +538,17 @@
             document.getElementById('omega-input').textContent = omega;
             document.getElementById('l-input').textContent = l;
             document.getElementById('theta-input').textContent = theta0;
+            document.getElementById('lambda-input').textContent = lambda;
+            
             document.getElementById('deltaT').value = h;
             
             // Initial conditions and solver parameters
 
             let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             // Solve the system of ODEs
-            const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l));
+            const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l));
+            const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l, lambda));
 
             // Plot the results
             plotResults(result.t, result.y, secondOrderResult.y);
@@ -608,12 +656,14 @@
         syncSliderWithInput("omega-slider", "omega-input", "minOmega", "maxOmega");
         syncSliderWithInput("l-slider", "l-input", "minL", "maxL");
         syncSliderWithInput("theta-slider", "theta-input", "minTheta0", "maxTheta0");
+        syncSliderWithInput("lambda-slider", "lambda-input", "minLambda", "maxLambda");
 
         // Event listeners for sliders
         document.getElementById('A-slider').addEventListener('input', updatePlot);
         document.getElementById('omega-slider').addEventListener('input', updatePlot);
         document.getElementById('l-slider').addEventListener('input', updatePlot);
         document.getElementById('theta-slider').addEventListener('input', updatePlot);
+        document.getElementById('lambda-slider').addEventListener('input', updatePlot);
         document.getElementById('maxT').addEventListener('input', updatePlot);
         document.getElementById('deltaT').addEventListener('input', updatePlot);
         // Show or hide the custom range inputs based on the dropdown selection
