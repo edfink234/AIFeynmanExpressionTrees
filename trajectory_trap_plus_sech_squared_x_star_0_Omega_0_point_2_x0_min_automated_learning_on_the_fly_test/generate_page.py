@@ -274,7 +274,7 @@ def generate_html(file_data):
 <h3 class="latex-equation underline">Loss Function \(\mathcal{L}\)</h3>
 <div class="latex-equation underline">
     $$\begin{align*}
-    &\overrightarrow{\text{MSE}} \equiv \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right) + \vec{v}\odot\vec{v} + \left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right) + \xi_{t=1}^2 \\
+    &\overrightarrow{\text{MSE}} \equiv \epsilon\cdot \left( \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right)\right) + \zeta\cdot\left(\vec{v}\odot\vec{v}\right) + \eta\left(\left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right)\right) \\
     &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\
     &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\
     &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\
@@ -284,10 +284,11 @@ def generate_html(file_data):
     \end{align*}$$
     <br> Where:
     $$\begin{align*}
+    &\epsilon = \zeta = \eta = 1 \\
     &\alpha = \beta = \gamma = \delta = 10^{-3} \\
-    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{th}}}] \\
-    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{th}}}] \\
-    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{th}}}] 
+    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
+    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
+    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
     \end{align*}$$
 </div>
 <br>
@@ -305,6 +306,13 @@ def generate_html(file_data):
             <button onclick="cycleDisplay({i}, 1)">&#8594;</button>
         </div>
         """
+
+    html_content += r"""
+    <h4 id="A_1_point_5_from_scratch" class="title latex-equation">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0153}\)</h4> 
+    <div class="display">
+        <img id="img_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.png" alt="A = 1.5 from Scratch">
+        <video id="movie_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.mp4" controls></video>
+    </div>"""
 
     html_content += r"""
 <script>
