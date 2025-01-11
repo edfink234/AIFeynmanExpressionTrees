@@ -135,8 +135,10 @@
     <h1>Interactive Inverted Pendulum Viewer</h1>
     <div class="latex-equation">
         $$\begin{align*}
-        &\text{Original Horizontal: } \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) - \lambda \dot{\theta} \\
-        &\text{Second-Order Horizontal: } \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t) - \lambda \dot{\theta}
+        &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) - \lambda \dot{\theta} \\
+        &\text{Second-Order Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \frac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t) - \lambda \dot{\theta} \\
+        &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t) \right) - \lambda \dot{\theta} \\
+        &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) = -\frac{A \omega^2}{l} \left( \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) \cos(\omega t) \right)  - \lambda \dot{\theta}
         \end{align*}$$
     </div>
     <br>
@@ -289,6 +291,11 @@
         <label for="showOriginal">Original Horizontal</label>
         <input type="checkbox" id="showSecondOrder" checked>
         <label for="showSecondOrder">Second Order Horizontal</label>
+        
+        <input type="checkbox" id="showOriginalVertical" checked>
+        <label for="showOriginalVertical">Original Vertical</label>
+        <input type="checkbox" id="showSecondOrderVertical" checked>
+        <label for="showSecondOrderVertical">Second Order Vertical</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
@@ -463,15 +470,35 @@
 
             return [thetaDot, thetaDDot];
         }
+        
+        function pendulumODE_vertical(t, y, A, omega, l, lambda) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            const thetaDDot = -(g / l) * Math.sin(theta) - (A * omega**2 / l) * Math.cos(omega * t) * Math.sin(theta) - lambda * thetaDot;
+            return [thetaDot, thetaDDot];
+        }
+        
+        function pendulumODESecondOrder_vertical(t, y, A, omega, l, lambda) {
+            const theta = y[0];
+            const thetaDot = y[1];
+
+            // Second-order approximation
+            const thetaDDot = -(g / l) * ((Math.PI - theta) + Math.pow((theta - Math.PI), 3) / 6)
+                              - (A * omega**2 / l) * ((Math.PI - theta) + Math.pow((theta - Math.PI), 3) / 6) * Math.cos(omega * t) - lambda * thetaDot;
+
+            return [thetaDot, thetaDDot];
+        }
 
         // Plotting function
-        function plotResults(t, y, secondOrderY) {
+        function plotResults(t, y, secondOrderY, y_vert, secondOrderY_vert) {
             const yAxisRangeOption = document.getElementById("yAxisRange").value;
             const yMin = parseFloat(document.getElementById("yMin").value);
             const yMax = parseFloat(document.getElementById("yMax").value);
 
             const showOriginal = document.getElementById("showOriginal").checked;
             const showSecondOrder = document.getElementById("showSecondOrder").checked;
+            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
+            const showSecondOrderVertical = document.getElementById("showSecondOrderVertical").checked;
 
             let traces = [];
             
@@ -496,6 +523,30 @@
                     mode: 'lines',
                     name: '$\\text{Second-Order Horizontal}$',
                     line: { color: 'green' }
+                });
+            }
+            
+            if (showOriginalVertical)
+            {
+                traces.push({
+                    x: t,
+                    y: y_vert.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original Vertical}$',
+                    line: { color: 'orange' }
+                });
+            }
+            
+            if (showSecondOrderVertical)
+            {
+                traces.push({
+                    x: t,
+                    y: secondOrderY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Second-Order Vertical}$',
+                    line: { color: 'magenta' }
                 });
             }
 
@@ -543,15 +594,19 @@
             document.getElementById('deltaT').value = h;
             
             // Initial conditions and solver parameters
-
+            
             let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             // Solve the system of ODEs
             const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l, lambda));
-
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const result_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_vertical(t, y, A, omega, l, lambda));
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const secondOrderResult_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder_vertical(t, y, A, omega, l, lambda));
+            
             // Plot the results
-            plotResults(result.t, result.y, secondOrderResult.y);
+            plotResults(result.t, result.y, secondOrderResult.y, result_vertical.y, secondOrderResult_vertical.y);
             
         }
         
@@ -680,6 +735,8 @@
         // Event listeners for checkboxes
         document.getElementById('showOriginal').addEventListener('change', updatePlot);
         document.getElementById('showSecondOrder').addEventListener('change', updatePlot);
+        document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
+        document.getElementById('showSecondOrderVertical').addEventListener('change', updatePlot);
 
 
         // Initial plot
