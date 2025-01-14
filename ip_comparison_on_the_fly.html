@@ -6,6 +6,9 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.10.0/dist/plotly.min.js"></script>
+    <script>
+        window.MathJax.tex.tags = 'ams';
+    </script>
     <title>Interactive Inverted Pendulum Solver</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -15,10 +18,38 @@
             margin: 20px;
             color: #333;
         }
+        
+        .toggle-button {
+                    display: inline-block;
+                    padding: 0.5em 1em;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                    
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
 
         h1 {
             text-align: center;
             color: #444;
+            
+        }
+        
+        h3 {
+            text-align: center;
+            color: #444;
+            font-weight: 700
+        }
+        
+        h5 {
+            text-align: center;
+            color: #444;
+            text-decoration: underline;
         }
 
         .control-container {
@@ -141,6 +172,192 @@
         &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) = -\frac{A \omega^2}{l} \left( \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) \cos(\omega t) \right)  - \lambda \dot{\theta}
         \end{align*}$$
     </div>
+    <div style = "text-align: center;"><button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button></div>
+    <div id="derivation" style = "display: none;">
+        <br>
+        <h5> Horizontal </h5>
+        <div class="latex-equation" style = "text-align:center">
+            \[
+            x = x_p(t) + l \sin (\theta) = A \cos(\omega t) + l \sin (\theta),
+            \]
+            \[
+            y = l \cos (\theta)
+            \]
+
+            The velocity components of the pendulum bob are:
+            \[
+            \dot{x} = -A \omega \sin(\omega t) + l \dot{\theta} \cos (\theta),
+            \]
+            \[
+            \dot{y} = -l \dot{\theta} \sin (\theta)
+            \]
+
+            The total kinetic energy \( T \) is therefore:
+            \[
+            T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+            \]
+            Expanding this expression, we get:
+            \[
+            T = \frac{1}{2} m \left[ \left(-A \omega \sin(\omega t) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
+            \]
+
+            Expanding further and simplifying, we obtain:
+            \[
+            T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t) \right)
+            \]
+
+            The potential energy \( V \) is due to gravity and is given by:
+            \[
+            V = -m g y = -m g l \cos (\theta)
+            \]
+            The Lagrangian \( L \) is given by:
+            \[
+            L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t) \right) + m g l \cos (\theta)
+            \]
+            Using the Euler-Lagrange equation:
+            \[
+            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+            \]
+            \[
+            \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} - m A l \omega \cos (\theta) \sin(\omega t).
+            \]
+            \[
+            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) \right)
+            \]
+             \[
+               \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t) \sin (\theta) - g \sin (\theta) \right)
+               \]
+            \[
+            m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t) \sin (\theta) - g \sin (\theta) \right) = 0
+            \]
+            \[
+            l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) \right) - \left( A \omega \dot{\theta} \sin(\omega t) \sin (\theta) - g \sin (\theta) \right) = 0
+            \]
+            \[
+            l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) + \dot{\theta} \sin(\omega t) \sin (\theta) \right) + g \sin (\theta) = 0
+            \]
+            \[
+            \ddot{\theta} - \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) + \dot{\theta} \sin(\omega t) \sin (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+            \]
+            \[
+            \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t) + \cos (\theta) \omega \cos(\omega t) + \dot{\theta} \sin(\omega t) \sin (\theta) \right)
+            \]
+            \[
+            \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t) \right)
+            \]
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right)} \label{eq:horizontal_original_no_damping} \tag{1}
+            \end{equation}
+            Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding
+            \[
+            \boxed{\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t)}
+            \]
+            with solution
+            \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\omega t \right)}}{g + l \omega^{2}} + C_{1} e^{- \frac{\sqrt{g} t}{\sqrt{l}}} + C_{2} e^{\frac{\sqrt{g} t}{\sqrt{l}}} + \pi\]
+            To second order, \(\sin(\theta) \sim (\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{(\theta-\pi)^2}{2}\right)\cos(\omega t)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
+            \end{equation}
+            Considering linear damping simply modifies equation \ref{eq:horizontal_original_no_damping} to be:
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{3}
+            \end{equation}
+            and equation \ref{eq:hoizontal_second_order_no_damping} to be:
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l}\left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{(\theta-\pi)^2}{2}\right)\cos(\omega t) -\lambda \dot{\theta}}\label{eq:hoizontal_second_order_linear_damping}\tag{4}
+            \end{equation}
+        </div>
+        <h5> Vertical </h5>
+        <div class="latex-equation" style = "text-align:center">
+            \[
+            x = l \sin (\theta),
+            \]
+            \[
+            y = y_p(t) + l \cos (\theta) = A \cos(\omega t) + l \cos (\theta)
+            \]
+
+            The velocity components of the pendulum bob are:
+            \[
+            \dot{x} = l \dot{\theta} \cos (\theta),
+            \]
+            \[
+            \dot{y} = -A \omega \sin(\omega t) - l \dot{\theta} \sin (\theta)
+            \]
+
+            The total kinetic energy \( T \) is therefore:
+            \[
+            T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+            \]
+            Expanding this expression, we get:
+            \[
+            T = \frac{1}{2} m \left[ \left(l \dot{\theta} \cos (\theta)\right)^2 + \left(-A \omega \sin(\omega t) - l \dot{\theta} \sin (\theta)\right)^2 \right]
+            \]
+
+            Expanding further and simplifying, we obtain:
+            \[
+            T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t) \right)
+            \]
+
+            The potential energy \( V \) is due to gravity and is given by:
+            \[
+            V = -m g y = -m g \left(A \cos (\omega t) + l \cos (\theta)\right)
+            \]
+            The Lagrangian \( L \) is given by:
+            \[
+            L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t) \right) + m g \left(A \cos (\omega t) + l \cos (\theta)\right)
+            \]
+
+            Using the Euler-Lagrange equation:
+            \[
+            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+            \]
+            \[
+            \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m A l \omega \sin (\theta) \sin(\omega t).
+            \]
+            \[
+            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t) + \sin (\theta) \omega \cos(\omega t) \right)
+            \]
+            \[
+            \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t) \cos (\theta) - g \sin (\theta) \right)
+            \]
+            \[
+            m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t) + \sin (\theta) \omega \cos(\omega t) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t) \cos (\theta) - g \sin (\theta) \right) = 0
+            \]
+            \[
+            l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t) + \sin (\theta) \omega \cos(\omega t) \right) - \left( A \omega \dot{\theta} \sin(\omega t) \cos (\theta) - g \sin (\theta) \right) = 0
+            \]
+            \[
+            l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t) + \sin (\theta) \omega \cos(\omega t) - \dot{\theta} \sin(\omega t) \cos (\theta) \right) + g \sin (\theta) = 0
+            \]
+            \[
+            \ddot{\theta} + \frac{A \omega}{l} \left( \dot{\theta} \cos (\theta) \sin(\omega t) + \sin (\theta) \omega \cos(\omega t) - \dot{\theta} \sin(\omega t) \cos (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+            \]
+            \[
+            \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega}{l} \left( \sin (\theta) \omega \cos(\omega t) \right)
+            \]
+            \begin{equation}
+            \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t) \right)} \label{eq:vertical_original_no_damping} \tag{5}
+            \end{equation}
+            Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding:
+            \[
+            \boxed{\ddot{\theta} + \frac{g}{l} (\pi - \theta) = -\frac{A \omega^2}{l} \left( (\pi - \theta) \cos(\omega t) \right)}
+            \]
+            To second order, \(\sin(\theta) \sim (\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+            \begin{equation}
+            \boxed{\ddot{\theta} + \frac{g}{l} \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) = -\frac{A \omega^2}{l} \left( \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) \cos(\omega t) \right)} \label{eq:vertical_second_order_no_damping} \tag{6}
+            \end{equation}
+            Considering linear damping simply modifies equation \ref{eq:vertical_original_no_damping} to be:
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{7}
+            \end{equation}
+            and equation \ref{eq:vertical_second_order_no_damping} to be:
+            \begin{equation}
+                \boxed{\ddot{\theta} + \frac{g}{l} \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) = -\frac{A \omega^2}{l} \left( \left((\pi - \theta) + \dfrac{(\theta - \pi)^3}{6}\right) \cos(\omega t) \right) -\lambda \dot{\theta}}\label{eq:vertical_second_order_linear_damping} \tag{8}
+            \end{equation}
+
+        </div>
+    </div>
+    
     <br>
     <div class="container">
         <div class="row mx-3">
@@ -610,6 +827,18 @@
             
         }
         
+        function toggleDerivation() {
+            const derivation = document.getElementById('derivation');
+            const button = document.querySelector('.toggle-button');
+            if (derivation.style.display === 'none') {
+                derivation.style.display = 'block';
+                button.textContent = 'Hide Derivation';
+            } else {
+                derivation.style.display = 'none';
+                button.textContent = 'Show Derivation';
+            }
+        }
+        
         function syncSliderWithInput(sliderId, inputId, minInputId, maxInputId) {
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
@@ -744,6 +973,3 @@
     </script>
 </body>
 </html>
-
-
-<!--TODO: Add damping, vertical vs horizontal, check papers for horizontal vs vertical -->
