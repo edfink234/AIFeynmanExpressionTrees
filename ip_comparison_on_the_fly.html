@@ -1001,12 +1001,24 @@
                 document.documentElement.style.setProperty('--text-color', '#ffffff');
                 document.documentElement.style.setProperty('--plot-bg-color', '#1e1e1e');
                 document.documentElement.style.setProperty('--plot-grid-color', '#555555');
+                const elements = document.getElementsByTagName("svg");
+                for (let i = 0; i < elements.length; i++)
+                {
+                    //console.log(elements[i].innerHTML);
+                    elements[i].innerHTML = elements[i].innerHTML.replace(/rgb\(0%, 0%, 0%\)/g, "rgb(100%, 100%, 100%)");
+                }
             } else {
                 // Revert to light mode styles
                 document.documentElement.style.setProperty('--background-color', '#ffffff');
                 document.documentElement.style.setProperty('--text-color', '#333333');
                 document.documentElement.style.setProperty('--plot-bg-color', '#ffffff');
                 document.documentElement.style.setProperty('--plot-grid-color', '#dddddd');
+                const elements = document.getElementsByTagName("svg");
+                for (let i = 0; i < elements.length; i++)
+                {
+                    //console.log(elements[i].innerHTML);
+                    elements[i].innerHTML = elements[i].innerHTML.replace(/rgb\(100%, 100%, 100%\)/g, "rgb(0%, 0%, 0%)");
+                }
             }
 
             updatePlot(); // Update the Plotly plot to apply the new theme
