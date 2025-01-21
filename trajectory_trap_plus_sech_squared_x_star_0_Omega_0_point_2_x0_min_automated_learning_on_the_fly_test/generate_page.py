@@ -31,14 +31,17 @@ def flt_to_str(flt):
 
 base_file = "trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4"
 base_file_png = base_file.replace(".mp4",".png")
+base_file_1_point_4 = "trajectory_data_IC_2_point_3687_1_point_4_1_point_0_1_point_0_0_point_2_.mp4"
+base_file_1_point_4_png = base_file_1_point_4.replace(".mp4",".png")
 base_parts = [string_to_float(part) for part in extract_parts(base_file)]
 #print(base_parts)
 
 file_paths = glob.glob("*.*")
-mp4_files = [f for f in file_paths if f.endswith(".mp4")]
-png_files = [f for f in file_paths if f.endswith(".png")]
+mp4_files = [f for f in file_paths if f.endswith(".mp4") and 'random_initialized' not in f]
+png_files = [f for f in file_paths if f.endswith(".png") and 'random_initialized' not in f]
 file_parts = []
 file_float_parts = []
+
 
 for file in mp4_files: #could be png_files as well, doesn't matter in this case.
     parts = extract_parts(file)
@@ -51,7 +54,7 @@ for file in mp4_files: #could be png_files as well, doesn't matter in this case.
 #print(f"len(file_float_parts) = {len(file_float_parts)}")
 file_parts_display_1 = []
 for parts in file_float_parts:
-    if parts[-3:] == base_parts[-3:] and parts != base_parts:
+    if parts[-3:] == base_parts[-3:] and parts != base_parts and not (1.4 < parts[1] < 1.5):
         file_parts_display_1.append(parts)
 
 file_parts_display_2 = []
@@ -69,6 +72,12 @@ for parts in file_float_parts:
     if parts[1:4] == base_parts[1:4] and parts != base_parts:
         file_parts_display_4.append(parts)
 
+file_parts_display_5 = []
+for parts in file_float_parts:
+    if parts[-3:] == base_parts[-3:] and parts != base_parts and (1.4 < parts[1] < 1.5):
+        file_parts_display_5.append(parts)
+
+
 # Print the results (or use them as needed)
 #print(f"file_parts_display_1 of length {len(file_parts_display_1)}:", *file_parts_display_1, sep = '\n')
 #print(f"file_parts_display_2 of length {len(file_parts_display_2)}:", *file_parts_display_2, sep = '\n')
@@ -78,6 +87,7 @@ file_parts_display_1.sort(key = lambda x: x[1])
 file_parts_display_2.sort(key = lambda x: x[2])
 file_parts_display_3.sort(key = lambda x: x[3])
 file_parts_display_4.sort(key = lambda x: x[4])
+file_parts_display_5.sort(key = lambda x: x[1])
 #print(f"file_parts_display_1 of length {len(file_parts_display_1)}:", *file_parts_display_1, sep = '\n')
 #print(f"file_parts_display_2 of length {len(file_parts_display_2)}:", *file_parts_display_2, sep = '\n')
 #print(f"file_parts_display_3 of length {len(file_parts_display_3)}:", *file_parts_display_3, sep = '\n')
@@ -92,6 +102,8 @@ file_parts_display_3_mp4 = [base_file]
 file_parts_display_3_png = [base_file_png]
 file_parts_display_4_mp4 = [base_file]
 file_parts_display_4_png = [base_file_png]
+file_parts_display_5_mp4 = [base_file_1_point_4]
+file_parts_display_5_png = [base_file_1_point_4_png]
 
 for file_part in file_parts_display_1:
     temp_str = f"{first_part}{flt_to_str(file_part[0])}_{flt_to_str(file_part[1])}_{flt_to_str(file_part[2])}_{flt_to_str(file_part[3])}_{flt_to_str(file_part[4])}_"
@@ -113,32 +125,43 @@ for file_part in file_parts_display_4:
     file_parts_display_4_mp4.append(f"{temp_str}.mp4")
     file_parts_display_4_png.append(f"{temp_str}.png")
 
+for file_part in file_parts_display_5:
+    temp_str = f"{first_part}{flt_to_str(file_part[0])}_{flt_to_str(file_part[1])}_{flt_to_str(file_part[2])}_{flt_to_str(file_part[3])}_{flt_to_str(file_part[4])}_"
+    file_parts_display_5_mp4.append(f"{temp_str}.mp4")
+    file_parts_display_5_png.append(f"{temp_str}.png")
+
+print("file_parts_display_5_mp4 =", file_parts_display_5_mp4)
 titles = open("result_times.txt").readlines()
 #print(titles)
 display_1_titles = ["Base Case"] + [i.strip('\n') for i in titles[:10]]
 display_2_titles = ["Base Case"] + [i.strip('\n') for i in titles[10:20]]
 display_3_titles = ["Base Case"] + [i.strip('\n') for i in titles[20:30]]
-display_4_titles = ["Base Case"] + [i.strip('\n') for i in titles[30:]]
+display_4_titles = ["Base Case"] + [i.strip('\n') for i in titles[30:40]]
+display_5_titles = ["Base Case, A = 1.4"] + [i.strip('\n') for i in titles[40:]]
 
 print(*display_1_titles, sep='\n', end="\n\n")
 print(*display_2_titles, sep='\n', end="\n\n")
 print(*display_3_titles, sep='\n', end="\n\n")
 print(*display_4_titles, sep='\n', end="\n\n")
+print(*display_5_titles, sep='\n', end="\n\n")
 
 display_1_title_tokens = [i.split() for i in display_1_titles[1:]]
 display_2_title_tokens = [i.split() for i in display_2_titles[1:]]
 display_3_title_tokens = [i.split() for i in display_3_titles[1:]]
 display_4_title_tokens = [i.split() for i in display_4_titles[1:]]
+display_5_title_tokens = [i.split() for i in display_5_titles[1:]]
 
 display_1_titles = ["Base Case"]
 display_2_titles = ["Base Case"]
 display_3_titles = ["Base Case"]
 display_4_titles = ["Base Case"]
+display_5_titles = ["Base Case, A = 1.4"]
 
 print(*display_1_title_tokens, sep='\n', end="\n\n")
 print(*display_2_title_tokens, sep='\n', end="\n\n")
 print(*display_3_title_tokens, sep='\n', end="\n\n")
 print(*display_4_title_tokens, sep='\n', end="\n\n")
+print(*display_5_title_tokens, sep='\n', end="\n\n")
 
 for token_title in display_1_title_tokens:
     temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
@@ -173,6 +196,13 @@ for token_title in display_4_title_tokens:
         temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
     display_4_titles.append(temp_str)
 
+for token_title in display_5_title_tokens:
+    temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+    display_5_titles.append(temp_str)
 #exit()
 #print(*(file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png), sep='\n')
 #[os.system(f"ls {i}") for i in (file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png)]
@@ -308,7 +338,7 @@ def generate_html(file_data):
         """
 
     html_content += r"""
-    <h4 id="A_1_point_5_from_scratch" class="title latex-equation">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0153}\)</h4> 
+    <h4 id="A_1_point_5_from_scratch" class="title latex-equation">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0144}\)</h4> 
     <div class="display">
         <img id="img_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.png" alt="A = 1.5 from Scratch">
         <video id="movie_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.mp4" controls></video>
@@ -341,6 +371,7 @@ def generate_html(file_data):
         const newIndex = (currentIndex + direction + data.png.length) % data.png.length;
 
         // Update image and video sources
+
         document.getElementById(`img${displayIndex}`).src = data.png[newIndex];
         document.getElementById(`video${displayIndex}`).src = data.mp4[newIndex];
 
@@ -363,6 +394,7 @@ file_data = [
     {"png": file_parts_display_2_png, "mp4": file_parts_display_2_mp4, "index": 0, "titles": display_3_titles},
     {"png": file_parts_display_3_png, "mp4": file_parts_display_3_mp4, "index": 0, "titles": display_2_titles},
     {"png": file_parts_display_4_png, "mp4": file_parts_display_4_mp4, "index": 0, "titles": display_4_titles},
+    {"png": file_parts_display_5_png, "mp4": file_parts_display_5_mp4, "index": 0, "titles": display_5_titles}
 ]
 
 # Generate and save HTML

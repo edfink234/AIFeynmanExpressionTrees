@@ -6,6 +6,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.10.0/dist/plotly.min.js"></script>
+    
     <title>Interactive Inverted Pendulum Solver</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -163,7 +164,12 @@
 <body>
     <h1>Interactive Inverted Pendulum Viewer</h1>
     <!--(Maybe) TODO: Add user option to select N, where N is the order of the Taylor expansion. This option should modify the entire page (derivation, equation below, JS model function) according to the order selected-->
-    <div class="latex-equation">
+    <div>
+        <label for="order-input">Enter Order (integer from 0): </label>
+        <input type="number" id="order-input" min="0" value="2">
+        <button onclick="updateEquations()">Update Equations</button>
+    </div>
+    <div class="latex-equation" id="equations">
         $$\begin{align*}
         &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
         &\text{Second-Order Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
@@ -171,6 +177,14 @@
         &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}
         \end{align*}$$
     </div>
+<!--    <div class="latex-equation">-->
+<!--        $$\begin{align*}-->
+<!--        &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Second-Order Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
+<!--        &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
+<!--        \end{align*}$$-->
+<!--    </div>-->
     <div style = "text-align: center;"><button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button></div>
     <div id="derivation" style = "display: none;">
         <br>
@@ -1084,6 +1098,66 @@
 
             updatePlot(); // Update the Plotly plot to apply the new theme
         });
+        
+        // Function to compute Taylor expansion for sin(theta) and cos(theta) about theta = pi
+        function taylorExpansion(order, isSin) {
+            let expansion = [];
+            
+            if (isSin)
+            {
+                expansion = [];
+                for (let i = 1; i <= order; i += 2)
+                {
+                    let isPositive = (Math.floor(i / 2) % 2 == 0);
+                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    
+                    expansion.push(temp);
+                }
+            }
+            else
+            {
+                expansion = [];
+                for (let i = 0; i <= order; i += 2)
+                {
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    
+                    expansion.push(temp);
+                }
+            }
+            
+            return expansion.join(' ');
+        }
+
+        function updateEquations() {
+            const order = parseInt(document.getElementById('order-input').value);
+            const equationsDiv = document.getElementById('equations');
+
+            // Compute the Taylor expansions for sin(theta) and cos(theta)
+            const sinExpansion = taylorExpansion(order, true);
+            console.log(sinExpansion);
+
+            const cosExpansion = taylorExpansion(order, false);
+
+            //console.log(cosExpansion);
+
+            const newEquations = `
+            $$\\begin{align*}
+            &\\text{Original Horizontal about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{${order}-Order Horizontal about $\\theta=\\pi$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Original Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{${order}-Order Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${cosExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta}
+            \\end{align*}$$`;
+
+            equationsDiv.innerHTML = `
+                ${newEquations}
+            `;
+            // Re-render MathJax content
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"equations"]);
+           /* MathJax.typesetPromise()
+                .then(() => console.log("MathJax re-rendered successfully"))
+                .catch((err) => console.error("MathJax render error:", err));*/
+        }
 
         // Initialize synchronization for each parameter
         syncSliderWithInput("A-slider", "A-input", "minA", "maxA");

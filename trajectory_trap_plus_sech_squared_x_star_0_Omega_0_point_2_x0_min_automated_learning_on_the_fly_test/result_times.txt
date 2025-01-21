@@ -38,3 +38,12 @@ Time from Omega = 0.80 to 0.90 = 738.73 with learning rate 0.000125, target not 
 Time from Omega = 0.90 to 1.00 = 701.29 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.5720362067222595
 Time from Omega = 1.00 to 1.10 = 684.75 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.40390071272850037
 Time from Omega = 1.10 to 1.20 = 786.46 with learning rate 0.000125, target not achieved, best loss after epoch 1000 = 0.09028565138578415
+Time from A = 1.40 to 1.41 = 260.92 with learning rate 0.000125, target achieved
+Time from A = 1.41 to 1.42 = 120.69 with learning rate 0.000125, target achieved
+Time from A = 1.42 to 1.43 = 265.53 with learning rate 0.000125, target achieved
+Time from A = 1.43 to 1.44 = 275.57 with learning rate 0.000125, target achieved
+Time from A = 1.44 to 1.45 = 64.68 with learning rate 0.000125, target achieved
+Time from A = 1.45 to 1.46 = 65.79 with learning rate 0.000125, target achieved
+Time from A = 1.46 to 1.47 = 78.86 with learning rate 0.000125, target achieved
+Time from A = 1.47 to 1.48 = 89.56 with learning rate 0.000125, target achieved
+Time from A = 1.48 to 1.49 = 84.64 with learning rate 0.000125, target achieved
