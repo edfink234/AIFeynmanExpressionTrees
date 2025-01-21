@@ -164,27 +164,32 @@
 <body>
     <h1>Interactive Inverted Pendulum Viewer</h1>
     <!--(Maybe) TODO: Add user option to select N, where N is the order of the Taylor expansion. This option should modify the entire page (derivation, equation below, JS model function) according to the order selected-->
-    <div>
-        <label for="order-input">Enter Order (integer from 0): </label>
-        <input type="number" id="order-input" min="0" value="2">
-        <button onclick="updateEquations()">Update Equations</button>
-    </div>
+    
     <div class="latex-equation" id="equations">
         $$\begin{align*}
         &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-        &\text{Second-Order Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
+        &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
         &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-        &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}
+        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}
         \end{align*}$$
     </div>
 <!--    <div class="latex-equation">-->
 <!--        $$\begin{align*}-->
 <!--        &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
-<!--        &\text{Second-Order Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
+<!--        &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
 <!--        &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
-<!--        &\text{Second-Order Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
+<!--        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
 <!--        \end{align*}$$-->
 <!--    </div>-->
+    <div class = "row">
+        <div class = "col" align="center">
+            <label for="order-input">Order (integer from 0): </label>
+            <input type="number" id="order-input" min="0" value="2">
+            <!--        <button onclick="updateEquations(); updatePlot();">Update</button>-->
+            <br>
+        </div>
+    </div>
+    <br>
     <div style = "text-align: center;"><button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button></div>
     <div id="derivation" style = "display: none;">
         <br>
@@ -632,13 +637,13 @@
         <label>Graph Options:</label>
         <input type="checkbox" id="showOriginal" checked>
         <label for="showOriginal">Original Horizontal</label>
-        <input type="checkbox" id="showSecondOrder" checked>
-        <label for="showSecondOrder">Second Order Horizontal</label>
+        <input type="checkbox" id="showTaylor" checked>
+        <label for="showTaylor", id = "showTaylorLabel">Taylor Order-2 Horizontal</label>
         
         <input type="checkbox" id="showOriginalVertical" checked>
         <label for="showOriginalVertical">Original Vertical</label>
-        <input type="checkbox" id="showSecondOrderVertical" checked>
-        <label for="showSecondOrderVertical">Second Order Vertical</label>
+        <input type="checkbox" id="showTaylorVertical" checked>
+        <label for="showTaylorVertical", id = "showTaylorVerticalLabel">Taylor Order-2 Vertical</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
@@ -818,6 +823,42 @@
 
             return { t: tValues, y: yValues };
         }
+        
+        //https://stackoverflow.com/a/3959361
+        function Fact(num)
+        {
+            let rval=1;
+            for (var i = 2; i <= num; i++)
+                rval = rval * i;
+            return rval;
+        }
+        
+        function computeTaylorExpansionValue(order, theta, isSin)
+        {
+            let expansion = 0
+            
+            if (isSin)
+            {
+                for (let i = 1; i <= order; i += 2)
+                {
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
+                    let temp = Math.pow((theta - Math.PI), i) / Fact(i);
+                    expansion += (isPositive ? temp : -temp);
+                }
+            }
+            else
+            {
+                for (let i = 0; i <= order; i += 2)
+                {
+                    let isPositive = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    let temp = Math.pow((theta - Math.PI), i) / Fact(i);
+                    expansion += (isPositive ? temp : -temp);
+                }
+            }
+            return expansion;
+        }
 
         // System of ODEs: [θ, θ']
         function pendulumODE(t, y, A, omega, l, lambda, delta) {
@@ -827,13 +868,18 @@
             return [thetaDot, thetaDDot];
         }
         
-        function pendulumODESecondOrder(t, y, A, omega, l, lambda, delta) {
+        function pendulumODETaylor(t, y, A, omega, l, lambda, delta) {
             const theta = y[0];
             const thetaDot = y[1];
-
-            // Second-order approximation
-            const thetaDDot = -(g / l) * ((Math.PI - theta))
-                              + (A * omega**2 / l) * (-1 + Math.pow((theta - Math.PI), 2) / 2) * Math.cos(omega * t - delta) - lambda * thetaDot;
+            
+            // Taylor approximation
+            let order = parseInt(document.getElementById('order-input').value);
+            let cos_term = computeTaylorExpansionValue(order, theta, false);
+            order = parseInt(document.getElementById('order-input').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true);
+            
+            const thetaDDot = -(g / l) * (sin_term)
+                              + (A * omega**2 / l) * cos_term * Math.cos(omega * t - delta) - lambda * thetaDot;
 
             return [thetaDot, thetaDDot];
         }
@@ -845,27 +891,30 @@
             return [thetaDot, thetaDDot];
         }
         
-        function pendulumODESecondOrder_vertical(t, y, A, omega, l, lambda, delta) {
+        function pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta) {
             const theta = y[0];
             const thetaDot = y[1];
 
-            // Second-order approximation
-            const thetaDDot = -(g / l) * ((Math.PI - theta))
-                              - (A * omega**2 / l) * ((Math.PI - theta)) * Math.cos(omega * t - delta) - lambda * thetaDot;
+            // Taylor approximation
+            let order = parseInt(document.getElementById('order-input').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true);
+            
+            const thetaDDot = -(g / l) * (sin_term)
+                              - (A * omega**2 / l) * (sin_term) * Math.cos(omega * t - delta) - lambda * thetaDot;
 
             return [thetaDot, thetaDDot];
         }
 
         // Plotting function
-        function plotResults(t, y, secondOrderY, y_vert, secondOrderY_vert) {
+        function plotResults(t, y, TaylorY, y_vert, TaylorY_vert) {
             const yAxisRangeOption = document.getElementById("yAxisRange").value;
             const yMin = parseFloat(document.getElementById("yMin").value);
             const yMax = parseFloat(document.getElementById("yMax").value);
 
             const showOriginal = document.getElementById("showOriginal").checked;
-            const showSecondOrder = document.getElementById("showSecondOrder").checked;
+            const showTaylor = document.getElementById("showTaylor").checked;
             const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
-            const showSecondOrderVertical = document.getElementById("showSecondOrderVertical").checked;
+            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
 
             let traces = [];
             
@@ -881,14 +930,15 @@
                 });
             }
             
-            if (showSecondOrder)
+            if (showTaylor)
             {
+                const order = parseInt(document.getElementById('order-input').value);
                 traces.push({
                     x: t,
-                    y: secondOrderY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    y: TaylorY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Second-Order Horizontal}$',
+                    name: '$\\text{Taylor Order-2 Horizontal}$'.replace("2", order),
                     line: { color: 'green' }
                 });
             }
@@ -905,14 +955,15 @@
                 });
             }
             
-            if (showSecondOrderVertical)
+            if (showTaylorVertical)
             {
+                const order = parseInt(document.getElementById('order-input').value);
                 traces.push({
                     x: t,
-                    y: secondOrderY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Second-Order Vertical}$',
+                    name: '$\\text{Taylor Order-2 Vertical}$'.replace("2", order),
                     line: { color: 'magenta' }
                 });
             }
@@ -968,14 +1019,14 @@
             // Solve the system of ODEs
             const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const secondOrderResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder(t, y, A, omega, l, lambda, delta));
+            const TaylorResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor(t, y, A, omega, l, lambda, delta));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             const result_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_vertical(t, y, A, omega, l, lambda, delta));
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const secondOrderResult_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODESecondOrder_vertical(t, y, A, omega, l, lambda, delta));
+            const TaylorResult_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta));
             
             // Plot the results
-            plotResults(result.t, result.y, secondOrderResult.y, result_vertical.y, secondOrderResult_vertical.y);
+            plotResults(result.t, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y);
             
         }
         
@@ -1108,8 +1159,14 @@
                 expansion = [];
                 for (let i = 1; i <= order; i += 2)
                 {
-                    let isPositive = (Math.floor(i / 2) % 2 == 0);
-                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
+                    temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if (i == 1 && temp[0] === "+")
+                    {
+                        temp = temp.slice(1);
+                    }
+                    //console.log(temp[0]);
                     
                     expansion.push(temp);
                 }
@@ -1119,9 +1176,13 @@
                 expansion = [];
                 for (let i = 0; i <= order; i += 2)
                 {
-                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let isPositive = (Math.ceil((i + 1) / 2) % 2 == 0);
                     let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
-                    
+                    temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if (i == 0 && temp[0] === "+")
+                    {
+                        temp = temp.slice(1);
+                    }
                     expansion.push(temp);
                 }
             }
@@ -1135,8 +1196,6 @@
 
             // Compute the Taylor expansions for sin(theta) and cos(theta)
             const sinExpansion = taylorExpansion(order, true);
-            console.log(sinExpansion);
-
             const cosExpansion = taylorExpansion(order, false);
 
             //console.log(cosExpansion);
@@ -1144,9 +1203,9 @@
             const newEquations = `
             $$\\begin{align*}
             &\\text{Original Horizontal about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{${order}-Order Horizontal about $\\theta=\\pi$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Horizontal about $\\theta=\\pi$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
             &\\text{Original Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{${order}-Order Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${cosExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta}
+            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta}
             \\end{align*}$$`;
 
             equationsDiv.innerHTML = `
@@ -1154,6 +1213,12 @@
             `;
             // Re-render MathJax content
             MathJax.Hub.Queue(["Typeset", MathJax.Hub,"equations"]);
+            
+            let horizontalLabel = document.getElementById("showTaylorLabel");
+            horizontalLabel.innerText = "Taylor Order-" + order;
+            let verticalLabel = document.getElementById("showTaylorVerticalLabel");
+            verticalLabel.innerText = "Taylor Order-" + order + " Vertical";
+            
            /* MathJax.typesetPromise()
                 .then(() => console.log("MathJax re-rendered successfully"))
                 .catch((err) => console.error("MathJax render error:", err));*/
@@ -1189,11 +1254,38 @@
         document.getElementById('yMax').addEventListener('input', updatePlot);
         // Event listeners for checkboxes
         document.getElementById('showOriginal').addEventListener('change', updatePlot);
-        document.getElementById('showSecondOrder').addEventListener('change', updatePlot);
+        document.getElementById('showTaylor').addEventListener('change', updatePlot);
         document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
-        document.getElementById('showSecondOrderVertical').addEventListener('change', updatePlot);
+        document.getElementById('showTaylorVertical').addEventListener('change', updatePlot);
 
+        
 
+        // Function to clean up the value dynamically
+        function validateAndFormatInput() {
+            let orderInput = document.getElementById('order-input');
+            let value = orderInput.value;
+
+            // Parse the value as a number and check its validity
+            value = parseInt(value, 10); // Convert to an integer
+
+            // Ensure the value is a non-negative integer
+            if (isNaN(value) || value < 0) {
+                value = 0; // Default to 0 if invalid
+            }
+
+            // Update the input value without leading zeros
+            orderInput.value = value;
+            // Call your update functions dynamically
+            updateEquations();
+            updatePlot();
+        }
+
+        let orderInput = document.getElementById('order-input');
+        // Add event listeners for input validation
+        orderInput.addEventListener('input', validateAndFormatInput);
+        orderInput.addEventListener('blur', validateAndFormatInput); // Also validate on losing focus
+
+        
         // Initial plot
         updatePlot();
     </script>
