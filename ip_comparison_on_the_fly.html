@@ -18,6 +18,10 @@
             color: #333;
         }
         
+        ol > li::marker {
+          font-weight: bold;
+        }
+        
         .toggle-button {
                     display: inline-block;
                     padding: 0.5em 1em;
@@ -589,7 +593,7 @@
         <h4 style="text-align: center; text-decoration: underline;">\(\underline{\textbf{Steps to learn } \mathbf{x_p(t)}}\)</h4>
 
 
-        <ol>
+        <ol style="list-style-position: inside; text-align: center;">
             <li>Generate a function \(x_p(t)\)</li>
             <li>Numerically integrate \(\theta(t)\) from \(t = 0\) to \(t_\text{final}\) with \(\theta(0) = \theta_0\), \(\dot{\theta}(0) = 0\)</li>
             <li>Measure the loss as \(\mathcal{L} \sim \max(\vec{\theta} - \theta_0)\)</li>
