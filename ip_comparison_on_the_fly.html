@@ -182,14 +182,14 @@
 </head>
 <body>
     <h1>Interactive Inverted Pendulum Viewer</h1>
-    <!--(Maybe) TODO: Add user option to select N, where N is the order of the Taylor expansion. This option should modify the entire page (derivation, equation below, JS model function) according to the order selected-->
-    
+    <!--TODO: Add option for damping for horiontal control        -->
     <div class="latex-equation" id="equations">
         $$\begin{align*}
         &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
         &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
         &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}
+        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
+        &\text{Arbitrary Horizontal Control $x_p(t)$ about $\theta=\pi$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
         \end{align*}$$
     </div>
 <!--    <div class="latex-equation">-->
@@ -209,399 +209,417 @@
         </div>
     </div>
     <br>
-    <div style = "text-align: center;"><button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button></div>
-    <div id="derivation" style = "display: none;">
-        <br>
-        <h5> Horizontal </h5>
-        <div style = "text-align: center">
-            <?xml version="1.0" encoding="UTF-8"?>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
-            <defs>
-            <g>
-            <g id="glyph-0-0">
-            <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
-            </g>
-            <g id="glyph-0-1">
-            <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
-            </g>
-            <g id="glyph-0-2">
-            <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
-            </g>
-            </g>
-            <clipPath id="clip-0">
-            <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
-            </clipPath>
-            </defs>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <g clip-path="url(#clip-0)">
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            </g>
-            <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
-            </g>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
-            </g>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
-            </g>
-            </svg>
-
-        </div>
-
-        <div class="latex-equation" style = "text-align:center">
-            \[
-            x = x_p(t) + l \sin (\theta) = A \cos(\omega t - \delta) + l \sin (\theta),
-            \]
-            \[
-            y = l \cos (\theta)
-            \]
-
-            The velocity components of the pendulum bob are:
-            \[
-            \dot{x} = -A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta),
-            \]
-            \[
-            \dot{y} = -l \dot{\theta} \sin (\theta)
-            \]
-
-            The total kinetic energy \( T \) is therefore:
-            \[
-            T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
-            \]
-            Expanding this expression, we get:
-            \[
-            T = \frac{1}{2} m \left[ \left(-A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
-            \]
-
-            Expanding further and simplifying, we obtain:
-            \[
-            T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right)
-            \]
-
-            The potential energy \( V \) is due to gravity and is given by:
-            \[
-            V = -m g y = -m g l \cos (\theta)
-            \]
-            The Lagrangian \( L \) is given by:
-            \[
-            L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right) + m g l \cos (\theta)
-            \]
-            Using the Euler-Lagrange equation:
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
-            \]
-            \[
-            \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} - m A l \omega \cos (\theta) \sin(\omega t - \delta).
-            \]
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right)
-            \]
-             \[
-               \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right)
-               \]
-            \[
-            m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + g \sin (\theta) = 0
-            \]
-            \[
-            \ddot{\theta} - \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
-            \]
-            \[
-            \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right)
-            \]
-            \[
-            \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t - \delta) \right)
-            \]
-            \begin{equation}
-                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right)} \label{eq:horizontal_original_no_damping} \tag{1}
-            \end{equation}
-            Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding
-            \[
-            \boxed{\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t - \delta)}
-            \]
-            with solution
-            \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\omega t - \delta \right)}}{g + l \omega^{2}} + C_{1} e^{- \frac{\sqrt{g} t}{\sqrt{l}}} + C_{2} e^{\frac{\sqrt{g} t}{\sqrt{l}}} + \pi\]
-            To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
-            \begin{equation}
-                \boxed{\ddot{\theta} + \frac{g}{l}\left(\pi - \theta \right) =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
-            \end{equation}
-            Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:hoizontal_second_order_no_damping} becomes
-            \begin{equation}
-                \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping_phi} \tag{3}
-            \end{equation}
-            
-            Considering linear damping simply modifies equation \ref{eq:horizontal_original_no_damping} to be:
-            \begin{equation}
-                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{4}
-            \end{equation}
-            and equation \ref{eq:hoizontal_second_order_no_damping_phi} to be:
-            \begin{equation}
-                \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:hoizontal_second_order_linear_damping}\tag{5}
-            \end{equation}
-            
-        </div>
-        <h5> Vertical </h5>
-        <div style = "text-align: center">
-            <?xml version="1.0" encoding="UTF-8"?>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
-            <defs>
-            <g>
-            <g id="glyph-0-0">
-            <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
-            </g>
-            <g id="glyph-0-1">
-            <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
-            </g>
-            <g id="glyph-0-2">
-            <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
-            </g>
-            </g>
-            <clipPath id="clip-0">
-            <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
-            </clipPath>
-            </defs>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <g clip-path="url(#clip-0)">
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            </g>
-            <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
-            </g>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
-            </g>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
-            </g>
-            </svg>
-
-        </div>
-        <div class="latex-equation" style = "text-align:center">
-            \[
-            x = l \sin (\theta),
-            \]
-            \[
-            y = y_p(t) + l \cos (\theta) = A \cos(\omega t - \delta) + l \cos (\theta)
-            \]
-
-            The velocity components of the pendulum bob are:
-            \[
-            \dot{x} = l \dot{\theta} \cos (\theta),
-            \]
-            \[
-            \dot{y} = -A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)
-            \]
-
-            The total kinetic energy \( T \) is therefore:
-            \[
-            T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
-            \]
-            Expanding this expression, we get:
-            \[
-            T = \frac{1}{2} m \left[ \left(l \dot{\theta} \cos (\theta)\right)^2 + \left(-A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)\right)^2 \right]
-            \]
-
-            Expanding further and simplifying, we obtain:
-            \[
-            T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right)
-            \]
-
-            The potential energy \( V \) is due to gravity and is given by:
-            \[
-            V = -m g y = -m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
-            \]
-            The Lagrangian \( L \) is given by:
-            \[
-            L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right) + m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
-            \]
-
-            Using the Euler-Lagrange equation:
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
-            \]
-            \[
-            \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m A l \omega \sin (\theta) \sin(\omega t - \delta).
-            \]
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right)
-            \]
-            \[
-            \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right)
-            \]
-            \[
-            m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + g \sin (\theta) = 0
-            \]
-            \[
-            \ddot{\theta} + \frac{A \omega}{l} \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
-            \]
-            \[
-            \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega}{l} \left( \sin (\theta) \omega \cos(\omega t - \delta) \right)
-            \]
-            \begin{equation}
-            \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right)} \label{eq:vertical_original_no_damping} \tag{6}
-            \end{equation}
-            Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding:
-            \[
-            \boxed{\ddot{\theta} + \frac{g}{l} (\pi - \theta) = -\frac{A \omega^2}{l} \left( (\pi - \theta) \cos(\omega t - \delta) \right)}
-            \]
-            To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
-            \begin{equation}
-            \boxed{\ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l} \left( \left(\pi - \theta \right) \cos(\omega t - \delta) \right)} \label{eq:vertical_second_order_no_damping} \tag{7}
-            \end{equation}
-            Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:vertical_second_order_no_damping} becomes
-            \begin{equation}
-            \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta)} \label{eq:vertical_second_order_no_damping_phi} \tag{8}
-            \end{equation}
-            
-            Considering linear damping simply modifies equation \ref{eq:vertical_original_no_damping} to be:
-            \begin{equation}
-                \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{9}
-            \end{equation}
-            and equation \ref{eq:vertical_second_order_no_damping_phi} to be:
-            \begin{equation}
-                \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:vertical_second_order_linear_damping} \tag{10}
-            \end{equation}
-
+    
+    <br>
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" class="btn btn-warning" id = "xpddotToggle" onclick="toggleEditor()">Change \(\ddot{x}_p(t)\)</button>
+            <div id="editor-container" style="display: none; margin-top: 10px;">
+                <textarea id="x_p_ddot_editor" rows="3" style="width: 100%; font-family: monospace;"></textarea>
+                <button class="btn btn-success mt-2" onclick="updateX_p_ddot()">Apply Change</button>
+            </div>
         </div>
     </div>
-    <br>
-    <div style = "text-align: center;"><button class="toggle-button_learn_horizontal" onclick="toggleLearnHorizontal()" id = "LearnHorizontalButton">How to learn a Horizontal Displacement Function \(x_p(t)\)</button></div>
-    <div id="learn_horizontal_derivation" style = "display: none;">
-        <div style = "text-align: center">
-            <?xml version="1.0" encoding="UTF-8"?>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
-            <defs>
-            <g>
-            <g id="glyph-0-0">
-            <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
-            </g>
-            <g id="glyph-0-1">
-            <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
-            </g>
-            <g id="glyph-0-2">
-            <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
-            </g>
-            </g>
-            <clipPath id="clip-0">
-            <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
-            </clipPath>
-            </defs>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <g clip-path="url(#clip-0)">
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            </g>
-            <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
-            </g>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
-            <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
-            </g>
-            <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
-            <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
-            </g>
-            </svg>
+    
+    <div class = "row">
+        <div class="col-md-6 text-center">
+            <button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button>
+            <div id="derivation" style = "display: none;">
+                <br>
+                <h5> Horizontal </h5>
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
 
+                </div>
+
+                <div class="latex-equation">
+                    \[
+                    x = x_p(t) + l \sin (\theta) = A \cos(\omega t - \delta) + l \sin (\theta),
+                    \]
+                    \[
+                    y = l \cos (\theta)
+                    \]
+
+                    The velocity components of the pendulum bob are:
+                    \[
+                    \dot{x} = -A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta),
+                    \]
+                    \[
+                    \dot{y} = -l \dot{\theta} \sin (\theta)
+                    \]
+
+                    The total kinetic energy \( T \) is therefore:
+                    \[
+                    T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                    \]
+                    Expanding this expression, we get:
+                    \[
+                    T = \frac{1}{2} m \left[ \left(-A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
+                    \]
+
+                    Expanding further and simplifying, we obtain:
+                    \[
+                    T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right)
+                    \]
+
+                    The potential energy \( V \) is due to gravity and is given by:
+                    \[
+                    V = -m g y = -m g l \cos (\theta)
+                    \]
+                    The Lagrangian \( L \) is given by:
+                    \[
+                    L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right) + m g l \cos (\theta)
+                    \]
+                    Using the Euler-Lagrange equation:
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                    \]
+                    \[
+                    \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} - m A l \omega \cos (\theta) \sin(\omega t - \delta).
+                    \]
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right)
+                    \]
+                     \[
+                       \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right)
+                       \]
+                    \[
+                    m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + g \sin (\theta) = 0
+                    \]
+                    \[
+                    \ddot{\theta} - \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right)
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t - \delta) \right)
+                    \]
+                    \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right)} \label{eq:horizontal_original_no_damping} \tag{1}
+                    \end{equation}
+                    Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding
+                    \[
+                    \boxed{\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t - \delta)}
+                    \]
+                    with solution
+                    \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\omega t - \delta \right)}}{g + l \omega^{2}} + C_{1} e^{- \frac{\sqrt{g} t}{\sqrt{l}}} + C_{2} e^{\frac{\sqrt{g} t}{\sqrt{l}}} + \pi\]
+                    To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+                    \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l}\left(\pi - \theta \right) =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
+                    \end{equation}
+                    Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:hoizontal_second_order_no_damping} becomes
+                    \begin{equation}
+                        \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping_phi} \tag{3}
+                    \end{equation}
+                    
+                    Considering linear damping simply modifies equation \ref{eq:horizontal_original_no_damping} to be:
+                    \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{4}
+                    \end{equation}
+                    and equation \ref{eq:hoizontal_second_order_no_damping_phi} to be:
+                    \begin{equation}
+                        \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:hoizontal_second_order_linear_damping}\tag{5}
+                    \end{equation}
+                    
+                </div>
+                <h5> Vertical </h5>
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
+
+                </div>
+                <div class="latex-equation">
+                    \[
+                    x = l \sin (\theta),
+                    \]
+                    \[
+                    y = y_p(t) + l \cos (\theta) = A \cos(\omega t - \delta) + l \cos (\theta)
+                    \]
+
+                    The velocity components of the pendulum bob are:
+                    \[
+                    \dot{x} = l \dot{\theta} \cos (\theta),
+                    \]
+                    \[
+                    \dot{y} = -A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)
+                    \]
+
+                    The total kinetic energy \( T \) is therefore:
+                    \[
+                    T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                    \]
+                    Expanding this expression, we get:
+                    \[
+                    T = \frac{1}{2} m \left[ \left(l \dot{\theta} \cos (\theta)\right)^2 + \left(-A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)\right)^2 \right]
+                    \]
+
+                    Expanding further and simplifying, we obtain:
+                    \[
+                    T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right)
+                    \]
+
+                    The potential energy \( V \) is due to gravity and is given by:
+                    \[
+                    V = -m g y = -m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
+                    \]
+                    The Lagrangian \( L \) is given by:
+                    \[
+                    L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right) + m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
+                    \]
+
+                    Using the Euler-Lagrange equation:
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                    \]
+                    \[
+                    \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m A l \omega \sin (\theta) \sin(\omega t - \delta).
+                    \]
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right)
+                    \]
+                    \[
+                    \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right)
+                    \]
+                    \[
+                    m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + g \sin (\theta) = 0
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{A \omega}{l} \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega}{l} \left( \sin (\theta) \omega \cos(\omega t - \delta) \right)
+                    \]
+                    \begin{equation}
+                    \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right)} \label{eq:vertical_original_no_damping} \tag{6}
+                    \end{equation}
+                    Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding:
+                    \[
+                    \boxed{\ddot{\theta} + \frac{g}{l} (\pi - \theta) = -\frac{A \omega^2}{l} \left( (\pi - \theta) \cos(\omega t - \delta) \right)}
+                    \]
+                    To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+                    \begin{equation}
+                    \boxed{\ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l} \left( \left(\pi - \theta \right) \cos(\omega t - \delta) \right)} \label{eq:vertical_second_order_no_damping} \tag{7}
+                    \end{equation}
+                    Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:vertical_second_order_no_damping} becomes
+                    \begin{equation}
+                    \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta)} \label{eq:vertical_second_order_no_damping_phi} \tag{8}
+                    \end{equation}
+                    
+                    Considering linear damping simply modifies equation \ref{eq:vertical_original_no_damping} to be:
+                    \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{9}
+                    \end{equation}
+                    and equation \ref{eq:vertical_second_order_no_damping_phi} to be:
+                    \begin{equation}
+                        \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:vertical_second_order_linear_damping} \tag{10}
+                    \end{equation}
+
+                </div>
+            </div>
         </div>
 
-        <div class="latex-equation" style = "text-align:center">
-            \[
-            x = x_p(t) + l \sin (\theta)
-            \]
-            \[
-            y = l \cos (\theta)
-            \]
+        <div class="col-md-6 text-center">
+            <button class="toggle-button_learn_horizontal" onclick="toggleLearnHorizontal()" id = "LearnHorizontalButton">Arbitrary Horizontal Control \(x_p(t)\) Derivation</button>
+            <div id="learn_horizontal_derivation" style = "display: none;">
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
 
-            The velocity components of the pendulum bob are:
-            \[
-            \dot{x} = \dot{x}_p(t) + l \dot{\theta} \cos (\theta),
-            \]
-            \[
-            \dot{y} = -l \dot{\theta} \sin (\theta)
-            \]
+                </div>
 
-            The total kinetic energy \( T \) is therefore:
-            \[
-            T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
-            \]
-            Expanding this expression, we get:
-            \[
-            T = \frac{1}{2} m \left[ \left(\dot{x}_p(t) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
-            \]
+                <div class="latex-equation">
+                    \[
+                    x = x_p(t) + l \sin (\theta)
+                    \]
+                    \[
+                    y = l \cos (\theta)
+                    \]
 
-            Expanding further and simplifying, we obtain:
-            \[
-            T = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right)
-            \]
+                    The velocity components of the pendulum bob are:
+                    \[
+                    \dot{x} = \dot{x}_p(t) + l \dot{\theta} \cos (\theta),
+                    \]
+                    \[
+                    \dot{y} = -l \dot{\theta} \sin (\theta)
+                    \]
 
-            The potential energy \( V \) is due to gravity and is given by:
-            \[
-            V = -m g y = -m g l \cos (\theta)
-            \]
-            The Lagrangian \( L \) is given by:
-            \[
-            L = T - V = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right) + m g l \cos (\theta)
-            \]
-            Using the Euler-Lagrange equation:
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
-            \]
-            \[
-            \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m l \dot{x}_p(t) \cos (\theta)
-            \]
-            \[
-            \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right)
-            \]
-             \[
-               \frac{\partial L}{\partial \theta} = -m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right)
-               \]
-            \[
-            m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) + m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} + \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) +  \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
-            \]
-            \[
-            l \ddot{\theta} +  \ddot{x}_p(t)\cos(\theta)  + g \sin (\theta)  = 0
-            \]
-            
-            
+                    The total kinetic energy \( T \) is therefore:
+                    \[
+                    T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                    \]
+                    Expanding this expression, we get:
+                    \[
+                    T = \frac{1}{2} m \left[ \left(\dot{x}_p(t) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
+                    \]
+
+                    Expanding further and simplifying, we obtain:
+                    \[
+                    T = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right)
+                    \]
+
+                    The potential energy \( V \) is due to gravity and is given by:
+                    \[
+                    V = -m g y = -m g l \cos (\theta)
+                    \]
+                    The Lagrangian \( L \) is given by:
+                    \[
+                    L = T - V = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right) + m g l \cos (\theta)
+                    \]
+                    Using the Euler-Lagrange equation:
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                    \]
+                    \[
+                    \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m l \dot{x}_p(t) \cos (\theta)
+                    \]
+                    \[
+                    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right)
+                    \]
+                     \[
+                       \frac{\partial L}{\partial \theta} = -m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right)
+                       \]
+                    \[
+                    m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) + m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} + \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) +  \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
+                    \]
+                    \[
+                    l \ddot{\theta} + \ddot{x}_p(t)\cos(\theta)  + g \sin (\theta)  = 0
+                    \]
+                    
+                    
+                </div>
+                <h4 style="text-align: center; text-decoration: underline;">\(\underline{\textbf{Steps to learn } \mathbf{x_p(t)}}\)</h4>
+
+
+                <ol style="list-style-position: inside;">
+                    <li>Generate a function \(x_p(t)\)</li>
+                    <li>Numerically integrate \(\theta(t)\) from \(t = 0\) to \(t_\text{final}\) with \(\theta(0) = \theta_0\), \(\dot{\theta}(0) = 0\)</li>
+                    <li>Measure the loss as \(\mathcal{L} \sim \max(\vec{\theta} - \theta_0)\)</li>
+                    <li>Optimize the parameters in \(x_p(t)\) to minimize \(\mathcal{L}\)</li>
+                    <li>Repeat steps 1-4 until convergence.</li>
+                </ol>
+
+                
+            </div>
         </div>
-        <h4 style="text-align: center; text-decoration: underline;">\(\underline{\textbf{Steps to learn } \mathbf{x_p(t)}}\)</h4>
-
-
-        <ol style="list-style-position: inside; text-align: center;">
-            <li>Generate a function \(x_p(t)\)</li>
-            <li>Numerically integrate \(\theta(t)\) from \(t = 0\) to \(t_\text{final}\) with \(\theta(0) = \theta_0\), \(\dot{\theta}(0) = 0\)</li>
-            <li>Measure the loss as \(\mathcal{L} \sim \max(\vec{\theta} - \theta_0)\)</li>
-            <li>Optimize \(l\) and any additional parameters in \(x_p(t)\) to minimize \(\mathcal{L}\)</li>
-            <li>Repeat steps 1-4 until convergence.</li>
-        </ol>
-
-        
     </div>
     
     <br>
@@ -777,11 +795,12 @@
         <label for="showOriginal">Original Horizontal</label>
         <input type="checkbox" id="showTaylor" checked>
         <label for="showTaylor", id = "showTaylorLabel">Taylor Order-2 Horizontal</label>
-        
         <input type="checkbox" id="showOriginalVertical" checked>
         <label for="showOriginalVertical">Original Vertical</label>
         <input type="checkbox" id="showTaylorVertical" checked>
         <label for="showTaylorVertical", id = "showTaylorVerticalLabel">Taylor Order-2 Vertical</label>
+        <input type="checkbox" id="showArbitraryHorizontal" checked>
+        <label for="showArbitraryHorizontal", id = "showArbitraryHorizontalLabel">Arbitrary Horizontal</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
@@ -789,6 +808,7 @@
     </div>
 
     <script>
+        window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4) * ~((((sech(x0) * sech(x0)) * 4) * cos((tanh(x0) * 4))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4) * ~(sin((tanh(x0) * 4)))))');
         const sliderA = document.getElementById("A-slider");
         const minInputA = document.getElementById("minA");
         const maxInputA = document.getElementById("maxA");
@@ -936,6 +956,39 @@
         // Differential equation: θ''(t) + (g/l) * sin(θ) = A * ω² * cos(ωt) * cos(θ)
         const g = 9.8; // gravitational acceleration
 
+        
+        function toggleEditor()
+        {
+            const editorContainer = document.getElementById("editor-container");
+            if (editorContainer.style.display === "none" || editorContainer.style.display === "")
+            {
+                editorContainer.style.display = "block";
+                document.getElementById("x_p_ddot_editor").value = window.x_p_ddot || ""; // Load current value
+            }
+            else
+            {
+                editorContainer.style.display = "none";
+            }
+            //Add something here to get the button `<button type="button" class="btn btn-warning" onclick="toggleEditor()">Change \(\ddot{x}_p(t)\)</button>` text content and, if `editorContainer.style.display == "block"`
+            let x_p_ddot_button = document.getElementById("xpddotToggle")
+
+            if (editorContainer.style.display == "block")
+            {
+                x_p_ddot_button.textContent = String.raw`Hide \(\ddot{x}_p\) change-option`;
+            }
+            else
+            {
+                x_p_ddot_button.textContent = String.raw`Change \(\ddot{x}_p\)`;
+            }
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpddotToggle"]);
+        }
+
+        function updateX_p_ddot()
+        {
+            window.x_p_ddot = document.getElementById("x_p_ddot_editor").value;
+            alert("Change Applied");
+            updatePlot();
+        }
         // Numerical solver (Runge-Kutta 4th order method)
         function rungeKutta(h, t0, tf, y0, f) {
             let t = t0;
@@ -1042,9 +1095,47 @@
 
             return [thetaDot, thetaDDot];
         }
+        
+        function sech(x)
+        {
+            return 1/Math.cosh(x);
+        }
+        
+        function convertCppSymbolicStringToJs(s)
+        {
+            return s.replace(/\^|cos|asin|sin|tanh|ln|x0|~|sqrt/g, match => ({
+                '^': '**',
+                'cos': 'Math.cos',
+                'asin': 'Math.asin',
+                'sin': 'Math.sin',
+                'tanh': 'Math.tanh',
+                'ln': 'Math.ln',
+                'x0': 't',
+                '~': '-',
+                'sqrt': 'Math.sqrt'
+            }[match]));
+        }
+        
+        function pendulumODE_arbitrary_horizontal(t, y, l) {
+            const theta = y[0];
+            console.log("theta = ", theta);
+            const thetaDot = y[1];
+            //cos((tanh(x0) * 4))
+            const cppSymbolicString = window.x_p_ddot;
+            //console.log(cppSymbolicString);
+            let result = eval(cppSymbolicString);
+            //console.log(result);
+            if (isNaN(result))
+            {
+                result = 0;
+            }
+            const thetaDDot = -(g / l) * Math.sin(theta) - ((result * Math.cos(theta)) / l);
+            //console.log(thetaDDot);
+            return [thetaDot, thetaDDot];
+        }
 
         // Plotting function
-        function plotResults(t, y, TaylorY, y_vert, TaylorY_vert) {
+        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz) {
             const yAxisRangeOption = document.getElementById("yAxisRange").value;
             const yMin = parseFloat(document.getElementById("yMin").value);
             const yMax = parseFloat(document.getElementById("yMax").value);
@@ -1053,6 +1144,7 @@
             const showTaylor = document.getElementById("showTaylor").checked;
             const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
             const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
+            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
 
             let traces = [];
             
@@ -1060,7 +1152,7 @@
             {
                 traces.push({
                     x: t,
-                    y: y.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    y: y_horiz.map(yi => yi[0]),  // θ(t) as function of time for the original system
                     type: 'scatter',
                     mode: 'lines',
                     name: '$\\text{Original Horizontal}$',
@@ -1090,6 +1182,18 @@
                     mode: 'lines',
                     name: '$\\text{Original Vertical}$',
                     line: { color: 'orange' }
+                });
+            }
+            
+            if (showArbitraryHorizontal)
+            {
+                traces.push({
+                    x: t,
+                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Arbitrary Horizontal}$',
+                    line: { color: 'red' }
                 });
             }
             
@@ -1154,17 +1258,28 @@
             // Initial conditions and solver parameters
             
             let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            //checking which systems need to be computed
+            const showOriginal = document.getElementById("showOriginal").checked;
+            const showTaylor = document.getElementById("showTaylor").checked;
+            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
+            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
+            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
             // Solve the system of ODEs
-            const result = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta));
+            y0 = [theta0, 0];
+            const result = (showOriginal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const TaylorResult = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor(t, y, A, omega, l, lambda, delta));
+            const TaylorResult = (showTaylor) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const result_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_vertical(t, y, A, omega, l, lambda, delta));
+            const result_vertical = (showOriginalVertical) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_vertical(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
-            const TaylorResult_vertical = rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta));
+            const TaylorResult_vertical = (showTaylorVertical) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const ArbitraryResult_horizontal = (showArbitraryHorizontal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_arbitrary_horizontal(t, y, l)) : {"t":0,"y":0};
             
             // Plot the results
-            plotResults(result.t, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y);
+            let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t;
+            
+            plotResults(t_vals, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y, ArbitraryResult_horizontal.y);
             
         }
         
@@ -1188,7 +1303,7 @@
                 button.textContent = String.raw`Hide \(x_p(t)\) Explanation`;
             } else {
                 derivation.style.display = 'none';
-                button.textContent = String.raw`How to learn a Horizontal Displacement Function \(x_p(t)\)`;
+                button.textContent = String.raw`Arbitrary Horizontal Control \(x_p(t)\) Derivation`;
             }
             
             MathJax.Hub.Queue(["Typeset", MathJax.Hub,"LearnHorizontalButton"]);
@@ -1357,9 +1472,10 @@
             &\\text{Original Horizontal about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
             &\\text{Taylor Order-${order} Horizontal about $\\theta=\\pi$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
             &\\text{Original Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta}
+            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
+            &\\text{Arbitrary Horizontal Control $x_p(t)$ about $\\theta=\\pi$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
             \\end{align*}$$`;
-
+            // TODO: Add a button to modify the code for x_p(t)
             equationsDiv.innerHTML = `
                 ${newEquations}
             `;
@@ -1409,8 +1525,7 @@
         document.getElementById('showTaylor').addEventListener('change', updatePlot);
         document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
         document.getElementById('showTaylorVertical').addEventListener('change', updatePlot);
-
-        
+        document.getElementById('showArbitraryHorizontal').addEventListener('change', updatePlot);
 
         // Function to clean up the value dynamically
         function validateAndFormatInput() {
