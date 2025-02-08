@@ -178,6 +178,53 @@
                 background-color: var(--plot-bg-color);
             }
         
+        .nail {
+            position: absolute;
+            top: 50px; /* Adjust to position correctly */
+            left: 50px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background-color: black;
+            /* height: 9px;
+            width: 9px; */
+            z-index: 2; /* Ensures it's above the pendulum */
+        }
+        .Pendulum-Container {
+            position: absolute;
+            top: 50px; /* Align with the nail */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .Pendulum-Body {
+            transform-origin: top center; /* Ensures rotation is around the nail */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .connector {
+            border: 0.1px solid black;
+            width: 0.1px;
+            height: 80px;
+        }
+        .Ball {
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            /*box-shadow: 0px 20px 10px 2px rgb(137, 137, 137);*/
+        }
+        section {
+            position: relative;
+            width: 400px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -499,7 +546,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="col-md-6 text-center">
             <button class="toggle-button_learn_horizontal" onclick="toggleLearnHorizontal()" id = "LearnHorizontalButton">Arbitrary Horizontal Control \(x_p(t)\) Derivation</button>
             <div id="learn_horizontal_derivation" style = "display: none;">
@@ -775,6 +822,73 @@
         </div>
     </div>
     
+    <div class="row" style="margin-top:200px; margin-bottom:-20px;">
+        <div class = "col-md-2" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
+            <div class="nail" id="pivot"></div>
+            <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;">
+                <div class="Pendulum-Body" id="pendulumOriginalHorizontal">
+                    <div class="connector" style = "border: 0.1px solid blue;"></div>
+                    <div class="Ball" style = "background-color: blue;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorHorizontal">Taylor <br> Horizontal t = 0</div>
+            <div class="nail" id="pivot"></div>
+            <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;">
+                <div class="Pendulum-Body" id="pendulumTaylorHorizontal">
+                    <div class="connector" style = "border: 0.1px solid green;"></div>
+                    <div class="Ball" style = "background-color: green;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalVertical">Original <br> Vertical t = 0</div>
+            <div class="nail" id="pivot"></div>
+            <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;">
+                <div class="Pendulum-Body" id="pendulumOriginalVertical">
+                    <div class="connector" style = "border: 0.1px solid orange;"></div>
+                    <div class="Ball" style = "background-color: orange;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorVertical">Taylor <br> Vertical t = 0</div>
+            <div class="nail" id="pivot"></div>
+            <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;">
+                <div class="Pendulum-Body" id="pendulumTaylorVertical">
+                    <div class="connector" style = "border: 0.1px solid magenta;"></div>
+                    <div class="Ball" style = "background-color: magenta;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumArbitraryHorizontal">Arbitrary <br> Horizontal t = 0</div>
+            <div class="nail" id="pivot"></div>
+            <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;">
+                <div class="Pendulum-Body" id="pendulumArbitraryHorizontal">
+                    <div class="connector" style = "border: 0.1px solid red;"></div>
+                    <div class="Ball" style = "background-color: red;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+    </div>
+    
     <div class="plot-container" id="plot"></div>
     <div class="col my-3" align="center">
         <label for="yAxisRange">Y-Axis Range:</label>
@@ -783,6 +897,7 @@
             <option value="fixed">Fixed</option>
         </select>
     </div>
+    
     <div class="col my-3" id="fixedRangeInputs" style="display: none;" align="center">
         <label for="yMin">Min:</label>
         <input type="number" id="yMin" step="0.1" value="-3.14" style="width: 80px;">
@@ -1118,9 +1233,9 @@
         
         function pendulumODE_arbitrary_horizontal(t, y, l) {
             const theta = y[0];
-            console.log("theta = ", theta);
+            //console.log("theta = ", theta);
             const thetaDot = y[1];
-            //cos((tanh(x0) * 4))
+            //cos((tanh(x0) * log(100.000000)))
             const cppSymbolicString = window.x_p_ddot;
             //console.log(cppSymbolicString);
             let result = eval(cppSymbolicString);
@@ -1185,18 +1300,6 @@
                 });
             }
             
-            if (showArbitraryHorizontal)
-            {
-                traces.push({
-                    x: t,
-                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '$\\text{Arbitrary Horizontal}$',
-                    line: { color: 'red' }
-                });
-            }
-            
             if (showTaylorVertical)
             {
                 const order = parseInt(document.getElementById('order-input').value);
@@ -1207,6 +1310,18 @@
                     mode: 'lines',
                     name: '$\\text{Taylor Order-2 Vertical}$'.replace("2", order),
                     line: { color: 'magenta' }
+                });
+            }
+            
+            if (showArbitraryHorizontal)
+            {
+                traces.push({
+                    x: t,
+                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Arbitrary Horizontal}$',
+                    line: { color: 'red' }
                 });
             }
 
@@ -1230,7 +1345,7 @@
 
 
         // Update plot based on current parameters
-        function updatePlot() {
+        async function updatePlot() {
             const A = parseFloat(document.getElementById('A-slider').value);
             const omega = parseFloat(document.getElementById('omega-slider').value);
             const l = parseFloat(document.getElementById('l-slider').value);
@@ -1280,6 +1395,28 @@
             let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t;
             
             plotResults(t_vals, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y, ArbitraryResult_horizontal.y);
+            
+            if (showOriginal)
+            {
+                await animatePendulum(result.t, result.y, "pendulumOriginalHorizontal", "showOriginal"); // Start animation
+            }
+            if (showTaylor)
+            {
+                await animatePendulum(TaylorResult.t, TaylorResult.y, "pendulumTaylorHorizontal", "showTaylor"); // Start animation
+            }
+            if (showOriginalVertical)
+            {
+                await animatePendulum(result_vertical.t, result_vertical.y, "pendulumOriginalVertical", "showOriginalVertical"); // Start animation
+            }
+            if (showTaylorVertical)
+            {
+                await animatePendulum(TaylorResult_vertical.t, TaylorResult_vertical.y, "pendulumTaylorVertical", "showTaylorVertical"); // Start animation
+            }
+            if (showArbitraryHorizontal)
+            {
+                await animatePendulum(ArbitraryResult_horizontal.t, ArbitraryResult_horizontal.y, "pendulumArbitraryHorizontal", "showArbitraryHorizontal"); // Start animation
+            }
+            
             
         }
         
@@ -1456,6 +1593,100 @@
             
             return expansion.join(' ');
         }
+        
+        function rotatePendulum(angle, id_string) {
+            const pendulum = document.getElementById(id_string);
+            //console.log("pendulum = ", pendulum);
+            //console.log(pendulum.style.transform);
+            pendulum.style.transform = `rotate(${angle*57.2958}deg)`;
+            pendulum.offsetHeight;
+            
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function animatePendulum(t_values, theta_values, id_string, show_id_string) {
+            /*for (let i = 0; i < theta_values.length; i++) {
+                console.log("theta_values[i] =",theta_values[i][0]);
+                rotatePendulum(theta_values[i][0], id_string);
+                // movePivot(50, 50+(i%2)*10);
+                // movePivot(50+(!(i%2))*10, 50);
+                await sleep(1000); // Wait for 100ms before the next rotation
+            }*/
+            let i = 0;
+            let elementCheckbox = document.getElementById(show_id_string);
+            let element = document.getElementById(id_string);
+            let timeElement = document.getElementById("Time" + id_string);
+
+            function step()
+            {
+                if (elementCheckbox.checked)
+                {
+                    element.style.display = "block";
+                    timeElement.style.display = "block";
+                    if (i < theta_values.length)
+                    {
+                        rotatePendulum(theta_values[i][0], id_string);
+                        i++;
+                        requestAnimationFrame(step);  // Ensures smooth animation
+                    }
+                    else
+                    {
+                        i = 0;
+                        rotatePendulum(theta_values[i][0], id_string);
+                        i++;
+                        requestAnimationFrame(step);  // Ensures smooth animation
+                    }
+                    if (id_string.includes("OriginalHorizontal"))
+                    {
+                        timeElement.innerHTML = String.raw`Original <br> Horizontal `;
+                    }
+                    else if (id_string.includes("TaylorHorizontal"))
+                    {
+                        let orderInput = document.getElementById('order-input');
+                        timeElement.innerHTML = String.raw`Taylor Order-${orderInput.value} <br> Horizontal `;
+                    }
+                    else if (id_string.includes("OriginalVertical"))
+                    {
+                        timeElement.innerHTML = String.raw`Original <br> Vertical `;
+                    }
+                    else if (id_string.includes("TaylorVertical"))
+                    {
+                        let orderInput = document.getElementById('order-input');
+                        timeElement.innerHTML = String.raw`Taylor Order-${orderInput.value} <br> Vertical `;
+                    }
+                    else if (id_string.includes("ArbitraryHorizontal"))
+                    {
+                        timeElement.innerHTML = String.raw`Arbitrary <br> Horizontal `;
+                    }
+                    timeElement.innerHTML += `t = ${t_values[i].toFixed(2)}`;
+                }
+                else
+                {
+                    element.style.display = "none";
+                    timeElement.style.display = "none";
+                }
+            }
+
+            requestAnimationFrame(step); // Start animation
+        }
+
+
+
+        function movePivot(x, y) {
+            const pivot = document.getElementById("pivot");
+            const container = document.getElementById("pendulumContainer");
+
+            // Update the pivot (nail) position
+            pivot.style.left = `${x}px`;
+            pivot.style.top = `${y}px`;
+
+            // Move the pendulum container to match the new pivot
+            container.style.left = `${x}px`;
+            container.style.top = `${y}px`;
+        }
 
         function updateEquations() {
             const order = parseInt(document.getElementById('order-input').value);
@@ -1475,7 +1706,6 @@
             &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
             &\\text{Arbitrary Horizontal Control $x_p(t)$ about $\\theta=\\pi$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
             \\end{align*}$$`;
-            // TODO: Add a button to modify the code for x_p(t)
             equationsDiv.innerHTML = `
                 ${newEquations}
             `;
@@ -1483,7 +1713,7 @@
             MathJax.Hub.Queue(["Typeset", MathJax.Hub,"equations"]);
             
             let horizontalLabel = document.getElementById("showTaylorLabel");
-            horizontalLabel.innerText = "Taylor Order-" + order;
+            horizontalLabel.innerText = "Taylor Order-" + order + " Horizontal";
             let verticalLabel = document.getElementById("showTaylorVerticalLabel");
             verticalLabel.innerText = "Taylor Order-" + order + " Vertical";
             
