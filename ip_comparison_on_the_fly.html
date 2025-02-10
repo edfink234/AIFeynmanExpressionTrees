@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <style>
+        .plot-container {
+            min-height: 500px; /* Adjust as needed */
+        }
+
         
         body {
             font-family: 'Arial', sans-serif;
@@ -921,8 +925,15 @@
         <label for="themeToggle">Dark Mode:</label>
         <input type="checkbox" id="themeToggle">
     </div>
-
+    <br>
+    <div class="col my-3" align="center">
+        <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
+        <br> <br> <br>
+        <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
+    </div>
+    
     <script>
+        
         window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4.605170) * ~((((sech(x0) * sech(x0)) * 4.605170) * cos((tanh(x0) * 4.605170))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4.605170) * ~(sin((tanh(x0) * 4.605170)))))');
         const sliderA = document.getElementById("A-slider");
         const minInputA = document.getElementById("minA");
