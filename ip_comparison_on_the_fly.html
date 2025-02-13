@@ -230,20 +230,20 @@
     <h1>Interactive Inverted Pendulum Viewer</h1>
     <!--TODO: Add option for damping for horiontal control        -->
     <div class="latex-equation" id="equations">
-        $$\begin{align*}
-        &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-        &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
-        &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
-        &\text{Arbitrary Horizontal Control $x_p(t)$ about $\theta=\pi$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
-        \end{align*}$$
+        \begin{align*}
+        &\text{Original Horizontal: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
+        &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\theta =  \frac{ A \omega^2}{l}\left(1 - \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
+        &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
+        &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l}  \theta \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
+        &\text{Arbitrary Horizontal Control $x_p(t)$ about $\theta=0$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
+        \end{align*}
     </div>
 <!--    <div class="latex-equation">-->
 <!--        $$\begin{align*}-->
-<!--        &\text{Original Horizontal about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
-<!--        &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
-<!--        &\text{Original Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
-<!--        &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
+<!--        &\text{Original Horizontal: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
+<!--        &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
 <!--        \end{align*}$$-->
 <!--    </div>-->
     <div class = "row">
@@ -385,29 +385,22 @@
                     \begin{equation}
                         \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right)} \label{eq:horizontal_original_no_damping} \tag{1}
                     \end{equation}
-                    Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding
+                    Expanding about \(\theta = 0\) yields to first order \(\sin(\theta) \sim 0 + \cos(0) (\theta-0) = \theta\), \(\cos(\theta) \sim 1\), yielding
                     \[
-                    \boxed{\ddot{\theta} + \frac{g}{l}(\pi - \theta) =  -\frac{ A \omega^2}{l}\cos(\omega t - \delta)}
+                    \boxed{\ddot{\theta} + \frac{g}{l}\theta = \frac{ A \omega^2}{l}\cos(\omega t - \delta)}
                     \]
                     with solution
-                    \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\omega t - \delta \right)}}{g + l \omega^{2}} + C_{1} e^{- \frac{\sqrt{g} t}{\sqrt{l}}} + C_{2} e^{\frac{\sqrt{g} t}{\sqrt{l}}} + \pi\]
-                    To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+                    \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\delta - \omega t \right)}}{g - l \omega^{2}} + C_{1} \sin{\left(\frac{\sqrt{g} t}{\sqrt{l}} \right)} + C_{2} \cos{\left(\frac{\sqrt{g} t}{\sqrt{l}} \right)}\]
+                    To second order, \(\sin(\theta) \sim \theta\), \(\cos(\theta) \sim 1 - \dfrac{\theta^2}{2}\), yielding
                     \begin{equation}
-                        \boxed{\ddot{\theta} + \frac{g}{l}\left(\pi - \theta \right) =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
-                    \end{equation}
-                    Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:hoizontal_second_order_no_damping} becomes
-                    \begin{equation}
-                        \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping_phi} \tag{3}
+                        \boxed{\ddot{\theta} + \frac{g}{l}\theta  =  \frac{ A \omega^2}{l}\left(1 - \dfrac{\theta^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
                     \end{equation}
                     
                     Considering linear damping simply modifies equation \ref{eq:horizontal_original_no_damping} to be:
                     \begin{equation}
-                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{4}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{3}
                     \end{equation}
-                    and equation \ref{eq:hoizontal_second_order_no_damping_phi} to be:
-                    \begin{equation}
-                        \boxed{\ddot{\phi} - \frac{g}{l}\phi =  \frac{ A \omega^2}{l}\left(-1 + \dfrac{\phi^2}{2}\right)\cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:hoizontal_second_order_linear_damping}\tag{5}
-                    \end{equation}
+                
                     
                 </div>
                 <h5> Vertical </h5>
@@ -520,26 +513,18 @@
                     \begin{equation}
                     \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right)} \label{eq:vertical_original_no_damping} \tag{6}
                     \end{equation}
-                    Expanding about \(\theta = \pi\) yields to first order \(\sin(\theta) \sim 0 + \cos(\pi) (\theta-\pi) = \pi - \theta\), \(\cos(\theta) \sim -1\), yielding:
+                    Expanding about \(\theta = 0\) yields to first order \(\sin(\theta) \sim 0 + \cos(0) (\theta-0) = \theta\), \(\cos(\theta) \sim 1\), yielding:
                     \[
-                    \boxed{\ddot{\theta} + \frac{g}{l} (\pi - \theta) = -\frac{A \omega^2}{l} \left( (\pi - \theta) \cos(\omega t - \delta) \right)}
+                    \boxed{\ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l} \left( \theta \cos(\omega t - \delta) \right)}
                     \]
-                    To second order, \(\sin(\theta) \sim (\pi - \theta)\), \(\cos(\theta) \sim -1 + \dfrac{(\theta-\pi)^2}{2}\), yielding
+                    To second order, \(\sin(\theta) \sim \theta\), \(\cos(\theta) \sim 1 - \dfrac{\theta^2}{2}\), yielding
                     \begin{equation}
-                    \boxed{\ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l} \left( \left(\pi - \theta \right) \cos(\omega t - \delta) \right)} \label{eq:vertical_second_order_no_damping} \tag{7}
-                    \end{equation}
-                    Defining \(\phi \equiv \theta - \pi\), equation \ref{eq:vertical_second_order_no_damping} becomes
-                    \begin{equation}
-                    \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta)} \label{eq:vertical_second_order_no_damping_phi} \tag{8}
+                    \boxed{\ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l} \left( \theta \cos(\omega t - \delta) \right)} \label{eq:vertical_second_order_no_damping} \tag{7}
                     \end{equation}
                     
                     Considering linear damping simply modifies equation \ref{eq:vertical_original_no_damping} to be:
                     \begin{equation}
-                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{9}
-                    \end{equation}
-                    and equation \ref{eq:vertical_second_order_no_damping_phi} to be:
-                    \begin{equation}
-                        \boxed{\ddot{\phi} - \frac{g}{l} \phi = \frac{A \omega^2}{l} \phi \cos(\omega t - \delta) -\lambda \dot{\phi}}\label{eq:vertical_second_order_linear_damping} \tag{10}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{8}
                     \end{equation}
 
                 </div>
@@ -1153,20 +1138,20 @@
             {
                 for (let i = 1; i <= order; i += 2)
                 {
-                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let isNegative = (Math.floor((i + 1) / 2) % 2 == 0);
                     //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
-                    let temp = Math.pow((theta - Math.PI), i) / Fact(i);
-                    expansion += (isPositive ? temp : -temp);
+                    let temp = Math.pow(theta, i) / Fact(i);
+                    expansion += (isNegative ? -temp : temp);
                 }
             }
             else
             {
                 for (let i = 0; i <= order; i += 2)
                 {
-                    let isPositive = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
                     //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
-                    let temp = Math.pow((theta - Math.PI), i) / Fact(i);
-                    expansion += (isPositive ? temp : -temp);
+                    let temp = Math.pow(theta, i) / Fact(i);
+                    expansion += (isNegative ? -temp : temp);
                 }
             }
             return expansion;
@@ -1569,8 +1554,8 @@
                 expansion = [];
                 for (let i = 1; i <= order; i += 2)
                 {
-                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
-                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
+                    let isNegative = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let temp = String.raw`${isNegative ? '-' : '+'}\frac{\theta^${i}}{${i}!}`;
                     temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
                     if (i == 1 && temp[0] === "+")
                     {
@@ -1586,8 +1571,8 @@
                 expansion = [];
                 for (let i = 0; i <= order; i += 2)
                 {
-                    let isPositive = (Math.ceil((i + 1) / 2) % 2 == 0);
-                    let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let temp = String.raw`${isNegative ? '-' : '+'}\frac{\theta^${i}}{${i}!}`
                     temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
                     if (i == 0 && temp[0] === "+")
                     {
@@ -1706,11 +1691,11 @@
 
             const newEquations = `
             $$\\begin{align*}
-            &\\text{Original Horizontal about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Horizontal about $\\theta=\\pi$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
-            &\\text{Original Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
-            &\\text{Arbitrary Horizontal Control $x_p(t)$ about $\\theta=\\pi$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
+            &\\text{Original Horizontal: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Horizontal about $\\theta=0$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Vertical about $\\theta=0$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
+            &\\text{Arbitrary Horizontal Control $x_p(t)$ about $\\theta=0$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
             \\end{align*}$$`;
             equationsDiv.innerHTML = `
                 ${newEquations}
