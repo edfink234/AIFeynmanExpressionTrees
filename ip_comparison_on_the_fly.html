@@ -179,13 +179,13 @@
         
         .nail {
             position: absolute;
-            top: 50px; /* Adjust to position correctly */
-            left: 50px;
+            top: 50px; 
+            left: 200px;
             transform: translateX(-50%);
             border-radius: 50%;
             background-color: black;
-            /* height: 9px;
-            width: 9px; */
+            height: 4px;
+            width: 4px;
             z-index: 2; /* Ensures it's above the pendulum */
         }
         .Pendulum-Container {
@@ -235,7 +235,7 @@
         &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\theta =  \frac{ A \omega^2}{l}\left(1 - \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
         &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
         &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l}  \theta \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
-        &\text{Arbitrary Horizontal Control $x_p(t)$ about $\theta=0$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
+        &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
         \end{align*}
     </div>
 <!--    <div class="latex-equation">-->
@@ -246,23 +246,29 @@
 <!--        &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
 <!--        \end{align*}$$-->
 <!--    </div>-->
-    <div class = "row">
-        <div class = "col" align="center">
-            <label for="order-input">Order (integer from 0): </label>
-            <input type="number" id="order-input" min="0" value="2">
-            <!--        <button onclick="updateEquations(); updatePlot();">Update</button>-->
-            <br>
-        </div>
+    <div class="row g-0 justify-content-center">
+      <div class="col-md-5 text-center">
+        <label for="order-input">Order (integer from 0): </label>
+        <input type="number" id="order-input" min="0" value="2">
+      </div>
+      <div class="col-md-5 text-center">
+        <label for="thetaToTaylor">\(\theta\): </label>
+        <input type="number" id="thetaToTaylor" step="0.01" value="0">
+      </div>
     </div>
-    <br>
+
+
     
+    
+    <br>
+    <br>
     <br>
     <div class="row">
         <div class="col text-center">
-            <button type="button" class="btn btn-warning" id = "xpddotToggle" onclick="toggleEditor()">Change \(\ddot{x}_p(t)\)</button>
+            <button type="button" class="btn btn-warning" id = "xpToggle" onclick="toggleEditor()">Change \(x_p(t)\)</button>
             <div id="editor-container" style="display: none; margin-top: 10px;">
-                <textarea id="x_p_ddot_editor" rows="3" style="width: 100%; font-family: monospace;"></textarea>
-                <button class="btn btn-success mt-2" onclick="updateX_p_ddot()">Apply Change</button>
+                <textarea id="x_p_editor" rows="3" style="width: 100%; font-family: monospace;"></textarea>
+                <button class="btn btn-success mt-2" onclick="updateX_p()">Apply Change</button>
             </div>
         </div>
     </div>
@@ -810,7 +816,12 @@
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
-            <div class="nail" id="pivot"></div>
+            <div class="nail" id="pivotPendulumOriginalHorizontal">
+                <div id="horizontalLinepivotPendulumOriginalHorizontal" style="position:fixed; left:-250px; width:100vw; height:1px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                </div>
+            </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;">
                 <div class="Pendulum-Body" id="pendulumOriginalHorizontal">
                     <div class="connector" style = "border: 0.1px solid blue;"></div>
@@ -823,7 +834,12 @@
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorHorizontal">Taylor <br> Horizontal t = 0</div>
-            <div class="nail" id="pivot"></div>
+            <div class="nail" id="pivotPendulumTaylorHorizontal">
+                <div id="horizontalLinepivotPendulumTaylorHorizontal" style="position:fixed; left:0; width:100vw; height:1px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                </div>
+            </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;">
                 <div class="Pendulum-Body" id="pendulumTaylorHorizontal">
                     <div class="connector" style = "border: 0.1px solid green;"></div>
@@ -836,7 +852,12 @@
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalVertical">Original <br> Vertical t = 0</div>
-            <div class="nail" id="pivot"></div>
+            <div class="nail" id="pivotPendulumOriginalVertical">
+                <div id="horizontalLinepivotPendulumOriginalVertical" style="position:fixed; left:0; width:100vw; height:1px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                </div>
+            </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;">
                 <div class="Pendulum-Body" id="pendulumOriginalVertical">
                     <div class="connector" style = "border: 0.1px solid orange;"></div>
@@ -849,7 +870,12 @@
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorVertical">Taylor <br> Vertical t = 0</div>
-            <div class="nail" id="pivot"></div>
+            <div class="nail" id="pivotPendulumTaylorVertical">
+                <div id="horizontalLinepivotPendulumTaylorVertical" style="position:fixed; left:0; width:100vw; height:1px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                </div>
+            </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;">
                 <div class="Pendulum-Body" id="pendulumTaylorVertical">
                     <div class="connector" style = "border: 0.1px solid magenta;"></div>
@@ -862,7 +888,14 @@
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumArbitraryHorizontal">Arbitrary <br> Horizontal t = 0</div>
-            <div class="nail" id="pivot"></div>
+           
+
+           <div class="nail" id="pivotPendulumArbitraryHorizontal">
+               <div id="horizontalLinepivotPendulumArbitraryHorizontal" style="position:fixed; left:0; width:100vw; height:1px; background-color:black;">
+               </div>
+               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+               </div>
+           </div>
             <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;">
                 <div class="Pendulum-Body" id="pendulumArbitraryHorizontal">
                     <div class="connector" style = "border: 0.1px solid red;"></div>
@@ -872,7 +905,7 @@
             </section>
         </div>
     </div>
-    
+        
     <div class="plot-container" id="plot"></div>
     <div class="col my-3" align="center">
         <label for="yAxisRange">Y-Axis Range:</label>
@@ -913,8 +946,10 @@
     </div>
     
     <script>
-        
+        window.x_p = convertCppSymbolicStringToJs('cos((tanh(x0) * log(100.000000)))')
         window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4.605170) * ~((((sech(x0) * sech(x0)) * 4.605170) * cos((tanh(x0) * 4.605170))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4.605170) * ~(sin((tanh(x0) * 4.605170)))))');
+        window.original_x_p = window.x_p;
+        
         const sliderA = document.getElementById("A-slider");
         const minInputA = document.getElementById("minA");
         const maxInputA = document.getElementById("maxA");
@@ -1062,6 +1097,21 @@
         // Differential equation: θ''(t) + (g/l) * sin(θ) = A * ω² * cos(ωt) * cos(θ)
         const g = 9.8; // gravitational acceleration
 
+        //https://www.geeksforgeeks.org/factorial-of-a-number-using-javascript/#
+        const fact = (function () {
+            const cache = {};
+            return function facto(n) {
+                if (n === 0 || n === 1) {
+                    return 1;
+                }
+                if (cache[n]) {
+                    //console.log("value from caeche")
+                    return cache[n];
+                }
+                cache[n] = n * facto(n - 1);
+                return cache[n];
+            };
+        })();
         
         function toggleEditor()
         {
@@ -1069,29 +1119,29 @@
             if (editorContainer.style.display === "none" || editorContainer.style.display === "")
             {
                 editorContainer.style.display = "block";
-                document.getElementById("x_p_ddot_editor").value = window.x_p_ddot || ""; // Load current value
+                document.getElementById("x_p_editor").value = window.x_p || ""; // Load current value
             }
             else
             {
                 editorContainer.style.display = "none";
             }
             //Add something here to get the button `<button type="button" class="btn btn-warning" onclick="toggleEditor()">Change \(\ddot{x}_p(t)\)</button>` text content and, if `editorContainer.style.display == "block"`
-            let x_p_ddot_button = document.getElementById("xpddotToggle")
+            let x_p_button = document.getElementById("xpToggle")
 
             if (editorContainer.style.display == "block")
             {
-                x_p_ddot_button.textContent = String.raw`Hide \(\ddot{x}_p\) change-option`;
+                x_p_button.textContent = String.raw`Hide \(x_p(t)\) change-option`;
             }
             else
             {
-                x_p_ddot_button.textContent = String.raw`Change \(\ddot{x}_p\)`;
+                x_p_button.textContent = String.raw`Change \(x_p(t)\)`;
             }
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpddotToggle"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpToggle"]);
         }
 
-        function updateX_p_ddot()
+        function updateX_p()
         {
-            window.x_p_ddot = document.getElementById("x_p_ddot_editor").value;
+            window.x_p = document.getElementById("x_p_editor").value;
             alert("Change Applied");
             updatePlot();
         }
@@ -1121,40 +1171,66 @@
             return { t: tValues, y: yValues };
         }
         
-        //https://stackoverflow.com/a/3959361
-        function Fact(num)
-        {
-            let rval=1;
-            for (var i = 2; i <= num; i++)
-                rval = rval * i;
-            return rval;
-        }
-        
-        function computeTaylorExpansionValue(order, theta, isSin)
+        function computeTaylorExpansionValue(order, theta, isSin, thetaTaylor)
         {
             let expansion = 0
             
             if (isSin)
             {
-                for (let i = 1; i <= order; i += 2)
+                for (let i = 0; i <= order; i++)
                 {
-                    let isNegative = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.cos(thetaTaylor) : Math.sin(thetaTaylor);
+                    let prefactor = ((isNegative*-1 || 1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
                     //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
-                    let temp = Math.pow(theta, i) / Fact(i);
-                    expansion += (isNegative ? -temp : temp);
+                    let temp = prefactor * Math.pow((theta-thetaTaylor), i)
+                    expansion += temp;
                 }
             }
             else
             {
-                for (let i = 0; i <= order; i += 2)
+                for (let i = 0; i <= order; i++)
                 {
-                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.sin(thetaTaylor) : Math.cos(thetaTaylor);
+                    let prefactor = ((isPositive || -1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
                     //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
-                    let temp = Math.pow(theta, i) / Fact(i);
-                    expansion += (isNegative ? -temp : temp);
+                    let temp = prefactor * Math.pow((theta-thetaTaylor), i)
+                    expansion += temp;
                 }
             }
             return expansion;
+        }
+        
+        function secondDerivative(f, x_var, h_var = 1e-5)
+        {
+            //alert(f.replaceAll("t_val", "(x_var+h_var)"));
+            let right = eval(f.replaceAll("t_val", "(x_var+h_var)"));
+            if (isNaN(right))
+            {
+                return 0;
+            }
+            let left = eval(f.replaceAll("t_val", "(x_var-h_var)"));
+            if (isNaN(left))
+            {
+                return 0;
+            }
+            let mid = eval(f.replaceAll("t_val", "(x_var)"));
+            if (isNaN(mid))
+            {
+                return 0;
+            }
+            return (right - 2 * mid + left) / (h_var * h_var);
         }
 
         // System of ODEs: [θ, θ']
@@ -1171,9 +1247,11 @@
             
             // Taylor approximation
             let order = parseInt(document.getElementById('order-input').value);
-            let cos_term = computeTaylorExpansionValue(order, theta, false);
+            let thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            let cos_term = computeTaylorExpansionValue(order, theta, false, thetaTaylor);
             order = parseInt(document.getElementById('order-input').value);
-            let sin_term = computeTaylorExpansionValue(order, theta, true);
+            thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
             
             const thetaDDot = -(g / l) * (sin_term)
                               + (A * omega**2 / l) * cos_term * Math.cos(omega * t - delta) - lambda * thetaDot;
@@ -1194,7 +1272,8 @@
 
             // Taylor approximation
             let order = parseInt(document.getElementById('order-input').value);
-            let sin_term = computeTaylorExpansionValue(order, theta, true);
+            let thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
             
             const thetaDDot = -(g / l) * (sin_term)
                               - (A * omega**2 / l) * (sin_term) * Math.cos(omega * t - delta) - lambda * thetaDot;
@@ -1209,32 +1288,35 @@
         
         function convertCppSymbolicStringToJs(s)
         {
-            return s.replace(/\^|cos|asin|sin|tanh|ln|x0|~|sqrt/g, match => ({
+            return s.replace(/\^|cos|asin|sin|tanh|ln|x0|~|sqrt|log/g, match => ({
                 '^': '**',
                 'cos': 'Math.cos',
                 'asin': 'Math.asin',
                 'sin': 'Math.sin',
                 'tanh': 'Math.tanh',
                 'ln': 'Math.ln',
-                'x0': 't',
+                'x0': 't_val',
                 '~': '-',
-                'sqrt': 'Math.sqrt'
+                'sqrt': 'Math.sqrt',
+                'log': 'Math.log',
+                'ln': 'Math.log'
             }[match]));
         }
         
-        function pendulumODE_arbitrary_horizontal(t, y, l) {
+        function pendulumODE_arbitrary_horizontal(t_val, y, l) {
             const theta = y[0];
             //console.log("theta = ", theta);
             const thetaDot = y[1];
             //cos((tanh(x0) * log(100.000000)))
-            const cppSymbolicString = window.x_p_ddot;
+            let cppSymbolicString = window.x_p;
             //console.log(cppSymbolicString);
-            let result = eval(cppSymbolicString);
+            let result = (cppSymbolicString == window.original_x_p) ? eval(window.x_p_ddot) : secondDerivative(cppSymbolicString, t_val);
             //console.log(result);
             if (isNaN(result))
             {
                 result = 0;
             }
+            
             const thetaDDot = -(g / l) * Math.sin(theta) - ((result * Math.cos(theta)) / l);
             //console.log(thetaDDot);
             return [thetaDot, thetaDDot];
@@ -1269,12 +1351,15 @@
             if (showTaylor)
             {
                 const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-2 Horizontal about }\\theta\\text{ = 0}$').replace("2", order).replace("0", thetaVal);
+                //console.log(name_test);
                 traces.push({
                     x: t,
                     y: TaylorY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Taylor Order-2 Horizontal}$'.replace("2", order),
+                    name: name_test,
                     line: { color: 'green' }
                 });
             }
@@ -1294,12 +1379,14 @@
             if (showTaylorVertical)
             {
                 const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-2 Vertical about }\\theta\\text{ = 0}$').replace("2", order).replace("0", thetaVal);
                 traces.push({
                     x: t,
                     y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
                     type: 'scatter',
                     mode: 'lines',
-                    name: '$\\text{Taylor Order-2 Vertical}$'.replace("2", order),
+                    name: name_test,
                     line: { color: 'magenta' }
                 });
             }
@@ -1545,36 +1632,81 @@
             updatePlot(); // Update the Plotly plot to apply the new theme
         });
         
-        // Function to compute Taylor expansion for sin(theta) and cos(theta) about theta = pi
-        function taylorExpansion(order, isSin) {
+        // Function to compute Taylor expansion for sin(theta) and cos(theta) about some angle theta
+        function taylorExpansion(order, isSin, theta) {
             let expansion = [];
             
+            //sin: +sin, +cos, -sin, -cos, +sin, +cos, -sin, -cos, +sin, ...
             if (isSin)
             {
                 expansion = [];
-                for (let i = 1; i <= order; i += 2)
+                for (let i = 0; i <= order; i++)
                 {
-                    let isNegative = (Math.floor((i + 1) / 2) % 2 == 0);
-                    let temp = String.raw`${isNegative ? '-' : '+'}\frac{\theta^${i}}{${i}!}`;
-                    temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
-                    if (i == 1 && temp[0] === "+")
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.cos(theta) : Math.sin(theta);
+                    let prefactor = ((isNegative*-1 || 1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    isNegative = (prefactor < 0);
+                    prefactor = Math.abs(prefactor).toExponential(2).replace(/e\+?(-?\d+)/, '\\cdot 10^{$1}').replace(String.raw`\cdot 10^{0}`, '');
+                    
+                    if (prefactor.includes('^'))
+                    {
+                        prefactor = prefactor.replace('^', '^{')+'}';
+                    }
+                    
+                    let temp = String.raw`${isNegative ? '-' : '+'}${prefactor}`;
+                    if (i > 0)
+                    {
+                        temp += (theta) ? String.raw`\cdot(\theta-${theta})` : String.raw`\cdot\theta`;
+                    }
+                    if (i > 1)
+                    {
+                        temp += String.raw`^{${i}}`;
+                    }
+                    
+                    //temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if ((i == 0 || !expansion.length) && temp[0] === "+")
                     {
                         temp = temp.slice(1);
                     }
-                    //console.log(temp[0]);
-                    
                     expansion.push(temp);
+                    
                 }
             }
+            //cos: +cos, -sin, -cos, +sin, +cos, -sin, -cos, +sin, +cos, ...
             else
             {
                 expansion = [];
-                for (let i = 0; i <= order; i += 2)
+                for (let i = 0; i <= order; i++)
                 {
-                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
-                    let temp = String.raw`${isNegative ? '-' : '+'}\frac{\theta^${i}}{${i}!}`
-                    temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
-                    if (i == 0 && temp[0] === "+")
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.sin(theta) : Math.cos(theta);
+                    let prefactor = ((isPositive || -1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    isPositive = (prefactor > 0);
+                    prefactor = Math.abs(prefactor).toExponential(2).replace(/e\+?(-?\d+)/, '\\cdot 10^{$1}').replace(String.raw`\cdot 10^{0}`, '');
+                    
+                    let temp = String.raw`${isPositive ? '+' : '-'}${prefactor}`;
+                    if (i > 0)
+                    {
+                        temp += (theta) ? String.raw`\cdot(\theta-${theta})` : String.raw`\cdot\theta`;
+                    }
+                    if (i > 1)
+                    {
+                        temp += String.raw`^{${i}}`;
+                    }
+                    
+                    //let temp = String.raw`${isPositive ? '+' : '-'}${prefactor}\cdot(\theta-${theta})^${i}`;
+                    //temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if ((i == 0 || !expansion.length) && temp[0] === "+")
                     {
                         temp = temp.slice(1);
                     }
@@ -1617,9 +1749,38 @@
                 {
                     element.style.display = "block";
                     timeElement.style.display = "block";
+                    let pivod_id_string = "pivotP" + id_string.substr(1);
+                    let container_id_string = id_string.replace("pendulum", "pendulumContainer");
+                    //alert(pivod_id_string);
+                    
+                    let A_val = document.getElementById("A-input").value;
+                    let omega_val = document.getElementById("omega-input").value;
+                    let delta_val = document.getElementById("delta-input").value;
+                    
+                    let pivotLoc = [0, 0];
+                    
+                    if (id_string.includes("Horizontal"))
+                    {
+                        pivotLoc[1] = 0; //no movement in vertical direction
+                        if (id_string.includes("Arbitrary"))
+                        {
+                            pivotLoc[0] = eval(window.x_p.replaceAll("t_val", "t_values[i]"));
+                        }
+                        else
+                        {
+                            pivotLoc[0] = A_val*Math.cos(omega_val*t_values[i] - delta_val);
+                        }
+                    }
+                    else if (id_string.includes("Vertical"))
+                    {
+                        pivotLoc[0] = 0; //no movement in horizontal direction
+                        pivotLoc[1] = A_val*Math.cos(omega_val*t_values[i] - delta_val);
+                    }
+                    
                     if (i < theta_values.length)
                     {
                         rotatePendulum(theta_values[i][0], id_string);
+                        movePivot(pivotLoc[0], pivotLoc[1], pivod_id_string, container_id_string);
                         i++;
                         requestAnimationFrame(step);  // Ensures smooth animation
                     }
@@ -1627,6 +1788,7 @@
                     {
                         i = 0;
                         rotatePendulum(theta_values[i][0], id_string);
+                        movePivot(pivotLoc[0], pivotLoc[1], pivod_id_string, container_id_string);
                         i++;
                         requestAnimationFrame(step);  // Ensures smooth animation
                     }
@@ -1652,7 +1814,8 @@
                     {
                         timeElement.innerHTML = String.raw`Arbitrary <br> Horizontal `;
                     }
-                    timeElement.innerHTML += `t = ${t_values[i].toFixed(2)}`;
+                    if (t_values[i])
+                        timeElement.innerHTML += `t = ${t_values[i].toFixed(2)}`;
                 }
                 else
                 {
@@ -1665,37 +1828,56 @@
         }
 
 
+        function movePivot(x, y, pivot_id_string, container_id_string) {
+            const pivot = document.getElementById(pivot_id_string);
+            const container = document.getElementById(container_id_string);
+            
+            // Ensure position is absolute or relative
+            pivot.style.position = "absolute";
+            container.style.position =  "absolute";
 
-        function movePivot(x, y) {
-            const pivot = document.getElementById("pivot");
-            const container = document.getElementById("pendulumContainer");
+            if (!container.dataset.originX || !container.dataset.originY) {
+                // Store the initial position as the origin
+                container.dataset.originX = container.offsetLeft;
+                container.dataset.originY = container.offsetTop;
+            }
+                
+            const originX = parseFloat(container.dataset.originX);
+            const originY = parseFloat(container.dataset.originY);
 
-            // Update the pivot (nail) position
-            pivot.style.left = `${x}px`;
-            pivot.style.top = `${y}px`;
+            // Compute new positions relative to the original position
+            const newX = originX + x;
+            const newY = originY + y;
 
-            // Move the pendulum container to match the new pivot
-            container.style.left = `${x}px`;
-            container.style.top = `${y}px`;
+            // Ensure position is absolute or relative
+
+            // Update positions
+            // pivot.style.left = `${newX}px`;
+            // pivot.style.top = `${newY}px`;
+            container.style.left = `${newX}px`;
+            container.style.top = `${newY}px`;
         }
+
+
 
         function updateEquations() {
             const order = parseInt(document.getElementById('order-input').value);
+            const theta = parseFloat(document.getElementById('thetaToTaylor').value);
             const equationsDiv = document.getElementById('equations');
 
             // Compute the Taylor expansions for sin(theta) and cos(theta)
-            const sinExpansion = taylorExpansion(order, true);
-            const cosExpansion = taylorExpansion(order, false);
+            const sinExpansion = taylorExpansion(order, true, theta);
+            const cosExpansion = taylorExpansion(order, false, theta);
 
             //console.log(cosExpansion);
 
             const newEquations = `
             $$\\begin{align*}
             &\\text{Original Horizontal: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Horizontal about $\\theta=0$: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Horizontal about $\\theta=$ ${theta}: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
             &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Vertical about $\\theta=0$: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
-            &\\text{Arbitrary Horizontal Control $x_p(t)$ about $\\theta=0$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
+            &\\text{Taylor Order-${order} Vertical about $\\theta=$ ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
+            &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
             \\end{align*}$$`;
             equationsDiv.innerHTML = `
                 ${newEquations}
@@ -1749,7 +1931,7 @@
         document.getElementById('showArbitraryHorizontal').addEventListener('change', updatePlot);
 
         // Function to clean up the value dynamically
-        function validateAndFormatInput() {
+        function validateAndFormatOrderInput() {
             let orderInput = document.getElementById('order-input');
             let value = orderInput.value;
 
@@ -1767,15 +1949,37 @@
             updateEquations();
             updatePlot();
         }
+        
+        // Function to clean up the value dynamically
+        function validateAndFormatThetaInput() {
+            let thetaInput = document.getElementById('thetaToTaylor');
+            let value = thetaInput.value;
+
+            // Parse the value as a number and check its validity
+            value = parseFloat(value); // Convert to a float
+
+            // Ensure the value is a non-negative integer
+            if (isNaN(value)) {
+                value = 0; // Default to 0 if invalid
+            }
+
+            // Update the input value without leading zeros
+            thetaInput.value = value;
+            // Call your update functions dynamically
+            updateEquations();
+            updatePlot();
+        }
 
         let orderInput = document.getElementById('order-input');
         // Add event listeners for input validation
-        orderInput.addEventListener('input', validateAndFormatInput);
-        orderInput.addEventListener('blur', validateAndFormatInput); // Also validate on losing focus
-
+        orderInput.addEventListener('input', validateAndFormatOrderInput);
+        //orderInput.addEventListener('blur', validateAndFormatOrderInput); // Also validate on losing focus
+        let ThetaValueInput = document.getElementById('thetaToTaylor');
+        ThetaValueInput.addEventListener('input', validateAndFormatThetaInput);
         
         // Initial plot
         updatePlot();
+        
     </script>
 </body>
 </html>
