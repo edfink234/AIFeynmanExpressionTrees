@@ -86,4 +86,14 @@ Time from A = 0.7023076923076922 to 0.6938461538461538 b = 0.7807692307692308 to
 Time from A = 0.6938461538461538 to 0.6853846153846154 b = 0.7746153846153846 to 0.7684615384615384 = 795.92 with learning rate 0.000125, target achieved
 Time from A = 0.6853846153846154 to 0.676923076923077 b = 0.7684615384615385 to 0.7623076923076924 = 1012.40 with learning rate 0.000125, target achieved
 Time from A = 0.6769230769230768 to 0.6684615384615384 b = 0.7623076923076924 to 0.7561538461538462 = 1815.88 with learning rate 0.000125, target achieved
-Time from A = 0.6684615384615384 to 0.66 b = 0.7561538461538462 to 0.75 = 2129.84 with learning rate 0.000125, target achieved
+Time from A = 0.6684615384615384 to 0.66 b = 0.7561538461538462 to 0.75 = 2129.84 with learning rate 0.000125, target achievedTime from A = 0.66 to 0.66, b = 0.74 to 0.74, = 24.35 with learning rate 0.000125, target achieved
+Time from A = 0.66 to 0.655, b = 0.75 to 0.745, = 8577.24 with learning rate 0.000125, target achieved
+Time from A = 0.655 to 0.6572, b = 0.745 to 0.7356, = 7824.01 with learning rate 0.000125, target achieved
+Time from A = 0.6572 to 0.6594, b = 0.7356 to 0.7261, = 24.6484 with learning rate 0.000125, target achieved
+Time from A = 0.6594 to 0.6617, b = 0.7261 to 0.7167, = 9479.0209 with learning rate 0.000125, target achieved
+Time from A = 0.6617 to 0.6639, b = 0.7167 to 0.7072, = 13592.1517 with learning rate 0.000125, target achieved
+Time from A = 0.6639 to 0.6661, b = 0.7072 to 0.6978, = 13225.5051 with learning rate 7.5e-05, target achieved
+Time from A = 0.6661 to 0.6683, b = 0.6978 to 0.6883, = 25.0714 with learning rate 0.1, target achieved
+Time from A = 0.6683 to 0.6706, b = 0.6883 to 0.6809, = 1917.3621 with learning rate 6e-05, target achieved
+Time from A = 0.6706 to 0.6728, b = 0.6809 to 0.6734, = 27648.9364 with learning rate 6e-05, target achieved
+Time from A = 0.6728 to 0.6750, b = 0.6734 to 0.6660, = 22849.1395 with learning rate 6e-05, target achieved

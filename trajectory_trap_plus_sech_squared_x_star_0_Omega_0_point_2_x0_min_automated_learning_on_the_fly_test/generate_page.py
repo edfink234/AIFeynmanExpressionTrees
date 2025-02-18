@@ -53,49 +53,62 @@ for file in mp4_files: #could be png_files as well, doesn't matter in this case.
 
 #print(f"len(file_float_parts) = {len(file_float_parts)}")
 file_parts_display_1 = []
+file_parts_display_2 = []
+file_parts_display_3 = []
+file_parts_display_4 = []
+file_parts_display_5 = []
+file_parts_display_6 = []
+file_parts_display_7 = []
+
+
+print(file_float_parts)
+
 for parts in file_float_parts:
     if parts[-3:] == base_parts[-3:] and parts != base_parts and not (1.4 < parts[1] < 1.5):
         file_parts_display_1.append(parts)
-
-file_parts_display_2 = []
-for parts in file_float_parts:
-    if [parts[1]] + parts[3:5] == [base_parts[1]] + base_parts[3:5] and parts != base_parts:
+    elif [parts[1]] + parts[3:5] == [base_parts[1]] + base_parts[3:5] and parts != base_parts:
         file_parts_display_2.append(parts)
-
-file_parts_display_3 = []
-for parts in file_float_parts:
-    if parts[1:3] + parts[4:] == base_parts[1:3] + base_parts[4:] and parts != base_parts:
+    elif parts[1:3] + parts[4:] == base_parts[1:3] + base_parts[4:] and parts != base_parts:
         file_parts_display_3.append(parts)
-
-file_parts_display_4 = []
-for parts in file_float_parts:
-    if parts[1:4] == base_parts[1:4] and parts != base_parts:
+    elif parts[1:4] == base_parts[1:4] and parts != base_parts:
         file_parts_display_4.append(parts)
-
-file_parts_display_5 = []
-for parts in file_float_parts:
-    if parts[-3:] == base_parts[-3:] and parts != base_parts and (1.4 < parts[1] < 1.5):
+    elif parts[-3:] == base_parts[-3:] and parts != base_parts and (1.4 < parts[1] < 1.5):
         file_parts_display_5.append(parts)
-    
-file_parts_display_6 = []
-for parts in file_float_parts:
-    if parts[-2:] == base_parts[-2:] and parts != base_parts and (0.66 <= parts[1] <= 0.99) and (0.75 <= parts[2] <= 0.99):
+    elif parts[-2:] == base_parts[-2:] and parts != base_parts and (0.66 <= parts[1] <= 0.99) and (0.75 <= parts[2] <= 0.99):
         file_parts_display_6.append(parts)
+    elif parts[-2:] == base_parts[-2:] and parts != base_parts and (0.66 <= parts[1] <= 0.68) and (0.67 <= parts[2] <= 0.74):
+        file_parts_display_7.append(parts)
+        
 # Print the results (or use them as needed)
 #print(f"file_parts_display_1 of length {len(file_parts_display_1)}:", *file_parts_display_1, sep = '\n')
 #print(f"file_parts_display_2 of length {len(file_parts_display_2)}:", *file_parts_display_2, sep = '\n')
 #print(f"file_parts_display_3 of length {len(file_parts_display_3)}:", *file_parts_display_3, sep = '\n')
 #print(f"file_parts_display_4 of length {len(file_parts_display_4)}:", *file_parts_display_4, sep = '\n')
+#print(f"file_parts_display_5 of length {len(file_parts_display_5)}:", *file_parts_display_5, sep = '\n')
+#print(f"file_parts_display_6 of length {len(file_parts_display_6)}:", *file_parts_display_6, sep = '\n')
+#print(f"file_parts_display_7 of length {len(file_parts_display_7)}:", *file_parts_display_7, sep = '\n')
+
 file_parts_display_1.sort(key = lambda x: x[1])
 file_parts_display_2.sort(key = lambda x: x[2])
 file_parts_display_3.sort(key = lambda x: x[3])
 file_parts_display_4.sort(key = lambda x: x[4])
 file_parts_display_5.sort(key = lambda x: x[1])
 file_parts_display_6.sort(key = lambda x: x[1] + x[2])
-#print(f"file_parts_display_1 of length {len(file_parts_display_1)}:", *file_parts_display_1, sep = '\n')
-#print(f"file_parts_display_2 of length {len(file_parts_display_2)}:", *file_parts_display_2, sep = '\n')
-#print(f"file_parts_display_3 of length {len(file_parts_display_3)}:", *file_parts_display_3, sep = '\n')
-#print(f"file_parts_display_4 of length {len(file_parts_display_4)}:", *file_parts_display_4, sep = '\n')
+print("\n"*10)
+print(*list(zip(range(1, len(file_parts_display_6)+1),file_parts_display_6)), sep='\n')
+#exit()
+file_parts_display_6[-4], file_parts_display_6[-5] = file_parts_display_6[-5], file_parts_display_6[-4]
+file_parts_display_6[-17], file_parts_display_6[-18] = file_parts_display_6[-18], file_parts_display_6[-17]
+file_parts_display_6[-30], file_parts_display_6[-31] = file_parts_display_6[-31], file_parts_display_6[-30]
+file_parts_display_6[-36], file_parts_display_6[-37] = file_parts_display_6[-37], file_parts_display_6[-36]
+file_parts_display_7.sort(key = lambda x: x[1] + x[2])
+#swapping last 2 files because for file_parts_display_7 it's not perfect
+file_parts_display_7[0], file_parts_display_7[1] = file_parts_display_7[1], file_parts_display_7[0]
+#print(*file_parts_display_7, sep='\n')
+#exit()
+#print(f"file_parts_display_7 of length {len(file_parts_display_7)}:", *file_parts_display_7, sep = '\n')
+#exit()
+
 first_part = "trajectory_data_IC_"
 
 file_parts_display_1_mp4 = [base_file]
@@ -110,6 +123,8 @@ file_parts_display_5_mp4 = [base_file_1_point_4]
 file_parts_display_5_png = [base_file_1_point_4_png]
 file_parts_display_6_mp4 = [base_file]
 file_parts_display_6_png = [base_file_png]
+file_parts_display_7_mp4 = [base_file]
+file_parts_display_7_png = [base_file_png]
 
 for file_part in file_parts_display_1:
     temp_str = f"{first_part}{flt_to_str(file_part[0])}_{flt_to_str(file_part[1])}_{flt_to_str(file_part[2])}_{flt_to_str(file_part[3])}_{flt_to_str(file_part[4])}_"
@@ -141,6 +156,11 @@ for file_part in file_parts_display_6[::-1]:
     file_parts_display_6_mp4.append(f"{temp_str}.mp4")
     file_parts_display_6_png.append(f"{temp_str}.png")
 
+for file_part in file_parts_display_7[::-1]:
+    temp_str = f"{first_part}{flt_to_str(file_part[0])}_{flt_to_str(file_part[1])}_{flt_to_str(file_part[2])}_{flt_to_str(file_part[3])}_{flt_to_str(file_part[4])}_"
+    file_parts_display_7_mp4.append(f"{temp_str}.mp4")
+    file_parts_display_7_png.append(f"{temp_str}.png")
+
 #print("file_parts_display_5_mp4 =", file_parts_display_5_mp4)
 titles = open("result_times.txt").readlines()
 display_1_titles = ["Base Case"] + [i.strip('\n') for i in titles[:10]]
@@ -148,7 +168,8 @@ display_2_titles = ["Base Case"] + [i.strip('\n') for i in titles[10:20]]
 display_3_titles = ["Base Case"] + [i.strip('\n') for i in titles[20:30]]
 display_4_titles = ["Base Case"] + [i.strip('\n') for i in titles[30:40]]
 display_5_titles = ["Base Case, A = 1.4"] + [i.strip('\n') for i in titles[40:49]]
-display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:]]
+display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:89]]
+display_7_titles = ["Base Case"] + [i.strip('\n') for i in titles[89:]]
 
 #print(*display_1_titles, sep='\n', end="\n\n")
 #print(*display_2_titles, sep='\n', end="\n\n")
@@ -156,6 +177,7 @@ display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:]]
 #print(*display_4_titles, sep='\n', end="\n\n")
 #print(*list(zip(range(1,1+len(display_5_titles)), display_5_titles)), sep='\n', end="\n\n")
 #print(*display_6_titles, sep='\n', end="\n\n")
+#print(*display_7_titles, sep='\n', end="\n\n")
 
 display_1_title_tokens = [i.split() for i in display_1_titles[1:]]
 display_2_title_tokens = [i.split() for i in display_2_titles[1:]]
@@ -163,6 +185,7 @@ display_3_title_tokens = [i.split() for i in display_3_titles[1:]]
 display_4_title_tokens = [i.split() for i in display_4_titles[1:]]
 display_5_title_tokens = [i.split() for i in display_5_titles[1:]]
 display_6_title_tokens = [i.split() for i in display_6_titles[1:]]
+display_7_title_tokens = [i.split() for i in display_7_titles[1:]]
 
 display_1_titles = ["Base Case"]
 display_2_titles = ["Base Case"]
@@ -170,13 +193,15 @@ display_3_titles = ["Base Case"]
 display_4_titles = ["Base Case"]
 display_5_titles = ["Base Case, A = 1.4"]
 display_6_titles = ["Base Case"]
+display_7_titles = ["Base Case"]
 
-#print(*display_1_title_tokens, sep='\n', end="\n\n")
-#print(*display_2_title_tokens, sep='\n', end="\n\n")
-#print(*display_3_title_tokens, sep='\n', end="\n\n")
-#print(*display_4_title_tokens, sep='\n', end="\n\n")
-#print(*display_5_title_tokens, sep='\n', end="\n\n")
-#print(*display_6_title_tokens, sep='\n', end="\n\n\n"*10)
+print(*display_1_title_tokens, sep='\n', end="\n\n")
+print(*display_2_title_tokens, sep='\n', end="\n\n")
+print(*display_3_title_tokens, sep='\n', end="\n\n")
+print(*display_4_title_tokens, sep='\n', end="\n\n")
+print(*display_5_title_tokens, sep='\n', end="\n\n")
+print(*display_6_title_tokens, sep='\n', end="\n\n\n")
+print(*display_7_title_tokens, sep='\n', end="\n\n\n")
 
 for token_title in display_1_title_tokens:
     temp_str = f"Time spent learning {token_title[2]} = {token_title[6]} from {token_title[2]} = {token_title[4]} = {token_title[8]} seconds"
@@ -230,6 +255,18 @@ for token_title in display_6_title_tokens:
     else:
         temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
     display_6_titles.append(temp_str)
+
+for token_title in display_7_title_tokens:
+    token_title[6] = float(token_title[6].strip(','))
+    token_title[11] = float(token_title[11].strip(','))
+    token_title[4] = float(token_title[4])
+    token_title[9] = float(token_title[9])
+    temp_str = f"Time spent learning ({token_title[2]} = {token_title[6]:.3f}, {token_title[7]} = {token_title[11]:.3f}) from ({token_title[2]} = {token_title[4]:.3f}, {token_title[7]} = {token_title[9]:.3f}) = {token_title[13]} seconds"
+    if "not" in token_title:
+        temp_str += r", \(\mathcal{L} = " f"{float(token_title[-1]):.4f}" r"\)"
+    else:
+        temp_str += r", \(\mathcal{L} < 1.3 \times 10^{-2}\)"
+    display_7_titles.append(temp_str)
 
 
 #print(*(file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png), sep='\n')
@@ -423,8 +460,13 @@ file_data = [
     {"png": file_parts_display_3_png, "mp4": file_parts_display_3_mp4, "index": 0, "titles": display_2_titles},
     {"png": file_parts_display_4_png, "mp4": file_parts_display_4_mp4, "index": 0, "titles": display_4_titles},
     {"png": file_parts_display_5_png, "mp4": file_parts_display_5_mp4, "index": 0, "titles": display_5_titles},
-    {"png": file_parts_display_6_png, "mp4": file_parts_display_6_mp4, "index": 0, "titles": display_6_titles}
+    {"png": file_parts_display_6_png, "mp4": file_parts_display_6_mp4, "index": 0, "titles": display_6_titles},
+    {"png": file_parts_display_7_png, "mp4": file_parts_display_7_mp4, "index": 0, "titles": display_7_titles}
 ]
+
+
+print(*file_parts_display_7_png,sep='\n')
+#exit()
 
 # Generate and save HTML
 html_content = generate_html(file_data)
