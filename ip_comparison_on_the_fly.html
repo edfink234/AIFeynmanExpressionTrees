@@ -943,8 +943,7 @@
         <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
         <br> <br> <br>
         <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
-    </div>
-    
+    </div>    
     <script>
         window.x_p = convertCppSymbolicStringToJs('cos((tanh(x0) * log(100.000000)))')
         window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4.605170) * ~((((sech(x0) * sech(x0)) * 4.605170) * cos((tanh(x0) * 4.605170))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4.605170) * ~(sin((tanh(x0) * 4.605170)))))');
@@ -1352,7 +1351,7 @@
             {
                 const order = parseInt(document.getElementById('order-input').value);
                 const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-2 Horizontal about }\\theta\\text{ = 0}$').replace("2", order).replace("0", thetaVal);
+                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta\\text{ = '+thetaVal+'}$');
                 //console.log(name_test);
                 traces.push({
                     x: t,
@@ -1380,7 +1379,8 @@
             {
                 const order = parseInt(document.getElementById('order-input').value);
                 const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-2 Vertical about }\\theta\\text{ = 0}$').replace("2", order).replace("0", thetaVal);
+                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta\\text{ = '+thetaVal+'}$');
+
                 traces.push({
                     x: t,
                     y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
