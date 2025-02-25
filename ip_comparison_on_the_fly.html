@@ -195,8 +195,8 @@
             transform: translateX(-50%);
             border-radius: 50%;
             background-color: black;
-            height: 4px;
-            width: 4px;
+            height: 0px;
+            width: 0px;
             
             z-index: 2; /* Ensures it's above the pendulum */
         }
@@ -218,6 +218,8 @@
         }
         .connector {
             border: 0.1px solid black;
+            /*background-color: black;*/
+
             width: 0.1px;
             height: 80px;
         }
@@ -757,16 +759,16 @@
                 <label for="minTheta0">\(\theta_{0_{\text{min}}}\):</label>
             </div>
             <div class="col-md">
-                <input type="number" id="minTheta0" step="0.01" value="2.8">
+                <input type="number" id="minTheta0" step="0.01" value="0">
             </div>
             <div class="col-md">
                 <label class="control-label">\(\theta_0\):</label>
             </div>
             <div class="col-md">
-                <input id="theta-slider" type="range" min="2.8" max="3.4" step="0.01" value="3" class="slider">
+                <input id="theta-slider" type="range" min="0" max="7" step="0.01" value="0" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="theta-input" step="0.01" value="3" style="width: 80px;">
+                <input type="number" id="theta-input" step="0.01" value="0" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
@@ -836,9 +838,9 @@
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
             <div class="nail" id="pivotPendulumOriginalHorizontal">
-                <div id="horizontalLinepivotPendulumOriginalHorizontal" style="position:fixed; left:0px; width:10vw; height:1px; background-color:black;">
+                <div id="horizontalLinepivotPendulumOriginalHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: 0px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;">
@@ -854,9 +856,9 @@
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorHorizontal">Taylor <br> Horizontal t = 0</div>
             <div class="nail" id="pivotPendulumTaylorHorizontal">
-                <div id="horizontalLinepivotPendulumTaylorHorizontal" style="position:fixed; left:0; width:10vw; height:1px; background-color:black;">
+                <div id="horizontalLinepivotPendulumTaylorHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: 0px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;">
@@ -872,9 +874,9 @@
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalVertical">Original <br> Vertical t = 0</div>
             <div class="nail" id="pivotPendulumOriginalVertical">
-                <div id="horizontalLinepivotPendulumOriginalVertical" style="position:fixed; left:0; width:10vw; height:1px; background-color:black;">
+                <div id="horizontalLinepivotPendulumOriginalVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: 0px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;">
@@ -890,9 +892,9 @@
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorVertical">Taylor <br> Vertical t = 0</div>
             <div class="nail" id="pivotPendulumTaylorVertical">
-                <div id="horizontalLinepivotPendulumTaylorVertical" style="position:fixed; left:0; width:10vw; height:1px; background-color:black;">
+                <div id="horizontalLinepivotPendulumTaylorVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: 0px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;">
@@ -910,9 +912,9 @@
            
 
            <div class="nail" id="pivotPendulumArbitraryHorizontal">
-               <div id="horizontalLinepivotPendulumArbitraryHorizontal" style="position:fixed; left:0; width:10vw; height:1px; background-color:black;">
+               <div id="horizontalLinepivotPendulumArbitraryHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                </div>
-               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: 0px; width:1px; height:100px; background-color:black;">
+               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: 0px; width:0.5px; height:100px; background-color:black;">
                </div>
            </div>
             <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;">
