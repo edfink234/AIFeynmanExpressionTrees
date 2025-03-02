@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDE ODE Comparison Different Initial Velocities</title>
     <style>
+        .scroll-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 100%;
+            max-width: 100%;
+        }
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -70,14 +76,16 @@
 <body>
 <!--<h1>Control Problem Displays</h1>-->
 <!---->
-<!--<h2><u>Current Problem Formulation </u></h2>-->
-<!--<div class="latex-equation">-->
-<!--    $$\begin{align*}-->
-<!--    m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\-->
-<!--    V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\-->
-<!--    V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)-->
-<!--    \end{align*}$$-->
-<!--</div>-->
+<h2>Trajectories \(A\cdot \text{sech}^2(bx)\) ODE vs PDE </h2>
+<div class = "scroll-container" style = "text-align: center">
+    <div class="latex-equation">
+        $$\mathbf{V_{\textbf{ode}}} = 0.02\cdot x^2 + (0.675\cdot \text{sech}(0.666\cdot x))^2$$
+    </div>
+    <br>
+    <div class="latex-equation">
+        $$\mathbf{V_{\textbf{pde}}} = 0.02\cdot x^2 + \text{sech}^2(x)$$
+    </div>
+</div>
 <!--<h3><u>Constraints</u></h3>-->
 <!--<div class="latex-equation">-->
 <!--    $$\begin{align*}-->

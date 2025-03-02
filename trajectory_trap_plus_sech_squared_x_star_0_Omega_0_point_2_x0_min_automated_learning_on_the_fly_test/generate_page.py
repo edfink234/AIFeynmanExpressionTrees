@@ -284,6 +284,12 @@ def generate_html(file_data):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated Control Displays</title>
     <style>
+        .scroll-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 100%;
+            max-width: 100%;
+        }
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -347,44 +353,52 @@ def generate_html(file_data):
 <h1>Control Problem Displays</h1>
 """r"""
 <h2><u>Current Problem Formulation </u></h2>
-<div class="latex-equation">
-    $$\begin{align*}
-    m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
-    V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\
-    V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)
-    \end{align*}$$
+<div class = "scroll-container" style = "text-align: center">
+    <div class="latex-equation">
+        $$\begin{align*}
+        m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
+        V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\
+        V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)
+        \end{align*}$$
+    </div>
 </div>
 <h3><u>Constraints</u></h3>
-<div class="latex-equation">
-    $$\begin{align*}
-    x(0) &= x_0 \\
-    \xi(0) &= 0 \\
-    \dot{x}(0) &= 0 \\
-    x(t \leq T) &= x^* = 0 \\
-    \xi(t \leq T) &= x^* = 0 \\
-    |\dot{x}(t \leq T)| &= 0\\
-    T_{\text{th}} &= 10\text{ seconds} \\
-    \end{align*}$$
+<div class = "scroll-container" style = "text-align: center">
+
+    <div class="latex-equation">
+        $$\begin{align*}
+        x(0) &= x_0 \\
+        \xi(0) &= 0 \\
+        \dot{x}(0) &= 0 \\
+        x(t \leq T) &= x^* = 0 \\
+        \xi(t \leq T) &= x^* = 0 \\
+        |\dot{x}(t \leq T)| &= 0\\
+        T_{\text{th}} &= 10\text{ seconds} \\
+        \end{align*}$$
+    </div>
 </div>
 <h3 class="latex-equation underline">Loss Function \(\mathcal{L}\)</h3>
-<div class="latex-equation underline">
-    $$\begin{align*}
-    &\overrightarrow{\text{MSE}} \equiv \epsilon\cdot \left( \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right)\right) + \zeta\cdot\left(\vec{v}\odot\vec{v}\right) + \eta\left(\left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right)\right) \\
-    &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\
-    &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\
-    &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\
-    &\text{Max}_{v} = \max\left(\left|\vec{v}_{[t=1:t_{\text{best}}]}\right|\right) \\
-    &\text{Max}_{\xi} = \max\left(\left|\vec{\xi}_{[t=1:t_{\text{best}}]}\right|\right) \\[0.5cm]
-    &\boxed{\mathcal{L} = \text{MSE}_{\text{best}} + \alpha \cdot \text{Smoothness Penalty} + \beta \cdot t_{\text{best}} + \gamma \cdot \text{Max}_{v} + \delta \cdot \text{Max}_{\xi}}
-    \end{align*}$$
-    <br> Where:
-    $$\begin{align*}
-    &\epsilon = \zeta = \eta = 1 \\
-    &\alpha = \beta = \gamma = \delta = 10^{-3} \\
-    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
-    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
-    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
-    \end{align*}$$
+<div class = "scroll-container" style = "text-align: center">
+
+    <div class="latex-equation underline">
+        $$\begin{align*}
+        &\overrightarrow{\text{MSE}} \equiv \epsilon\cdot \left( \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right)\right) + \zeta\cdot\left(\vec{v}\odot\vec{v}\right) + \eta\left(\left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right)\right) \\
+        &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\
+        &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\
+        &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\
+        &\text{Max}_{v} = \max\left(\left|\vec{v}_{[t=1:t_{\text{best}}]}\right|\right) \\
+        &\text{Max}_{\xi} = \max\left(\left|\vec{\xi}_{[t=1:t_{\text{best}}]}\right|\right) \\[0.5cm]
+        &\boxed{\mathcal{L} = \text{MSE}_{\text{best}} + \alpha \cdot \text{Smoothness Penalty} + \beta \cdot t_{\text{best}} + \gamma \cdot \text{Max}_{v} + \delta \cdot \text{Max}_{\xi}}
+        \end{align*}$$
+        <br> Where:
+        $$\begin{align*}
+        &\epsilon = \zeta = \eta = 1 \\
+        &\alpha = \beta = \gamma = \delta = 10^{-3} \\
+        &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\
+        &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\
+        &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] 
+        \end{align*}$$
+    </div>
 </div>
 <br>
 <h3><u>Displays</u></h3>
