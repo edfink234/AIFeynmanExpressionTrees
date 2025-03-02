@@ -250,7 +250,9 @@
             &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\theta =  \frac{ A \omega^2}{l}\left(1 - \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
             &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
             &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l}  \theta \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
-            &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l}
+            &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
+            &\text{Mathieu Vertical: } \quad \frac{\partial^2 \varphi}{\partial \tau^2} + k \left( 1 - \tilde{m} \cos(\tau) \right) \varphi = 0
+            % \qquad\text{ where: } \quad k = \left( \frac{g}{l \omega^2} \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t, \quad \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta, \quad k > 0 \: \text{ for } \: \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right) \: \text{ and } \: k < 0 \: \text{ for } \:  \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right) \text{ where } \: n \in \mathbb{Z}
             \end{align*}
         </div>
     </div>

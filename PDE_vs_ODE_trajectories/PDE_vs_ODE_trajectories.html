@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Control Displays</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .display {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        img, video {
+            width: 45%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .latex-equation {
+            position: relative;
+            display: inline-block;
+        }
+
+        .latex-equation.underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px; /* Thickness of the underline */
+            background-color: currentColor; /* Matches the text color */
+        }
+        
+        h3.latex-equation {
+            margin-bottom: 0.2em; /* Add a small gap if needed */
+        }
+
+        div.latex-equation {
+            margin-top: 0; /* Ensure there's no extra space above the div */
+        }
+    </style>
+</head>
+<body>
+<!--<h1>Control Problem Displays</h1>-->
+<!---->
+<!--<h2><u>Current Problem Formulation </u></h2>-->
+<!--<div class="latex-equation">-->
+<!--    $$\begin{align*}-->
+<!--    m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\-->
+<!--    V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\-->
+<!--    V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)-->
+<!--    \end{align*}$$-->
+<!--</div>-->
+<!--<h3><u>Constraints</u></h3>-->
+<!--<div class="latex-equation">-->
+<!--    $$\begin{align*}-->
+<!--    x(0) &= x_0 \\-->
+<!--    \xi(0) &= 0 \\-->
+<!--    \dot{x}(0) &= 0 \\-->
+<!--    x(t \leq T) &= x^* = 0 \\-->
+<!--    \xi(t \leq T) &= x^* = 0 \\-->
+<!--    |\dot{x}(t \leq T)| &= 0\\-->
+<!--    T_{\text{th}} &= 10\text{ seconds} \\-->
+<!--    \end{align*}$$-->
+<!--</div>-->
+<!--<h3 class="latex-equation underline">Loss Function \(\mathcal{L}\)</h3>-->
+<!--<div class="latex-equation underline">-->
+<!--    $$\begin{align*}-->
+<!--    &\overrightarrow{\text{MSE}} \equiv \epsilon\cdot \left( \left(x^* - \vec{x}\right)\odot\left(x^* - \vec{x}\right)\right) + \zeta\cdot\left(\vec{v}\odot\vec{v}\right) + \eta\left(\left(x^* - \vec{\xi}\right)\odot\left(x^* - \vec{\xi}\right)\right) \\-->
+<!--    &\text{MSE}_{\text{best}} = \min\left(\overrightarrow{\text{MSE}}\right) \\-->
+<!--    &t_{\text{best}} = \underset{t_i\, \in \,\vec{t}}{\text{argmin}} \left(\overrightarrow{\text{MSE}}\right) \\-->
+<!--    &\text{Smoothness Penalty} = \frac{1}{t_{\text{best}}}\sum_{t=1}^{t_{\text{best}}} \left(\xi_{t} - \xi_{t-1}\right)^2 \\-->
+<!--    &\text{Max}_{v} = \max\left(\left|\vec{v}_{[t=1:t_{\text{best}}]}\right|\right) \\-->
+<!--    &\text{Max}_{\xi} = \max\left(\left|\vec{\xi}_{[t=1:t_{\text{best}}]}\right|\right) \\[0.5cm]-->
+<!--    &\boxed{\mathcal{L} = \text{MSE}_{\text{best}} + \alpha \cdot \text{Smoothness Penalty} + \beta \cdot t_{\text{best}} + \gamma \cdot \text{Max}_{v} + \delta \cdot \text{Max}_{\xi}}-->
+<!--    \end{align*}$$-->
+<!--    <br> Where:-->
+<!--    $$\begin{align*}-->
+<!--    &\epsilon = \zeta = \eta = 1 \\-->
+<!--    &\alpha = \beta = \gamma = \delta = 10^{-3} \\-->
+<!--    &\vec{x} = [x_1, x_2, ..., x_{T_{\text{Th}}}] \\-->
+<!--    &\vec{v} = [v_1, v_2, ..., v_{T_{\text{Th}}}] \\-->
+<!--    &\vec{\xi} = [\xi_1, \xi_2, ..., \xi_{T_{\text{Th}}}] -->
+<!--    \end{align*}$$-->
+<!--</div>-->
+<!--<br>-->
+<h3><u>Displays</u></h3>
+
+        <h4 id="title0" class="title latex-equation">\(v_0 = 1\)</h4> 
+        <div class="display" id="display0">
+            <button onclick="cycleDisplay(0, -1)">&#8592;</button>
+            <img id="img00" src="mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_1.png" alt="Display 00 Image">
+            <img id="img01" src="trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_1.png" alt="Display 01 Image">
+            <button onclick="cycleDisplay(0, 1)">&#8594;</button>
+        </div>
+        
+<!--        <h4 id="title1" class="title latex-equation">Base Case</h4> -->
+<!--        <div class="display" id="display1">-->
+<!--            <button onclick="cycleDisplay(1, -1)">&#8592;</button>-->
+<!--            <img id="img1" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 2 Image">-->
+<!--            <video id="video1" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(1, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <h4 id="title2" class="title latex-equation">Base Case</h4> -->
+<!--        <div class="display" id="display2">-->
+<!--            <button onclick="cycleDisplay(2, -1)">&#8592;</button>-->
+<!--            <img id="img2" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 3 Image">-->
+<!--            <video id="video2" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(2, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <h4 id="title3" class="title latex-equation">Base Case</h4> -->
+<!--        <div class="display" id="display3">-->
+<!--            <button onclick="cycleDisplay(3, -1)">&#8592;</button>-->
+<!--            <img id="img3" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 4 Image">-->
+<!--            <video id="video3" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(3, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <h4 id="title4" class="title latex-equation">Base Case, A = 1.4</h4> -->
+<!--        <div class="display" id="display4">-->
+<!--            <button onclick="cycleDisplay(4, -1)">&#8592;</button>-->
+<!--            <img id="img4" src="trajectory_data_IC_2_point_3687_1_point_4_1_point_0_1_point_0_0_point_2_.png" alt="Display 5 Image">-->
+<!--            <video id="video4" src="trajectory_data_IC_2_point_3687_1_point_4_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(4, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <h4 id="title5" class="title latex-equation">Base Case</h4> -->
+<!--        <div class="display" id="display5">-->
+<!--            <button onclick="cycleDisplay(5, -1)">&#8592;</button>-->
+<!--            <img id="img5" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 6 Image">-->
+<!--            <video id="video5" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(5, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--        <h4 id="title6" class="title latex-equation">Base Case</h4> -->
+<!--        <div class="display" id="display6">-->
+<!--            <button onclick="cycleDisplay(6, -1)">&#8592;</button>-->
+<!--            <img id="img6" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.png" alt="Display 7 Image">-->
+<!--            <video id="video6" src="trajectory_data_IC_2_point_2258_1_point_0_1_point_0_1_point_0_0_point_2_.mp4" controls></video>-->
+<!--            <button onclick="cycleDisplay(6, 1)">&#8594;</button>-->
+<!--        </div>-->
+<!--        -->
+<!--    <h4 id="A_1_point_5_from_scratch" class="title latex-equation">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0144}\)</h4> -->
+<!--    <div class="display">-->
+<!--        <img id="img_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.png" alt="A = 1.5 from Scratch">-->
+<!--        <video id="movie_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.mp4" controls></video>-->
+<!--    </div>-->
+<script>
+    /*window.onload = function() {
+        const displays = document.querySelectorAll('.display');
+        displays.forEach(display => {
+            const video = display.querySelector('video');
+            const img = display.querySelector('img');
+            
+            // Ensure video metadata is loaded to access dimensions
+            video.onloadedmetadata = () => {
+                img.style.height = `${video.videoHeight / video.videoWidth * img.clientWidth}px`;
+            };
+
+            // If metadata is already loaded (e.g., cached), set height immediately
+            if (video.readyState >= 1) {
+                img.style.height = `${video.videoHeight / video.videoWidth * img.clientWidth}px`;
+            }
+        });
+    };*/
+    const fileData = [{"png1": ["mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_1.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_2.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_3.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_4.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_5.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_6.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_7.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_8.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_9.png", "mass_loss_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_10.png"], "png2": ["trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_1.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_2.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_3.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_4.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_5.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_6.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_7.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_8.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_9.png", "trajectory_data_ode_and_pde_T_100_A_0.675,_b_0.666_xStart_2.4957938916320384_vStart_10.png"], "index": 0, "titles": ["\\(v_0 = 1\\)", "\\(v_0 = 2\\)", "\\(v_0 = 3\\)", "\\(v_0 = 4\\)", "\\(v_0 = 5\\)", "\\(v_0 = 6\\)", "\\(v_0 = 7\\)", "\\(v_0 = 8\\)", "\\(v_0 = 9\\)", "\\(v_0 = 10\\)"]}];
+
+    function cycleDisplay(displayIndex, direction) {
+        const data = fileData[displayIndex];
+        const currentIndex = data.index;
+        const newIndex = (currentIndex + direction + data.png1.length) % data.png1.length;
+
+        // Update image and video sources
+
+        document.getElementById(`img${displayIndex}0`).src = data.png1[newIndex];
+        document.getElementById(`img${displayIndex}1`).src = data.png2[newIndex];
+
+        // Update the title
+        document.getElementById(`title${displayIndex}`).innerText = data.titles[newIndex];
+        // Trigger MathJax to re-render the LaTeX in the updated element
+        MathJax.typesetPromise([document.getElementById(`title${displayIndex}`)]).catch((err) => console.error(err));
+        // Update index
+        fileData[displayIndex].index = newIndex;
+    }
+</script>
+</body>
+</html>
