@@ -61,6 +61,21 @@
         .toggle-button_learn_horizontal:hover {
             background-color: #0056b3;
         }
+        
+        .toggle-button_mathieu {
+                    display: inline-block;
+                    padding: 0.5em 1em;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                    
+        }
+        .toggle-button_mathieu:hover {
+            background-color: #0056b3;
+        }
 
         h1 {
             text-align: center;
@@ -251,7 +266,7 @@
             &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
             &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l}  \theta \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
             &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
-            &\text{Mathieu Vertical: } \quad \frac{\partial^2 \varphi}{\partial \tau^2} + k \left( 1 - \tilde{m} \cos(\tau) \right) \varphi = 0
+            &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
             % \qquad\text{ where: } \quad k = \left( \frac{g}{l \omega^2} \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t, \quad \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta, \quad k > 0 \: \text{ for } \: \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right) \: \text{ and } \: k < 0 \: \text{ for } \:  \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right) \text{ where } \: n \in \mathbb{Z}
             \end{align*}
         </div>
@@ -738,7 +753,7 @@
                 <label for="minL">\(l_{\text{min}}\):</label>
             </div>
             <div class="col-md">
-                <input type="number" id="minL" step="0.01" value="0">
+                <input type="number" id="minL" step="0.01" value="0" min="0">
             </div>
             <div class="col-md">
                 <label class="control-label">\(l\):</label>
@@ -747,7 +762,7 @@
                 <input id="l-slider" type="range" min="0" max="10" step="0.01" value="4" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="l-input" step="0.01" value="4" style="width: 80px;">
+                <input type="number" id="l-input" step="0.01" value="4" min="0" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxL">\(l_{\text{max}}\):</label>
@@ -836,17 +851,17 @@
         </div>
     </div>
     
-    <div class="row" style="margin-top:200px; margin-bottom:-20px;">
+    <div class="row" style="margin-top:200px;">
         <div class = "col-md-2" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
             <div class="nail" id="pivotPendulumOriginalHorizontal">
                 <div id="horizontalLinepivotPendulumOriginalHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: -10px; width:0.5px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
-            <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;">
+            <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumOriginalHorizontal">
                     <div class="connector" style = "border: 0.1px solid blue;"></div>
                     <div class="Ball" style = "background-color: blue;"></div>
@@ -861,10 +876,10 @@
             <div class="nail" id="pivotPendulumTaylorHorizontal">
                 <div id="horizontalLinepivotPendulumTaylorHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: -10px; width:0.5px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
-            <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;">
+            <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumTaylorHorizontal">
                     <div class="connector" style = "border: 0.1px solid green;"></div>
                     <div class="Ball" style = "background-color: green;"></div>
@@ -879,10 +894,10 @@
             <div class="nail" id="pivotPendulumOriginalVertical">
                 <div id="horizontalLinepivotPendulumOriginalVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: -10px; width:0.5px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: -10px;  left:-0.25px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
-            <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;">
+            <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumOriginalVertical">
                     <div class="connector" style = "border: 0.1px solid orange;"></div>
                     <div class="Ball" style = "background-color: orange;"></div>
@@ -897,10 +912,10 @@
             <div class="nail" id="pivotPendulumTaylorVertical">
                 <div id="horizontalLinepivotPendulumTaylorVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                 </div>
-                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: -10px; width:0.5px; height:100px; background-color:black;">
+                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
                 </div>
             </div>
-            <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;">
+            <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumTaylorVertical">
                     <div class="connector" style = "border: 0.1px solid magenta;"></div>
                     <div class="Ball" style = "background-color: magenta;"></div>
@@ -917,11 +932,32 @@
            <div class="nail" id="pivotPendulumArbitraryHorizontal">
                <div id="horizontalLinepivotPendulumArbitraryHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
                </div>
-               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: -10px; width:0.5px; height:100px; background-color:black;">
+               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: -10px;  left:-0.25px; width:0.5px; height:100px; background-color:black;">
                </div>
            </div>
-            <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;">
+            <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumArbitraryHorizontal">
+                    <div class="connector" style = "border: 0.1px solid red;"></div>
+                    <div class="Ball" style = "background-color: red;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top:200px;" align="center">
+        <div class = "col" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumMathieu">Mathieu <br> Vertical t = 0</div>
+
+           <div class="nail" id="pivotPendulumMathieu">
+               <div id="horizontalLinepivotPendulumMathieu" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+               </div>
+               <div id="VerticalLinepivotPendulumMathieu" style="position:fixed; bottom: -10px; width:0.5px;  left:-0.25px; height:100px; background-color:black;">
+               </div>
+           </div>
+            <div class="Pendulum-Container" id="pendulumContainerMathieu" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumMathieu">
                     <div class="connector" style = "border: 0.1px solid red;"></div>
                     <div class="Ball" style = "background-color: red;"></div>
                 </div>
@@ -957,17 +993,169 @@
         <label for="showTaylorVertical", id = "showTaylorVerticalLabel">Taylor Order-2 Vertical</label>
         <input type="checkbox" id="showArbitraryHorizontal" checked>
         <label for="showArbitraryHorizontal", id = "showArbitraryHorizontalLabel">Arbitrary Horizontal</label>
+        <input type="checkbox" id="showMathieu" checked>
+        <label for="showMathieu", id = "showMathieuLabel">Mathieu Horizontal</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
         <input type="checkbox" id="themeToggle">
     </div>
+    
+    <div class="plot-container" id="plotTongues"></div>
+        <div class="col my-3" align="center">
+    </div>
+    
     <br>
     <div class="col my-3" align="center">
         <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
         <br> <br> <br>
         <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
-    </div>    
+    </div>
+    
+    <div class="col-md-12 text-center">
+        <button type="button" class="toggle-button_mathieu" style = "color:white; background-color: gray" onclick = 'toggleMathieuDerivation();'>Show Mathieu Vertical Derivation</button>
+        <div id="MathieuDerivation" style = "display: none;">
+            <div class = "scroll-container">
+                <div class="latex-equation">
+                    \begin{align*}
+                    \sin(\theta) &\approx \sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0) \\
+                    &= \sin(\theta_0) + \cos(\theta_0)\theta - \cos(\theta_0)\theta_0 \\
+                    &= \underbrace{\sin(\theta_0) - \cos(\theta_0)\theta_0}_{\alpha} + \underbrace{\cos(\theta_0)}_\beta \theta \\
+                    &\equiv \alpha + \beta \theta
+                    \end{align*}
+                    
+                    \[
+                    \ddot{\theta} + \frac{g}{l}\sin(\theta) = -\frac{A \omega^2}{l}\cos(\omega t - \delta)\sin(\theta)
+                    \]
+                    Define:
+                    \[
+                    F(t) = -\frac{A \omega^2}{l}\cos(\omega t - \delta)
+                    \]
+                    Then:
+                    \[
+                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) = F(t)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} = -\frac{\left(\alpha+\beta\theta\right)}{l} \left(g + \frac{A \omega^2}{l}\cos(\omega t)\right)
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) =  - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
+                    \]
+
+
+
+
+                    \[
+                    \ddot{\theta} + \frac{g}{l}\beta \left(\frac{\alpha}{\beta} + \theta\right) = F(t)\beta \left(\frac{\alpha}{\beta} + \theta\right)
+                    \]
+
+                    Let:
+                    \[
+                    \varphi = \frac{\alpha}{\beta} + \theta, \quad \dot{\varphi} = \dot{\theta}, \quad \ddot{\varphi} = \ddot{\theta}
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \varphi = F(t)\beta \varphi
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \varphi - F(t)\beta \varphi = 0
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \left(1 - \frac{l}{g}F(t)\right) \varphi = 0
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l} \beta \left(1 + \frac{l}{g} \frac{A \omega^2}{l}\cos(\omega t - \delta)\right)\varphi = 0 \qquad \texttt{//Setting $\delta = 0$}
+                    \]
+
+                    \[
+                    \rightarrow \ddot{\varphi} + \frac{g}{l} \beta \left(1 + \frac{A \omega^2}{g}\cos(\omega t)\right)\varphi = 0
+                    \]
+
+                    Let:
+                    \[
+                    \tau = \omega t \rightarrow \frac{\partial^2 \varphi}{\partial \tau^2} = \frac{1}{\omega^2} \frac{\partial^2 \varphi}{\partial t^2}
+                    \]
+
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \frac{g \beta \omega^2}{l} \left( 1 + \frac{A \omega^2}{g} \cos(\tau) \right) \varphi = 0
+                    \]
+
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + k \left( 1 - \tilde{m} \cos(\tau) \right) \varphi = 0
+                    \]
+
+                    where
+
+                    \[
+                    k = \left( \frac{g\omega^2}{l } \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t
+                    \]
+
+                    \[
+                    \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta = \tan(\theta_0) - \theta_0 + \theta
+                    \]
+
+                    \[
+                    k > 0 \quad \text{for} \quad \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right)
+                    \]
+
+                    \[
+                    k < 0 \quad \text{for} \quad \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right)
+                    \]
+
+                    \[
+                    \text{where } \: n \in \mathbb{Z}
+                    \]
+
+                    \[
+                    \mathbf{k < 0} \quad \Rightarrow \quad 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}} < \frac{-A \omega^2}{g} < \frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                    \]
+                   
+                        \(\mathbf{k > 0}  \:\Rightarrow\) the following:
+
+                    \[
+                     \quad 0 < \frac{-A\omega^2}{g} < \left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                    \]
+
+                    \[
+                    \qquad \left(0 < k < \frac{1}{4}\right)
+                    \]
+
+                    \[
+                    0 < \frac{-A\omega^2}{g} < \frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right)
+                    \]
+
+                    \[
+                    \left(\frac{1}{4} < k < \frac{13}{20}\right)
+                    \]
+
+                    \[
+                    0 < \frac{-A\omega^2}{g} < \sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}}
+                    \]
+
+                    \[
+                    \left(\frac{13}{20} < k < 1\right)
+                    \]
+
+                    \[
+                    0 < \frac{-A\omega^2}{g} < 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}}
+                    \]
+
+                    \[
+                    (k > 1)
+                    \]
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         window.x_p = convertCppSymbolicStringToJs('cos((tanh(x0) * log(100.000000)))')
         window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4.605170) * ~((((sech(x0) * sech(x0)) * 4.605170) * cos((tanh(x0) * 4.605170))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4.605170) * ~(sin((tanh(x0) * 4.605170)))))');
@@ -1344,9 +1532,22 @@
             //console.log(thetaDDot);
             return [thetaDot, thetaDDot];
         }
+        
+        function pendulumODEMathieu(t_val, y, A, omega, l, alpha, beta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            
+            //\ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+            let comm_term = alpha + beta*theta
+            
+            const thetaDDot = -(g / l)*comm_term -
+                              ((A*omega*omega) / l)*Math.cos(omega*t_val)*comm_term;
+            
+            return [thetaDot, thetaDDot];
+        }
 
         // Plotting function
-        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz) {
+        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz, Mathieu) {
             const yAxisRangeOption = document.getElementById("yAxisRange").value;
             const yMin = parseFloat(document.getElementById("yMin").value);
             const yMax = parseFloat(document.getElementById("yMax").value);
@@ -1356,6 +1557,7 @@
             const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
             const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
             const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
+            const showMathieu = document.getElementById("showMathieu").checked;
 
             let traces = [];
             
@@ -1426,6 +1628,18 @@
                     line: { color: 'red' }
                 });
             }
+            
+            if (showMathieu)
+            {
+                traces.push({
+                    x: t,
+                    y: Mathieu.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Mathieu Vertical}$',
+                    line: { color: 'gray' }
+                });
+            }
 
             const layout = {
                 title: '$\\text{Inverted Pendulum: }\\theta(t)$',
@@ -1443,6 +1657,155 @@
             window.addEventListener('resize', () => {
                 Plotly.Plots.resize('plot');
             });
+            
+            //Mathieu Tongues
+            const omega = parseFloat(document.getElementById('omega-slider').value);
+            let l_temp = parseFloat(document.getElementById('l-slider').value);
+            const l_min = parseFloat(document.getElementById('l-input').min);
+            const l = Math.max(l_temp, l_min);
+            const theta0 = parseFloat(document.getElementById('theta-slider').value);
+            const A = parseFloat(document.getElementById('A-slider').value);
+            const omega_squared = omega*omega;
+            const k = (g*omega_squared*Math.cos(theta0))/l;
+            const m = -(A*omega_squared)/g;
+            
+            let traces_mathieu = [];
+            let delta_k = 0.0001;
+
+            if (k < 0)
+            {
+                //Plot $abs(\frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right))$ and $abs(2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}})$ for -1 <= k <= 1 and put those plots into traces_mathieu
+                // Generate k values in range -1 <= k <= 1
+                let k_vals = [];
+                for (let i = -1; i <= 0; i += delta_k)
+                {
+                    k_vals.push(i);
+                }
+                let f1_func = (k => Math.abs(0.25 * (Math.sqrt((9 - 4 * k) * (13 - 20 * k)) - (9 - 4 * k))));
+                let f1 = k_vals.map(f1_func);
+                let f2_func = (k => Math.abs(2 * Math.sqrt((k * (k - 1) * (k - 4)) / (3 * k - 8))));
+                let f2 = k_vals.map(f2_func);
+                /*if (f1_func(k) <= m && m <= f2_func(k))
+                {
+                    alert("Stable!");
+                }
+                else
+                {
+                    alert("Unstable!");
+                }*/
+
+                traces_mathieu.push({
+                    x: k_vals,
+                    y: f1,
+                    mode: 'lines',
+                    name: '$m_2(k)$',
+                    line: { color: 'blue' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals,
+                    y: f2,
+                    mode: 'lines',
+                    name: '$m_1(k)$',
+                    line: { color: 'red' }
+                });
+            }
+            else
+            {
+                //Plot the following and put those plots into traces_mathieu
+                /*
+                 \[
+                    abs(\left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right))
+                 \]
+                 for $\left(0 < k < \frac{1}{4}\right)$,
+                 \[
+                    abs(\frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right))
+                 \]
+                 for $\left(\frac{1}{4} < k < \frac{13}{20}\right)$,
+
+                 \[
+                    abs(\sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}})
+                 \]
+                 for $\left(\frac{13}{20} < k < 1\right)$, and
+
+                 \[
+                    abs(2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}})
+                 \]
+                 for (1 < k < 1.7)
+                 */
+                let k_vals1 = [];
+                let k_vals2 = [];
+                let k_vals3 = [];
+                let k_vals4 = [];
+                // Generate k values in different ranges
+                for (let i = 0.00; i < 0.25; i += delta_k) k_vals1.push(i);
+                for (let i = 0.25; i < 13 / 20; i += delta_k) k_vals2.push(i);
+                for (let i = 13 / 20; i < 1; i += delta_k) k_vals3.push(i);
+                for (let i = 1; i <= Math.max(1.7, m); i += delta_k) k_vals4.push(i);
+
+                let f1 = k_vals1.map(k => Math.abs(0.25 * (Math.sqrt((9 - 4 * k) * (13 - 20 * k)) - (9 - 4 * k))));
+                let f2_plus = k_vals2.map(k => Math.abs(0.25 * (9 - 4 * k + Math.sqrt((9 - 4 * k) * (13 - 20 * k)))));
+                let f2_minus = k_vals2.map(k => Math.abs(0.25 * (9 - 4 * k - Math.sqrt((9 - 4 * k) * (13 - 20 * k)))));
+                let f3 = k_vals3.map(k => Math.abs(Math.sqrt((2 * (k - 1) * (k - 4) * (k - 9)) / (k - 5))));
+                let f4 = k_vals4.map(k => Math.abs(2 * Math.sqrt((k * (k - 1) * (k - 4)) / (3 * k - 8))));
+
+                traces_mathieu.push({
+                    x: k_vals1,
+                    y: f1,
+                    mode: 'lines',
+                    name: '$m_2(k)$',
+                    line: { color: 'blue' }
+                });
+                
+                traces_mathieu.push({
+                    x: [...k_vals2, ...k_vals2.reverse()], // Concatenate k values for both branches
+                    y: [...f2_plus, ...f2_minus.reverse()], // Concatenate function values accordingly
+                    mode: 'lines',
+                    name: '$m_3(k)$',
+                    line: { color: 'green' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals3,
+                    y: f3,
+                    mode: 'lines',
+                    name: '$m_4(k)$',
+                    line: { color: 'purple' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals4,
+                    y: f4,
+                    mode: 'lines',
+                    name: '$m_5(k)$',
+                    line: { color: 'red' }
+                });
+            }
+            
+            traces_mathieu.push({
+                x: [k],
+                y: [m],
+                mode: 'markers',
+                name: '$(k, m) = \\left(\\left( \\frac{g\\omega^2}{l } \\right) \\cos(\\theta_0), -\\frac{A \\omega^2}{g})\\right)$',
+                marker: { color: 'gray', size: 10, symbol: 'circle' }
+            });
+            
+            const layout_mathieu = {
+                title: '$\\text{Mathieu Tongues: }m(k)$',
+                xaxis: { title: '$k$' },
+                yaxis: {title: '$m(k)$', range: [Math.min(0, m-1), Math.max(2, m+1)]},
+                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
+                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
+                showlegend: true
+            };
+            
+            
+            Plotly.newPlot('plotTongues', traces_mathieu, layout_mathieu);
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
         }
 
 
@@ -1450,7 +1813,10 @@
         async function updatePlot() {
             const A = parseFloat(document.getElementById('A-slider').value);
             const omega = parseFloat(document.getElementById('omega-slider').value);
-            const l = parseFloat(document.getElementById('l-slider').value);
+            let l_temp = parseFloat(document.getElementById('l-slider').value);
+            const l_min = parseFloat(document.getElementById('l-input').min);
+            const l = Math.max(l_temp, l_min);
+            
             const theta0 = parseFloat(document.getElementById('theta-slider').value);
             const lambda = parseFloat(document.getElementById('lambda-slider').value);
             const delta = parseFloat(document.getElementById('delta-slider').value);
@@ -1469,7 +1835,6 @@
             document.getElementById('theta-input').textContent = theta0;
             document.getElementById('lambda-input').textContent = lambda;
             document.getElementById('delta-input').textContent = delta;
-            
             document.getElementById('deltaT').value = h;
             
             // Initial conditions and solver parameters
@@ -1481,8 +1846,16 @@
             const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
             const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
             const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
+            const showMathieu = document.getElementById("showMathieu").checked;
             // Solve the system of ODEs
             y0 = [theta0, 0];
+            /*const tan_res = Math.tan(theta0);
+            const omega_res = omega*omega
+            const mathieu_phi_pre = (tan_res - theta0);
+            const mathieu_k = (g / (l*omega_res))*Math.cos(theta0);
+            const mathieu_m_tilde = (-A*omega_res)/g;
+            let y_mathieu_0 = [tan_res, 0];*/
+            
             const result = (showOriginal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             const TaylorResult = (showTaylor) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
@@ -1493,10 +1866,17 @@
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
             const ArbitraryResult_horizontal = (showArbitraryHorizontal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_arbitrary_horizontal(t, y, l)) : {"t":0,"y":0};
             
-            // Plot the results
-            let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t;
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const cos_res = Math.cos(theta0);
+            const alpha = Math.sin(theta0)-cos_res*theta0;
+            const beta = cos_res;
+            const Mathieu_result = (showMathieu) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta)) : {"t":0,"y":0};
+
             
-            plotResults(t_vals, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y, ArbitraryResult_horizontal.y);
+            // Plot the results
+            let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t || Mathieu_result.t;
+            
+            plotResults(t_vals, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y, ArbitraryResult_horizontal.y, Mathieu_result.y);
             
             if (showOriginal)
             {
@@ -1518,7 +1898,10 @@
             {
                 await animatePendulum(ArbitraryResult_horizontal.t, ArbitraryResult_horizontal.y, "pendulumArbitraryHorizontal", "showArbitraryHorizontal"); // Start animation
             }
-            
+            if (showMathieu)
+            {
+                await animatePendulum(Mathieu_result.t, Mathieu_result.y, "pendulumMathieu", "showMathieu"); // Start animation
+            }
             
         }
         
@@ -1546,6 +1929,18 @@
             }
             
             MathJax.Hub.Queue(["Typeset", MathJax.Hub,"LearnHorizontalButton"]);
+        }
+        
+        function toggleMathieuDerivation() {
+            const derivation = document.getElementById('MathieuDerivation');
+            const button = document.querySelector('.toggle-button_mathieu');
+            if (derivation.style.display === 'none') {
+                derivation.style.display = 'block';
+                button.textContent = 'Hide Mathieu Vertical Derivation';
+            } else {
+                derivation.style.display = 'none';
+                button.textContent = 'Show Mathieu Vertical Derivation';
+            }
         }
         
         function syncSliderWithInput(sliderId, inputId, minInputId, maxInputId) {
@@ -1800,6 +2195,11 @@
                         pivotLoc[0] = 0; //no movement in horizontal direction
                         pivotLoc[1] = A_val*Math.cos(omega_val*t_values[i] - delta_val);
                     }
+                    else if (id_string.includes("Mathieu"))
+                    {
+                        pivotLoc[0] = 0; //no movement in horizontal direction
+                        pivotLoc[1] = A_val*Math.cos(omega_val*t_values[i]);
+                    }
                     
                     if (i < theta_values.length)
                     {
@@ -1837,6 +2237,10 @@
                     else if (id_string.includes("ArbitraryHorizontal"))
                     {
                         timeElement.innerHTML = String.raw`Arbitrary <br> Horizontal `;
+                    }
+                    else if (id_string.includes("Mathieu"))
+                    {
+                        timeElement.innerHTML = String.raw`Mathieu <br> Vertical `;
                     }
                     if (t_values[i])
                         timeElement.innerHTML += `t = ${t_values[i].toFixed(2)}`;
@@ -1881,6 +2285,8 @@
             container.style.left = `${newX}px`;
             container.style.top = `${newY}px`;
         }
+        
+        
 
 
 
@@ -1901,7 +2307,8 @@
             &\\text{Taylor Order-${order} Horizontal about $\\theta=$ ${theta}: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
             &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
             &\\text{Taylor Order-${order} Vertical about $\\theta=$ ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
-            &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} 
+            &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} \\\\
+            &\\text{Mathieu Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right) =  - \\frac{A \\omega^2}{l}\\cos(\\omega t)\\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right)
             \\end{align*}$$`;
             equationsDiv.innerHTML = `
                 ${newEquations}
@@ -1917,6 +2324,10 @@
            /* MathJax.typesetPromise()
                 .then(() => console.log("MathJax re-rendered successfully"))
                 .catch((err) => console.error("MathJax render error:", err));*/
+        }
+        
+        function checkLGreaterThanOrEqualToZero() {
+            document.getElementById('minL').value = Math.max(0, document.getElementById('minL').value);
         }
 
         // Initialize synchronization for each parameter
@@ -1936,6 +2347,8 @@
         document.getElementById('delta-slider').addEventListener('input', updatePlot);
         document.getElementById('maxT').addEventListener('input', updatePlot);
         document.getElementById('deltaT').addEventListener('input', updatePlot);
+        document.getElementById('l-input').addEventListener('input', updatePlot);
+        document.getElementById('minL').addEventListener('input', checkLGreaterThanOrEqualToZero);
         // Show or hide the custom range inputs based on the dropdown selection
         document.getElementById('yAxisRange').addEventListener('change', () => {
             const yAxisRangeOption = document.getElementById('yAxisRange').value;
@@ -1953,6 +2366,7 @@
         document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
         document.getElementById('showTaylorVertical').addEventListener('change', updatePlot);
         document.getElementById('showArbitraryHorizontal').addEventListener('change', updatePlot);
+        document.getElementById('showMathieu').addEventListener('change', checkLGreaterThanOrEqualToZero);
 
         // Function to clean up the value dynamically
         function validateAndFormatOrderInput() {
