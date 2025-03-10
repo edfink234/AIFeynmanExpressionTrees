@@ -429,6 +429,13 @@ def generate_html(file_data):
         <img id="img_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.png" alt="A = 0.0675, B = 0.666 from Scratch">
         <video id="movie_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.mp4" controls></video>
     </div>"""
+    
+    html_content += r"""
+    <h4 id="Paul_From_A_point_0675_B_point_666" class="title latex-equation">\(\mathbf{V_{\text{eff}}(x, A = 1, b = 0.1) = \frac{8B\left(Ae^{4A(x-\xi)}(x-\xi)+Ae^{2A(x-\xi)}(x-\xi)-e^{4A(x-\xi)}+e^{2A(x-\xi)}\right)}{e^{6A(x-\xi)}-3e^{4A(x-\xi)}+3e^{2A(x-\xi)}-1}}\:\) from \(\mathbf{A = 0.0675, \:B = 0.666}\) \(\mathbf{\rightarrow \mathcal{L} = 0.016351}\)</h4> 
+    <div class="display">
+        <img id="img_Paul_From_A_point_0675_B_point_666" src="trajectory_data_IC_0_point_787127_1_0_point_1_1_point_0_0_point_2_Paul_.png" alt="A = 0.0675, B = 0.666 from Scratch">
+        <video id="movie_Paul_From_A_point_0675_B_point_666" src="trajectory_data_IC_0_point_787127_1_0_point_1_1_point_0_0_point_2_Paul_.mp4" controls></video>
+    </div>"""
 
     html_content += r"""
 <script>
