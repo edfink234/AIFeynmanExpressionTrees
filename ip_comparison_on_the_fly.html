@@ -256,15 +256,16 @@
     </style>
 </head>
 <body>
+<!--    sin(theta) = sin(pi) + cos(pi)*(theta-pi) - (sin(pi)/2)(theta-pi)^2 =  -(theta-pi)-->
+<!--    cos(theta) = cos(pi) - sin(pi)*(theta-pi) - (cos(pi)/2)*(theta-pi)^2 = -1 + ((theta-pi)^2)/2-->
     <h1>Interactive Inverted Pendulum Viewer</h1>
-    <!--TODO: Add option for damping for horiontal control        -->
     <div class = "scroll-container">
         <div class="latex-equation" id="equations">
             \begin{align*}
             &\text{Original Horizontal: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-            &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\theta =  \frac{ A \omega^2}{l}\left(1 - \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
+            &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} - \frac{g}{l}(\theta-\pi) =  \frac{ A \omega^2}{l}\left(-1 + \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
             &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
-            &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l}  \theta \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
+            &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} - \frac{g}{l} (\theta-\pi) = \frac{A \omega^2}{l}  (\theta-\pi) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
             &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
             &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
             % \qquad\text{ where: } \quad k = \left( \frac{g}{l \omega^2} \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t, \quad \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta, \quad k > 0 \: \text{ for } \: \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right) \: \text{ and } \: k < 0 \: \text{ for } \:  \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right) \text{ where } \: n \in \mathbb{Z}
@@ -286,8 +287,8 @@
         <input type="number" id="order-input" min="0" value="2">
       </div>
       <div class="col-md-5 text-center">
-        <label for="thetaToTaylor">\(\theta\): </label>
-        <input type="number" id="thetaToTaylor" step="0.01" value="0">
+        <label for="thetaToTaylor">\(\Delta \theta\:\) (where \(\theta=\pi+\Delta\theta\)): </label>
+        <input type="number" id="thetaToTaylor" step="0.01" value="0" size = "10">
       </div>
     </div>
 
@@ -711,10 +712,10 @@
                 <label class="control-label">\(A\):</label>
             </div>
             <div class="col-md">
-                <input id="A-slider" type="range" min="0" max="10" step="0.01" value="2" class="slider">
+                <input id="A-slider" type="range" min="0" max="10" step="0.01" value="1.51" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="A-input" step="0.01" value="2" style="width: 80px;">
+                <input type="number" id="A-input" step="0.01" value="1.51" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxA">\(A_{\text{max}}\):</label>
@@ -735,10 +736,10 @@
                 <label class="control-label">\(\omega\):</label>
             </div>
             <div class="col-md">
-                <input id="omega-slider" type="range" min="0" max="10" step="0.01" value="5" class="slider">
+                <input id="omega-slider" type="range" min="0" max="10" step="0.01" value="5.46" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="omega-input" step="0.01" value="5" style="width: 80px;">
+                <input type="number" id="omega-input" step="0.01" value="5.46" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxOmega">\(\omega_{\text{max}}\):</label>
@@ -759,10 +760,10 @@
                 <label class="control-label">\(l\):</label>
             </div>
             <div class="col-md">
-                <input id="l-slider" type="range" min="0" max="10" step="0.01" value="4" class="slider">
+                <input id="l-slider" type="range" min="0" max="10" step="0.01" value="10" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="l-input" step="0.01" value="4" min="0" style="width: 80px;">
+                <input type="number" id="l-input" step="0.01" value="10" min="0" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxL">\(l_{\text{max}}\):</label>
@@ -783,16 +784,16 @@
                 <label class="control-label">\(\theta_0\):</label>
             </div>
             <div class="col-md">
-                <input id="theta-slider" type="range" min="0" max="7" step="0.01" value="0" class="slider">
+                <input id="theta-slider" type="range" min="0" max="7" step="0.01" value="3.141592653589793" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="theta-input" step="0.01" value="0" style="width: 80px;">
+                <input type="number" id="theta-input" step="0.01" value="3.141592653589793" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
             </div>
             <div class="col-md">
-                <input type="number" id="maxTheta0" step="0.01" value="3.4">
+                <input type="number" id="maxTheta0" step="0.01" value="7">
             </div>
         </div>
         <div class="row mx-3">
@@ -806,10 +807,10 @@
                 <label class="control-label">\(\lambda\):</label>
             </div>
             <div class="col-md">
-                <input id="lambda-slider" type="range" min="0" max="3.4" step="0.01" value="2" class="slider">
+                <input id="lambda-slider" type="range" min="0" max="3.4" step="0.01" value="0" class="slider">
             </div>
             <div class="col-md">
-                <input type="number" id="lambda-input" step="0.01" value="2" style="width: 80px;">
+                <input type="number" id="lambda-input" step="0.01" value="0" style="width: 80px;">
             </div>
             <div class="col-md">
                 <label for="maxLambda">\(\lambda_{\text{max}}\):</label>
@@ -994,7 +995,7 @@
         <input type="checkbox" id="showArbitraryHorizontal" checked>
         <label for="showArbitraryHorizontal", id = "showArbitraryHorizontalLabel">Arbitrary Horizontal</label>
         <input type="checkbox" id="showMathieu" checked>
-        <label for="showMathieu", id = "showMathieuLabel">Mathieu Horizontal</label>
+        <label for="showMathieu", id = "showMathieuLabel">Mathieu Vertical</label>
     </div>
     <div class="col my-3" align="center">
         <label for="themeToggle">Dark Mode:</label>
@@ -1157,6 +1158,7 @@
         </div>
     </div>
     <script>
+        Math.Pi = 3.141592653589793;
         window.x_p = convertCppSymbolicStringToJs('cos((tanh(x0) * log(100.000000)))')
         window.x_p_ddot = convertCppSymbolicStringToJs('((((sech(x0) * sech(x0)) * 4.605170) * ~((((sech(x0) * sech(x0)) * 4.605170) * cos((tanh(x0) * 4.605170))))) + ((((sech(x0) * (~(sech(x0)) * tanh(x0))) + ((~(sech(x0)) * tanh(x0)) * sech(x0))) * 4.605170) * ~(sin((tanh(x0) * 4.605170)))))');
         window.original_x_p = window.x_p;
@@ -1458,10 +1460,10 @@
             
             // Taylor approximation
             let order = parseInt(document.getElementById('order-input').value);
-            let thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            let thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
             let cos_term = computeTaylorExpansionValue(order, theta, false, thetaTaylor);
             order = parseInt(document.getElementById('order-input').value);
-            thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
             let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
             
             const thetaDDot = -(g / l) * (sin_term)
@@ -1483,7 +1485,7 @@
 
             // Taylor approximation
             let order = parseInt(document.getElementById('order-input').value);
-            let thetaTaylor = parseFloat(document.getElementById('thetaToTaylor').value);
+            let thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
             let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
             
             const thetaDDot = -(g / l) * (sin_term)
@@ -1577,7 +1579,7 @@
             {
                 const order = parseInt(document.getElementById('order-input').value);
                 const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta\\text{ = '+thetaVal+'}$');
+                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta = \\pi +'+thetaVal+'$');
                 //console.log(name_test);
                 traces.push({
                     x: t,
@@ -1605,7 +1607,7 @@
             {
                 const order = parseInt(document.getElementById('order-input').value);
                 const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta\\text{ = '+thetaVal+'}$');
+                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta = \\pi +'+thetaVal+'$');
 
                 traces.push({
                     x: t,
@@ -1849,12 +1851,6 @@
             const showMathieu = document.getElementById("showMathieu").checked;
             // Solve the system of ODEs
             y0 = [theta0, 0];
-            /*const tan_res = Math.tan(theta0);
-            const omega_res = omega*omega
-            const mathieu_phi_pre = (tan_res - theta0);
-            const mathieu_k = (g / (l*omega_res))*Math.cos(theta0);
-            const mathieu_m_tilde = (-A*omega_res)/g;
-            let y_mathieu_0 = [tan_res, 0];*/
             
             const result = (showOriginal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
             y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
@@ -1872,7 +1868,6 @@
             const beta = cos_res;
             const Mathieu_result = (showMathieu) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta)) : {"t":0,"y":0};
 
-            
             // Plot the results
             let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t || Mathieu_result.t;
             
@@ -2296,17 +2291,17 @@
             const equationsDiv = document.getElementById('equations');
 
             // Compute the Taylor expansions for sin(theta) and cos(theta)
-            const sinExpansion = taylorExpansion(order, true, theta);
-            const cosExpansion = taylorExpansion(order, false, theta);
+            const sinExpansion = taylorExpansion(order, true, Math.Pi + theta);
+            const cosExpansion = taylorExpansion(order, false, Math.Pi + theta);
 
             //console.log(cosExpansion);
 
             const newEquations = `
             $$\\begin{align*}
             &\\text{Original Horizontal: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Horizontal about $\\theta=$ ${theta}: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Horizontal about $\\theta=\\pi$ + ${theta}: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
             &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
-            &\\text{Taylor Order-${order} Vertical about $\\theta=$ ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$ + ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
             &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} \\\\
             &\\text{Mathieu Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right) =  - \\frac{A \\omega^2}{l}\\cos(\\omega t)\\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right)
             \\end{align*}$$`;
@@ -2366,7 +2361,7 @@
         document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
         document.getElementById('showTaylorVertical').addEventListener('change', updatePlot);
         document.getElementById('showArbitraryHorizontal').addEventListener('change', updatePlot);
-        document.getElementById('showMathieu').addEventListener('change', checkLGreaterThanOrEqualToZero);
+        document.getElementById('showMathieu').addEventListener('change', updatePlot);
 
         // Function to clean up the value dynamically
         function validateAndFormatOrderInput() {
@@ -2388,24 +2383,23 @@
             updatePlot();
         }
         
-        // Function to clean up the value dynamically
         function validateAndFormatThetaInput() {
-            let thetaInput = document.getElementById('thetaToTaylor');
-            let value = thetaInput.value;
+            let thetaToTaylor = document.getElementById('thetaToTaylor');
+            // Store the original user input
+            const originalInput = this.value.trim();
 
-            // Parse the value as a number and check its validity
-            value = parseFloat(value); // Convert to a float
+            // Try parsing as a number
+            const value = parseFloat(originalInput);
 
-            // Ensure the value is a non-negative integer
-            if (isNaN(value)) {
-                value = 0; // Default to 0 if invalid
+            // If it's a valid number, update the slider but keep the original text format
+            if (!isNaN(value)) {
+                // Keep the input exactly as the user typed it
+                thetaToTaylor.textContent = originalInput;
+                
+                // Call your update functions dynamically
+                updateEquations();
+                updatePlot();
             }
-
-            // Update the input value without leading zeros
-            thetaInput.value = value;
-            // Call your update functions dynamically
-            updateEquations();
-            updatePlot();
         }
 
         let orderInput = document.getElementById('order-input');

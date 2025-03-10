@@ -422,6 +422,13 @@ def generate_html(file_data):
         <img id="img_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.png" alt="A = 1.5 from Scratch">
         <video id="movie_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.mp4" controls></video>
     </div>"""
+    
+    html_content += r"""
+    <h4 id="A_point_0675_B_point_666_from_A_1_B_1" class="title latex-equation">\(\mathbf{A = 0.0675, \:B = 0.666}\) from \(\mathbf{A = 1, \:B = 1}\) \(\mathbf{\rightarrow \mathcal{L} < 0.013}\)</h4> 
+    <div class="display">
+        <img id="img_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.png" alt="A = 0.0675, B = 0.666 from Scratch">
+        <video id="movie_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.mp4" controls></video>
+    </div>"""
 
     html_content += r"""
 <script>
