@@ -407,7 +407,7 @@ def generate_html(file_data):
         first_png = display["png"][display["index"]]
         first_mp4 = display["mp4"][display["index"]]
         html_content += f"""
-        <h4 id="title{i}" class="title latex-equation">{file_data[i]['titles'][file_data[i]['index']]}</h4> 
+        <h4 id="title{i}" class="title latex-equation scroll-container">{file_data[i]['titles'][file_data[i]['index']]}</h4> 
         <div class="display" id="display{i}">
             <button onclick="cycleDisplay({i}, -1)">&#8592;</button>
             <img id="img{i}" src="{first_png}" alt="Display {i + 1} Image">
@@ -417,21 +417,21 @@ def generate_html(file_data):
         """
 
     html_content += r"""
-    <h4 id="A_1_point_5_from_scratch" class="title latex-equation">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0144}\)</h4> 
+    <h4 id="A_1_point_5_from_scratch" class="title latex-equation scroll-container">\(\mathbf{A = 1.5\,}\) from scratch \(\mathbf{\rightarrow \mathcal{L} = 0.0144}\)</h4> 
     <div class="display">
         <img id="img_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.png" alt="A = 1.5 from Scratch">
         <video id="movie_A_1_point_5_from_scratch" src="trajectory_data_IC_2_point_3981_1_point_5_1_point_0_1_point_0_0_point_2_random_initialized.mp4" controls></video>
     </div>"""
     
     html_content += r"""
-    <h4 id="A_point_0675_B_point_666_from_A_1_B_1" class="title latex-equation">\(\mathbf{A = 0.0675, \:B = 0.666}\) from \(\mathbf{A = 1, \:B = 1}\) \(\mathbf{\rightarrow \mathcal{L} < 0.013}\)</h4> 
+    <h4 id="A_point_0675_B_point_666_from_A_1_B_1" class="title latex-equation scroll-container">\(\mathbf{A = 0.0675, \:B = 0.666}\) from \(\mathbf{A = 1, \:B = 1}\) \(\mathbf{\rightarrow \mathcal{L} < 0.013}\)</h4> 
     <div class="display">
         <img id="img_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.png" alt="A = 0.0675, B = 0.666 from Scratch">
         <video id="movie_A_point_0675_B_point_666_from_A_1_B_1" src="trajectory_data_IC_0_point_848359_0_point_067475_0_point_665792_1_point_0_0_point_2_.mp4" controls></video>
     </div>"""
     
     html_content += r"""
-    <h4 id="Paul_From_A_point_0675_B_point_666" class="title latex-equation">\(\mathbf{V_{\text{eff}}(x, A = 1, b = 0.1) = \frac{8B\left(Ae^{4A(x-\xi)}(x-\xi)+Ae^{2A(x-\xi)}(x-\xi)-e^{4A(x-\xi)}+e^{2A(x-\xi)}\right)}{e^{6A(x-\xi)}-3e^{4A(x-\xi)}+3e^{2A(x-\xi)}-1}}\:\) from \(\mathbf{A = 0.0675, \:B = 0.666}\) \(\mathbf{\rightarrow \mathcal{L} = 0.016351}\)</h4> 
+    <h4 id="Paul_From_A_point_0675_B_point_666" class="title latex-equation scroll-container">\(\mathbf{V_{\text{eff}}(x, A = 1, b = 0.1) = \frac{8B\left(Ae^{4A(x-\xi)}(x-\xi)+Ae^{2A(x-\xi)}(x-\xi)-e^{4A(x-\xi)}+e^{2A(x-\xi)}\right)}{e^{6A(x-\xi)}-3e^{4A(x-\xi)}+3e^{2A(x-\xi)}-1}}\:\) from \(\mathbf{A = 0.0675, \:B = 0.666}\) \(\mathbf{\rightarrow \mathcal{L} = 0.016351}\)</h4> 
     <div class="display">
         <img id="img_Paul_From_A_point_0675_B_point_666" src="trajectory_data_IC_0_point_787127_1_0_point_1_1_point_0_0_point_2_Paul_.png" alt="A = 0.0675, B = 0.666 from Scratch">
         <video id="movie_Paul_From_A_point_0675_B_point_666" src="trajectory_data_IC_0_point_787127_1_0_point_1_1_point_0_0_point_2_Paul_.mp4" controls></video>
