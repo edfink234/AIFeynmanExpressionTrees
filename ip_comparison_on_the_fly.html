@@ -959,8 +959,8 @@
            </div>
             <div class="Pendulum-Container" id="pendulumContainerMathieu" style = "display:block;  z-index: 50;">
                 <div class="Pendulum-Body" id="pendulumMathieu">
-                    <div class="connector" style = "border: 0.1px solid red;"></div>
-                    <div class="Ball" style = "background-color: red;"></div>
+                    <div class="connector" style = "border: 0.1px solid gray;"></div>
+                    <div class="Ball" style = "background-color: gray;"></div>
                 </div>
             </div>
             </section>
@@ -1007,12 +1007,99 @@
     </div>
     
     <br>
-    <div class="col my-3" align="center">
-        <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
-        <br> <br> <br>
-        <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" class="btn btn-warning" id = "GetStabilityPlot" onclick = "toggleStabilityOptions()">Configure Stability Plot Options</button>
+            <div id="stability-container" style="display: none; margin-top: 10px;">
+                <br>
+                <div class="row mx-3">
+                    <div class="col-md">
+                        <label for="Min_m_Mathieu">\(m_{\text{min}}\):</label>
+                        <input type="number" id="Min_m_Mathieu" step="0.01" value="0">
+                    </div>
+                    <div class="col-md">
+                        <label for="Max_m_Mathieu">\(m_{\text{max}}\):</label>
+                        <input type="number" id="Max_m_Mathieu" step="0.01" value="3.4">
+                    </div>
+                    <div class="col-md">
+                        <label for="Delta_m_Mathieu">\(\Delta m\):</label>
+                        <input type="number" id="Delta_m_Mathieu" step="0.01" value="0.1">
+                    </div>
+                </div>
+                
+                <br>
+                <div class="row mx-3">
+                    <div class="col-md">
+                        <label for="Min_k_Mathieu">\(k_{\text{min}}\):</label>
+                        <input type="number" id="Min_k_Mathieu" step="0.01" value="-1">
+                    </div>
+                    <div class="col-md">
+                        <label for="Max_k_Mathieu">\(k_{\text{max}}\):</label>
+                        <input type="number" id="Max_k_Mathieu" step="0.01" value="-0.1">
+                    </div>
+                    <div class="col-md">
+                        <label for="Delta_k_Mathieu">\(\Delta k\):</label>
+                        <input type="number" id="Delta_k_Mathieu" step="0.01" value="0.01">
+                    </div>
+                </div>
+                <br>
+                <div class="row g-0 justify-content-center">
+                    <div class="col-md-3 text-center">
+                        <label for="theta_0_Mathieu_Stability">\(\theta_0\): </label>
+                        <input type="number" id="theta_0_Mathieu_Stability" min="0" value="3.1">
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <label for="Delta_Theta_Mathieu_Stability">\(\text{Max}\left(\left|\theta - \theta_0\right|\right)\): </label>
+                        <input type="number" id="Delta_Theta_Mathieu_Stability" step="0.01" value="0.1" size = "10">
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <label for="Delta_t_Mathieu_Stability">\(\Delta t\): </label>
+                        <input type="number" id="Delta_t_Mathieu_Stability" min="0" value="0.1">
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <label for="T_final_Mathieu_Stability">\(T_{\text{final}}\): </label>
+                        <input type="number" id="T_final_Mathieu_Stability" step="0.01" value="10" size = "10">
+                    </div>
+                </div>
+<!--                TODO: Make default values below correct:-->
+<!--                <br>-->
+<!--                <div class="row mx-3">-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Min_A_Mathieu">\(A_{\text{min}}\):</label>-->
+<!--                        <input type="number" id="Min_A_Mathieu" step="0.01" value="0">-->
+<!--                    </div>-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Max_A_Mathieu">\(A_{\text{max}}\):</label>-->
+<!--                        <input type="number" id="Max_A_Mathieu" step="0.01" value="3.4">-->
+<!--                    </div>-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Delta_A_Mathieu">\(\Delta A\):</label>-->
+<!--                        <input type="number" id="Delta_A_Mathieu" step="0.01" value="0.1">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                -->
+<!--                <br>-->
+<!--                <div class="row mx-3">-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Min_l_Mathieu">\(l_{\text{min}}\):</label>-->
+<!--                        <input type="number" id="Min_l_Mathieu" step="0.01" value="-1">-->
+<!--                    </div>-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Max_l_Mathieu">\(l_{\text{max}}\):</label>-->
+<!--                        <input type="number" id="Max_l_Mathieu" step="0.01" value="0.1">-->
+<!--                    </div>-->
+<!--                    <div class="col-md">-->
+<!--                        <label for="Delta_l_Mathieu">\(\Delta l\):</label>-->
+<!--                        <input type="number" id="Delta_l_Mathieu" step="0.01" value="0.1">-->
+<!--                    </div>-->
+<!--                </div>-->
+                <br>
+                <button class="btn btn-success mt-2" onclick="update_Mathieu_Plot()">Create Stability Plot</button>
+                
+            </div>
+        </div>
     </div>
-    
+    <br><br>
     <div class="col-md-12 text-center">
         <button type="button" class="toggle-button_mathieu" style = "color:white; background-color: gray" onclick = 'toggleMathieuDerivation();'>Show Mathieu Vertical Derivation</button>
         <div id="MathieuDerivation" style = "display: none;">
@@ -1156,6 +1243,12 @@
                 </div>
             </div>
         </div>
+    </div>
+    <br>
+    <div class="col my-3" align="center">
+        <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
+        <br> <br> <br>
+        <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
     </div>
     <script>
         Math.Pi = 3.141592653589793;
@@ -1325,6 +1418,31 @@
                 return cache[n];
             };
         })();
+        
+        function toggleStabilityOptions()
+        {
+            const editorContainer = document.getElementById("stability-container");
+            if (editorContainer.style.display === "none" || editorContainer.style.display === "")
+            {
+                editorContainer.style.display = "block";
+            }
+            else
+            {
+                editorContainer.style.display = "none";
+            }
+
+            let stability_button = document.getElementById("GetStabilityPlot")
+
+            if (editorContainer.style.display == "block")
+            {
+                stability_button.textContent = String.raw`Hide Stability Plot Options`;
+            }
+            else
+            {
+                stability_button.textContent = String.raw`Configure Stability Plot Options`;
+            }
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpToggle"]);
+        }
         
         function toggleEditor()
         {
@@ -1547,119 +1665,143 @@
             
             return [thetaDot, thetaDDot];
         }
+        
+        function update_Mathieu_Plot()
+        {
+            
+            
+            let min_m = parseFloat(document.getElementById("Min_m_Mathieu").value);
+            let max_m = parseFloat(document.getElementById("Max_m_Mathieu").value);
+            let delta_m = parseFloat(document.getElementById("Delta_m_Mathieu").value);
 
-        // Plotting function
-        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz, Mathieu) {
-            const yAxisRangeOption = document.getElementById("yAxisRange").value;
-            const yMin = parseFloat(document.getElementById("yMin").value);
-            const yMax = parseFloat(document.getElementById("yMax").value);
+            let min_k = parseFloat(document.getElementById("Min_k_Mathieu").value);
+            let max_k = parseFloat(document.getElementById("Max_k_Mathieu").value);
+            let delta_k = parseFloat(document.getElementById("Delta_k_Mathieu").value);
 
-            const showOriginal = document.getElementById("showOriginal").checked;
-            const showTaylor = document.getElementById("showTaylor").checked;
-            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
-            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
-            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
-            const showMathieu = document.getElementById("showMathieu").checked;
+            let theta_0 = parseFloat(document.getElementById("theta_0_Mathieu_Stability").value);
+            let max_theta_variation = parseFloat(document.getElementById("Delta_Theta_Mathieu_Stability").value);
+            let delta_t = parseFloat(document.getElementById("Delta_t_Mathieu_Stability").value);
+            let t_final = parseFloat(document.getElementById("T_final_Mathieu_Stability").value);
+            
+            let y = [theta_0, 0.0];
+            const steps = Math.floor(t_final / delta_t);
+            const tValues = [0.0];
+            const yValues = [y.slice()];
+            
+            const cos_res = Math.cos(theta_0);
+            const alpha = Math.sin(theta_0)-cos_res*theta_0;
+            const beta = cos_res;
+            const A = parseFloat(document.getElementById('A-slider').value);
+            const omega = parseFloat(document.getElementById('omega-slider').value);
+            const g_over_omega_squared = g/(omega*omega);
+            const g_omega_squared_cos_theta0 = g*omega*omega*cos_res;
+            let l = parseFloat(document.getElementById('l-slider').value);
+            
+            let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
+            
+            let N_A = Math.ceil((max_m - min_m) / delta_m);
+            let A_min = (-min_m*g_over_omega_squared);
+            let A_max = (-max_m*g_over_omega_squared);
+            let delta_A = (A_max - A_min)/(N_A - 1);
+            
+            let N_l = Math.ceil((max_k - min_k) / delta_k);
+            let l_min = (g_omega_squared_cos_theta0 / min_k);
+            let l_max = (g_omega_squared_cos_theta0 / max_k);
+            let delta_l = (l_max - l_min)/(N_l - 1);
+            
+            console.log("A_min = ", A_min, ", A_max = ", A_max, ", delta A = ", delta_A);
+            console.log("l_min = ", l_min, ", l_max = ", l_max, ", delta l = ", delta_l);
+            //let stability_results = [];
+            // Initialize an empty plot before starting the computation
 
-            let traces = [];
+            // Arrays to store points for batch plotting
+            let stablePoints = { x: [], y: [] };
+            let unstablePoints = { x: [], y: [] };
             
-            if (showOriginal)
+            for (let n_a = 0; n_a < N_A; n_a++)
             {
-                traces.push({
-                    x: t,
-                    y: y_horiz.map(yi => yi[0]),  // θ(t) as function of time for the original system
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '$\\text{Original Horizontal}$',
-                    line: { color: 'blue' }
-                });
+                let a_val_temp = A_min + n_a * delta_A;
+                let m_val_temp = min_m + n_a * delta_m;
+                //let n_a_stable_vals = [];
+                for (let n_l = 0; n_l < N_l; n_l++)
+                {
+                    let l_val_temp = l_min + n_l * delta_l;
+                    let k_val_temp = min_k + n_l * delta_k;
+                    let is_stable_config = 1;
+                    let t = 0;
+                    let y = [theta_0, 0.0];
+                    const steps = Math.floor(t_final / delta_t);
+                    
+                    for (let i = 0; i < steps; i++)
+                    {
+                        const k1 = f(t, y, a_val_temp, l_val_temp);
+                        const k2 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k1[idx]), a_val_temp, l_val_temp);
+                        const k3 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k2[idx]), a_val_temp, l_val_temp);
+                        const k4 = f(t + delta_t, y.map((v, idx) => v + delta_t * k3[idx]), a_val_temp, l_val_temp);
+                        
+                        y[0] += delta_t / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+                        if (Math.abs(y[0] - theta_0) > max_theta_variation)
+                        {
+                            is_stable_config = 0;
+                            break;
+                        }
+                        for (let j = 1; j < y.length; j++)
+                        {
+                            y[j] += delta_t / 6 * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+                        }
+                        
+                        t += delta_t;
+                    }
+                    // Store points instead of plotting immediately
+                    if (is_stable_config)
+                    {
+                        stablePoints.x.push(k_val_temp);
+                        stablePoints.y.push(m_val_temp);
+                    }
+                    else
+                    {
+                        unstablePoints.x.push(k_val_temp);
+                        unstablePoints.y.push(m_val_temp);
+                    }
+                    //n_a_stable_vals.push(is_stable_config);
+                }
+                
+                //stability_results.push(n_a_stable_vals.slice());
             }
-            
-            if (showTaylor)
+            let mathieu_results = getMathieuTraces();
+            console.log(mathieu_results.traces_mathieu);
+            // After computing all points, update the plot at once
+            Plotly.newPlot('plotTongues',
+            [
+                {
+                    x: stablePoints.x,
+                    y: stablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePoints.x,
+                    y: unstablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu
+                
+            ],
             {
-                const order = parseInt(document.getElementById('order-input').value);
-                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta = \\pi +'+thetaVal+'$');
-                //console.log(name_test);
-                traces.push({
-                    x: t,
-                    y: TaylorY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: name_test,
-                    line: { color: 'green' }
-                });
-            }
-            
-            if (showOriginalVertical)
-            {
-                traces.push({
-                    x: t,
-                    y: y_vert.map(yi => yi[0]),  // θ(t) as function of time for the original system
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '$\\text{Original Vertical}$',
-                    line: { color: 'orange' }
-                });
-            }
-            
-            if (showTaylorVertical)
-            {
-                const order = parseInt(document.getElementById('order-input').value);
-                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
-                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta = \\pi +'+thetaVal+'$');
-
-                traces.push({
-                    x: t,
-                    y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: name_test,
-                    line: { color: 'magenta' }
-                });
-            }
-            
-            if (showArbitraryHorizontal)
-            {
-                traces.push({
-                    x: t,
-                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '$\\text{Arbitrary Horizontal}$',
-                    line: { color: 'red' }
-                });
-            }
-            
-            if (showMathieu)
-            {
-                traces.push({
-                    x: t,
-                    y: Mathieu.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '$\\text{Mathieu Vertical}$',
-                    line: { color: 'gray' }
-                });
-            }
-
-            const layout = {
-                title: '$\\text{Inverted Pendulum: }\\theta(t)$',
-                xaxis: { title: '$\\text{Time (s)}$' },
-                yaxis: {title: '$\\theta(t)\\text{ (radians)}$', range: yAxisRangeOption === "fixed" ? [yMin, yMax] : undefined},
-                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
-                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
-                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
-                showlegend: true
-            };
-
-            // Plot both traces
-            Plotly.newPlot('plot', traces, layout);
-            
-            window.addEventListener('resize', () => {
-                Plotly.Plots.resize('plot');
+                title: 'Mathieu Stability Plot',
+                xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
+                yaxis: { title: '$m = -\\frac{A \\omega^2}{g}$' }
             });
-            
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
+            //console.log(stability_results)
+            alert(`A_min = ${A_min}\nA_max = ${A_max}\ndelta A = ${delta_A}\nl_min = ${l_min}\nl_max = ${l_max}\ndelta l = ${delta_l}\nDone!`);
+        }
+        
+        function getMathieuTraces()
+        {
             //Mathieu Tongues
             const omega = parseFloat(document.getElementById('omega-slider').value);
             let l_temp = parseFloat(document.getElementById('l-slider').value);
@@ -1783,10 +1925,126 @@
                     line: { color: 'red' }
                 });
             }
+            return {"traces_mathieu": traces_mathieu, "k": k, "m": m};
+        }
+
+        // Plotting function
+        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz, Mathieu) {
+            const yAxisRangeOption = document.getElementById("yAxisRange").value;
+            const yMin = parseFloat(document.getElementById("yMin").value);
+            const yMax = parseFloat(document.getElementById("yMax").value);
+
+            const showOriginal = document.getElementById("showOriginal").checked;
+            const showTaylor = document.getElementById("showTaylor").checked;
+            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
+            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
+            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
+            const showMathieu = document.getElementById("showMathieu").checked;
+
+            let traces = [];
             
-            traces_mathieu.push({
-                x: [k],
-                y: [m],
+            if (showOriginal)
+            {
+                traces.push({
+                    x: t,
+                    y: y_horiz.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original Horizontal}$',
+                    line: { color: 'blue' }
+                });
+            }
+            
+            if (showTaylor)
+            {
+                const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta = \\pi +'+thetaVal+'$');
+                //console.log(name_test);
+                traces.push({
+                    x: t,
+                    y: TaylorY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: name_test,
+                    line: { color: 'green' }
+                });
+            }
+            
+            if (showOriginalVertical)
+            {
+                traces.push({
+                    x: t,
+                    y: y_vert.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original Vertical}$',
+                    line: { color: 'orange' }
+                });
+            }
+            
+            if (showTaylorVertical)
+            {
+                const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta = \\pi +'+thetaVal+'$');
+
+                traces.push({
+                    x: t,
+                    y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: name_test,
+                    line: { color: 'magenta' }
+                });
+            }
+            
+            if (showArbitraryHorizontal)
+            {
+                traces.push({
+                    x: t,
+                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Arbitrary Horizontal}$',
+                    line: { color: 'red' }
+                });
+            }
+            
+            if (showMathieu)
+            {
+                traces.push({
+                    x: t,
+                    y: Mathieu.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Mathieu Vertical}$',
+                    line: { color: 'gray' }
+                });
+            }
+
+            const layout = {
+                title: '$\\text{Inverted Pendulum: }\\theta(t)$',
+                xaxis: { title: '$\\text{Time (s)}$' },
+                yaxis: {title: '$\\theta(t)\\text{ (radians)}$', range: yAxisRangeOption === "fixed" ? [yMin, yMax] : undefined},
+                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
+                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
+                showlegend: true
+            };
+
+            // Plot both traces
+            Plotly.newPlot('plot', traces, layout);
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plot');
+            });
+            
+            let mathieu_results = getMathieuTraces();
+            
+            mathieu_results.traces_mathieu.push({
+                x: [mathieu_results.k],
+                y: [mathieu_results.m],
                 mode: 'markers',
                 name: '$(k, m) = \\left(\\left( \\frac{g\\omega^2}{l } \\right) \\cos(\\theta_0), -\\frac{A \\omega^2}{g})\\right)$',
                 marker: { color: 'gray', size: 10, symbol: 'circle' }
@@ -1795,7 +2053,7 @@
             const layout_mathieu = {
                 title: '$\\text{Mathieu Tongues: }m(k)$',
                 xaxis: { title: '$k$' },
-                yaxis: {title: '$m(k)$', range: [Math.min(0, m-1), Math.max(2, m+1)]},
+                yaxis: {title: '$m(k)$', range: [Math.min(0, mathieu_results.m-1), Math.max(2, mathieu_results.m+1)]},
                 plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
                 paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
                 font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
@@ -1803,7 +2061,7 @@
             };
             
             
-            Plotly.newPlot('plotTongues', traces_mathieu, layout_mathieu);
+            Plotly.newPlot('plotTongues', mathieu_results.traces_mathieu, layout_mathieu);
             
             window.addEventListener('resize', () => {
                 Plotly.Plots.resize('plotTongues');
