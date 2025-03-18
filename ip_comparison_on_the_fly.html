@@ -1252,8 +1252,10 @@
     </div>
     <script>
         Math.Pi = 3.141592653589793;
-        window.x_p = convertCppSymbolicStringToJs('((x0 + 0.999487) ^ (4.176018 - sech(4)))')
-        window.x_p_ddot = convertCppSymbolicStringToJs('((((x0 + 0.999487) ^ 4.139399) * ((-1 / ((x0 + 0.999487) * (x0 + 0.999487))) * 4.139399)) + ((((x0 + 0.999487) ^ 4.139399) * ((1 / (x0 + 0.999487)) * 4.139399)) * ((1 / (x0 + 0.999487)) * 4.139399)))');
+        window.x_p = convertCppSymbolicStringToJs('sin(x0)');
+        window.x_p_ddot = convertCppSymbolicStringToJs('-sin(x0)');
+        //window.x_p = convertCppSymbolicStringToJs('((x0 + 0.999487) ^ (4.176018 - sech(4)))')
+        //window.x_p_ddot = convertCppSymbolicStringToJs('((((x0 + 0.999487) ^ 4.139399) * ((-1 / ((x0 + 0.999487) * (x0 + 0.999487))) * 4.139399)) + ((((x0 + 0.999487) ^ 4.139399) * ((1 / (x0 + 0.999487)) * 4.139399)) * ((1 / (x0 + 0.999487)) * 4.139399)))');
         window.original_x_p = window.x_p;
         
         const sliderA = document.getElementById("A-slider");
