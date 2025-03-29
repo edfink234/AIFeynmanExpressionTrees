@@ -268,7 +268,6 @@
             &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} - \frac{g}{l} (\theta-\pi) = \frac{A \omega^2}{l}  (\theta-\pi) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
             &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
             &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
-            % \qquad\text{ where: } \quad k = \left( \frac{g}{l \omega^2} \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t, \quad \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta, \quad k > 0 \: \text{ for } \: \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right) \: \text{ and } \: k < 0 \: \text{ for } \:  \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right) \text{ where } \: n \in \mathbb{Z}
             \end{align*}
         </div>
     </div>
@@ -1176,15 +1175,23 @@
                     \[
                     \frac{\partial^2 \varphi}{\partial \tau^2} + \frac{g \beta \omega^2}{l} \left( 1 + \frac{A \omega^2}{g} \cos(\tau) \right) \varphi = 0
                     \]
+                    
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \frac{g \beta \omega^2}{l}\varphi + \frac{\beta A \omega^4}{l} \cos(\tau) \varphi = 0
+                    \]
+                    
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \left(\frac{g \beta \omega^2}{l} - \frac{-\beta A \omega^4}{l} \cos(\tau)\right) \varphi = 0
+                    \]
 
                     \[
-                    \frac{\partial^2 \varphi}{\partial \tau^2} + k \left( 1 - \tilde{m} \cos(\tau) \right) \varphi = 0
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \left(k - m \cos(\tau) \right) \varphi = 0
                     \]
 
                     where
 
                     \[
-                    k = \left( \frac{g\omega^2}{l } \right) \cos(\theta_0), \quad \tilde{m} = -\frac{A \omega^2}{g}, \quad \tau = \omega t
+                    k = \left( \frac{g\omega^2}{l } \right) \cos(\theta_0), \quad m = -\frac{A \omega^4}{l} \cos(\theta_0), \quad \tau = \omega t
                     \]
 
                     \[
@@ -1204,13 +1211,13 @@
                     \]
 
                     \[
-                    \mathbf{k < 0} \quad \Rightarrow \quad 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}} < \frac{-A \omega^2}{g} < \frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                    \mathbf{k < 0} \quad \Rightarrow \quad 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}} < m(k) < \frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
                     \]
                    
                         \(\mathbf{k > 0}  \:\Rightarrow\) the following:
 
                     \[
-                     \quad 0 < \frac{-A\omega^2}{g} < \left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                     \quad 0 < m(k) < \left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
                     \]
 
                     \[
@@ -1218,7 +1225,7 @@
                     \]
 
                     \[
-                    0 < \frac{-A\omega^2}{g} < \frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right)
+                    0 < m(k) < \frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right)
                     \]
 
                     \[
@@ -1226,7 +1233,7 @@
                     \]
 
                     \[
-                    0 < \frac{-A\omega^2}{g} < \sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}}
+                    0 < m(k) < \sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}}
                     \]
 
                     \[
@@ -1234,7 +1241,7 @@
                     \]
 
                     \[
-                    0 < \frac{-A\omega^2}{g} < 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}}
+                    0 < m(k) < 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}}
                     \]
 
                     \[
@@ -1670,8 +1677,6 @@
         
         function update_Mathieu_Plot()
         {
-            
-            
             let min_m = parseFloat(document.getElementById("Min_m_Mathieu").value);
             let max_m = parseFloat(document.getElementById("Max_m_Mathieu").value);
             let delta_m = parseFloat(document.getElementById("Delta_m_Mathieu").value);
@@ -1695,40 +1700,29 @@
             const beta = cos_res;
             const A = parseFloat(document.getElementById('A-slider').value);
             const omega = parseFloat(document.getElementById('omega-slider').value);
-            const g_over_omega_squared = g/(omega*omega);
-            const g_omega_squared_cos_theta0 = g*omega*omega*cos_res;
+            const omega_squared = omega*omega;
+            const omega_squared_cos_theta0 = omega_squared*cos_res;
+            const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
+            const cos_res_times_omega_to_the_fourth = omega_squared*omega_squared_cos_theta0;
             let l = parseFloat(document.getElementById('l-slider').value);
             
             let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
             
-            let N_A = Math.ceil((max_m - min_m) / delta_m);
-            let A_min = (-min_m*g_over_omega_squared);
-            let A_max = (-max_m*g_over_omega_squared);
-            let delta_A = (A_max - A_min)/(N_A - 1);
-            
+            let N_M = Math.ceil((max_m - min_m) / delta_m);
             let N_l = Math.ceil((max_k - min_k) / delta_k);
-            let l_min = (g_omega_squared_cos_theta0 / min_k);
-            let l_max = (g_omega_squared_cos_theta0 / max_k);
-            let delta_l = (l_max - l_min)/(N_l - 1);
-            
-            console.log("A_min = ", A_min, ", A_max = ", A_max, ", delta A = ", delta_A);
-            console.log("l_min = ", l_min, ", l_max = ", l_max, ", delta l = ", delta_l);
-            //let stability_results = [];
-            // Initialize an empty plot before starting the computation
 
             // Arrays to store points for batch plotting
             let stablePoints = { x: [], y: [] };
             let unstablePoints = { x: [], y: [] };
             
-            for (let n_a = 0; n_a < N_A; n_a++)
+            for (let n_m = 0; n_m < N_M; n_m++)
             {
-                let a_val_temp = A_min + n_a * delta_A;
-                let m_val_temp = min_m + n_a * delta_m;
-                //let n_a_stable_vals = [];
-                for (let n_l = 0; n_l < N_l; n_l++)
+                let m_val_temp = min_m + n_m * delta_m;
+                for (let n_k = 0; n_k < N_l; n_k++)
                 {
-                    let l_val_temp = l_min + n_l * delta_l;
-                    let k_val_temp = min_k + n_l * delta_k;
+                    let k_val_temp = min_k + n_k * delta_k;
+                    let l_val_temp = g_omega_squared_cos_theta0/k_val_temp;
+                    let a_val_temp = (-m_val_temp * l_val_temp) / cos_res_times_omega_to_the_fourth;
                     let is_stable_config = 1;
                     let t = 0;
                     let y = [theta_0, 0.0];
@@ -1765,12 +1759,10 @@
                         unstablePoints.x.push(k_val_temp);
                         unstablePoints.y.push(m_val_temp);
                     }
-                    //n_a_stable_vals.push(is_stable_config);
                 }
                 
-                //stability_results.push(n_a_stable_vals.slice());
             }
-            let mathieu_results = getMathieuTraces();
+            let mathieu_results = getMathieuTraces(true);
             console.log(mathieu_results.traces_mathieu);
             // After computing all points, update the plot at once
             Plotly.newPlot('plotTongues',
@@ -1793,28 +1785,29 @@
                 
             ],
             {
-                title: 'Mathieu Stability Plot',
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}$`,
                 xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
-                yaxis: { title: '$m = -\\frac{A \\omega^2}{g}$' }
+                yaxis: { title: '$m = -\\frac{A \\omega^4}{l} \\cos(\\theta_0)$' }
             });
             //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
-            //console.log(stability_results)
-            alert(`A_min = ${A_min}\nA_max = ${A_max}\ndelta A = ${delta_A}\nl_min = ${l_min}\nl_max = ${l_max}\ndelta l = ${delta_l}\nDone!`);
+            alert("Done!");
         }
         
-        function getMathieuTraces()
+        function getMathieuTraces(stability=false)
         {
             //Mathieu Tongues
             const omega = parseFloat(document.getElementById('omega-slider').value);
             let l_temp = parseFloat(document.getElementById('l-slider').value);
             const l_min = parseFloat(document.getElementById('l-input').min);
             const l = Math.max(l_temp, l_min);
-            const theta0 = parseFloat(document.getElementById('theta-slider').value);
+            const theta0 = parseFloat(document.getElementById(stability ? 'theta_0_Mathieu_Stability' : 'theta-slider').value);
             const A = parseFloat(document.getElementById('A-slider').value);
             const omega_squared = omega*omega;
-            const k = (g*omega_squared*Math.cos(theta0))/l;
-            const m = -(A*omega_squared)/g;
-            
+            const cos_res = Math.cos(theta0);
+            const omega_squared_times_cos_res = cos_res*omega_squared;
+            const k = (g*omega_squared_times_cos_res)/l;
+            const m = -(A*omega_squared*omega_squared_times_cos_res)/g;
+            //alert(`k=${k}`);
             let traces_mathieu = [];
             let delta_k = 0.0001;
 
@@ -1853,7 +1846,7 @@
                     y: f2,
                     mode: 'lines',
                     name: '$m_1(k)$',
-                    line: { color: 'red' }
+                    line: { color: 'black' }
                 });
             }
             else
@@ -1900,7 +1893,7 @@
                     y: f1,
                     mode: 'lines',
                     name: '$m_2(k)$',
-                    line: { color: 'blue' }
+                    line: { color: 'brown' }
                 });
                 
                 traces_mathieu.push({
@@ -1908,7 +1901,7 @@
                     y: [...f2_plus, ...f2_minus.reverse()], // Concatenate function values accordingly
                     mode: 'lines',
                     name: '$m_3(k)$',
-                    line: { color: 'green' }
+                    line: { color: 'orange' }
                 });
 
                 traces_mathieu.push({
@@ -1924,7 +1917,7 @@
                     y: f4,
                     mode: 'lines',
                     name: '$m_5(k)$',
-                    line: { color: 'red' }
+                    line: { color: 'magenta' }
                 });
             }
             return {"traces_mathieu": traces_mathieu, "k": k, "m": m};
@@ -2048,7 +2041,7 @@
                 x: [mathieu_results.k],
                 y: [mathieu_results.m],
                 mode: 'markers',
-                name: '$(k, m) = \\left(\\left( \\frac{g\\omega^2}{l } \\right) \\cos(\\theta_0), -\\frac{A \\omega^2}{g})\\right)$',
+                name: '$(k, m) = \\left(\\left( \\frac{g\\omega^2}{l } \\right) \\cos(\\theta_0), -\\frac{A \\omega^4}{l}\\cos(\\theta_0))\\right)$',
                 marker: { color: 'gray', size: 10, symbol: 'circle' }
             });
             
