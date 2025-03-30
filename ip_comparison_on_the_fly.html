@@ -720,7 +720,7 @@
                 <label for="maxA">\(A_{\text{max}}\):</label>
             </div>
             <div class="col-md">
-                <input type="number" id="maxA" step="0.01" value="10">
+                <input type="number" id="maxA" step="0.01" value="100">
             </div>
         </div>
         
@@ -768,7 +768,7 @@
                 <label for="maxL">\(l_{\text{max}}\):</label>
             </div>
             <div class="col-md">
-                <input type="number" id="maxL" step="0.01" value="10">
+                <input type="number" id="maxL" step="0.01" value="100">
             </div>
         </div>
 
@@ -852,7 +852,7 @@
     </div>
     
     <div class="row" style="margin-top:200px;">
-        <div class = "col-md-2" align="center">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxOriginalHorizontal">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
             <div class="nail" id="pivotPendulumOriginalHorizontal">
@@ -862,7 +862,7 @@
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumOriginalHorizontal">
+                <div class="Pendulum-Body" id="pendulumOriginalHorizontal"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid blue;"></div>
                     <div class="Ball" style = "background-color: blue;"></div>
                 </div>
@@ -870,7 +870,7 @@
             </section>
         </div>
         
-        <div class = "col-md-2" align="center">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxTaylorHorizontal">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorHorizontal">Taylor <br> Horizontal t = 0</div>
             <div class="nail" id="pivotPendulumTaylorHorizontal">
@@ -880,7 +880,7 @@
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumTaylorHorizontal">
+                <div class="Pendulum-Body" id="pendulumTaylorHorizontal"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid green;"></div>
                     <div class="Ball" style = "background-color: green;"></div>
                 </div>
@@ -888,7 +888,7 @@
             </section>
         </div>
         
-        <div class = "col-md-2" align="center">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxOriginalVertical">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalVertical">Original <br> Vertical t = 0</div>
             <div class="nail" id="pivotPendulumOriginalVertical">
@@ -898,7 +898,7 @@
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumOriginalVertical">
+                <div class="Pendulum-Body" id="pendulumOriginalVertical"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid orange;"></div>
                     <div class="Ball" style = "background-color: orange;"></div>
                 </div>
@@ -906,7 +906,7 @@
             </section>
         </div>
         
-        <div class = "col-md-2" align="center">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxTaylorVertical">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorVertical">Taylor <br> Vertical t = 0</div>
             <div class="nail" id="pivotPendulumTaylorVertical">
@@ -916,7 +916,7 @@
                 </div>
             </div>
             <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumTaylorVertical">
+                <div class="Pendulum-Body" id="pendulumTaylorVertical"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid magenta;"></div>
                     <div class="Ball" style = "background-color: magenta;"></div>
                 </div>
@@ -924,7 +924,7 @@
             </section>
         </div>
         
-        <div class = "col-md-2" align="center">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxArbitraryHorizontal">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumArbitraryHorizontal">Arbitrary <br> Horizontal t = 0</div>
            
@@ -936,7 +936,7 @@
                </div>
            </div>
             <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumArbitraryHorizontal">
+                <div class="Pendulum-Body" id="pendulumArbitraryHorizontal"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid red;"></div>
                     <div class="Ball" style = "background-color: red;"></div>
                 </div>
@@ -945,7 +945,7 @@
         </div>
     </div>
     
-    <div class="row" style="margin-top:200px;" align="center">
+    <div class="row" style="margin-top:200px;" align="center" style = "display:block" id = "pendulumBoxMathieu">
         <div class = "col" align="center">
             <section>
             <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumMathieu">Mathieu <br> Vertical t = 0</div>
@@ -957,7 +957,7 @@
                </div>
            </div>
             <div class="Pendulum-Container" id="pendulumContainerMathieu" style = "display:block;  z-index: 50;">
-                <div class="Pendulum-Body" id="pendulumMathieu">
+                <div class="Pendulum-Body" id="pendulumMathieu"> <!--Important-->
                     <div class="connector" style = "border: 0.1px solid gray;"></div>
                     <div class="Ball" style = "background-color: gray;"></div>
                 </div>
@@ -1004,7 +1004,11 @@
     <div class="plot-container" id="plotTongues"></div>
         <div class="col my-3" align="center">
     </div>
-    
+        
+    <div class="plot-container" id="plotTonguesInvertedPendulumParameters" style="display:none;"></div>
+        <div class="col my-3" align="center">
+    </div>
+
     <br>
     <div class="row">
         <div class="col text-center">
@@ -1045,11 +1049,11 @@
                 <div class="row g-0 justify-content-center">
                     <div class="col-md-3 text-center">
                         <label for="theta_0_Mathieu_Stability">\(\theta_0\): </label>
-                        <input type="number" id="theta_0_Mathieu_Stability" min="0" value="3.1">
+                        <input type="number" id="theta_0_Mathieu_Stability" min="0" value="3.14">
                     </div>
                     <div class="col-md-3 text-center">
                         <label for="Delta_Theta_Mathieu_Stability">\(\text{Max}\left(\left|\theta - \theta_0\right|\right)\): </label>
-                        <input type="number" id="Delta_Theta_Mathieu_Stability" step="0.01" value="0.1" size = "10">
+                        <input type="number" id="Delta_Theta_Mathieu_Stability" step="0.01" value="1" size = "10">
                     </div>
                     <div class="col-md-3 text-center">
                         <label for="Delta_t_Mathieu_Stability">\(\Delta t\): </label>
@@ -1057,7 +1061,7 @@
                     </div>
                     <div class="col-md-3 text-center">
                         <label for="T_final_Mathieu_Stability">\(T_{\text{final}}\): </label>
-                        <input type="number" id="T_final_Mathieu_Stability" step="0.01" value="10" size = "10">
+                        <input type="number" id="T_final_Mathieu_Stability" step="0.01" value="100" size = "10">
                     </div>
                 </div>
 <!--                TODO: Make default values below correct:-->
@@ -1714,6 +1718,8 @@
             // Arrays to store points for batch plotting
             let stablePoints = { x: [], y: [] };
             let unstablePoints = { x: [], y: [] };
+            let stablePointsInvertedPendulum = { x: [], y: [] };
+            let unstablePointsInvertedPendulum = { x: [], y: [] };
             
             for (let n_m = 0; n_m < N_M; n_m++)
             {
@@ -1753,16 +1759,20 @@
                     {
                         stablePoints.x.push(k_val_temp);
                         stablePoints.y.push(m_val_temp);
+                        stablePointsInvertedPendulum.x.push(l_val_temp);
+                        stablePointsInvertedPendulum.y.push(a_val_temp);
                     }
                     else
                     {
                         unstablePoints.x.push(k_val_temp);
                         unstablePoints.y.push(m_val_temp);
+                        unstablePointsInvertedPendulum.x.push(l_val_temp);
+                        unstablePointsInvertedPendulum.y.push(a_val_temp);
                     }
                 }
                 
             }
-            let mathieu_results = getMathieuTraces(true);
+            let mathieu_results = getMathieuTraces({stability: true});
             console.log(mathieu_results.traces_mathieu);
             // After computing all points, update the plot at once
             Plotly.newPlot('plotTongues',
@@ -1789,11 +1799,44 @@
                 xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
                 yaxis: { title: '$m = -\\frac{A \\omega^4}{l} \\cos(\\theta_0)$' }
             });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
+            
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
+            Plotly.newPlot('plotTonguesInvertedPendulumParameters',
+            [
+                {
+                    x: stablePointsInvertedPendulum.x,
+                    y: stablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePointsInvertedPendulum.x,
+                    y: unstablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$` },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$` }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTonguesInvertedPendulumParameters');
+            });
             //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
             alert("Done!");
         }
         
-        function getMathieuTraces(stability=false)
+        function getMathieuTraces({stability} = {stability:false})
         {
             //Mathieu Tongues
             const omega = parseFloat(document.getElementById('omega-slider').value);
@@ -2055,8 +2098,8 @@
                 showlegend: true
             };
             
-            
             Plotly.newPlot('plotTongues', mathieu_results.traces_mathieu, layout_mathieu);
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'none';
             
             window.addEventListener('resize', () => {
                 Plotly.Plots.resize('plotTongues');
@@ -2129,26 +2172,56 @@
             if (showOriginal)
             {
                 await animatePendulum(result.t, result.y, "pendulumOriginalHorizontal", "showOriginal"); // Start animation
+                document.getElementById("pendulumBoxOriginalHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxOriginalHorizontal").style.display = "none";
             }
             if (showTaylor)
             {
                 await animatePendulum(TaylorResult.t, TaylorResult.y, "pendulumTaylorHorizontal", "showTaylor"); // Start animation
+                document.getElementById("pendulumBoxTaylorHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxTaylorHorizontal").style.display = "none";
             }
             if (showOriginalVertical)
             {
                 await animatePendulum(result_vertical.t, result_vertical.y, "pendulumOriginalVertical", "showOriginalVertical"); // Start animation
+                document.getElementById("pendulumBoxOriginalVertical").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxOriginalVertical").style.display = "none";
             }
             if (showTaylorVertical)
             {
                 await animatePendulum(TaylorResult_vertical.t, TaylorResult_vertical.y, "pendulumTaylorVertical", "showTaylorVertical"); // Start animation
+                document.getElementById("pendulumBoxTaylorVertical").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxTaylorVertical").style.display = "none";
             }
             if (showArbitraryHorizontal)
             {
                 await animatePendulum(ArbitraryResult_horizontal.t, ArbitraryResult_horizontal.y, "pendulumArbitraryHorizontal", "showArbitraryHorizontal"); // Start animation
+                document.getElementById("pendulumBoxArbitraryHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxArbitraryHorizontal").style.display = "none";
             }
             if (showMathieu)
             {
                 await animatePendulum(Mathieu_result.t, Mathieu_result.y, "pendulumMathieu", "showMathieu"); // Start animation
+                document.getElementById("pendulumBoxMathieu").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxMathieu").style.display = "none";
             }
             
         }
