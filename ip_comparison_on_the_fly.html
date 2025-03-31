@@ -1015,87 +1015,109 @@
             <button type="button" class="btn btn-warning" id = "GetStabilityPlot" onclick = "toggleStabilityOptions()">Configure Stability Plot Options</button>
             <div id="stability-container" style="display: none; margin-top: 10px;">
                 <br>
-                <div class="row mx-3">
-                    <div class="col-md">
-                        <label for="Min_m_Mathieu">\(m_{\text{min}}\):</label>
-                        <input type="number" id="Min_m_Mathieu" step="0.01" value="0">
+                <div class="row">
+                    <div class="col my-3" align="center">
+                        <input type="checkbox" id="k-m-OptionMathieu" checked onclick = "toggle_k_m_A_l_Mathieu(this.id)">
+                        <label for="k-m-OptionMathieu">Configure \(k, m\)</label>
                     </div>
-                    <div class="col-md">
-                        <label for="Max_m_Mathieu">\(m_{\text{max}}\):</label>
-                        <input type="number" id="Max_m_Mathieu" step="0.01" value="3.4">
+                    <div class="col my-3" align="center">
+                        <input type="checkbox" id="A-l-OptionMathieu" unchecked onclick = "toggle_k_m_A_l_Mathieu(this.id)">
+                        <label for="A-l-OptionMathieu">Configure \(A, l\)</label>
                     </div>
-                    <div class="col-md">
-                        <label for="Delta_m_Mathieu">\(\Delta m\):</label>
-                        <input type="number" id="Delta_m_Mathieu" step="0.01" value="0.1">
+                </div>
+                <br>
+                <div id = "k_m_Mathieu_box" style = "display:block">
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_m_Mathieu">\(m_{\text{min}}\):</label>
+                            <input type="number" id="Min_m_Mathieu" step="0.01" value="0">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_m_Mathieu">\(m_{\text{max}}\):</label>
+                            <input type="number" id="Max_m_Mathieu" step="0.01" value="3.4">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_m_Mathieu">\(\Delta m\):</label>
+                            <input type="number" id="Delta_m_Mathieu" step="0.01" value="0.1">
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_k_Mathieu">\(k_{\text{min}}\):</label>
+                            <input type="number" id="Min_k_Mathieu" step="0.01" value="-1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_k_Mathieu">\(k_{\text{max}}\):</label>
+                            <input type="number" id="Max_k_Mathieu" step="0.01" value="-0.1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_k_Mathieu">\(\Delta k\):</label>
+                            <input type="number" id="Delta_k_Mathieu" step="0.01" value="0.01">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id = "A_l_Mathieu_box" style = "display:none">
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_A_Mathieu">\(A_{\text{min}}\):</label>
+                            <input type="number" id="Min_A_Mathieu" step="0.01" value="0">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_A_Mathieu">\(A_{\text{max}}\):</label>
+                            <input type="number" id="Max_A_Mathieu" step="0.01" value="3.4">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_A_Mathieu">\(\Delta A\):</label>
+                            <input type="number" id="Delta_A_Mathieu" step="0.01" value="0.1">
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_l_Mathieu">\(l_{\text{min}}\):</label>
+                            <input type="number" id="Min_l_Mathieu" step="0.01" value="-1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_l_Mathieu">\(l_{\text{max}}\):</label>
+                            <input type="number" id="Max_l_Mathieu" step="0.01" value="0.1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_l_Mathieu">\(\Delta l\):</label>
+                            <input type="number" id="Delta_l_Mathieu" step="0.01" value="0.1">
+                        </div>
                     </div>
                 </div>
                 
                 <br>
-                <div class="row mx-3">
-                    <div class="col-md">
-                        <label for="Min_k_Mathieu">\(k_{\text{min}}\):</label>
-                        <input type="number" id="Min_k_Mathieu" step="0.01" value="-1">
-                    </div>
-                    <div class="col-md">
-                        <label for="Max_k_Mathieu">\(k_{\text{max}}\):</label>
-                        <input type="number" id="Max_k_Mathieu" step="0.01" value="-0.1">
-                    </div>
-                    <div class="col-md">
-                        <label for="Delta_k_Mathieu">\(\Delta k\):</label>
-                        <input type="number" id="Delta_k_Mathieu" step="0.01" value="0.01">
-                    </div>
-                </div>
-                <br>
                 <div class="row g-0 justify-content-center">
-                    <div class="col-md-3 text-center">
+                    <div class="col-md text-center">
                         <label for="theta_0_Mathieu_Stability">\(\theta_0\): </label>
                         <input type="number" id="theta_0_Mathieu_Stability" min="0" value="3.14">
                     </div>
-                    <div class="col-md-3 text-center">
+                    <div class="col-md text-center">
                         <label for="Delta_Theta_Mathieu_Stability">\(\text{Max}\left(\left|\theta - \theta_0\right|\right)\): </label>
                         <input type="number" id="Delta_Theta_Mathieu_Stability" step="0.01" value="1" size = "10">
                     </div>
-                    <div class="col-md-3 text-center">
+                    <div class="col-md text-center">
                         <label for="Delta_t_Mathieu_Stability">\(\Delta t\): </label>
                         <input type="number" id="Delta_t_Mathieu_Stability" min="0" value="0.1">
                     </div>
-                    <div class="col-md-3 text-center">
+                    <div class="col-md text-center">
                         <label for="T_final_Mathieu_Stability">\(T_{\text{final}}\): </label>
                         <input type="number" id="T_final_Mathieu_Stability" step="0.01" value="100" size = "10">
                     </div>
+                    <div class="col-md text-center">
+                        <label for="omega_Mathieu_Stability">\(\omega\): </label>
+                        <input type="number" id="omega_Mathieu_Stability" step="0.01" value="1">
+                    </div>
                 </div>
-<!--                TODO: Make default values below correct:-->
-<!--                <br>-->
-<!--                <div class="row mx-3">-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Min_A_Mathieu">\(A_{\text{min}}\):</label>-->
-<!--                        <input type="number" id="Min_A_Mathieu" step="0.01" value="0">-->
-<!--                    </div>-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Max_A_Mathieu">\(A_{\text{max}}\):</label>-->
-<!--                        <input type="number" id="Max_A_Mathieu" step="0.01" value="3.4">-->
-<!--                    </div>-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Delta_A_Mathieu">\(\Delta A\):</label>-->
-<!--                        <input type="number" id="Delta_A_Mathieu" step="0.01" value="0.1">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                -->
-<!--                <br>-->
-<!--                <div class="row mx-3">-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Min_l_Mathieu">\(l_{\text{min}}\):</label>-->
-<!--                        <input type="number" id="Min_l_Mathieu" step="0.01" value="-1">-->
-<!--                    </div>-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Max_l_Mathieu">\(l_{\text{max}}\):</label>-->
-<!--                        <input type="number" id="Max_l_Mathieu" step="0.01" value="0.1">-->
-<!--                    </div>-->
-<!--                    <div class="col-md">-->
-<!--                        <label for="Delta_l_Mathieu">\(\Delta l\):</label>-->
-<!--                        <input type="number" id="Delta_l_Mathieu" step="0.01" value="0.1">-->
-<!--                    </div>-->
-<!--                </div>-->
+                <br>
+<!--                id = "A-l settings" style="display:none;"-->
+                
                 <br>
                 <button class="btn btn-success mt-2" onclick="update_Mathieu_Plot()">Create Stability Plot</button>
                 
@@ -1432,6 +1454,32 @@
             };
         })();
         
+        function toggle_k_m_A_l_Mathieu(clicked_id)
+        {
+            let k_m_option = document.getElementById("k-m-OptionMathieu");
+            let A_l_option = document.getElementById("A-l-OptionMathieu");
+            let k_m_box = document.getElementById("k_m_Mathieu_box");
+            let A_l_box = document.getElementById("A_l_Mathieu_box");
+
+            if (clicked_id === "k-m-OptionMathieu")
+            {
+                k_m_option.checked = true;
+                A_l_option.checked = false;
+            }
+            else
+            {
+                k_m_option.checked = false;
+                A_l_option.checked = true;
+            }
+
+            console.log(k_m_option.checked, A_l_option.checked);
+
+            // Show/hide the corresponding divs
+            k_m_box.style.display = k_m_option.checked ? "block" : "none";
+            A_l_box.style.display = A_l_option.checked ? "block" : "none";
+        }
+
+        
         function toggleStabilityOptions()
         {
             const editorContainer = document.getElementById("stability-container");
@@ -1703,7 +1751,7 @@
             const alpha = Math.sin(theta_0)-cos_res*theta_0;
             const beta = cos_res;
             const A = parseFloat(document.getElementById('A-slider').value);
-            const omega = parseFloat(document.getElementById('omega-slider').value);
+            const omega = parseFloat(document.getElementById('omega_Mathieu_Stability').value);
             const omega_squared = omega*omega;
             const omega_squared_cos_theta0 = omega_squared*cos_res;
             const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
