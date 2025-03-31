@@ -1727,7 +1727,7 @@
             return [thetaDot, thetaDDot];
         }
         
-        function update_Mathieu_Plot()
+        function use_k_m_Mathieu()
         {
             let min_m = parseFloat(document.getElementById("Min_m_Mathieu").value);
             let max_m = parseFloat(document.getElementById("Max_m_Mathieu").value);
@@ -1750,18 +1750,16 @@
             const cos_res = Math.cos(theta_0);
             const alpha = Math.sin(theta_0)-cos_res*theta_0;
             const beta = cos_res;
-            const A = parseFloat(document.getElementById('A-slider').value);
             const omega = parseFloat(document.getElementById('omega_Mathieu_Stability').value);
             const omega_squared = omega*omega;
             const omega_squared_cos_theta0 = omega_squared*cos_res;
             const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
             const cos_res_times_omega_to_the_fourth = omega_squared*omega_squared_cos_theta0;
-            let l = parseFloat(document.getElementById('l-slider').value);
             
             let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
             
             let N_M = Math.ceil((max_m - min_m) / delta_m);
-            let N_l = Math.ceil((max_k - min_k) / delta_k);
+            let N_k = Math.ceil((max_k - min_k) / delta_k);
 
             // Arrays to store points for batch plotting
             let stablePoints = { x: [], y: [] };
@@ -1772,7 +1770,7 @@
             for (let n_m = 0; n_m < N_M; n_m++)
             {
                 let m_val_temp = min_m + n_m * delta_m;
-                for (let n_k = 0; n_k < N_l; n_k++)
+                for (let n_k = 0; n_k < N_k; n_k++)
                 {
                     let k_val_temp = min_k + n_k * delta_k;
                     let l_val_temp = g_omega_squared_cos_theta0/k_val_temp;
@@ -1882,6 +1880,173 @@
             });
             //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
             alert("Done!");
+        }
+        
+        function use_A_l_Mathieu()
+        {
+            let min_A = parseFloat(document.getElementById("Min_A_Mathieu").value);
+            let max_A = parseFloat(document.getElementById("Max_A_Mathieu").value);
+            let delta_A = parseFloat(document.getElementById("Delta_A_Mathieu").value);
+
+            let min_l = parseFloat(document.getElementById("Min_l_Mathieu").value);
+            let max_l = parseFloat(document.getElementById("Max_l_Mathieu").value);
+            let delta_l = parseFloat(document.getElementById("Delta_l_Mathieu").value);
+
+            let theta_0 = parseFloat(document.getElementById("theta_0_Mathieu_Stability").value);
+            let max_theta_variation = parseFloat(document.getElementById("Delta_Theta_Mathieu_Stability").value);
+            let delta_t = parseFloat(document.getElementById("Delta_t_Mathieu_Stability").value);
+            let t_final = parseFloat(document.getElementById("T_final_Mathieu_Stability").value);
+            
+            let y = [theta_0, 0.0];
+            const steps = Math.floor(t_final / delta_t);
+            const tValues = [0.0];
+            const yValues = [y.slice()];
+            
+            const cos_res = Math.cos(theta_0);
+            const alpha = Math.sin(theta_0)-cos_res*theta_0;
+            const beta = cos_res;
+            const omega = parseFloat(document.getElementById('omega_Mathieu_Stability').value);
+            const omega_squared = omega*omega;
+            const omega_squared_cos_theta0 = omega_squared*cos_res;
+            const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
+            const cos_res_times_omega_to_the_fourth = omega_squared*omega_squared_cos_theta0;
+            
+            let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
+            
+            let N_A = Math.ceil((max_A - min_A) / delta_A);
+            let N_l = Math.ceil((max_l - min_l) / delta_l);
+
+            // Arrays to store points for batch plotting
+            let stablePoints = { x: [], y: [] };
+            let unstablePoints = { x: [], y: [] };
+            let stablePointsInvertedPendulum = { x: [], y: [] };
+            let unstablePointsInvertedPendulum = { x: [], y: [] };
+            
+            for (let n_a = 0; n_a < N_A; n_a++)
+            {
+                let a_val_temp = min_A + n_a * delta_A;
+                for (let n_l = 0; n_l < N_l; n_l++)
+                {
+                    let l_val_temp = min_l + n_l * delta_l;
+                    let k_val_temp = g_omega_squared_cos_theta0/l_val_temp;
+                    let m_val_temp = (-a_val_temp*cos_res_times_omega_to_the_fourth)/l_val_temp;
+                    let is_stable_config = 1;
+                    let t = 0;
+                    let y = [theta_0, 0.0];
+                    const steps = Math.floor(t_final / delta_t);
+                    
+                    for (let i = 0; i < steps; i++)
+                    {
+                        const k1 = f(t, y, a_val_temp, l_val_temp);
+                        const k2 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k1[idx]), a_val_temp, l_val_temp);
+                        const k3 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k2[idx]), a_val_temp, l_val_temp);
+                        const k4 = f(t + delta_t, y.map((v, idx) => v + delta_t * k3[idx]), a_val_temp, l_val_temp);
+                        
+                        y[0] += delta_t / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+                        if (Math.abs(y[0] - theta_0) > max_theta_variation)
+                        {
+                            is_stable_config = 0;
+                            break;
+                        }
+                        for (let j = 1; j < y.length; j++)
+                        {
+                            y[j] += delta_t / 6 * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+                        }
+                        
+                        t += delta_t;
+                    }
+                    // Store points instead of plotting immediately
+                    if (is_stable_config)
+                    {
+                        stablePoints.x.push(k_val_temp);
+                        stablePoints.y.push(m_val_temp);
+                        stablePointsInvertedPendulum.x.push(l_val_temp);
+                        stablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                    else
+                    {
+                        unstablePoints.x.push(k_val_temp);
+                        unstablePoints.y.push(m_val_temp);
+                        unstablePointsInvertedPendulum.x.push(l_val_temp);
+                        unstablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                }
+                
+            }
+            let mathieu_results = getMathieuTraces({stability: true});
+            console.log(mathieu_results.traces_mathieu);
+            // After computing all points, update the plot at once
+            Plotly.newPlot('plotTongues',
+            [
+                {
+                    x: stablePoints.x,
+                    y: stablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePoints.x,
+                    y: unstablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu
+                
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}$`,
+                xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
+                yaxis: { title: '$m = -\\frac{A \\omega^4}{l} \\cos(\\theta_0)$' }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
+            
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
+            Plotly.newPlot('plotTonguesInvertedPendulumParameters',
+            [
+                {
+                    x: stablePointsInvertedPendulum.x,
+                    y: stablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePointsInvertedPendulum.x,
+                    y: unstablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$` },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$` }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTonguesInvertedPendulumParameters');
+            });
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
+            alert("Done!");
+        }
+        
+        function update_Mathieu_Plot()
+        {
+            if (document.getElementById("k-m-OptionMathieu").checked)
+            {
+                use_k_m_Mathieu();
+            }
+            else
+            {
+                use_A_l_Mathieu();
+            }
         }
         
         function getMathieuTraces({stability} = {stability:false})
