@@ -267,7 +267,7 @@
             &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
             &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} - \frac{g}{l} (\theta-\pi) = \frac{A \omega^2}{l}  (\theta-\pi) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
             &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
-            &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
+            &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0) \right)
             \end{align*}
         </div>
     </div>
@@ -1149,16 +1149,16 @@
                     \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) = F(t)(\alpha + \beta\theta)
                     \]
                     \[
-                    \ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+                    \ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t - \delta)(\alpha + \beta\theta)
                     \]
                     \[
-                    \ddot{\theta} = -\frac{\left(\alpha+\beta\theta\right)}{l} \left(g + \frac{A \omega^2}{l}\cos(\omega t)\right)
+                    \ddot{\theta} = -\frac{\left(\alpha+\beta\theta\right)}{l} \left(g + A \omega^2\cos(\omega t - \delta)\right)
                     \]
                     \[
-                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) =  - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) =  - \frac{A \omega^2}{l}\cos(\omega t - \delta)(\alpha + \beta\theta)
                     \]
                     \[
-                    \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) - \cos(\theta_0)\theta_0 + \cos(\theta_0) \theta\right)
+                    \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right) =  - \frac{A \omega^2}{l}\cos(\omega t - \delta)\left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right)
                     \]
 
 
@@ -1472,7 +1472,7 @@
                 A_l_option.checked = true;
             }
 
-            console.log(k_m_option.checked, A_l_option.checked);
+            //console.log(k_m_option.checked, A_l_option.checked);
 
             // Show/hide the corresponding divs
             k_m_box.style.display = k_m_option.checked ? "block" : "none";
@@ -1819,7 +1819,7 @@
                 
             }
             let mathieu_results = getMathieuTraces({stability: true});
-            console.log(mathieu_results.traces_mathieu);
+            //console.log(mathieu_results.traces_mathieu);
             // After computing all points, update the plot at once
             Plotly.newPlot('plotTongues',
             [
@@ -1851,6 +1851,17 @@
             });
             
             document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
+            // Combine x and y values from both datasets
+            const allX = stablePointsInvertedPendulum.x.concat(unstablePointsInvertedPendulum.x);
+            const allY = stablePointsInvertedPendulum.y.concat(unstablePointsInvertedPendulum.y);
+
+            // Compute the min and max values
+            const xMin = Math.min(...allX);
+            const xMax = Math.max(...allX);
+            const bufferX = (xMax - xMin)*.05;
+            const yMin = Math.min(...allY);
+            const yMax = Math.max(...allY);
+            const bufferY = (yMax - yMin)*.05;
             Plotly.newPlot('plotTonguesInvertedPendulumParameters',
             [
                 {
@@ -1867,12 +1878,16 @@
                     marker: { color: 'red', size: 8 },
                     name: 'Unstable'
                 },
-                
+                ...mathieu_results.traces_mathieu_A_l
             ],
             {
                 title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
-                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$` },
-                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$` }
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$`
+                    , range: [xMin-bufferX, xMax+bufferX]
+                },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$`
+                    , range: [yMin-bufferY, yMax+bufferY]
+                }
             });
             
             window.addEventListener('resize', () => {
@@ -1974,7 +1989,7 @@
                 
             }
             let mathieu_results = getMathieuTraces({stability: true});
-            console.log(mathieu_results.traces_mathieu);
+            //console.log(mathieu_results.traces_mathieu);
             // After computing all points, update the plot at once
             Plotly.newPlot('plotTongues',
             [
@@ -2005,6 +2020,17 @@
                 Plotly.Plots.resize('plotTongues');
             });
             
+            const allX = stablePointsInvertedPendulum.x.concat(unstablePointsInvertedPendulum.x);
+            const allY = stablePointsInvertedPendulum.y.concat(unstablePointsInvertedPendulum.y);
+
+            // Compute the min and max values
+            const xMin = Math.min(...allX);
+            const xMax = Math.max(...allX);
+            const bufferX = (xMax - xMin)*.05;
+            const yMin = Math.min(...allY);
+            const yMax = Math.max(...allY);
+            const bufferY = (yMax - yMin)*.05;
+            
             document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
             Plotly.newPlot('plotTonguesInvertedPendulumParameters',
             [
@@ -2022,12 +2048,16 @@
                     marker: { color: 'red', size: 8 },
                     name: 'Unstable'
                 },
-                
+                ...mathieu_results.traces_mathieu_A_l
             ],
             {
                 title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
-                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$` },
-                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$` }
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$`
+                    , range: [xMin-bufferX, xMax+bufferX]
+                },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$`
+                    , range: [yMin-bufferY, yMax+bufferY]
+                }
             });
             
             window.addEventListener('resize', () => {
@@ -2052,7 +2082,7 @@
         function getMathieuTraces({stability} = {stability:false})
         {
             //Mathieu Tongues
-            const omega = parseFloat(document.getElementById('omega-slider').value);
+            const omega = parseFloat(document.getElementById(stability ? 'omega_Mathieu_Stability' : 'omega-slider').value);
             let l_temp = parseFloat(document.getElementById('l-slider').value);
             const l_min = parseFloat(document.getElementById('l-input').min);
             const l = Math.max(l_temp, l_min);
@@ -2061,10 +2091,13 @@
             const omega_squared = omega*omega;
             const cos_res = Math.cos(theta0);
             const omega_squared_times_cos_res = cos_res*omega_squared;
-            const k = (g*omega_squared_times_cos_res)/l;
+            const omega_fourth_times_cos_res = omega_squared_times_cos_res*omega_squared;
+            const g_omega_squared_times_cos_res = g * omega_squared_times_cos_res;
+            const k = g_omega_squared_times_cos_res/l;
             const m = -(A*omega_squared*omega_squared_times_cos_res)/g;
             //alert(`k=${k}`);
             let traces_mathieu = [];
+            let traces_mathieu_A_l = []; //Only used for `stability = true`
             let delta_k = 0.0001;
 
             if (k < 0)
@@ -2080,15 +2113,7 @@
                 let f1 = k_vals.map(f1_func);
                 let f2_func = (k => Math.abs(2 * Math.sqrt((k * (k - 1) * (k - 4)) / (3 * k - 8))));
                 let f2 = k_vals.map(f2_func);
-                /*if (f1_func(k) <= m && m <= f2_func(k))
-                {
-                    alert("Stable!");
-                }
-                else
-                {
-                    alert("Unstable!");
-                }*/
-
+                
                 traces_mathieu.push({
                     x: k_vals,
                     y: f1,
@@ -2104,6 +2129,34 @@
                     name: '$m_1(k)$',
                     line: { color: 'black' }
                 });
+                
+                if (stability)
+                {
+                    let l_vals = [];
+                    let f1_A = [];
+                    let f2_A = [];
+                    for (let i = 0; i < k_vals.length; i++)
+                    {
+                        l_vals.push(g_omega_squared_times_cos_res/k_vals[i]); //formula for l
+                        f1_A.push((-f1[i]*l_vals[i])/omega_fourth_times_cos_res); //formula for A
+                        f2_A.push((-f2[i]*l_vals[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    traces_mathieu_A_l.push({
+                        x: l_vals,
+                        y: f1_A,
+                        mode: 'lines',
+                        name: '$m_2(k)$',
+                        line: { color: 'blue' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals,
+                        y: f2_A,
+                        mode: 'lines',
+                        name: '$m_1(k)$',
+                        line: { color: 'black' }
+                    });
+                }
             }
             else
             {
@@ -2175,8 +2228,83 @@
                     name: '$m_5(k)$',
                     line: { color: 'magenta' }
                 });
+                
+                if (stability)
+                {
+                    let l_vals1 = [];
+                    let f1_A = [];
+                    for (let i = 0; i < k_vals1.length; i++)
+                    {
+                        l_vals1.push(g_omega_squared_times_cos_res/k_vals1[i]); //formula for l
+                        f1_A.push((-f1[i]*l_vals1[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals2 = [];
+                    let f2_plus_A = [];
+                    let f2_minus_A = []
+                    for (let i = 0; i < k_vals2.length; i++)
+                    {
+                        l_vals2.push(g_omega_squared_times_cos_res/k_vals2[i]); //formula for l
+                        f2_plus_A.push((-f2_plus[i]*l_vals2[i])/omega_fourth_times_cos_res); //formula for A
+                        f2_minus_A.push((-f2_minus[i]*l_vals2[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals3 = [];
+                    let f3_A = [];
+                    for (let i = 0; i < k_vals3.length; i++)
+                    {
+                        l_vals3.push(g_omega_squared_times_cos_res/k_vals3[i]); //formula for l
+                        f3_A.push((-f3[i]*l_vals3[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals4 = [];
+                    let f4_A = [];
+                    for (let i = 0; i < k_vals4.length; i++)
+                    {
+                        l_vals4.push(g_omega_squared_times_cos_res/k_vals4[i]); //formula for l
+                        f4_A.push((-f4[i]*l_vals4[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    traces_mathieu_A_l.push({
+                        x: l_vals1,
+                        y: f1_A,
+                        mode: 'lines',
+                        name: '$m_2(k)$',
+                        line: { color: 'brown' }
+                    });
+                    
+                    traces_mathieu_A_l.push({
+                        x: [...l_vals2, ...l_vals2.reverse()], // Concatenate k values for both branches
+                        y: [...f2_plus_A, ...f2_minus_A.reverse()], // Concatenate function values accordingly
+                        mode: 'lines',
+                        name: '$m_3(k)$',
+                        line: { color: 'orange' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals3,
+                        y: f3_A,
+                        mode: 'lines',
+                        name: '$m_4(k)$',
+                        line: { color: 'purple' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals4,
+                        y: f4_A,
+                        mode: 'lines',
+                        name: '$m_5(k)$',
+                        line: { color: 'magenta' }
+                    });
+                    
+                }
             }
-            return {"traces_mathieu": traces_mathieu, "k": k, "m": m};
+            let return_value = {"traces_mathieu": traces_mathieu, "k": k, "m": m};
+            if (stability)
+            {
+                return_value["traces_mathieu_A_l"] = traces_mathieu_A_l;
+            }
+            return return_value;
         }
 
         // Plotting function
@@ -2842,7 +2970,7 @@
             &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
             &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$ + ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
             &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} \\\\
-            &\\text{Mathieu Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right) =  - \\frac{A \\omega^2}{l}\\cos(\\omega t)\\left(\\sin(\\theta_0) - \\cos(\\theta_0)\\theta_0 + \\cos(\\theta_0) \\theta\\right)
+            &\\text{Mathieu Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(\\sin(\\theta_0) + \\cos(\\theta_0)(\\theta - \\theta_0)\\right) =  - \\frac{A \\omega^2}{l}\\cos(\\omega t)\\left(\\sin(\\theta_0) + \\cos(\\theta_0)(\\theta - \\theta_0)\\right)
             \\end{align*}$$`;
             equationsDiv.innerHTML = `
                 ${newEquations}
