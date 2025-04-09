@@ -792,7 +792,7 @@
             if (err < tol) {
               resolve(u);
             } else {
-              alert("Newton did not converge, err = " + err);
+              alert(`Newton did not converge, err = ${err.toFixed(2)}, proceeding with initial ansatz`);
               resolve(u0); // or resolve(newU) as a fallback.
             }
           } else {
