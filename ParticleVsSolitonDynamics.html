@@ -537,7 +537,9 @@
         }
         //console.log("u=",u);
         // Refine initial u using Newton's method
-        let newtonResult = u;//await refineNewton(u, params);
+        //let newtonResult = u;//await refineNewton(u, params);
+        let newtonResult = await refineNewton(u, params);
+
         //console.log("u after refineNewton = ",u);
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
