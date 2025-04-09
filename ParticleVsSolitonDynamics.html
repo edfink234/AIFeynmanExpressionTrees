@@ -537,7 +537,7 @@
         }
         //console.log("u=",u);
         // Refine initial u using Newton's method
-        let newtonResult = await refineNewton(u, params);
+        let newtonResult = u;//await refineNewton(u, params);
         //console.log("u after refineNewton = ",u);
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
@@ -927,7 +927,7 @@
       //pdeStep(params);
       pdeStep_dop853(params);
       
-      updatePlots(params);
+      updatePlots(params); //TODO: add an option to draw every N time-steps instead of every time-step.
       
       if (currentTime >= params.T) {
         clearInterval(simInterval);

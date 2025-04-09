@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.10.0/dist/plotly.min.js"></script>
+    
+    <title>Interactive Inverted Pendulum Solver</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        
+        ol > li::marker {
+          font-weight: bold;
+        }
+        
+        .scroll-container {
+                overflow-x: auto;
+                white-space: nowrap;
+                width: 100%;
+                max-width: 100%;
+            }
+        
+        .latex-equation {
+            /*display: inline-block;*/
+        }
+        
+        .toggle-button {
+                    display: inline-block;
+                    padding: 0.5em 1em;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                    
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .toggle-button_learn_horizontal {
+                    display: inline-block;
+                    padding: 0.5em 1em;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                    
+        }
+        .toggle-button_learn_horizontal:hover {
+            background-color: #0056b3;
+        }
+        
+        .toggle-button_mathieu {
+                    display: inline-block;
+                    padding: 0.5em 1em;
+                    background-color: #007BFF;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                    
+        }
+        .toggle-button_mathieu:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            
+        }
+        
+        h3 {
+            text-align: center;
+            color: #444;
+            font-weight: 700
+        }
+        
+        h5 {
+            text-align: center;
+            color: #444;
+            text-decoration: underline;
+        }
+
+        .control-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .control-container label {
+            width: 60px; /* Set a fixed width for labels to ensure alignment */
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .control-container input[type="number"] {
+            width: 60px; /* Set a fixed width for number inputs */
+            margin-right: -25px;
+        }
+
+        .control-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 20px;
+            color: #555;
+            margin: 0 10px;
+            user-select: none; /* Prevent text selection */
+            border: 2px solid transparent; /* Prevent focus outline */
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .arrow:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .arrow:active {
+            transform: scale(0.9);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 200px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
+            margin: 0 10px; /* Add space around the slider */
+        }
+
+        .slider:hover {
+            background: #ccc;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #007BFF;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #0056b3;
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+        .plot-container {
+            margin-top: 40px;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            margin: 0px 0px 0px 20px;
+        }
+        
+        label {
+
+            margin: 0px 20px 0px 20px;
+        }
+        
+        :root {
+                --background-color: #ffffff;
+                --text-color: #333333;
+                --plot-bg-color: #ffffff;
+                --plot-grid-color: #dddddd;
+            }
+
+            body {
+                background-color: var(--background-color);
+                color: var(--text-color);
+            }
+
+            .plot-container {
+                background-color: var(--plot-bg-color);
+            }
+        
+        .nail {
+            position: absolute;
+            top: 50px;
+            left: 200px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background-color: black;
+            height: 0px;
+            width: 0px;
+            
+            z-index: 2; /* Ensures it's above the pendulum */
+        }
+        .Pendulum-Container {
+            position: absolute;
+            top: 50px; /* Align with the nail */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .Pendulum-Body {
+            transform-origin: top center; /* Ensures rotation is around the nail */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .connector {
+            border: 0.1px solid black;
+            /*background-color: black;*/
+
+            width: 0.1px;
+            height: 80px;
+        }
+        .Ball {
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            /*box-shadow: 0px 20px 10px 2px rgb(137, 137, 137);*/
+        }
+        section {
+            position: relative;
+            width: 400px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<!--    sin(theta) = sin(pi) + cos(pi)*(theta-pi) - (sin(pi)/2)(theta-pi)^2 =  -(theta-pi)-->
+<!--    cos(theta) = cos(pi) - sin(pi)*(theta-pi) - (cos(pi)/2)*(theta-pi)^2 = -1 + ((theta-pi)^2)/2-->
+    <h1>Interactive Inverted Pendulum Viewer</h1>
+    <div class = "scroll-container">
+        <div class="latex-equation" id="equations">
+            \begin{align*}
+            &\text{Original Horizontal: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
+            &\text{Taylor Order-2 Horizontal about $\theta=\pi$: }\quad  \ddot{\theta} - \frac{g}{l}(\theta-\pi) =  \frac{ A \omega^2}{l}\left(-1 + \frac{\theta^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\
+            &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\
+            &\text{Taylor Order-2 Vertical about $\theta=\pi$: } \quad \ddot{\theta} - \frac{g}{l} (\theta-\pi) = \frac{A \omega^2}{l}  (\theta-\pi) \cos(\omega t - \delta)   - \lambda \dot{\theta} \\
+            &\text{Arbitrary Horizontal Control $x_p(t)$: } \quad  \ddot{\theta} + \frac{g \sin (\theta)}{l} = -\frac{\ddot{x}_p(t)\cos(\theta)}{l} \\
+            &\text{Mathieu Vertical: } \quad \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right) =  - \frac{A \omega^2}{l}\cos(\omega t)\left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0) \right)
+            \end{align*}
+        </div>
+    </div>
+<!--    <div class="latex-equation">-->
+<!--        $$\begin{align*}-->
+<!--        &\text{Original Horizontal: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \cos (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Taylor Order-2 Horizontal about $\theta=0$: }\quad  \ddot{\theta} + \frac{g}{l}\left(\pi - \theta\right) =  \frac{ A \omega^2}{l}\left(-1 + \frac{(\theta-\pi)^2}{2}\right)\cos(\omega t - \delta) - \lambda \dot{\theta} \\-->
+<!--        &\text{Original Vertical: } \quad \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l}  \sin (\theta) \cos(\omega t - \delta)  - \lambda \dot{\theta} \\-->
+<!--        &\text{Taylor Order-2 Vertical about $\theta=0$: } \quad \ddot{\theta} + \frac{g}{l} \left(\pi - \theta \right) = -\frac{A \omega^2}{l}  \left(\pi - \theta \right) \cos(\omega t - \delta)   - \lambda \dot{\theta}-->
+<!--        \end{align*}$$-->
+<!--    </div>-->
+    <br>
+    <div class="row g-0 justify-content-center">
+      <div class="col-md-5 text-center">
+        <label for="order-input">Order (integer from 0): </label>
+        <input type="number" id="order-input" min="0" value="2">
+      </div>
+      <div class="col-md-5 text-center">
+        <label for="thetaToTaylor">\(\Delta \theta\:\) (where \(\theta=\pi+\Delta\theta\)): </label>
+        <input type="number" id="thetaToTaylor" step="0.01" value="0" size = "10">
+      </div>
+    </div>
+
+
+    
+    
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" class="btn btn-warning" id = "xpToggle" onclick="toggleEditor()">Change \(x_p(t)\)</button>
+            <div id="editor-container" style="display: none; margin-top: 10px;">
+                <textarea id="x_p_editor" rows="3" style="width: 100%; font-family: monospace;"></textarea>
+                <button class="btn btn-success mt-2" onclick="updateX_p()">Apply Change</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class = "row">
+        <div class="col-md-6 text-center">
+            <button class="toggle-button" onclick="toggleDerivation()">Show Derivation</button>
+            <div id="derivation" style = "display: none;">
+                <br>
+                <h5> Horizontal </h5>
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
+
+                </div>
+                <div class = "scroll-container">
+                    <div class="latex-equation">
+                        \[
+                        x = x_p(t) + l \sin (\theta) = A \cos(\omega t - \delta) + l \sin (\theta),
+                        \]
+                        \[
+                        y = l \cos (\theta)
+                        \]
+
+                        The velocity components of the pendulum bob are:
+                        \[
+                        \dot{x} = -A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta),
+                        \]
+                        \[
+                        \dot{y} = -l \dot{\theta} \sin (\theta)
+                        \]
+
+                        The total kinetic energy \( T \) is therefore:
+                        \[
+                        T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                        \]
+                        Expanding this expression, we get:
+                        \[
+                        T = \frac{1}{2} m \left[ \left(-A \omega \sin(\omega t - \delta) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
+                        \]
+
+                        Expanding further and simplifying, we obtain:
+                        \[
+                        T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right)
+                        \]
+
+                        The potential energy \( V \) is due to gravity and is given by:
+                        \[
+                        V = -m g y = -m g l \cos (\theta)
+                        \]
+                        The Lagrangian \( L \) is given by:
+                        \[
+                        L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 - 2 A l \omega \dot{\theta} \cos (\theta) \sin(\omega t - \delta) \right) + m g l \cos (\theta)
+                        \]
+                        Using the Euler-Lagrange equation:
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                        \]
+                        \[
+                        \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} - m A l \omega \cos (\theta) \sin(\omega t - \delta).
+                        \]
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right)
+                        \]
+                         \[
+                           \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right)
+                           \]
+                        \[
+                        m l^2 \ddot{\theta} - m A l \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \sin (\theta) - g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} - A \omega \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + g \sin (\theta) = 0
+                        \]
+                        \[
+                        \ddot{\theta} - \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+                        \]
+                        \[
+                        \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( -\dot{\theta} \sin (\theta) \sin(\omega t - \delta) + \cos (\theta) \omega \cos(\omega t - \delta) + \dot{\theta} \sin(\omega t - \delta) \sin (\theta) \right)
+                        \]
+                        \[
+                        \ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t - \delta) \right)
+                        \]
+                        \begin{equation}
+                            \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right)} \label{eq:horizontal_original_no_damping} \tag{1}
+                        \end{equation}
+                        Expanding about \(\theta = 0\) yields to first order \(\sin(\theta) \sim 0 + \cos(0) (\theta-0) = \theta\), \(\cos(\theta) \sim 1\), yielding
+                        \[
+                        \boxed{\ddot{\theta} + \frac{g}{l}\theta = \frac{ A \omega^2}{l}\cos(\omega t - \delta)}
+                        \]
+                        with solution
+                        \[\theta{\left(t \right)} = \frac{A \omega^{2} \cos{\left(\delta - \omega t \right)}}{g - l \omega^{2}} + C_{1} \sin{\left(\frac{\sqrt{g} t}{\sqrt{l}} \right)} + C_{2} \cos{\left(\frac{\sqrt{g} t}{\sqrt{l}} \right)}\]
+                        To second order, \(\sin(\theta) \sim \theta\), \(\cos(\theta) \sim 1 - \dfrac{\theta^2}{2}\), yielding
+                        \begin{equation}
+                            \boxed{\ddot{\theta} + \frac{g}{l}\theta  =  \frac{ A \omega^2}{l}\left(1 - \dfrac{\theta^2}{2}\right)\cos(\omega t - \delta)} \label{eq:hoizontal_second_order_no_damping} \tag{2}
+                        \end{equation}
+                        
+                        Considering linear damping simply modifies equation \ref{eq:horizontal_original_no_damping} to be:
+                        \begin{equation}
+                            \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:horizontal_original_linear_damping}\tag{3}
+                        \end{equation}
+                    
+                        
+                    </div>
+                </div>
+                <br><br>
+                <h5> Vertical </h5>
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
+
+                </div>
+                <div class = "scroll-container">
+                    <div class="latex-equation">
+                        \[
+                        x = l \sin (\theta),
+                        \]
+                        \[
+                        y = y_p(t) + l \cos (\theta) = A \cos(\omega t - \delta) + l \cos (\theta)
+                        \]
+
+                        The velocity components of the pendulum bob are:
+                        \[
+                        \dot{x} = l \dot{\theta} \cos (\theta),
+                        \]
+                        \[
+                        \dot{y} = -A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)
+                        \]
+
+                        The total kinetic energy \( T \) is therefore:
+                        \[
+                        T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                        \]
+                        Expanding this expression, we get:
+                        \[
+                        T = \frac{1}{2} m \left[ \left(l \dot{\theta} \cos (\theta)\right)^2 + \left(-A \omega \sin(\omega t - \delta) - l \dot{\theta} \sin (\theta)\right)^2 \right]
+                        \]
+
+                        Expanding further and simplifying, we obtain:
+                        \[
+                        T = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right)
+                        \]
+
+                        The potential energy \( V \) is due to gravity and is given by:
+                        \[
+                        V = -m g y = -m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
+                        \]
+                        The Lagrangian \( L \) is given by:
+                        \[
+                        L = T - V = \frac{1}{2} m \left( A^2 \omega^2 \sin^2(\omega t - \delta) + l^2 \dot{\theta}^2 + 2 A l \omega \dot{\theta} \sin (\theta) \sin(\omega t - \delta) \right) + m g \left(A \cos (\omega t - \delta) + l \cos (\theta)\right)
+                        \]
+
+                        Using the Euler-Lagrange equation:
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                        \]
+                        \[
+                        \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m A l \omega \sin (\theta) \sin(\omega t - \delta).
+                        \]
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right)
+                        \]
+                        \[
+                        \frac{\partial L}{\partial \theta} = m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right)
+                        \]
+                        \[
+                        m l^2 \ddot{\theta} + m A l \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - m l \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) \right) - \left( A \omega \dot{\theta} \sin(\omega t - \delta) \cos (\theta) - g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} + A \omega \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + g \sin (\theta) = 0
+                        \]
+                        \[
+                        \ddot{\theta} + \frac{A \omega}{l} \left( \dot{\theta} \cos (\theta) \sin(\omega t - \delta) + \sin (\theta) \omega \cos(\omega t - \delta) - \dot{\theta} \sin(\omega t - \delta) \cos (\theta) \right) + \frac{g}{l} \sin (\theta) = 0
+                        \]
+                        \[
+                        \ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega}{l} \left( \sin (\theta) \omega \cos(\omega t - \delta) \right)
+                        \]
+                        \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right)} \label{eq:vertical_original_no_damping} \tag{6}
+                        \end{equation}
+                        Expanding about \(\theta = 0\) yields to first order \(\sin(\theta) \sim 0 + \cos(0) (\theta-0) = \theta\), \(\cos(\theta) \sim 1\), yielding:
+                        \[
+                        \boxed{\ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l} \left( \theta \cos(\omega t - \delta) \right)}
+                        \]
+                        To second order, \(\sin(\theta) \sim \theta\), \(\cos(\theta) \sim 1 - \dfrac{\theta^2}{2}\), yielding
+                        \begin{equation}
+                        \boxed{\ddot{\theta} + \frac{g}{l} \theta = -\frac{A \omega^2}{l} \left( \theta \cos(\omega t - \delta) \right)} \label{eq:vertical_second_order_no_damping} \tag{7}
+                        \end{equation}
+                        
+                        Considering linear damping simply modifies equation \ref{eq:vertical_original_no_damping} to be:
+                        \begin{equation}
+                            \boxed{\ddot{\theta} + \frac{g}{l} \sin (\theta) = -\frac{A \omega^2}{l} \left( \sin (\theta) \cos(\omega t - \delta) \right) -\lambda \dot{\theta}}\label{eq:vertical_original_linear_damping} \tag{8}
+                        \end{equation}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 text-center">
+            <button class="toggle-button_learn_horizontal" onclick="toggleLearnHorizontal()" id = "LearnHorizontalButton">Arbitrary Horizontal Control \(x_p(t)\) Derivation</button>
+            <div id="learn_horizontal_derivation" style = "display: none;">
+                <div>
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351.894" height="181.816" viewBox="0 0 351.894 181.816">
+                    <defs>
+                    <g>
+                    <g id="glyph-0-0">
+                    <path d="M 0.875 -0.59375 C 0.84375 -0.4375 0.78125 -0.203125 0.78125 -0.15625 C 0.78125 0.015625 0.921875 0.109375 1.078125 0.109375 C 1.203125 0.109375 1.375 0.03125 1.453125 -0.171875 C 1.453125 -0.1875 1.578125 -0.65625 1.640625 -0.90625 L 1.859375 -1.796875 C 1.90625 -2.03125 1.96875 -2.25 2.03125 -2.46875 C 2.0625 -2.640625 2.140625 -2.9375 2.15625 -2.96875 C 2.296875 -3.28125 2.828125 -4.1875 3.78125 -4.1875 C 4.234375 -4.1875 4.3125 -3.8125 4.3125 -3.484375 C 4.3125 -3.234375 4.25 -2.953125 4.171875 -2.65625 L 3.890625 -1.5 L 3.6875 -0.75 C 3.65625 -0.546875 3.5625 -0.203125 3.5625 -0.15625 C 3.5625 0.015625 3.703125 0.109375 3.84375 0.109375 C 4.15625 0.109375 4.21875 -0.140625 4.296875 -0.453125 C 4.4375 -1.015625 4.8125 -2.46875 4.890625 -2.859375 C 4.921875 -2.984375 5.453125 -4.1875 6.546875 -4.1875 C 6.96875 -4.1875 7.078125 -3.84375 7.078125 -3.484375 C 7.078125 -2.921875 6.65625 -1.78125 6.453125 -1.25 C 6.375 -1.015625 6.328125 -0.90625 6.328125 -0.703125 C 6.328125 -0.234375 6.671875 0.109375 7.140625 0.109375 C 8.078125 0.109375 8.453125 -1.34375 8.453125 -1.421875 C 8.453125 -1.53125 8.359375 -1.53125 8.328125 -1.53125 C 8.234375 -1.53125 8.234375 -1.5 8.1875 -1.34375 C 8.03125 -0.8125 7.71875 -0.109375 7.171875 -0.109375 C 7 -0.109375 6.921875 -0.203125 6.921875 -0.4375 C 6.921875 -0.6875 7.015625 -0.921875 7.109375 -1.140625 C 7.296875 -1.671875 7.71875 -2.765625 7.71875 -3.34375 C 7.71875 -3.984375 7.3125 -4.40625 6.5625 -4.40625 C 5.828125 -4.40625 5.3125 -3.96875 4.9375 -3.4375 C 4.9375 -3.5625 4.90625 -3.90625 4.625 -4.140625 C 4.375 -4.359375 4.0625 -4.40625 3.8125 -4.40625 C 2.90625 -4.40625 2.421875 -3.765625 2.25 -3.53125 C 2.203125 -4.109375 1.78125 -4.40625 1.328125 -4.40625 C 0.875 -4.40625 0.6875 -4.015625 0.59375 -3.84375 C 0.421875 -3.484375 0.296875 -2.90625 0.296875 -2.875 C 0.296875 -2.765625 0.390625 -2.765625 0.40625 -2.765625 C 0.515625 -2.765625 0.515625 -2.78125 0.578125 -3 C 0.75 -3.703125 0.953125 -4.1875 1.3125 -4.1875 C 1.46875 -4.1875 1.609375 -4.109375 1.609375 -3.734375 C 1.609375 -3.515625 1.578125 -3.40625 1.453125 -2.890625 Z M 0.875 -0.59375 "/>
+                    </g>
+                    <g id="glyph-0-1">
+                    <path d="M 4.53125 -4.984375 C 4.53125 -5.640625 4.359375 -7.03125 3.34375 -7.03125 C 1.953125 -7.03125 0.421875 -4.21875 0.421875 -1.9375 C 0.421875 -1 0.703125 0.109375 1.609375 0.109375 C 3.015625 0.109375 4.53125 -2.75 4.53125 -4.984375 Z M 1.46875 -3.625 C 1.640625 -4.25 1.84375 -5.046875 2.25 -5.765625 C 2.515625 -6.25 2.875 -6.8125 3.328125 -6.8125 C 3.8125 -6.8125 3.875 -6.171875 3.875 -5.609375 C 3.875 -5.109375 3.796875 -4.609375 3.5625 -3.625 Z M 3.46875 -3.296875 C 3.359375 -2.84375 3.15625 -2 2.765625 -1.28125 C 2.421875 -0.59375 2.046875 -0.109375 1.609375 -0.109375 C 1.28125 -0.109375 1.078125 -0.40625 1.078125 -1.328125 C 1.078125 -1.75 1.140625 -2.328125 1.390625 -3.296875 Z M 3.46875 -3.296875 "/>
+                    </g>
+                    <g id="glyph-0-2">
+                    <path d="M 2.578125 -6.8125 C 2.578125 -6.8125 2.578125 -6.921875 2.4375 -6.921875 C 2.21875 -6.921875 1.484375 -6.84375 1.21875 -6.8125 C 1.140625 -6.8125 1.03125 -6.796875 1.03125 -6.609375 C 1.03125 -6.5 1.140625 -6.5 1.28125 -6.5 C 1.765625 -6.5 1.78125 -6.40625 1.78125 -6.328125 L 1.75 -6.125 L 0.484375 -1.140625 C 0.453125 -1.03125 0.4375 -0.96875 0.4375 -0.8125 C 0.4375 -0.234375 0.875 0.109375 1.34375 0.109375 C 1.671875 0.109375 1.921875 -0.09375 2.09375 -0.453125 C 2.265625 -0.828125 2.390625 -1.40625 2.390625 -1.421875 C 2.390625 -1.53125 2.296875 -1.53125 2.265625 -1.53125 C 2.171875 -1.53125 2.15625 -1.484375 2.140625 -1.34375 C 1.96875 -0.703125 1.78125 -0.109375 1.375 -0.109375 C 1.078125 -0.109375 1.078125 -0.421875 1.078125 -0.5625 C 1.078125 -0.8125 1.09375 -0.859375 1.140625 -1.046875 Z M 2.578125 -6.8125 "/>
+                    </g>
+                    </g>
+                    <clipPath id="clip-0">
+                    <path clip-rule="nonzero" d="M 170 23 L 267 23 L 267 181.816406 L 170 181.816406 Z M 170 23 "/>
+                    </clipPath>
+                    </defs>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 2.98883" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L -0.0016875 170.079813 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <g clip-path="url(#clip-0)">
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -0.0016875 0.0016875 L 85.041281 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    </g>
+                    <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 263.824219 28.652344 C 263.824219 27.085938 262.554688 25.816406 260.988281 25.816406 C 259.421875 25.816406 258.152344 27.085938 258.152344 28.652344 C 258.152344 30.21875 259.421875 31.488281 260.988281 31.488281 C 262.554688 31.488281 263.824219 30.21875 263.824219 28.652344 Z M 263.824219 28.652344 "/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-0" x="259.448" y="40.612"/>
+                    </g>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-dasharray="2.98883 1.99255" stroke-miterlimit="10" d="M -170.079813 147.294656 L 170.080344 147.294656 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.3985" stroke-linecap="butt" stroke-linejoin="miter" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M 28.345969 49.095438 C 19.728781 54.072 9.947531 56.693094 0.45925 56.693094 " transform="matrix(1, 0, 0, -1, 175.947, 175.947)"/>
+                    <path fill="none" stroke-width="0.31879" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0%, 0%, 0%)" stroke-opacity="1" stroke-miterlimit="10" d="M -1.196292 1.592556 C -1.09473 0.9949 -0.00098 0.100369 0.299801 -0.00119375 C -0.00098 -0.09885 -1.09473 -0.997287 -1.196292 -1.594944 " transform="matrix(-1, 0, 0, 1, 176.40527, 119.2551)"/>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-1" x="189.628" y="117.612"/>
+                    </g>
+                    <g fill="rgb(0%, 0%, 0%)" fill-opacity="1">
+                    <use xlink:href="#glyph-0-2" x="225.386" y="102.871"/>
+                    </g>
+                    </svg>
+
+                </div>
+                <div class = "scroll-container">
+                    <div class="latex-equation">
+                        \[
+                        x = x_p(t) + l \sin (\theta)
+                        \]
+                        \[
+                        y = l \cos (\theta)
+                        \]
+
+                        The velocity components of the pendulum bob are:
+                        \[
+                        \dot{x} = \dot{x}_p(t) + l \dot{\theta} \cos (\theta),
+                        \]
+                        \[
+                        \dot{y} = -l \dot{\theta} \sin (\theta)
+                        \]
+
+                        The total kinetic energy \( T \) is therefore:
+                        \[
+                        T = \frac{1}{2} m (\dot{x}^2 + \dot{y}^2)
+                        \]
+                        Expanding this expression, we get:
+                        \[
+                        T = \frac{1}{2} m \left[ \left(\dot{x}_p(t) + l \dot{\theta} \cos (\theta)\right)^2 + \left(l \dot{\theta} \sin (\theta)\right)^2 \right]
+                        \]
+
+                        Expanding further and simplifying, we obtain:
+                        \[
+                        T = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right)
+                        \]
+
+                        The potential energy \( V \) is due to gravity and is given by:
+                        \[
+                        V = -m g y = -m g l \cos (\theta)
+                        \]
+                        The Lagrangian \( L \) is given by:
+                        \[
+                        L = T - V = \frac{1}{2} m \left( \dot{x_p}^2(t) + l^2 \dot{\theta}^2 + 2 l \dot{x}_p(t) \dot{\theta} \cos (\theta) \right) + m g l \cos (\theta)
+                        \]
+                        Using the Euler-Lagrange equation:
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) - \frac{\partial L}{\partial \theta} = 0,
+                        \]
+                        \[
+                        \frac{\partial L}{\partial \dot{\theta}} = m l^2 \dot{\theta} + m l \dot{x}_p(t) \cos (\theta)
+                        \]
+                        \[
+                        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\theta}} \right) = m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right)
+                        \]
+                         \[
+                           \frac{\partial L}{\partial \theta} = -m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right)
+                           \]
+                        \[
+                        m l^2 \ddot{\theta} + m l \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) + m l \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} + \left( \ddot{x}_p(t)\cos(\theta) - \dot{x}_p(t)\dot{\theta}\sin(\theta)  \right) +  \left( \dot{x}_p(t)\dot{\theta}\sin(\theta) + g \sin (\theta) \right) = 0
+                        \]
+                        \[
+                        l \ddot{\theta} + \ddot{x}_p(t)\cos(\theta)  + g \sin (\theta)  = 0
+                        \]
+                        
+                        
+                    </div>
+                </div>
+                <h4 style="text-align: center; text-decoration: underline;">\(\underline{\textbf{Steps to learn } \mathbf{x_p(t)}}\)</h4>
+
+
+                <ol style="list-style-position: inside;">
+                    <li>Generate a function \(x_p(t)\)</li>
+                    <li>Numerically integrate \(\theta(t)\) from \(t = 0\) to \(t_\text{final}\) with \(\theta(0) = \theta_0\), \(\dot{\theta}(0) = 0\)</li>
+                    <li>Measure the loss as \(\mathcal{L} \sim \max(\vec{\theta} - \theta_0)\)</li>
+                    <li>Optimize the parameters in \(x_p(t)\) to minimize \(\mathcal{L}\)</li>
+                    <li>Repeat steps 1-4 until convergence.</li>
+                </ol>
+
+                
+            </div>
+        </div>
+    </div>
+    
+    <br>
+    <div class="container">
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minA">\(A_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minA" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(A\):</label>
+            </div>
+            <div class="col-md">
+                <input id="A-slider" type="range" min="0" max="100" step="0.01" value="1.51" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="A-input" step="0.01" value="1.51" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxA">\(A_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxA" step="0.01" value="100">
+            </div>
+        </div>
+        
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minOmega">\(\omega_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minOmega" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(\omega\):</label>
+            </div>
+            <div class="col-md">
+                <input id="omega-slider" type="range" min="0" max="10" step="0.01" value="5.46" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="omega-input" step="0.01" value="5.46" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxOmega">\(\omega_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxOmega" step="0.01" value="10">
+            </div>
+        </div>
+
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minL">\(l_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minL" step="0.01" value="0" min="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(l\):</label>
+            </div>
+            <div class="col-md">
+                <input id="l-slider" type="range" min="0" max="100" step="0.01" value="10" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="l-input" step="0.01" value="10" min="0" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxL">\(l_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxL" step="0.01" value="100">
+            </div>
+        </div>
+
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minTheta0">\(\theta_{0_{\text{min}}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minTheta0" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(\theta_0\):</label>
+            </div>
+            <div class="col-md">
+                <input id="theta-slider" type="range" min="0" max="7" step="0.01" value="3.141592653589793" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="theta-input" step="0.01" value="3.141592653589793" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxTheta0">\(\theta_{0_{\text{max}}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxTheta0" step="0.01" value="7">
+            </div>
+        </div>
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="minLambda">\(\lambda_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="minLambda" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(\lambda\):</label>
+            </div>
+            <div class="col-md">
+                <input id="lambda-slider" type="range" min="0" max="3.4" step="0.01" value="0" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="lambda-input" step="0.01" value="0" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxLambda">\(\lambda_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxLambda" step="0.01" value="3.4">
+            </div>
+        </div>
+        <div class="row mx-3">
+            <div class="col-md">
+                <label for="mindelta">\(\delta_{\text{min}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="mindelta" step="0.01" value="0">
+            </div>
+            <div class="col-md">
+                <label class="control-label">\(\delta\):</label>
+            </div>
+            <div class="col-md">
+                <input id="delta-slider" type="range" min="0" max="3.4" step="0.01" value="0" class="slider">
+            </div>
+            <div class="col-md">
+                <input type="number" id="delta-input" step="0.01" value="0" style="width: 80px;">
+            </div>
+            <div class="col-md">
+                <label for="maxdelta">\(\delta_{\text{max}}\):</label>
+            </div>
+            <div class="col-md">
+                <input type="number" id="maxdelta" step="0.01" value="3.4">
+            </div>
+        </div>
+        <div class = "col my-3" align="center">
+                <label for="deltaT">\(\Delta t\):</label>
+                <input type="number" id="deltaT" value="0.01" step = "0.0001" min="0.0001" style="width: 90px;">
+        </div>
+        <div class = "col my-3" align="center">
+                <label for="maxT">\(t_{\text{final}}\):</label>
+                <input type="number" id="maxT" step="0.01" value="10">
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top:200px;">
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxOriginalHorizontal">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalHorizontal">Original <br> Horizontal t = 0</div>
+            <div class="nail" id="pivotPendulumOriginalHorizontal">
+                <div id="horizontalLinepivotPendulumOriginalHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumOriginalHorizontal" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
+                </div>
+            </div>
+            <div class="Pendulum-Container" id="pendulumContainerOriginalHorizontal" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumOriginalHorizontal"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid blue;"></div>
+                    <div class="Ball" style = "background-color: blue;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxTaylorHorizontal">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorHorizontal">Taylor <br> Horizontal t = 0</div>
+            <div class="nail" id="pivotPendulumTaylorHorizontal">
+                <div id="horizontalLinepivotPendulumTaylorHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumTaylorHorizontal" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
+                </div>
+            </div>
+            <div class="Pendulum-Container" id="pendulumContainerTaylorHorizontal" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumTaylorHorizontal"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid green;"></div>
+                    <div class="Ball" style = "background-color: green;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxOriginalVertical">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumOriginalVertical">Original <br> Vertical t = 0</div>
+            <div class="nail" id="pivotPendulumOriginalVertical">
+                <div id="horizontalLinepivotPendulumOriginalVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumOriginalVertical" style="position:fixed; bottom: -10px;  left:-0.25px; width:0.5px; height:100px; background-color:black;">
+                </div>
+            </div>
+            <div class="Pendulum-Container" id="pendulumContainerOriginalVertical" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumOriginalVertical"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid orange;"></div>
+                    <div class="Ball" style = "background-color: orange;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxTaylorVertical">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumTaylorVertical">Taylor <br> Vertical t = 0</div>
+            <div class="nail" id="pivotPendulumTaylorVertical">
+                <div id="horizontalLinepivotPendulumTaylorVertical" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+                </div>
+                <div id="VerticalLinepivotPendulumTaylorVertical" style="position:fixed; bottom: -10px; left:-0.25px; width:0.5px; height:100px; background-color:black;">
+                </div>
+            </div>
+            <div class="Pendulum-Container" id="pendulumContainerTaylorVertical" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumTaylorVertical"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid magenta;"></div>
+                    <div class="Ball" style = "background-color: magenta;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+        
+        <div class = "col-md-2" align="center" style = "display:block" id = "pendulumBoxArbitraryHorizontal">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumArbitraryHorizontal">Arbitrary <br> Horizontal t = 0</div>
+           
+
+           <div class="nail" id="pivotPendulumArbitraryHorizontal">
+               <div id="horizontalLinepivotPendulumArbitraryHorizontal" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+               </div>
+               <div id="VerticalLinepivotPendulumArbitraryHorizontal" style="position:fixed; bottom: -10px;  left:-0.25px; width:0.5px; height:100px; background-color:black;">
+               </div>
+           </div>
+            <div class="Pendulum-Container" id="pendulumContainerArbitraryHorizontal" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumArbitraryHorizontal"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid red;"></div>
+                    <div class="Ball" style = "background-color: red;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top:200px;" align="center" style = "display:block" id = "pendulumBoxMathieu">
+        <div class = "col" align="center">
+            <section>
+            <div style="position:relative; text-align: center; bottom: 200px;" id = "TimependulumMathieu">Mathieu <br> Vertical t = 0</div>
+
+           <div class="nail" id="pivotPendulumMathieu">
+               <div id="horizontalLinepivotPendulumMathieu" style="position:fixed; left:-5vw; width:10vw; height:0.5px; background-color:black;">
+               </div>
+               <div id="VerticalLinepivotPendulumMathieu" style="position:fixed; bottom: -10px; width:0.5px;  left:-0.25px; height:100px; background-color:black;">
+               </div>
+           </div>
+            <div class="Pendulum-Container" id="pendulumContainerMathieu" style = "display:block;  z-index: 50;">
+                <div class="Pendulum-Body" id="pendulumMathieu"> <!--Important-->
+                    <div class="connector" style = "border: 0.1px solid gray;"></div>
+                    <div class="Ball" style = "background-color: gray;"></div>
+                </div>
+            </div>
+            </section>
+        </div>
+    </div>
+        
+    <div class="plot-container" id="plot"></div>
+    <div class="col my-3" align="center">
+        <label for="yAxisRange">Y-Axis Range:</label>
+        <select id="yAxisRange" style="width: 150px;">
+            <option value="variable">Variable</option>
+            <option value="fixed">Fixed</option>
+        </select>
+    </div>
+    
+    <div class="col my-3" id="fixedRangeInputs" style="display: none;" align="center">
+        <label for="yMin">Min:</label>
+        <input type="number" id="yMin" step="0.1" value="-3.14" style="width: 80px;">
+        <label for="yMax">Max:</label>
+        <input type="number" id="yMax" step="0.1" value="9.42" style="width: 80px;">
+    </div>
+    <div class="col my-3" align="center">
+        <label>Graph Options:</label>
+        <input type="checkbox" id="showOriginal" checked>
+        <label for="showOriginal">Original Horizontal</label>
+        <input type="checkbox" id="showTaylor" checked>
+        <label for="showTaylor", id = "showTaylorLabel">Taylor Order-2 Horizontal</label>
+        <input type="checkbox" id="showOriginalVertical" checked>
+        <label for="showOriginalVertical">Original Vertical</label>
+        <input type="checkbox" id="showTaylorVertical" checked>
+        <label for="showTaylorVertical", id = "showTaylorVerticalLabel">Taylor Order-2 Vertical</label>
+        <input type="checkbox" id="showArbitraryHorizontal" checked>
+        <label for="showArbitraryHorizontal", id = "showArbitraryHorizontalLabel">Arbitrary Horizontal</label>
+        <input type="checkbox" id="showMathieu" checked>
+        <label for="showMathieu", id = "showMathieuLabel">Mathieu Vertical</label>
+    </div>
+    <div class="col my-3" align="center">
+        <label for="themeToggle">Dark Mode:</label>
+        <input type="checkbox" id="themeToggle">
+    </div>
+    
+    <div class="plot-container" id="plotTongues"></div>
+        <div class="col my-3" align="center">
+    </div>
+        
+    <div class="plot-container" id="plotTonguesInvertedPendulumParameters" style="display:none;"></div>
+        <div class="col my-3" align="center">
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" class="btn btn-warning" id = "GetStabilityPlot" onclick = "toggleStabilityOptions()">Configure Stability Plot Options</button>
+            <div id="stability-container" style="display: none; margin-top: 10px;">
+                <br>
+                <div class="row">
+                    <div class="col my-3" align="center">
+                        <input type="checkbox" id="k-m-OptionMathieu" checked onclick = "toggle_k_m_A_l_Mathieu(this.id)">
+                        <label for="k-m-OptionMathieu">Configure \(k, m\)</label>
+                    </div>
+                    <div class="col my-3" align="center">
+                        <input type="checkbox" id="A-l-OptionMathieu" unchecked onclick = "toggle_k_m_A_l_Mathieu(this.id)">
+                        <label for="A-l-OptionMathieu">Configure \(A, l\)</label>
+                    </div>
+                </div>
+                <br>
+                <div id = "k_m_Mathieu_box" style = "display:block">
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_m_Mathieu">\(m_{\text{min}}\):</label>
+                            <input type="number" id="Min_m_Mathieu" step="0.01" value="0">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_m_Mathieu">\(m_{\text{max}}\):</label>
+                            <input type="number" id="Max_m_Mathieu" step="0.01" value="3.4">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_m_Mathieu">\(\Delta m\):</label>
+                            <input type="number" id="Delta_m_Mathieu" step="0.01" value="0.1">
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_k_Mathieu">\(k_{\text{min}}\):</label>
+                            <input type="number" id="Min_k_Mathieu" step="0.01" value="-1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_k_Mathieu">\(k_{\text{max}}\):</label>
+                            <input type="number" id="Max_k_Mathieu" step="0.01" value="-0.1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_k_Mathieu">\(\Delta k\):</label>
+                            <input type="number" id="Delta_k_Mathieu" step="0.01" value="0.01">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id = "A_l_Mathieu_box" style = "display:none">
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_A_Mathieu">\(A_{\text{min}}\):</label>
+                            <input type="number" id="Min_A_Mathieu" step="0.01" value="0">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_A_Mathieu">\(A_{\text{max}}\):</label>
+                            <input type="number" id="Max_A_Mathieu" step="0.01" value="3.4">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_A_Mathieu">\(\Delta A\):</label>
+                            <input type="number" id="Delta_A_Mathieu" step="0.01" value="0.1">
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="row mx-3">
+                        <div class="col-md">
+                            <label for="Min_l_Mathieu">\(l_{\text{min}}\):</label>
+                            <input type="number" id="Min_l_Mathieu" step="0.01" value="-1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Max_l_Mathieu">\(l_{\text{max}}\):</label>
+                            <input type="number" id="Max_l_Mathieu" step="0.01" value="0.1">
+                        </div>
+                        <div class="col-md">
+                            <label for="Delta_l_Mathieu">\(\Delta l\):</label>
+                            <input type="number" id="Delta_l_Mathieu" step="0.01" value="0.1">
+                        </div>
+                    </div>
+                </div>
+                
+                <br>
+                <div class="row g-0 justify-content-center">
+                    <div class="col-md text-center">
+                        <label for="theta_0_Mathieu_Stability">\(\theta_0\): </label>
+                        <input type="number" id="theta_0_Mathieu_Stability" min="0" value="3.14">
+                    </div>
+                    <div class="col-md text-center">
+                        <label for="Delta_Theta_Mathieu_Stability">\(\text{Max}\left(\left|\theta - \theta_0\right|\right)\): </label>
+                        <input type="number" id="Delta_Theta_Mathieu_Stability" step="0.01" value="1" size = "10">
+                    </div>
+                    <div class="col-md text-center">
+                        <label for="Delta_t_Mathieu_Stability">\(\Delta t\): </label>
+                        <input type="number" id="Delta_t_Mathieu_Stability" min="0" value="0.1">
+                    </div>
+                    <div class="col-md text-center">
+                        <label for="T_final_Mathieu_Stability">\(T_{\text{final}}\): </label>
+                        <input type="number" id="T_final_Mathieu_Stability" step="0.01" value="100" size = "10">
+                    </div>
+                    <div class="col-md text-center">
+                        <label for="omega_Mathieu_Stability">\(\omega\): </label>
+                        <input type="number" id="omega_Mathieu_Stability" step="0.01" value="1">
+                    </div>
+                </div>
+                <br>
+<!--                id = "A-l settings" style="display:none;"-->
+                
+                <br>
+                <button class="btn btn-success mt-2" onclick="update_Mathieu_Plot()">Create Stability Plot</button>
+                
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="col-md-12 text-center">
+        <button type="button" class="toggle-button_mathieu" style = "color:white; background-color: gray" onclick = 'toggleMathieuDerivation();'>Show Mathieu Vertical Derivation</button>
+        <div id="MathieuDerivation" style = "display: none;">
+            <div class = "scroll-container">
+                <div class="latex-equation">
+                    \begin{align*}
+                    \sin(\theta) &\approx \sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0) \\
+                    &= \sin(\theta_0) + \cos(\theta_0)\theta - \cos(\theta_0)\theta_0 \\
+                    &= \underbrace{\sin(\theta_0) - \cos(\theta_0)\theta_0}_{\alpha} + \underbrace{\cos(\theta_0)}_\beta \theta \\
+                    &\equiv \alpha + \beta \theta
+                    \end{align*}
+                    
+                    \[
+                    \ddot{\theta} + \frac{g}{l}\sin(\theta) = -\frac{A \omega^2}{l}\cos(\omega t - \delta)\sin(\theta)
+                    \]
+                    Define:
+                    \[
+                    F(t) = -\frac{A \omega^2}{l}\cos(\omega t - \delta)
+                    \]
+                    Then:
+                    \[
+                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) = F(t)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t - \delta)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} = -\frac{\left(\alpha+\beta\theta\right)}{l} \left(g + A \omega^2\cos(\omega t - \delta)\right)
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} (\alpha + \beta\theta) =  - \frac{A \omega^2}{l}\cos(\omega t - \delta)(\alpha + \beta\theta)
+                    \]
+                    \[
+                    \ddot{\theta} + \frac{g}{l} \left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right) =  - \frac{A \omega^2}{l}\cos(\omega t - \delta)\left(\sin(\theta_0) + \cos(\theta_0)(\theta - \theta_0)\right)
+                    \]
+
+
+
+
+                    \[
+                    \ddot{\theta} + \frac{g}{l}\beta \left(\frac{\alpha}{\beta} + \theta\right) = F(t)\beta \left(\frac{\alpha}{\beta} + \theta\right)
+                    \]
+
+                    Let:
+                    \[
+                    \varphi = \frac{\alpha}{\beta} + \theta, \quad \dot{\varphi} = \dot{\theta}, \quad \ddot{\varphi} = \ddot{\theta}
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \varphi = F(t)\beta \varphi
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \varphi - F(t)\beta \varphi = 0
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l}\beta \left(1 - \frac{l}{g}F(t)\right) \varphi = 0
+                    \]
+
+                    \[
+                    \ddot{\varphi} + \frac{g}{l} \beta \left(1 + \frac{l}{g} \frac{A \omega^2}{l}\cos(\omega t - \delta)\right)\varphi = 0 \qquad \texttt{//Setting $\delta = 0$}
+                    \]
+
+                    \[
+                    \rightarrow \ddot{\varphi} + \frac{g}{l} \beta \left(1 + \frac{A \omega^2}{g}\cos(\omega t)\right)\varphi = 0
+                    \]
+
+                    Let:
+                    \[
+                    \tau = \omega t \rightarrow \frac{\partial^2 \varphi}{\partial \tau^2} = \frac{1}{\omega^2} \frac{\partial^2 \varphi}{\partial t^2}
+                    \]
+
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \frac{g \beta \omega^2}{l} \left( 1 + \frac{A \omega^2}{g} \cos(\tau) \right) \varphi = 0
+                    \]
+                    
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \frac{g \beta \omega^2}{l}\varphi + \frac{\beta A \omega^4}{l} \cos(\tau) \varphi = 0
+                    \]
+                    
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \left(\frac{g \beta \omega^2}{l} - \frac{-\beta A \omega^4}{l} \cos(\tau)\right) \varphi = 0
+                    \]
+
+                    \[
+                    \frac{\partial^2 \varphi}{\partial \tau^2} + \left(k - m \cos(\tau) \right) \varphi = 0
+                    \]
+
+                    where
+
+                    \[
+                    k = \left( \frac{g\omega^2}{l } \right) \cos(\theta_0), \quad m = -\frac{A \omega^4}{l} \cos(\theta_0), \quad \tau = \omega t
+                    \]
+
+                    \[
+                    \varphi = \frac{\sin(\theta_0) - \cos(\theta_0) \theta_0}{\cos\theta_0} + \theta = \tan(\theta_0) - \theta_0 + \theta
+                    \]
+
+                    \[
+                    k > 0 \quad \text{for} \quad \theta_0 \in \left( 2\pi n - \frac{\pi}{2}, 2\pi n + \frac{\pi}{2} \right)
+                    \]
+
+                    \[
+                    k < 0 \quad \text{for} \quad \theta_0 \in \left( 2\pi n + \frac{\pi}{2}, 2\pi n + \frac{3\pi}{2} \right)
+                    \]
+
+                    \[
+                    \text{where } \: n \in \mathbb{Z}
+                    \]
+
+                    \[
+                    \mathbf{k < 0} \quad \Rightarrow \quad 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}} < m(k) < \frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                    \]
+                   
+                        \(\mathbf{k > 0}  \:\Rightarrow\) the following:
+
+                    \[
+                     \quad 0 < m(k) < \left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right)
+                    \]
+
+                    \[
+                    \qquad \left(0 < k < \frac{1}{4}\right)
+                    \]
+
+                    \[
+                    0 < m(k) < \frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right)
+                    \]
+
+                    \[
+                    \left(\frac{1}{4} < k < \frac{13}{20}\right)
+                    \]
+
+                    \[
+                    0 < m(k) < \sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}}
+                    \]
+
+                    \[
+                    \left(\frac{13}{20} < k < 1\right)
+                    \]
+
+                    \[
+                    0 < m(k) < 2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}}
+                    \]
+
+                    \[
+                    (k > 1)
+                    \]
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col my-3" align="center">
+        <button type="button" class="btn btn-info" onclick = 'let elem = document.getElementById("KapitzaPaperTranslated"); elem.style.display = (elem.style.display === "none") ? "block" : "none";'>Kapitza's Derivation (Translated)</button>
+        <br> <br> <br>
+        <embed id="KapitzaPaperTranslated" src="Kapitza_PENDULUM_WITH_VIBRATING_SUSPENSION.pdf" type="application/pdf" width="100%" height="1000px" style="display: none;">
+    </div>
+    <script>
+        Math.Pi = 3.141592653589793;
+        window.x_p = convertCppSymbolicStringToJs('sin(x0)');
+        window.x_p_ddot = convertCppSymbolicStringToJs('-sin(x0)');
+        //window.x_p = convertCppSymbolicStringToJs('((x0 + 0.999487) ^ (4.176018 - sech(4)))')
+        //window.x_p_ddot = convertCppSymbolicStringToJs('((((x0 + 0.999487) ^ 4.139399) * ((-1 / ((x0 + 0.999487) * (x0 + 0.999487))) * 4.139399)) + ((((x0 + 0.999487) ^ 4.139399) * ((1 / (x0 + 0.999487)) * 4.139399)) * ((1 / (x0 + 0.999487)) * 4.139399)))');
+        window.original_x_p = window.x_p;
+        
+        const sliderA = document.getElementById("A-slider");
+        const minInputA = document.getElementById("minA");
+        const maxInputA = document.getElementById("maxA");
+
+        minInputA.addEventListener("input", () => {
+            sliderA.min = minInputA.value;
+            if (parseFloat(sliderA.value) < parseFloat(sliderA.min)) {
+                sliderA.value = sliderA.min;
+                document.getElementById("A-value").value = sliderA.value;
+            }
+        });
+
+        maxInputA.addEventListener("input", () => {
+            sliderA.max = maxInputA.value;
+            if (parseFloat(sliderA.value) > parseFloat(sliderA.max)) {
+                sliderA.value = sliderA.max;
+                document.getElementById("A-input").value = sliderA.value;
+            }
+        });
+
+        sliderA.addEventListener("input", () => {
+            document.getElementById("A-input").value = sliderA.value;
+        });
+        
+        const sliderOmega = document.getElementById("omega-slider");
+        const minInputOmega = document.getElementById("minOmega");
+        const maxInputOmega = document.getElementById("maxOmega");
+
+        minInputOmega.addEventListener("input", () => {
+            sliderOmega.min = minInputOmega.value;
+            if (parseFloat(sliderOmega.value) < parseFloat(sliderOmega.min)) {
+                sliderOmega.value = sliderOmega.min;
+                document.getElementById("omega-input").textContent = sliderOmega.value;
+            }
+        });
+
+        maxInputOmega.addEventListener("input", () => {
+            sliderOmega.max = maxInputOmega.value;
+            if (parseFloat(sliderOmega.value) > parseFloat(sliderOmega.max)) {
+                sliderOmega.value = sliderOmega.max;
+                document.getElementById("omega-input").textContent = sliderOmega.value;
+            }
+        });
+
+        sliderOmega.addEventListener("input", () => {
+            document.getElementById("omega-input").textContent = sliderOmega.value;
+        });
+        
+        const sliderL = document.getElementById("l-slider");
+        const minInputL = document.getElementById("minL");
+        const maxInputL = document.getElementById("maxL");
+
+        minInputL.addEventListener("input", () => {
+            sliderL.min = minInputL.value;
+            if (parseFloat(sliderL.value) < parseFloat(sliderL.min)) {
+                sliderL.value = sliderL.min;
+                document.getElementById("l-input").textContent = sliderL.value;
+            }
+        });
+
+        maxInputL.addEventListener("input", () => {
+            sliderL.max = maxInputL.value;
+            if (parseFloat(sliderL.value) > parseFloat(sliderL.max)) {
+                sliderL.value = sliderL.max;
+                document.getElementById("l-input").textContent = sliderL.value;
+            }
+        });
+
+        sliderL.addEventListener("input", () => {
+            document.getElementById("l-input").textContent = sliderL.value;
+        });
+        
+        const sliderTheta = document.getElementById("theta-slider");
+        const minInputTheta = document.getElementById("minTheta0");
+        const maxInputTheta = document.getElementById("maxTheta0");
+
+        minInputTheta.addEventListener("input", () => {
+            sliderTheta.min = minInputTheta.value;
+            if (parseFloat(sliderTheta.value) < parseFloat(sliderTheta.min)) {
+                sliderTheta.value = sliderTheta.min;
+                document.getElementById("theta-input").textContent = sliderTheta.value;
+            }
+        });
+
+        maxInputTheta.addEventListener("input", () => {
+            sliderTheta.max = maxInputTheta.value;
+            if (parseFloat(sliderTheta.value) > parseFloat(sliderTheta.max)) {
+                sliderTheta.value = sliderTheta.max;
+                document.getElementById("theta-input").textContent = sliderTheta.value;
+            }
+        });
+
+        sliderTheta.addEventListener("input", () => {
+            document.getElementById("theta-input").textContent = sliderTheta.value;
+        });
+        
+        const sliderLambda = document.getElementById("lambda-slider");
+        const minInputLambda = document.getElementById("minLambda");
+        const maxInputLambda = document.getElementById("maxLambda");
+
+        minInputLambda.addEventListener("input", () => {
+            sliderLambda.min = minInputLambda.value;
+            if (parseFloat(sliderLambda.value) < parseFloat(sliderLambda.min)) {
+                sliderLambda.value = sliderLambda.min;
+                document.getElementById("lambda-input").textContent = sliderLambda.value;
+            }
+        });
+
+        maxInputLambda.addEventListener("input", () => {
+            sliderLambda.max = maxInputLambda.value;
+            if (parseFloat(sliderLambda.value) > parseFloat(sliderLambda.max)) {
+                sliderLambda.value = sliderLambda.max;
+                document.getElementById("lambda-input").textContent = sliderLambda.value;
+            }
+        });
+
+        sliderLambda.addEventListener("input", () => {
+            document.getElementById("lambda-input").textContent = sliderLambda.value;
+        });
+        
+        const sliderdelta = document.getElementById("delta-slider");
+        const minInputdelta = document.getElementById("mindelta");
+        const maxInputdelta = document.getElementById("maxdelta");
+
+        minInputdelta.addEventListener("input", () => {
+            sliderdelta.min = minInputdelta.value;
+            if (parseFloat(sliderdelta.value) < parseFloat(sliderdelta.min)) {
+                sliderdelta.value = sliderdelta.min;
+                document.getElementById("delta-input").textContent = sliderdelta.value;
+            }
+        });
+
+        maxInputdelta.addEventListener("input", () => {
+            sliderdelta.max = maxInputdelta.value;
+            if (parseFloat(sliderdelta.value) > parseFloat(sliderdelta.max)) {
+                sliderdelta.value = sliderdelta.max;
+                document.getElementById("delta-input").textContent = sliderdelta.value;
+            }
+        });
+
+        sliderdelta.addEventListener("input", () => {
+            document.getElementById("delta-input").textContent = sliderdelta.value;
+        });
+        
+        // Differential equation: θ''(t) + (g/l) * sin(θ) = A * ω² * cos(ωt) * cos(θ)
+        const g = 9.8; // gravitational acceleration
+
+        //https://www.geeksforgeeks.org/factorial-of-a-number-using-javascript/#
+        const fact = (function () {
+            const cache = {};
+            return function facto(n) {
+                if (n === 0 || n === 1) {
+                    return 1;
+                }
+                if (cache[n]) {
+                    //console.log("value from caeche")
+                    return cache[n];
+                }
+                cache[n] = n * facto(n - 1);
+                return cache[n];
+            };
+        })();
+        
+        function toggle_k_m_A_l_Mathieu(clicked_id)
+        {
+            let k_m_option = document.getElementById("k-m-OptionMathieu");
+            let A_l_option = document.getElementById("A-l-OptionMathieu");
+            let k_m_box = document.getElementById("k_m_Mathieu_box");
+            let A_l_box = document.getElementById("A_l_Mathieu_box");
+
+            if (clicked_id === "k-m-OptionMathieu")
+            {
+                k_m_option.checked = true;
+                A_l_option.checked = false;
+            }
+            else
+            {
+                k_m_option.checked = false;
+                A_l_option.checked = true;
+            }
+
+            //console.log(k_m_option.checked, A_l_option.checked);
+
+            // Show/hide the corresponding divs
+            k_m_box.style.display = k_m_option.checked ? "block" : "none";
+            A_l_box.style.display = A_l_option.checked ? "block" : "none";
+        }
+
+        
+        function toggleStabilityOptions()
+        {
+            const editorContainer = document.getElementById("stability-container");
+            if (editorContainer.style.display === "none" || editorContainer.style.display === "")
+            {
+                editorContainer.style.display = "block";
+            }
+            else
+            {
+                editorContainer.style.display = "none";
+            }
+
+            let stability_button = document.getElementById("GetStabilityPlot")
+
+            if (editorContainer.style.display == "block")
+            {
+                stability_button.textContent = String.raw`Hide Stability Plot Options`;
+            }
+            else
+            {
+                stability_button.textContent = String.raw`Configure Stability Plot Options`;
+            }
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpToggle"]);
+        }
+        
+        function toggleEditor()
+        {
+            const editorContainer = document.getElementById("editor-container");
+            if (editorContainer.style.display === "none" || editorContainer.style.display === "")
+            {
+                editorContainer.style.display = "block";
+                document.getElementById("x_p_editor").value = window.x_p || ""; // Load current value
+            }
+            else
+            {
+                editorContainer.style.display = "none";
+            }
+            //Add something here to get the button `<button type="button" class="btn btn-warning" onclick="toggleEditor()">Change \(\ddot{x}_p(t)\)</button>` text content and, if `editorContainer.style.display == "block"`
+            let x_p_button = document.getElementById("xpToggle")
+
+            if (editorContainer.style.display == "block")
+            {
+                x_p_button.textContent = String.raw`Hide \(x_p(t)\) change-option`;
+            }
+            else
+            {
+                x_p_button.textContent = String.raw`Change \(x_p(t)\)`;
+            }
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"xpToggle"]);
+        }
+
+        function updateX_p()
+        {
+            window.x_p = document.getElementById("x_p_editor").value;
+            alert("Change Applied");
+            updatePlot();
+        }
+        // Numerical solver (Runge-Kutta 4th order method)
+        function rungeKutta(h, t0, tf, y0, f) {
+            let t = t0;
+            let y = y0;
+            const steps = Math.floor((tf - t0) / h);
+            const tValues = [t];
+            const yValues = [y.slice()];
+
+            for (let i = 0; i < steps; i++) {
+                const k1 = f(t, y);
+                const k2 = f(t + h / 2, y.map((v, idx) => v + h / 2 * k1[idx]));
+                const k3 = f(t + h / 2, y.map((v, idx) => v + h / 2 * k2[idx]));
+                const k4 = f(t + h, y.map((v, idx) => v + h * k3[idx]));
+                
+                for (let j = 0; j < y.length; j++) {
+                    y[j] += h / 6 * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+                }
+
+                t += h;
+                tValues.push(t);
+                yValues.push(y.slice());
+            }
+
+            return { t: tValues, y: yValues };
+        }
+        
+        function computeTaylorExpansionValue(order, theta, isSin, thetaTaylor)
+        {
+            let expansion = 0
+            
+            if (isSin)
+            {
+                for (let i = 0; i <= order; i++)
+                {
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.cos(thetaTaylor) : Math.sin(thetaTaylor);
+                    let prefactor = ((isNegative*-1 || 1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`;
+                    let temp = prefactor * Math.pow((theta-thetaTaylor), i)
+                    expansion += temp;
+                }
+            }
+            else
+            {
+                for (let i = 0; i <= order; i++)
+                {
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.sin(thetaTaylor) : Math.cos(thetaTaylor);
+                    let prefactor = ((isPositive || -1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    //let temp = String.raw`${isPositive ? '+' : '-'}\frac{(\theta - \pi)^${i}}{${i}!}`
+                    let temp = prefactor * Math.pow((theta-thetaTaylor), i)
+                    expansion += temp;
+                }
+            }
+            return expansion;
+        }
+        
+        function secondDerivative(f, x_var, h_var = 1e-5)
+        {
+            //alert(f.replaceAll("t_val", "(x_var+h_var)"));
+            let right = eval(f.replaceAll("t_val", "(x_var+h_var)"));
+            if (isNaN(right))
+            {
+                return 0;
+            }
+            let left = eval(f.replaceAll("t_val", "(x_var-h_var)"));
+            if (isNaN(left))
+            {
+                return 0;
+            }
+            let mid = eval(f.replaceAll("t_val", "(x_var)"));
+            if (isNaN(mid))
+            {
+                return 0;
+            }
+            return (right - 2 * mid + left) / (h_var * h_var);
+        }
+
+        // System of ODEs: [θ, θ']
+        function pendulumODE(t, y, A, omega, l, lambda, delta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            const thetaDDot = -(g / l) * Math.sin(theta) + (A * omega**2 / l) * Math.cos(omega * t - delta) * Math.cos(theta) - lambda * thetaDot;
+            return [thetaDot, thetaDDot];
+        }
+        
+        function pendulumODETaylor(t, y, A, omega, l, lambda, delta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            
+            // Taylor approximation
+            let order = parseInt(document.getElementById('order-input').value);
+            let thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
+            let cos_term = computeTaylorExpansionValue(order, theta, false, thetaTaylor);
+            order = parseInt(document.getElementById('order-input').value);
+            thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
+            
+            const thetaDDot = -(g / l) * (sin_term)
+                              + (A * omega**2 / l) * cos_term * Math.cos(omega * t - delta) - lambda * thetaDot;
+
+            return [thetaDot, thetaDDot];
+        }
+        
+        function pendulumODE_vertical(t, y, A, omega, l, lambda, delta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            const thetaDDot = -(g / l) * Math.sin(theta) - (A * omega**2 / l) * Math.cos(omega * t - delta) * Math.sin(theta) - lambda * thetaDot;
+            return [thetaDot, thetaDDot];
+        }
+        
+        function pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+
+            // Taylor approximation
+            let order = parseInt(document.getElementById('order-input').value);
+            let thetaTaylor = Math.Pi + parseFloat(document.getElementById('thetaToTaylor').value);
+            let sin_term = computeTaylorExpansionValue(order, theta, true, thetaTaylor);
+            
+            const thetaDDot = -(g / l) * (sin_term)
+                              - (A * omega**2 / l) * (sin_term) * Math.cos(omega * t - delta) - lambda * thetaDot;
+
+            return [thetaDot, thetaDDot];
+        }
+        
+        function sech(x)
+        {
+            return 1/Math.cosh(x);
+        }
+        
+        function convertCppSymbolicStringToJs(s)
+        {
+            return s.replace(/\^|cos|asin|sin|tanh|ln|x0|~|sqrt|log/g, match => ({
+                '^': '**',
+                'cos': 'Math.cos',
+                'asin': 'Math.asin',
+                'sin': 'Math.sin',
+                'tanh': 'Math.tanh',
+                'ln': 'Math.ln',
+                'x0': 't_val',
+                '~': '-',
+                'sqrt': 'Math.sqrt',
+                'log': 'Math.log',
+                'ln': 'Math.log'
+            }[match]));
+        }
+        
+        function pendulumODE_arbitrary_horizontal(t_val, y, l) {
+            const theta = y[0];
+            //console.log("theta = ", theta);
+            const thetaDot = y[1];
+            //cos((tanh(x0) * log(100.000000)))
+            let cppSymbolicString = window.x_p;
+            //console.log(cppSymbolicString);
+            let result = (cppSymbolicString == window.original_x_p) ? eval(window.x_p_ddot) : secondDerivative(cppSymbolicString, t_val);
+            //console.log(result);
+            if (isNaN(result))
+            {
+                result = 0;
+            }
+            
+            const thetaDDot = -(g / l) * Math.sin(theta) - ((result * Math.cos(theta)) / l);
+            //console.log(thetaDDot);
+            return [thetaDot, thetaDDot];
+        }
+        
+        function pendulumODEMathieu(t_val, y, A, omega, l, alpha, beta) {
+            const theta = y[0];
+            const thetaDot = y[1];
+            
+            //\ddot{\theta} = -\frac{g}{l} (\alpha + \beta\theta) - \frac{A \omega^2}{l}\cos(\omega t)(\alpha + \beta\theta)
+            let comm_term = alpha + beta*theta
+            
+            const thetaDDot = -(g / l)*comm_term -
+                              ((A*omega*omega) / l)*Math.cos(omega*t_val)*comm_term;
+            
+            return [thetaDot, thetaDDot];
+        }
+        
+        function use_k_m_Mathieu()
+        {
+            let min_m = parseFloat(document.getElementById("Min_m_Mathieu").value);
+            let max_m = parseFloat(document.getElementById("Max_m_Mathieu").value);
+            let delta_m = parseFloat(document.getElementById("Delta_m_Mathieu").value);
+
+            let min_k = parseFloat(document.getElementById("Min_k_Mathieu").value);
+            let max_k = parseFloat(document.getElementById("Max_k_Mathieu").value);
+            let delta_k = parseFloat(document.getElementById("Delta_k_Mathieu").value);
+
+            let theta_0 = parseFloat(document.getElementById("theta_0_Mathieu_Stability").value);
+            let max_theta_variation = parseFloat(document.getElementById("Delta_Theta_Mathieu_Stability").value);
+            let delta_t = parseFloat(document.getElementById("Delta_t_Mathieu_Stability").value);
+            let t_final = parseFloat(document.getElementById("T_final_Mathieu_Stability").value);
+            
+            let y = [theta_0, 0.0];
+            const steps = Math.floor(t_final / delta_t);
+            const tValues = [0.0];
+            const yValues = [y.slice()];
+            
+            const cos_res = Math.cos(theta_0);
+            const alpha = Math.sin(theta_0)-cos_res*theta_0;
+            const beta = cos_res;
+            const omega = parseFloat(document.getElementById('omega_Mathieu_Stability').value);
+            const omega_squared = omega*omega;
+            const omega_squared_cos_theta0 = omega_squared*cos_res;
+            const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
+            const cos_res_times_omega_to_the_fourth = omega_squared*omega_squared_cos_theta0;
+            
+            let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
+            
+            let N_M = Math.ceil((max_m - min_m) / delta_m);
+            let N_k = Math.ceil((max_k - min_k) / delta_k);
+
+            // Arrays to store points for batch plotting
+            let stablePoints = { x: [], y: [] };
+            let unstablePoints = { x: [], y: [] };
+            let stablePointsInvertedPendulum = { x: [], y: [] };
+            let unstablePointsInvertedPendulum = { x: [], y: [] };
+            
+            for (let n_m = 0; n_m < N_M; n_m++)
+            {
+                let m_val_temp = min_m + n_m * delta_m;
+                for (let n_k = 0; n_k < N_k; n_k++)
+                {
+                    let k_val_temp = min_k + n_k * delta_k;
+                    let l_val_temp = g_omega_squared_cos_theta0/k_val_temp;
+                    let a_val_temp = (-m_val_temp * l_val_temp) / cos_res_times_omega_to_the_fourth;
+                    let is_stable_config = 1;
+                    let t = 0;
+                    let y = [theta_0, 0.0];
+                    const steps = Math.floor(t_final / delta_t);
+                    
+                    for (let i = 0; i < steps; i++)
+                    {
+                        const k1 = f(t, y, a_val_temp, l_val_temp);
+                        const k2 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k1[idx]), a_val_temp, l_val_temp);
+                        const k3 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k2[idx]), a_val_temp, l_val_temp);
+                        const k4 = f(t + delta_t, y.map((v, idx) => v + delta_t * k3[idx]), a_val_temp, l_val_temp);
+                        
+                        y[0] += delta_t / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+                        if (Math.abs(y[0] - theta_0) > max_theta_variation)
+                        {
+                            is_stable_config = 0;
+                            break;
+                        }
+                        for (let j = 1; j < y.length; j++)
+                        {
+                            y[j] += delta_t / 6 * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+                        }
+                        
+                        t += delta_t;
+                    }
+                    // Store points instead of plotting immediately
+                    if (is_stable_config)
+                    {
+                        stablePoints.x.push(k_val_temp);
+                        stablePoints.y.push(m_val_temp);
+                        stablePointsInvertedPendulum.x.push(l_val_temp);
+                        stablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                    else
+                    {
+                        unstablePoints.x.push(k_val_temp);
+                        unstablePoints.y.push(m_val_temp);
+                        unstablePointsInvertedPendulum.x.push(l_val_temp);
+                        unstablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                }
+                
+            }
+            let mathieu_results = getMathieuTraces({stability: true});
+            //console.log(mathieu_results.traces_mathieu);
+            // After computing all points, update the plot at once
+            Plotly.newPlot('plotTongues',
+            [
+                {
+                    x: stablePoints.x,
+                    y: stablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePoints.x,
+                    y: unstablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu
+                
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}$`,
+                xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
+                yaxis: { title: '$m = -\\frac{A \\omega^4}{l} \\cos(\\theta_0)$' }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
+            
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
+            // Combine x and y values from both datasets
+            const allX = stablePointsInvertedPendulum.x.concat(unstablePointsInvertedPendulum.x);
+            const allY = stablePointsInvertedPendulum.y.concat(unstablePointsInvertedPendulum.y);
+
+            // Compute the min and max values
+            const xMin = Math.min(...allX);
+            const xMax = Math.max(...allX);
+            const bufferX = (xMax - xMin)*.05;
+            const yMin = Math.min(...allY);
+            const yMax = Math.max(...allY);
+            const bufferY = (yMax - yMin)*.05;
+            Plotly.newPlot('plotTonguesInvertedPendulumParameters',
+            [
+                {
+                    x: stablePointsInvertedPendulum.x,
+                    y: stablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePointsInvertedPendulum.x,
+                    y: unstablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu_A_l
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$`
+                    , range: [xMin-bufferX, xMax+bufferX]
+                },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$`
+                    , range: [yMin-bufferY, yMax+bufferY]
+                }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTonguesInvertedPendulumParameters');
+            });
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
+            alert("Done!");
+        }
+        
+        function use_A_l_Mathieu()
+        {
+            let min_A = parseFloat(document.getElementById("Min_A_Mathieu").value);
+            let max_A = parseFloat(document.getElementById("Max_A_Mathieu").value);
+            let delta_A = parseFloat(document.getElementById("Delta_A_Mathieu").value);
+
+            let min_l = parseFloat(document.getElementById("Min_l_Mathieu").value);
+            let max_l = parseFloat(document.getElementById("Max_l_Mathieu").value);
+            let delta_l = parseFloat(document.getElementById("Delta_l_Mathieu").value);
+
+            let theta_0 = parseFloat(document.getElementById("theta_0_Mathieu_Stability").value);
+            let max_theta_variation = parseFloat(document.getElementById("Delta_Theta_Mathieu_Stability").value);
+            let delta_t = parseFloat(document.getElementById("Delta_t_Mathieu_Stability").value);
+            let t_final = parseFloat(document.getElementById("T_final_Mathieu_Stability").value);
+            
+            let y = [theta_0, 0.0];
+            const steps = Math.floor(t_final / delta_t);
+            const tValues = [0.0];
+            const yValues = [y.slice()];
+            
+            const cos_res = Math.cos(theta_0);
+            const alpha = Math.sin(theta_0)-cos_res*theta_0;
+            const beta = cos_res;
+            const omega = parseFloat(document.getElementById('omega_Mathieu_Stability').value);
+            const omega_squared = omega*omega;
+            const omega_squared_cos_theta0 = omega_squared*cos_res;
+            const g_omega_squared_cos_theta0 = g*omega_squared_cos_theta0;
+            const cos_res_times_omega_to_the_fourth = omega_squared*omega_squared_cos_theta0;
+            
+            let f = (t, y, A, l) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta);
+            
+            let N_A = Math.ceil((max_A - min_A) / delta_A);
+            let N_l = Math.ceil((max_l - min_l) / delta_l);
+
+            // Arrays to store points for batch plotting
+            let stablePoints = { x: [], y: [] };
+            let unstablePoints = { x: [], y: [] };
+            let stablePointsInvertedPendulum = { x: [], y: [] };
+            let unstablePointsInvertedPendulum = { x: [], y: [] };
+            
+            for (let n_a = 0; n_a < N_A; n_a++)
+            {
+                let a_val_temp = min_A + n_a * delta_A;
+                for (let n_l = 0; n_l < N_l; n_l++)
+                {
+                    let l_val_temp = min_l + n_l * delta_l;
+                    let k_val_temp = g_omega_squared_cos_theta0/l_val_temp;
+                    let m_val_temp = (-a_val_temp*cos_res_times_omega_to_the_fourth)/l_val_temp;
+                    let is_stable_config = 1;
+                    let t = 0;
+                    let y = [theta_0, 0.0];
+                    const steps = Math.floor(t_final / delta_t);
+                    
+                    for (let i = 0; i < steps; i++)
+                    {
+                        const k1 = f(t, y, a_val_temp, l_val_temp);
+                        const k2 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k1[idx]), a_val_temp, l_val_temp);
+                        const k3 = f(t + 0.5 * delta_t, y.map((v, idx) => v + 0.5 * delta_t * k2[idx]), a_val_temp, l_val_temp);
+                        const k4 = f(t + delta_t, y.map((v, idx) => v + delta_t * k3[idx]), a_val_temp, l_val_temp);
+                        
+                        y[0] += delta_t / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+                        if (Math.abs(y[0] - theta_0) > max_theta_variation)
+                        {
+                            is_stable_config = 0;
+                            break;
+                        }
+                        for (let j = 1; j < y.length; j++)
+                        {
+                            y[j] += delta_t / 6 * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+                        }
+                        
+                        t += delta_t;
+                    }
+                    // Store points instead of plotting immediately
+                    if (is_stable_config)
+                    {
+                        stablePoints.x.push(k_val_temp);
+                        stablePoints.y.push(m_val_temp);
+                        stablePointsInvertedPendulum.x.push(l_val_temp);
+                        stablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                    else
+                    {
+                        unstablePoints.x.push(k_val_temp);
+                        unstablePoints.y.push(m_val_temp);
+                        unstablePointsInvertedPendulum.x.push(l_val_temp);
+                        unstablePointsInvertedPendulum.y.push(a_val_temp);
+                    }
+                }
+                
+            }
+            let mathieu_results = getMathieuTraces({stability: true});
+            //console.log(mathieu_results.traces_mathieu);
+            // After computing all points, update the plot at once
+            Plotly.newPlot('plotTongues',
+            [
+                {
+                    x: stablePoints.x,
+                    y: stablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePoints.x,
+                    y: unstablePoints.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu
+                
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}$`,
+                xaxis: { title: '$k = \\left( \\frac{g\\omega^2}{l} \\right) \\cos(\\theta_0)$' },
+                yaxis: { title: '$m = -\\frac{A \\omega^4}{l} \\cos(\\theta_0)$' }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
+            
+            const allX = stablePointsInvertedPendulum.x.concat(unstablePointsInvertedPendulum.x);
+            const allY = stablePointsInvertedPendulum.y.concat(unstablePointsInvertedPendulum.y);
+
+            // Compute the min and max values
+            const xMin = Math.min(...allX);
+            const xMax = Math.max(...allX);
+            const bufferX = (xMax - xMin)*.05;
+            const yMin = Math.min(...allY);
+            const yMax = Math.max(...allY);
+            const bufferY = (yMax - yMin)*.05;
+            
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'block';
+            Plotly.newPlot('plotTonguesInvertedPendulumParameters',
+            [
+                {
+                    x: stablePointsInvertedPendulum.x,
+                    y: stablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'green', size: 8 },
+                    name: 'Stable'
+                },
+                {
+                    x: unstablePointsInvertedPendulum.x,
+                    y: unstablePointsInvertedPendulum.y,
+                    mode: 'markers',
+                    marker: { color: 'red', size: 8 },
+                    name: 'Unstable'
+                },
+                ...mathieu_results.traces_mathieu_A_l
+            ],
+            {
+                title: String.raw`$\text{Mathieu Stability Plot for }\omega = ${omega}\text{ with Inverted Pendulum Parameters}$`,
+                xaxis: { title: String.raw`$l = \frac{g\omega^2 \cos\left(\theta_0\right)}{k}$`
+                    , range: [xMin-bufferX, xMax+bufferX]
+                },
+                yaxis: { title: String.raw`$A = -\frac{ml}{\cos\left(\theta_0\right)\omega^4}$`
+                    , range: [yMin-bufferY, yMax+bufferY]
+                }
+            });
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTonguesInvertedPendulumParameters');
+            });
+            //MathJax.Hub.Queue(["Typeset", MathJax.Hub,"plotTongues"]);
+            alert("Done!");
+        }
+        
+        function update_Mathieu_Plot()
+        {
+            if (document.getElementById("k-m-OptionMathieu").checked)
+            {
+                use_k_m_Mathieu();
+            }
+            else
+            {
+                use_A_l_Mathieu();
+            }
+        }
+        
+        function getMathieuTraces({stability} = {stability:false})
+        {
+            //Mathieu Tongues
+            const omega = parseFloat(document.getElementById(stability ? 'omega_Mathieu_Stability' : 'omega-slider').value);
+            let l_temp = parseFloat(document.getElementById('l-slider').value);
+            const l_min = parseFloat(document.getElementById('l-input').min);
+            const l = Math.max(l_temp, l_min);
+            const theta0 = parseFloat(document.getElementById(stability ? 'theta_0_Mathieu_Stability' : 'theta-slider').value);
+            const A = parseFloat(document.getElementById('A-slider').value);
+            const omega_squared = omega*omega;
+            const cos_res = Math.cos(theta0);
+            const omega_squared_times_cos_res = cos_res*omega_squared;
+            const omega_fourth_times_cos_res = omega_squared_times_cos_res*omega_squared;
+            const g_omega_squared_times_cos_res = g * omega_squared_times_cos_res;
+            const k = g_omega_squared_times_cos_res/l;
+            const m = -(A*omega_squared*omega_squared_times_cos_res)/g;
+            //alert(`k=${k}`);
+            let traces_mathieu = [];
+            let traces_mathieu_A_l = []; //Only used for `stability = true`
+            let delta_k = 0.0001;
+
+            if (k < 0)
+            {
+                //Plot $abs(\frac{1}{4} \left(\sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right))$ and $abs(2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}})$ for -1 <= k <= 1 and put those plots into traces_mathieu
+                // Generate k values in range -1 <= k <= 1
+                let k_vals = [];
+                for (let i = -1; i <= 0; i += delta_k)
+                {
+                    k_vals.push(i);
+                }
+                let f1_func = (k => Math.abs(0.25 * (Math.sqrt((9 - 4 * k) * (13 - 20 * k)) - (9 - 4 * k))));
+                let f1 = k_vals.map(f1_func);
+                let f2_func = (k => Math.abs(2 * Math.sqrt((k * (k - 1) * (k - 4)) / (3 * k - 8))));
+                let f2 = k_vals.map(f2_func);
+                
+                traces_mathieu.push({
+                    x: k_vals,
+                    y: f1,
+                    mode: 'lines',
+                    name: '$m_2(k)$',
+                    line: { color: 'blue' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals,
+                    y: f2,
+                    mode: 'lines',
+                    name: '$m_1(k)$',
+                    line: { color: 'black' }
+                });
+                
+                if (stability)
+                {
+                    let l_vals = [];
+                    let f1_A = [];
+                    let f2_A = [];
+                    for (let i = 0; i < k_vals.length; i++)
+                    {
+                        l_vals.push(g_omega_squared_times_cos_res/k_vals[i]); //formula for l
+                        f1_A.push((-f1[i]*l_vals[i])/omega_fourth_times_cos_res); //formula for A
+                        f2_A.push((-f2[i]*l_vals[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    traces_mathieu_A_l.push({
+                        x: l_vals,
+                        y: f1_A,
+                        mode: 'lines',
+                        name: '$m_2(k)$',
+                        line: { color: 'blue' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals,
+                        y: f2_A,
+                        mode: 'lines',
+                        name: '$m_1(k)$',
+                        line: { color: 'black' }
+                    });
+                }
+            }
+            else
+            {
+                //Plot the following and put those plots into traces_mathieu
+                /*
+                 \[
+                    abs(\left(\frac{1}{4} \sqrt{(9 - 4k)(13 - 20k)} - (9 - 4k)\right))
+                 \]
+                 for $\left(0 < k < \frac{1}{4}\right)$,
+                 \[
+                    abs(\frac{1}{4} \left( 9 - 4k \mp \sqrt{(9 - 4k)(13 - 20k)} \right))
+                 \]
+                 for $\left(\frac{1}{4} < k < \frac{13}{20}\right)$,
+
+                 \[
+                    abs(\sqrt{\frac{2(k-1)(k-4)(k-9)}{k-5}})
+                 \]
+                 for $\left(\frac{13}{20} < k < 1\right)$, and
+
+                 \[
+                    abs(2 \sqrt{\frac{k(k-1)(k-4)}{3k-8}})
+                 \]
+                 for (1 < k < 1.7)
+                 */
+                let k_vals1 = [];
+                let k_vals2 = [];
+                let k_vals3 = [];
+                let k_vals4 = [];
+                // Generate k values in different ranges
+                for (let i = 0.00; i < 0.25; i += delta_k) k_vals1.push(i);
+                for (let i = 0.25; i < 13 / 20; i += delta_k) k_vals2.push(i);
+                for (let i = 13 / 20; i < 1; i += delta_k) k_vals3.push(i);
+                for (let i = 1; i <= Math.max(1.7, m); i += delta_k) k_vals4.push(i);
+
+                let f1 = k_vals1.map(k => Math.abs(0.25 * (Math.sqrt((9 - 4 * k) * (13 - 20 * k)) - (9 - 4 * k))));
+                let f2_plus = k_vals2.map(k => Math.abs(0.25 * (9 - 4 * k + Math.sqrt((9 - 4 * k) * (13 - 20 * k)))));
+                let f2_minus = k_vals2.map(k => Math.abs(0.25 * (9 - 4 * k - Math.sqrt((9 - 4 * k) * (13 - 20 * k)))));
+                let f3 = k_vals3.map(k => Math.abs(Math.sqrt((2 * (k - 1) * (k - 4) * (k - 9)) / (k - 5))));
+                let f4 = k_vals4.map(k => Math.abs(2 * Math.sqrt((k * (k - 1) * (k - 4)) / (3 * k - 8))));
+
+                traces_mathieu.push({
+                    x: k_vals1,
+                    y: f1,
+                    mode: 'lines',
+                    name: '$m_2(k)$',
+                    line: { color: 'brown' }
+                });
+                
+                traces_mathieu.push({
+                    x: [...k_vals2, ...k_vals2.reverse()], // Concatenate k values for both branches
+                    y: [...f2_plus, ...f2_minus.reverse()], // Concatenate function values accordingly
+                    mode: 'lines',
+                    name: '$m_3(k)$',
+                    line: { color: 'orange' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals3,
+                    y: f3,
+                    mode: 'lines',
+                    name: '$m_4(k)$',
+                    line: { color: 'purple' }
+                });
+
+                traces_mathieu.push({
+                    x: k_vals4,
+                    y: f4,
+                    mode: 'lines',
+                    name: '$m_5(k)$',
+                    line: { color: 'magenta' }
+                });
+                
+                if (stability)
+                {
+                    let l_vals1 = [];
+                    let f1_A = [];
+                    for (let i = 0; i < k_vals1.length; i++)
+                    {
+                        l_vals1.push(g_omega_squared_times_cos_res/k_vals1[i]); //formula for l
+                        f1_A.push((-f1[i]*l_vals1[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals2 = [];
+                    let f2_plus_A = [];
+                    let f2_minus_A = []
+                    for (let i = 0; i < k_vals2.length; i++)
+                    {
+                        l_vals2.push(g_omega_squared_times_cos_res/k_vals2[i]); //formula for l
+                        f2_plus_A.push((-f2_plus[i]*l_vals2[i])/omega_fourth_times_cos_res); //formula for A
+                        f2_minus_A.push((-f2_minus[i]*l_vals2[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals3 = [];
+                    let f3_A = [];
+                    for (let i = 0; i < k_vals3.length; i++)
+                    {
+                        l_vals3.push(g_omega_squared_times_cos_res/k_vals3[i]); //formula for l
+                        f3_A.push((-f3[i]*l_vals3[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    let l_vals4 = [];
+                    let f4_A = [];
+                    for (let i = 0; i < k_vals4.length; i++)
+                    {
+                        l_vals4.push(g_omega_squared_times_cos_res/k_vals4[i]); //formula for l
+                        f4_A.push((-f4[i]*l_vals4[i])/omega_fourth_times_cos_res); //formula for A
+                    }
+                    
+                    traces_mathieu_A_l.push({
+                        x: l_vals1,
+                        y: f1_A,
+                        mode: 'lines',
+                        name: '$m_2(k)$',
+                        line: { color: 'brown' }
+                    });
+                    
+                    traces_mathieu_A_l.push({
+                        x: [...l_vals2, ...l_vals2.reverse()], // Concatenate k values for both branches
+                        y: [...f2_plus_A, ...f2_minus_A.reverse()], // Concatenate function values accordingly
+                        mode: 'lines',
+                        name: '$m_3(k)$',
+                        line: { color: 'orange' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals3,
+                        y: f3_A,
+                        mode: 'lines',
+                        name: '$m_4(k)$',
+                        line: { color: 'purple' }
+                    });
+
+                    traces_mathieu_A_l.push({
+                        x: l_vals4,
+                        y: f4_A,
+                        mode: 'lines',
+                        name: '$m_5(k)$',
+                        line: { color: 'magenta' }
+                    });
+                    
+                }
+            }
+            let return_value = {"traces_mathieu": traces_mathieu, "k": k, "m": m};
+            if (stability)
+            {
+                return_value["traces_mathieu_A_l"] = traces_mathieu_A_l;
+            }
+            return return_value;
+        }
+
+        // Plotting function
+        function plotResults(t, y_horiz, TaylorY, y_vert, TaylorY_vert, Arbitrary_horiz, Mathieu) {
+            const yAxisRangeOption = document.getElementById("yAxisRange").value;
+            const yMin = parseFloat(document.getElementById("yMin").value);
+            const yMax = parseFloat(document.getElementById("yMax").value);
+
+            const showOriginal = document.getElementById("showOriginal").checked;
+            const showTaylor = document.getElementById("showTaylor").checked;
+            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
+            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
+            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
+            const showMathieu = document.getElementById("showMathieu").checked;
+
+            let traces = [];
+            
+            if (showOriginal)
+            {
+                traces.push({
+                    x: t,
+                    y: y_horiz.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original Horizontal}$',
+                    line: { color: 'blue' }
+                });
+            }
+            
+            if (showTaylor)
+            {
+                const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-'+order+' Horizontal about }\\theta = \\pi +'+thetaVal+'$');
+                //console.log(name_test);
+                traces.push({
+                    x: t,
+                    y: TaylorY.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: name_test,
+                    line: { color: 'green' }
+                });
+            }
+            
+            if (showOriginalVertical)
+            {
+                traces.push({
+                    x: t,
+                    y: y_vert.map(yi => yi[0]),  // θ(t) as function of time for the original system
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Original Vertical}$',
+                    line: { color: 'orange' }
+                });
+            }
+            
+            if (showTaylorVertical)
+            {
+                const order = parseInt(document.getElementById('order-input').value);
+                const thetaVal = parseFloat(document.getElementById('thetaToTaylor').value);
+                let name_test = ('$\\text{Taylor Order-'+order+' Vertical about }\\theta = \\pi +'+thetaVal+'$');
+
+                traces.push({
+                    x: t,
+                    y: TaylorY_vert.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: name_test,
+                    line: { color: 'magenta' }
+                });
+            }
+            
+            if (showArbitraryHorizontal)
+            {
+                traces.push({
+                    x: t,
+                    y: Arbitrary_horiz.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Arbitrary Horizontal}$',
+                    line: { color: 'red' }
+                });
+            }
+            
+            if (showMathieu)
+            {
+                traces.push({
+                    x: t,
+                    y: Mathieu.map(yi => yi[0]),  // θ(t) as function of time for the second-order approximation
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '$\\text{Mathieu Vertical}$',
+                    line: { color: 'gray' }
+                });
+            }
+
+            const layout = {
+                title: '$\\text{Inverted Pendulum: }\\theta(t)$',
+                xaxis: { title: '$\\text{Time (s)}$' },
+                yaxis: {title: '$\\theta(t)\\text{ (radians)}$', range: yAxisRangeOption === "fixed" ? [yMin, yMax] : undefined},
+                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
+                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
+                showlegend: true
+            };
+
+            // Plot both traces
+            Plotly.newPlot('plot', traces, layout);
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plot');
+            });
+            
+            let mathieu_results = getMathieuTraces();
+            
+            mathieu_results.traces_mathieu.push({
+                x: [mathieu_results.k],
+                y: [mathieu_results.m],
+                mode: 'markers',
+                name: '$(k, m) = \\left(\\left( \\frac{g\\omega^2}{l } \\right) \\cos(\\theta_0), -\\frac{A \\omega^4}{l}\\cos(\\theta_0))\\right)$',
+                marker: { color: 'gray', size: 10, symbol: 'circle' }
+            });
+            
+            const layout_mathieu = {
+                title: '$\\text{Mathieu Tongues: }m(k)$',
+                xaxis: { title: '$k$' },
+                yaxis: {title: '$m(k)$', range: [Math.min(0, mathieu_results.m-1), Math.max(2, mathieu_results.m+1)]},
+                plot_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--plot-bg-color'),
+                paper_bgcolor: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+                font: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-color') },
+                showlegend: true
+            };
+            
+            Plotly.newPlot('plotTongues', mathieu_results.traces_mathieu, layout_mathieu);
+            document.getElementById("plotTonguesInvertedPendulumParameters").style.display = 'none';
+            
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize('plotTongues');
+            });
+        }
+
+
+        // Update plot based on current parameters
+        async function updatePlot() {
+            const A = parseFloat(document.getElementById('A-slider').value);
+            const omega = parseFloat(document.getElementById('omega-slider').value);
+            let l_temp = parseFloat(document.getElementById('l-slider').value);
+            const l_min = parseFloat(document.getElementById('l-input').min);
+            const l = Math.max(l_temp, l_min);
+            
+            const theta0 = parseFloat(document.getElementById('theta-slider').value);
+            const lambda = parseFloat(document.getElementById('lambda-slider').value);
+            const delta = parseFloat(document.getElementById('delta-slider').value);
+            
+            const h_min = parseFloat(document.getElementById('deltaT').min);
+            let h_temp_str = document.getElementById('deltaT').value;
+            let h_temp = (!h_temp_str) ? 0.01 : parseFloat(document.getElementById('deltaT').value);
+            const h = (h_temp > h_min) ? h_temp : h_min; // Time step
+            const t0 = 0;  // Start time
+            const tf = parseFloat(document.getElementById('maxT').value); // End time
+
+            // Update the displayed values for sliders
+            document.getElementById('A-input').textContent = A;
+            document.getElementById('omega-input').textContent = omega;
+            document.getElementById('l-input').textContent = l;
+            document.getElementById('theta-input').textContent = theta0;
+            document.getElementById('lambda-input').textContent = lambda;
+            document.getElementById('delta-input').textContent = delta;
+            document.getElementById('deltaT').value = h;
+            
+            // Initial conditions and solver parameters
+            
+            let y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            //checking which systems need to be computed
+            const showOriginal = document.getElementById("showOriginal").checked;
+            const showTaylor = document.getElementById("showTaylor").checked;
+            const showOriginalVertical = document.getElementById("showOriginalVertical").checked;
+            const showTaylorVertical = document.getElementById("showTaylorVertical").checked;
+            const showArbitraryHorizontal = document.getElementById("showArbitraryHorizontal").checked;
+            const showMathieu = document.getElementById("showMathieu").checked;
+            // Solve the system of ODEs
+            y0 = [theta0, 0];
+            
+            const result = (showOriginal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const TaylorResult = (showTaylor) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const result_vertical = (showOriginalVertical) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_vertical(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const TaylorResult_vertical = (showTaylorVertical) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODETaylor_vertical(t, y, A, omega, l, lambda, delta)) : {"t":0,"y":0};
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const ArbitraryResult_horizontal = (showArbitraryHorizontal) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODE_arbitrary_horizontal(t, y, l)) : {"t":0,"y":0};
+            
+            y0 = [theta0, 0];  // Initial conditions [θ₀, θ'₀]
+            const cos_res = Math.cos(theta0);
+            const alpha = Math.sin(theta0)-cos_res*theta0;
+            const beta = cos_res;
+            const Mathieu_result = (showMathieu) ? rungeKutta(h, t0, tf, y0, (t, y) => pendulumODEMathieu(t, y, A, omega, l, alpha, beta)) : {"t":0,"y":0};
+
+            // Plot the results
+            let t_vals = result.t || TaylorResult.t || result_vertical.t || TaylorResult_vertical.t || ArbitraryResult_horizontal.t || Mathieu_result.t;
+            
+            plotResults(t_vals, result.y, TaylorResult.y, result_vertical.y, TaylorResult_vertical.y, ArbitraryResult_horizontal.y, Mathieu_result.y);
+            
+            if (showOriginal)
+            {
+                await animatePendulum(result.t, result.y, "pendulumOriginalHorizontal", "showOriginal"); // Start animation
+                document.getElementById("pendulumBoxOriginalHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxOriginalHorizontal").style.display = "none";
+            }
+            if (showTaylor)
+            {
+                await animatePendulum(TaylorResult.t, TaylorResult.y, "pendulumTaylorHorizontal", "showTaylor"); // Start animation
+                document.getElementById("pendulumBoxTaylorHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxTaylorHorizontal").style.display = "none";
+            }
+            if (showOriginalVertical)
+            {
+                await animatePendulum(result_vertical.t, result_vertical.y, "pendulumOriginalVertical", "showOriginalVertical"); // Start animation
+                document.getElementById("pendulumBoxOriginalVertical").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxOriginalVertical").style.display = "none";
+            }
+            if (showTaylorVertical)
+            {
+                await animatePendulum(TaylorResult_vertical.t, TaylorResult_vertical.y, "pendulumTaylorVertical", "showTaylorVertical"); // Start animation
+                document.getElementById("pendulumBoxTaylorVertical").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxTaylorVertical").style.display = "none";
+            }
+            if (showArbitraryHorizontal)
+            {
+                await animatePendulum(ArbitraryResult_horizontal.t, ArbitraryResult_horizontal.y, "pendulumArbitraryHorizontal", "showArbitraryHorizontal"); // Start animation
+                document.getElementById("pendulumBoxArbitraryHorizontal").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxArbitraryHorizontal").style.display = "none";
+            }
+            if (showMathieu)
+            {
+                await animatePendulum(Mathieu_result.t, Mathieu_result.y, "pendulumMathieu", "showMathieu"); // Start animation
+                document.getElementById("pendulumBoxMathieu").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("pendulumBoxMathieu").style.display = "none";
+            }
+            
+        }
+        
+        function toggleDerivation() {
+            const derivation = document.getElementById('derivation');
+            const button = document.querySelector('.toggle-button');
+            if (derivation.style.display === 'none') {
+                derivation.style.display = 'block';
+                button.textContent = 'Hide Derivation';
+            } else {
+                derivation.style.display = 'none';
+                button.textContent = 'Show Derivation';
+            }
+        }
+        
+        function toggleLearnHorizontal() {
+            const derivation = document.getElementById('learn_horizontal_derivation');
+            const button = document.querySelector('.toggle-button_learn_horizontal');
+            if (derivation.style.display === 'none') {
+                derivation.style.display = 'block';
+                button.textContent = String.raw`Hide \(x_p(t)\) Explanation`;
+            } else {
+                derivation.style.display = 'none';
+                button.textContent = String.raw`Arbitrary Horizontal Control \(x_p(t)\) Derivation`;
+            }
+            
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"LearnHorizontalButton"]);
+        }
+        
+        function toggleMathieuDerivation() {
+            const derivation = document.getElementById('MathieuDerivation');
+            const button = document.querySelector('.toggle-button_mathieu');
+            if (derivation.style.display === 'none') {
+                derivation.style.display = 'block';
+                button.textContent = 'Hide Mathieu Vertical Derivation';
+            } else {
+                derivation.style.display = 'none';
+                button.textContent = 'Show Mathieu Vertical Derivation';
+            }
+        }
+        
+        function syncSliderWithInput(sliderId, inputId, minInputId, maxInputId) {
+            const slider = document.getElementById(sliderId);
+            const input = document.getElementById(inputId);
+            const minInput = document.getElementById(minInputId);
+            const maxInput = document.getElementById(maxInputId);
+
+            // Synchronize slider to input
+            slider.addEventListener("input", () => {
+                input.value = slider.value;
+                updatePlot();
+            });
+
+            // Synchronize input to slider, with delayed validation
+            input.addEventListener("input", () => {
+                const rawValue = input.value;
+
+                // Allow empty or intermediate input (e.g., "3.")
+                if (rawValue === "" || rawValue.endsWith(".")) {
+                    return;
+                }
+
+                // Parse the input value
+                const value = parseFloat(rawValue);
+
+                // If valid, update the slider
+                if (!isNaN(value)) {
+                    slider.value = value;
+                    updatePlot();
+                }
+            });
+
+            // Validate the input and constrain it to min/max on blur
+            input.addEventListener("blur", () => {
+                let value = parseFloat(input.value);
+                const minValue = parseFloat(minInput.value);
+                const maxValue = parseFloat(maxInput.value);
+
+                // Constrain to min/max if the value is valid
+                if (!isNaN(value)) {
+                    if (value < minValue) {
+                        value = minValue;
+                    } else if (value > maxValue) {
+                        value = maxValue;
+                    }
+                    input.value = value;
+                    slider.value = value;
+                } else {
+                    // If invalid, reset to the slider's current value
+                    input.value = slider.value;
+                }
+
+                updatePlot();
+            });
+
+            // Update slider bounds based on min/max inputs
+            minInput.addEventListener("input", () => {
+                slider.min = minInput.value;
+                const minValue = parseFloat(minInput.value);
+                if (parseFloat(slider.value) < minValue) {
+                    slider.value = minValue;
+                    input.value = minValue;
+                    updatePlot();
+                }
+            });
+
+            maxInput.addEventListener("input", () => {
+                slider.max = maxInput.value;
+                const maxValue = parseFloat(maxInput.value);
+                if (parseFloat(slider.value) > maxValue) {
+                    slider.value = maxValue;
+                    input.value = maxValue;
+                    updatePlot();
+                }
+            });
+        }
+        
+        document.getElementById('themeToggle').addEventListener('change', (event) => {
+            const isDarkMode = event.target.checked;
+
+            if (isDarkMode) {
+                // Apply dark mode styles
+                document.documentElement.style.setProperty('--background-color', '#1e1e1e');
+                document.documentElement.style.setProperty('--text-color', '#ffffff');
+                document.documentElement.style.setProperty('--plot-bg-color', '#1e1e1e');
+                document.documentElement.style.setProperty('--plot-grid-color', '#555555');
+                const elements = document.getElementsByTagName("svg");
+                for (let i = 0; i < elements.length; i++)
+                {
+                    //console.log(elements[i].innerHTML);
+                    elements[i].innerHTML = elements[i].innerHTML.replace(/rgb\(0%, 0%, 0%\)/g, "rgb(100%, 100%, 100%)");
+                }
+            } else {
+                // Revert to light mode styles
+                document.documentElement.style.setProperty('--background-color', '#ffffff');
+                document.documentElement.style.setProperty('--text-color', '#333333');
+                document.documentElement.style.setProperty('--plot-bg-color', '#ffffff');
+                document.documentElement.style.setProperty('--plot-grid-color', '#dddddd');
+                const elements = document.getElementsByTagName("svg");
+                for (let i = 0; i < elements.length; i++)
+                {
+                    //console.log(elements[i].innerHTML);
+                    elements[i].innerHTML = elements[i].innerHTML.replace(/rgb\(100%, 100%, 100%\)/g, "rgb(0%, 0%, 0%)");
+                }
+            }
+
+            updatePlot(); // Update the Plotly plot to apply the new theme
+        });
+        
+        // Function to compute Taylor expansion for sin(theta) and cos(theta) about some angle theta
+        function taylorExpansion(order, isSin, theta) {
+            let expansion = [];
+            
+            //sin: +sin, +cos, -sin, -cos, +sin, +cos, -sin, -cos, +sin, ...
+            if (isSin)
+            {
+                expansion = [];
+                for (let i = 0; i <= order; i++)
+                {
+                    let isNegative = (Math.ceil((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.cos(theta) : Math.sin(theta);
+                    let prefactor = ((isNegative*-1 || 1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    isNegative = (prefactor < 0);
+                    prefactor = Math.abs(prefactor).toExponential(2).replace(/e\+?(-?\d+)/, '\\cdot 10^{$1}').replace(String.raw`\cdot 10^{0}`, '');
+                    
+                    if (prefactor.includes('^'))
+                    {
+                        prefactor = prefactor.replace('^', '^{')+'}';
+                    }
+                    
+                    let temp = String.raw`${isNegative ? '-' : '+'}${prefactor}`;
+                    if (i > 0)
+                    {
+                        temp += (theta) ? String.raw`\cdot(\theta-${theta})` : String.raw`\cdot\theta`;
+                    }
+                    if (i > 1)
+                    {
+                        temp += String.raw`^{${i}}`;
+                    }
+                    
+                    //temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if ((i == 0 || !expansion.length) && temp[0] === "+")
+                    {
+                        temp = temp.slice(1);
+                    }
+                    expansion.push(temp);
+                    
+                }
+            }
+            //cos: +cos, -sin, -cos, +sin, +cos, -sin, -cos, +sin, +cos, ...
+            else
+            {
+                expansion = [];
+                for (let i = 0; i <= order; i++)
+                {
+                    let isPositive = (Math.floor((i + 1) / 2) % 2 == 0);
+                    let denom = fact(i);
+                    let num = (i%2) ? Math.sin(theta) : Math.cos(theta);
+                    let prefactor = ((isPositive || -1) * (num / denom));
+                    if (prefactor == 0)
+                    {
+                        continue;
+                    }
+                    isPositive = (prefactor > 0);
+                    prefactor = Math.abs(prefactor).toExponential(2).replace(/e\+?(-?\d+)/, '\\cdot 10^{$1}').replace(String.raw`\cdot 10^{0}`, '');
+                    
+                    let temp = String.raw`${isPositive ? '+' : '-'}${prefactor}`;
+                    if (i > 0)
+                    {
+                        temp += (theta) ? String.raw`\cdot(\theta-${theta})` : String.raw`\cdot\theta`;
+                    }
+                    if (i > 1)
+                    {
+                        temp += String.raw`^{${i}}`;
+                    }
+                    
+                    //let temp = String.raw`${isPositive ? '+' : '-'}${prefactor}\cdot(\theta-${theta})^${i}`;
+                    //temp = temp.replace(String.raw`^${i}}`, "^{" + i + "}}");
+                    if ((i == 0 || !expansion.length) && temp[0] === "+")
+                    {
+                        temp = temp.slice(1);
+                    }
+                    expansion.push(temp);
+                }
+            }
+            
+            return expansion.join(' ');
+        }
+        
+        function rotatePendulum(angle, id_string) {
+            const pendulum = document.getElementById(id_string);
+            //console.log("pendulum = ", pendulum);
+            //console.log(pendulum.style.transform);
+            pendulum.style.transform = `rotate(${angle*57.2958}deg)`;
+            pendulum.offsetHeight;
+            
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function animatePendulum(t_values, theta_values, id_string, show_id_string) {
+            /*for (let i = 0; i < theta_values.length; i++) {
+                console.log("theta_values[i] =",theta_values[i][0]);
+                rotatePendulum(theta_values[i][0], id_string);
+                // movePivot(50, 50+(i%2)*10);
+                // movePivot(50+(!(i%2))*10, 50);
+                await sleep(1000); // Wait for 100ms before the next rotation
+            }*/
+            let i = 0;
+            let elementCheckbox = document.getElementById(show_id_string);
+            let element = document.getElementById(id_string);
+            let timeElement = document.getElementById("Time" + id_string);
+
+            function step()
+            {
+                if (elementCheckbox.checked)
+                {
+                    element.style.display = "block";
+                    timeElement.style.display = "block";
+                    let pivod_id_string = "pivotP" + id_string.substr(1);
+                    let container_id_string = id_string.replace("pendulum", "pendulumContainer");
+                    //alert(pivod_id_string);
+                    
+                    let A_val = document.getElementById("A-input").value;
+                    let omega_val = document.getElementById("omega-input").value;
+                    let delta_val = document.getElementById("delta-input").value;
+                    
+                    let pivotLoc = [0, 0];
+                    
+                    if (id_string.includes("Horizontal"))
+                    {
+                        pivotLoc[1] = 0; //no movement in vertical direction
+                        if (id_string.includes("Arbitrary"))
+                        {
+                            pivotLoc[0] = eval(window.x_p.replaceAll("t_val", "t_values[i]"));
+                        }
+                        else
+                        {
+                            pivotLoc[0] = A_val*Math.cos(omega_val*t_values[i] - delta_val);
+                        }
+                    }
+                    else if (id_string.includes("Vertical"))
+                    {
+                        pivotLoc[0] = 0; //no movement in horizontal direction
+                        pivotLoc[1] = A_val*Math.cos(omega_val*t_values[i] - delta_val);
+                    }
+                    else if (id_string.includes("Mathieu"))
+                    {
+                        pivotLoc[0] = 0; //no movement in horizontal direction
+                        pivotLoc[1] = A_val*Math.cos(omega_val*t_values[i]);
+                    }
+                    
+                    if (i < theta_values.length)
+                    {
+                        rotatePendulum(theta_values[i][0], id_string);
+                        movePivot(pivotLoc[0], pivotLoc[1], pivod_id_string, container_id_string);
+                        i++;
+                        requestAnimationFrame(step);  // Ensures smooth animation
+                    }
+                    else
+                    {
+                        i = 0;
+                        rotatePendulum(theta_values[i][0], id_string);
+                        movePivot(pivotLoc[0], pivotLoc[1], pivod_id_string, container_id_string);
+                        i++;
+                        requestAnimationFrame(step);  // Ensures smooth animation
+                    }
+                    if (id_string.includes("OriginalHorizontal"))
+                    {
+                        timeElement.innerHTML = String.raw`Original <br> Horizontal `;
+                    }
+                    else if (id_string.includes("TaylorHorizontal"))
+                    {
+                        let orderInput = document.getElementById('order-input');
+                        timeElement.innerHTML = String.raw`Taylor Order-${orderInput.value} <br> Horizontal `;
+                    }
+                    else if (id_string.includes("OriginalVertical"))
+                    {
+                        timeElement.innerHTML = String.raw`Original <br> Vertical `;
+                    }
+                    else if (id_string.includes("TaylorVertical"))
+                    {
+                        let orderInput = document.getElementById('order-input');
+                        timeElement.innerHTML = String.raw`Taylor Order-${orderInput.value} <br> Vertical `;
+                    }
+                    else if (id_string.includes("ArbitraryHorizontal"))
+                    {
+                        timeElement.innerHTML = String.raw`Arbitrary <br> Horizontal `;
+                    }
+                    else if (id_string.includes("Mathieu"))
+                    {
+                        timeElement.innerHTML = String.raw`Mathieu <br> Vertical `;
+                    }
+                    if (t_values[i])
+                        timeElement.innerHTML += `t = ${t_values[i].toFixed(2)}`;
+                }
+                else
+                {
+                    element.style.display = "none";
+                    timeElement.style.display = "none";
+                }
+            }
+
+            requestAnimationFrame(step); // Start animation
+        }
+
+
+        function movePivot(x, y, pivot_id_string, container_id_string) {
+            const pivot = document.getElementById(pivot_id_string);
+            const container = document.getElementById(container_id_string);
+            
+            // Ensure position is absolute or relative
+            pivot.style.position = "absolute";
+            container.style.position =  "absolute";
+
+            if (!container.dataset.originX || !container.dataset.originY) {
+                // Store the initial position as the origin
+                container.dataset.originX = container.offsetLeft;
+                container.dataset.originY = container.offsetTop;
+            }
+                
+            const originX = parseFloat(container.dataset.originX);
+            const originY = parseFloat(container.dataset.originY);
+
+            // Compute new positions relative to the original position
+            const newX = originX + x;
+            const newY = originY + y;
+
+            // Ensure position is absolute or relative
+
+            // Update positions
+            // pivot.style.left = `${newX}px`;
+            // pivot.style.top = `${newY}px`;
+            container.style.left = `${newX}px`;
+            container.style.top = `${newY}px`;
+        }
+        
+        
+
+
+
+        function updateEquations() {
+            const order = parseInt(document.getElementById('order-input').value);
+            const theta = parseFloat(document.getElementById('thetaToTaylor').value);
+            const equationsDiv = document.getElementById('equations');
+
+            // Compute the Taylor expansions for sin(theta) and cos(theta)
+            const sinExpansion = taylorExpansion(order, true, Math.Pi + theta);
+            const cosExpansion = taylorExpansion(order, false, Math.Pi + theta);
+
+            //console.log(cosExpansion);
+
+            const newEquations = `
+            $$\\begin{align*}
+            &\\text{Original Horizontal: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) =  \\frac{ A \\omega^2}{l} \\cos (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Horizontal about $\\theta=\\pi$ + ${theta}: }\\quad  \\ddot{\\theta} + \\frac{g}{l}\\left(${sinExpansion}\\right) =  \\frac{ A \\omega^2}{l}\\left(${cosExpansion}\\right)\\cos(\\omega t - \\delta) - \\lambda \\dot{\\theta} \\\\
+            &\\text{Original Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\sin (\\theta) = -\\frac{A \\omega^2}{l}  \\sin (\\theta) \\cos(\\omega t - \\delta)  - \\lambda \\dot{\\theta} \\\\
+            &\\text{Taylor Order-${order} Vertical about $\\theta=\\pi$ + ${theta}: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(${sinExpansion}\\right) = -\\frac{A \\omega^2}{l}  \\left(${sinExpansion}\\right) \\cos(\\omega t - \\delta)   - \\lambda \\dot{\\theta} \\\\
+            &\\text{Arbitrary Horizontal Control $x_p(t)$: } \\quad  \\ddot{\\theta} + \\frac{g \\sin (\\theta)}{l} = -\\frac{\\ddot{x}_p(t)\\cos(\\theta)}{l} \\\\
+            &\\text{Mathieu Vertical: } \\quad \\ddot{\\theta} + \\frac{g}{l} \\left(\\sin(\\theta_0) + \\cos(\\theta_0)(\\theta - \\theta_0)\\right) =  - \\frac{A \\omega^2}{l}\\cos(\\omega t)\\left(\\sin(\\theta_0) + \\cos(\\theta_0)(\\theta - \\theta_0)\\right)
+            \\end{align*}$$`;
+            equationsDiv.innerHTML = `
+                ${newEquations}
+            `;
+            // Re-render MathJax content
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub,"equations"]);
+            
+            let horizontalLabel = document.getElementById("showTaylorLabel");
+            horizontalLabel.innerText = "Taylor Order-" + order + " Horizontal";
+            let verticalLabel = document.getElementById("showTaylorVerticalLabel");
+            verticalLabel.innerText = "Taylor Order-" + order + " Vertical";
+            
+           /* MathJax.typesetPromise()
+                .then(() => console.log("MathJax re-rendered successfully"))
+                .catch((err) => console.error("MathJax render error:", err));*/
+        }
+        
+        function checkLGreaterThanOrEqualToZero() {
+            document.getElementById('minL').value = Math.max(0, document.getElementById('minL').value);
+        }
+
+        // Initialize synchronization for each parameter
+        syncSliderWithInput("A-slider", "A-input", "minA", "maxA");
+        syncSliderWithInput("omega-slider", "omega-input", "minOmega", "maxOmega");
+        syncSliderWithInput("l-slider", "l-input", "minL", "maxL");
+        syncSliderWithInput("theta-slider", "theta-input", "minTheta0", "maxTheta0");
+        syncSliderWithInput("lambda-slider", "lambda-input", "minLambda", "maxLambda");
+        syncSliderWithInput("delta-slider", "delta-input", "mindelta", "maxdelta");
+
+        // Event listeners for sliders
+        document.getElementById('A-slider').addEventListener('input', updatePlot);
+        document.getElementById('omega-slider').addEventListener('input', updatePlot);
+        document.getElementById('l-slider').addEventListener('input', updatePlot);
+        document.getElementById('theta-slider').addEventListener('input', updatePlot);
+        document.getElementById('lambda-slider').addEventListener('input', updatePlot);
+        document.getElementById('delta-slider').addEventListener('input', updatePlot);
+        document.getElementById('maxT').addEventListener('input', updatePlot);
+        document.getElementById('deltaT').addEventListener('input', updatePlot);
+        document.getElementById('l-input').addEventListener('input', updatePlot);
+        document.getElementById('minL').addEventListener('input', checkLGreaterThanOrEqualToZero);
+        // Show or hide the custom range inputs based on the dropdown selection
+        document.getElementById('yAxisRange').addEventListener('change', () => {
+            const yAxisRangeOption = document.getElementById('yAxisRange').value;
+            const fixedRangeInputs = document.getElementById('fixedRangeInputs');
+            fixedRangeInputs.style.display = yAxisRangeOption === "fixed" ? "block" : "none";
+            updatePlot();
+        });
+
+        // Event listeners for custom range inputs
+        document.getElementById('yMin').addEventListener('input', updatePlot);
+        document.getElementById('yMax').addEventListener('input', updatePlot);
+        // Event listeners for checkboxes
+        document.getElementById('showOriginal').addEventListener('change', updatePlot);
+        document.getElementById('showTaylor').addEventListener('change', updatePlot);
+        document.getElementById('showOriginalVertical').addEventListener('change', updatePlot);
+        document.getElementById('showTaylorVertical').addEventListener('change', updatePlot);
+        document.getElementById('showArbitraryHorizontal').addEventListener('change', updatePlot);
+        document.getElementById('showMathieu').addEventListener('change', updatePlot);
+
+        // Function to clean up the value dynamically
+        function validateAndFormatOrderInput() {
+            let orderInput = document.getElementById('order-input');
+            let value = orderInput.value;
+
+            // Parse the value as a number and check its validity
+            value = parseInt(value, 10); // Convert to an integer
+
+            // Ensure the value is a non-negative integer
+            if (isNaN(value) || value < 0) {
+                value = 0; // Default to 0 if invalid
+            }
+
+            // Update the input value without leading zeros
+            orderInput.value = value;
+            // Call your update functions dynamically
+            updateEquations();
+            updatePlot();
+        }
+        
+        function validateAndFormatThetaInput() {
+            let thetaToTaylor = document.getElementById('thetaToTaylor');
+            // Store the original user input
+            const originalInput = this.value.trim();
+
+            // Try parsing as a number
+            const value = parseFloat(originalInput);
+
+            // If it's a valid number, update the slider but keep the original text format
+            if (!isNaN(value)) {
+                // Keep the input exactly as the user typed it
+                thetaToTaylor.textContent = originalInput;
+                
+                // Call your update functions dynamically
+                updateEquations();
+                updatePlot();
+            }
+        }
+
+        let orderInput = document.getElementById('order-input');
+        // Add event listeners for input validation
+        orderInput.addEventListener('input', validateAndFormatOrderInput);
+        //orderInput.addEventListener('blur', validateAndFormatOrderInput); // Also validate on losing focus
+        let ThetaValueInput = document.getElementById('thetaToTaylor');
+        ThetaValueInput.addEventListener('input', validateAndFormatThetaInput);
+        
+        // Initial plot
+        updatePlot();
+        
+    </script>
+</body>
+</html>
