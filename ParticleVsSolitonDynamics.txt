@@ -20,7 +20,7 @@
 <body>
 <div class="container-fluid">
   <h1 class="text-center">ODE &amp; PDE Dynamics Simulation</h1>
-  
+
   <!-- Parameter Input Form -->
   <form id="paramsForm">
     <div class="row">
@@ -118,6 +118,15 @@
     </label>
   </div>
   
+  <div class="row">
+      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">
+        <label>Newton Refinement Progress:</label>
+        <div class="progress">
+          <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+  </div>
+
   <!-- Simulation Plots: Two columns side-by-side -->
   <div class="row">
     <div class="col">
@@ -128,6 +137,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 <!-- Simulation JavaScript -->
 <script>
@@ -510,7 +522,7 @@
     // Initialize the spatial grid and initial guess for u.
     // The initial ansatz is: u0(x) = A_sol * sech(A_sol*(x - x0)) * exp(i*v0*x)
     // (Optionally, one could refine this guess using Newton's method; here we assume the ansatz is acceptable.)
-    function initPDE(params) {
+    async function initPDE(params) {
         let {x_min, x_max, dx, x0, A_sol, v0} = params;
         N = Math.floor((x_max - x_min) / dx);
         pdeGrid = new Array(N);
@@ -525,7 +537,8 @@
         }
         //console.log("u=",u);
         // Refine initial u using Newton's method
-        u = refineNewton(u, params);
+        let newtonResult = await refineNewton(u, params);
+        //console.log("u after refineNewton = ",u);
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
     }
@@ -646,7 +659,7 @@
         let F_vec = Fr.concat(Fi);
         //console.log("F_vec =", F_vec);
         err = numeric.norm2(F_vec);
-        console.log("Newton iter:", iter, "err =", err);
+        //console.log("Newton iter:", iter, "err =", err);
         if(err < tol) break;
         
         // Build the Jacobian J (2N x 2N).
@@ -684,7 +697,7 @@
       //console.log("Newton refinement completed in", iter, "iterations; final err =", err);
       return [refined_u, err];
     }
-    function refineNewton(u, params)
+    /*function refineNewton(u, params)
     {
         let lr = 1;
         let err = Infinity;
@@ -706,7 +719,94 @@
             return u0;
         }
         return u;
+    }*/
+    
+    /*function refineNewton(u, params) {
+        let lr = 1;
+        let err = Infinity;
+        let maxIter = 10;
+        let iter = 0;
+        let u0 = u.slice();
+
+        // Show the progress bar:
+        document.getElementById("newtonProgressContainer").style.display = "block";
+        document.getElementById("newtonProgressBar").style.width = "0%";
+        document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
+        
+        do {
+            console.log("lr=", lr);
+            [u, err] = refineNewtonHelper(u0.slice(), params, lr);
+            iter += 1;
+            // Update progress (as percentage of maxIter):
+            let progress = Math.min(100, (iter / maxIter) * 100);
+            //document.getElementById("newtonProgressBar").style.width = progress + "%";
+            //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
+            document.getElementById("newtonProgressBar").outerHTML =
+            String.raw`
+            <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+            `
+            console.log(document.getElementById("newtonProgressBar"));
+            console.log(`refineNewton err = ${err}`);
+            lr *= 0.9;
+        } while (err > tol && iter < maxIter);
+
+        // Hide the progress bar once Newton is done
+        document.getElementById("newtonProgressContainer").style.display = "none";
+
+        if (err > tol) {
+            alert(`Newton did not converge, err = ${err}`);
+            return u0;
+        }
+        return u;
+    }*/
+    
+    function refineNewton(u, params) {
+      const tol = 1e-10;
+      const maxIter = 10;
+      let lr = 1;
+      let iter = 0;
+      let u0 = u.slice();
+
+      // Show the progress bar.
+      const progressContainer = document.getElementById("newtonProgressContainer");
+      const progressBar = document.getElementById("newtonProgressBar");
+      progressContainer.style.display = "block";
+      progressBar.style.width = "0%";
+      progressBar.setAttribute("aria-valuenow", "0");
+
+      return new Promise(function(resolve) {
+        function newtonIteration(currentU) {
+          // Call your refineNewtonHelper function once.
+          let [u, err] = refineNewtonHelper(currentU.slice(), params, lr);
+          iter++;
+          lr *= 0.9;
+
+          // Update progress bar (as a percentage of maxIter)
+          let progress = Math.min(100, (iter / maxIter) * 100);
+          progressBar.style.width = progress + "%";
+          progressBar.setAttribute("aria-valuenow", progress);
+
+          if (err < tol || iter >= maxIter) {
+            // Hide the progress bar.
+            progressContainer.style.display = "none";
+            if (err < tol) {
+              resolve(u);
+            } else {
+              alert("Newton did not converge, err = " + err);
+              resolve(u0); // or resolve(newU) as a fallback.
+            }
+          } else {
+            // Schedule the next iteration (give control back to browser)
+            setTimeout(() => {
+              newtonIteration(u);
+            }, 0);
+          }
+        }
+        newtonIteration(u0);
+      });
     }
+
+
 
     // ----------------------- Plotly Initialization & Update -----------------------
     function initPlots(params) {
@@ -806,13 +906,13 @@
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
-    function initSimulations() {
+    async function initSimulations() {
       let params = getParameters();
       currentTime = 0;
       // Initialize ODE state:
       odeState = { x: params.x0, v: params.v0 };
       // Initialize PDE grid and initial condition:
-      initPDE(params);
+      await initPDE(params);
       initPlots(params);
     }
 
@@ -843,7 +943,7 @@
     }
 
     // ----------------------- Event Listeners -----------------------
-    document.getElementById("startBtn").addEventListener("click", function() {
+    document.getElementById("startBtn").addEventListener("click", async function() {
         if (!simulationRunning)
         {
             let params = getParameters();
@@ -851,7 +951,7 @@
             {
                 alert("Warning: CFL condition violated.");
             }
-            initSimulations();
+            await initSimulations();
             simInterval = setInterval(simulationStep, params.dt);
             simulationRunning = true;
         }
