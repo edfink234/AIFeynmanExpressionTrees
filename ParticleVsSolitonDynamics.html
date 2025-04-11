@@ -43,6 +43,10 @@
           <label for="dt">Time Step \( \Delta t \)</label>
           <input type="number" step="any" class="form-control" id="dt" value="0.05">
         </div>
+        <div class="form-group">
+          <label for="stepsPerUpdate">How often to update the plot (milli-seconds)</label>
+          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="1">
+        </div>
       </div>
       <!-- ODE parameters -->
       <div class="col-md-4">
@@ -152,6 +156,7 @@
 <script>
     // Global simulation variables
     let simInterval = null;
+    let plotInterval = null;
     let currentTime = 0;
     let simulationRunning = false;
     let tol = 1e-10; //For Newton refinement
@@ -175,6 +180,7 @@
         v0: parseFloat(document.getElementById("v0").value),
         T: parseFloat(document.getElementById("T").value),
         dt: parseFloat(document.getElementById("dt").value),
+        stepsPerUpdate: parseInt(document.getElementById("stepsPerUpdate").value),
         // ODE
         m: parseFloat(document.getElementById("m").value),
         Omega: parseFloat(document.getElementById("Omega").value),
@@ -980,9 +986,7 @@
       //console.log("u=",u);
       //pdeStep(params);
       pdeStep_dop853(params);
-      
-      updatePlots(params); //TODO: add an option to draw every N time-steps instead of every time-step.
-      
+        
       if (currentTime >= params.T) {
         clearInterval(simInterval);
         simulationRunning = false;
@@ -994,6 +998,15 @@
           }, 1000);
         }
       }
+    }
+    
+    function plotStep()
+    {
+        let params = getParameters();
+        updatePlots(params);
+        if (currentTime >= params.T) {
+            clearInterval(plotInterval);
+        }
     }
     
     // sleep time expects milliseconds
@@ -1018,10 +1031,6 @@
               // Update the progress bar using the global progress variable.
               progressBar.style.width = progress + "%";
               progressBar.setAttribute("aria-valuenow", progress);
-              progressBar.outerHTML =
-              String.raw`
-              <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-              `
               if (progress >= 100) {
                   progressBar.style.display = "none";
 
@@ -1034,13 +1043,15 @@
                 alert("Warning: CFL condition violated.");
             }
             initSimulations();
-            simInterval = setInterval(simulationStep, params.dt);
+            simInterval = setInterval(simulationStep, 0);
+            plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
         }
     });
     document.getElementById("stopBtn").addEventListener("click", function() {
       if (simulationRunning) {
         clearInterval(simInterval);
+        clearInterval(plotInterval)
         simulationRunning = false;
       }
     });
