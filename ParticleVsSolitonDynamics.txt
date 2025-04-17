@@ -15,6 +15,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.min.js"></script>
   <!-- numeric.js for linear algebra operations -->
   <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script>
+  <!-- In your HTML file, include myfunc.js after your other script tags, or import it as a module -->
+  <script type="module">
+    window.loadedCPPFunctions = false;
+    // Import the module creation function. Adjust the path as needed.
+    // This below ⬇️ worked!
+    // emcc myfunc.c -Os -s WASM=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" -s EXPORTED_FUNCTIONS='["_sech"]' -s EXPORTED_RUNTIME_METHODS="['ccall']" -o myfunc.js
+    import createModule from './myfunc.js';
+
+    // When you call createModule, it returns a Promise that resolves once the module is initialized.
+    createModule().then((Module) => {
+      // Now you can call your C function (f) from JavaScript.
+      const result = Module.ccall('sech',      // C function name
+                                   'number', // return type
+                                   ['number'], // argument type(s)
+                                   [Math.PI / 4]); // arguments
+      console.log("Result of sech(Math.PI/4) =", result);
+      const sech = Module.cwrap('sech', 'number', ['number']);
+      window.sech = sech; //put sech in global scope
+      window.loadedCPPFunctions = true;
+      // You can now use this function in your performance-critical code.
+      // For example, if you want to call f(x) many times in your simulation, wrap this call.
+    }).catch(err => {
+      console.error("Error initializing module", err);
+    });
+  </script>
+
   
 </head>
 <body>
@@ -42,6 +68,10 @@
         <div class="form-group">
           <label for="dt">Time Step \( \Delta t \)</label>
           <input type="number" step="any" class="form-control" id="dt" value="0.05">
+        </div>
+        <div class="form-group">
+          <label for="stepsPerUpdate">How often to update the plot (milli-seconds)</label>
+          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="1">
         </div>
       </div>
       <!-- ODE parameters -->
@@ -125,13 +155,9 @@
   </div>
   
   <div class="row">
-      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">
+      <div class = "col" id="newtonProgressContainer" style="display:block; margin-bottom: 10px;">
         <label>Newton Refinement Progress:</label>
-        <div class="progress">
-            <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                
-            </div>
-        </div>
+        <progress id="newtonProgressBar" value={0} max="100"></progress>
       </div>
   </div>
 
@@ -146,17 +172,20 @@
   </div>
 </div>
 
-
-
-
 <!-- Simulation JavaScript -->
 <script>
     // Global simulation variables
     let simInterval = null;
+    let plotInterval = null;
     let currentTime = 0;
     let simulationRunning = false;
     let tol = 1e-10; //For Newton refinement
     let progress = 0; //For Newton refinement
+    
+    
+    const interval = setInterval(() => {
+        document.getElementById("newtonProgressBar").setAttribute("value", progress);
+    }, 5)
 
     // ODE state (position and velocity)
     let odeState = {x: 0, v: 0};
@@ -176,6 +205,7 @@
         v0: parseFloat(document.getElementById("v0").value),
         T: parseFloat(document.getElementById("T").value),
         dt: parseFloat(document.getElementById("dt").value),
+        stepsPerUpdate: parseInt(document.getElementById("stepsPerUpdate").value),
         // ODE
         m: parseFloat(document.getElementById("m").value),
         Omega: parseFloat(document.getElementById("Omega").value),
@@ -195,10 +225,6 @@
     }
 
     // Utility: hyperbolic secant function
-    function sech(x) {
-      return 1 / Math.cosh(x);
-    }
-        
     function linspace(a, b, n) {
       let arr = [];
       let step = (b - a) / (n - 1);
@@ -661,6 +687,10 @@
       let diagJ11 = new Array(N), diagJ22 = new Array(N), diagJ12 = new Array(N);
 
       while(err > tol && iter < max_iter) {
+          /*setTimeout(() => {window.document.getElementById("newtonProgressBar").outerHTML =
+          String.raw`
+          <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+          `}, 0);*/
         // Extract Ur and Ui from U.
         let Ur = U.slice(indR_start, indR_end);
         let Ui = U.slice(indI_start, indI_end);
@@ -769,40 +799,53 @@
 
         // Show the progress bar:
         window.document.getElementById("newtonProgressContainer").style.display = "block";
-        window.document.getElementById("newtonProgressBar").style.width = "0%";
-        window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
+        //window.document.getElementById("newtonProgressBar").style.width = "0%";
+        //window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
         let myWindow = undefined;
         
         do {
             console.log("lr=", lr);
-            let params = getParameters()
-            initPlots(params);
+            //params = getParameters()
             [u, err] = refineNewtonHelper(u0.slice(), params, lr);
             iter += 1;
             // Update progress (as percentage of maxIter):
             progress = Math.min(100, (iter / maxIter) * 100);
-            //document.getElementById("newtonProgressBar").style.width = progress + "%";
+            const progressBar = document.getElementById("newtonProgressBar");
+            console.log("progress = "+ progressBar.value);
+            const interval = setInterval(() => {
+                setTimeout(() => {
+                    progressBar.value = progress;
+                    progressBar.setAttribute("value", progress);
+                }, 100);
+                progressBar.value = progress;
+                progressBar.setAttribute("value", progress);
+            }, 50)
+            console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
             //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
-            window.document.getElementById("newtonProgressBar").outerHTML =
-            String.raw`
-            <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-            `
+            //setTimeout(() => {document.getElementById("newtonProgressBar").outerHTML =
+            //String.raw`
+            //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+            //`}, 0);
             //console.log(document.getElementById("newtonProgressBar"));
             if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
             {
-                alert(`Newton ${progress}% done`);
+                alert(`Newton ${progress}% done\n(press return to continue)`);
             }
             lr *= 0.9;
         } while (err > tol && iter < maxIter);
 
         if (document.getElementById("applyAlertToggle").checked)
         {
-            alert(`Newton done, error = ${err.toExponential(2)} ` + ((err <= tol) ? '\n🎉' : '\n❌') ) ;
+            alert(`Newton done, error = ${err.toExponential(2)} ` + ((err <= tol) ? ' 🎉' : ' ❌') + "\n(press return to continue)" ) ;
         }
-        
+        progress = 100;
         // Hide the progress bar once Newton is done
-        window.document.getElementById("newtonProgressContainer").style.display = "none";
-
+        //window.document.getElementById("newtonProgressContainer").style.display = "none";
+       // window.document.getElementById("newtonProgressBar").outerHTML =
+        //String.raw`
+        //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+        //`
+        
         return u;
     }
     
@@ -974,9 +1017,7 @@
       //console.log("u=",u);
       //pdeStep(params);
       pdeStep_dop853(params);
-      
-      updatePlots(params); //TODO: add an option to draw every N time-steps instead of every time-step.
-      
+        
       if (currentTime >= params.T) {
         clearInterval(simInterval);
         simulationRunning = false;
@@ -989,24 +1030,64 @@
         }
       }
     }
+    
+    function plotStep()
+    {
+        let params = getParameters();
+        updatePlots(params);
+        if (currentTime >= params.T) {
+            clearInterval(plotInterval);
+        }
+    }
+    
+    // sleep time expects milliseconds
+    function sleep (time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
 
     // ----------------------- Event Listeners -----------------------
     document.getElementById("startBtn").addEventListener("click", function() {
-        if (!simulationRunning)
-        {
+        //if (!simulationRunning)
+        //{
+            // Set up an interval to update the progress bar every second.
+            if (window.loadedCPPFunctions == false)
+            {
+                console.log("error, functions not loaded yet");
+                return;
+            }
+            progress = 0;
+            let progressBar = document.getElementById("newtonProgressBar");
+            progressBar.style.display = "block";
+            //progressBar.style.width = 20 + "%";
+           // progressBar.setAttribute("aria-valuenow", progress);
+           let progressInterval = setInterval(() => {
+                //console.log(`hi ${progress}`);
+
+              // Update the progress bar using the global progress variable.
+              progressBar.setAttribute("value", progress);
+              progressBar.value = progress;
+              if (progress >= 100) {
+                  
+                  //progressBar.style.display = "none";
+
+                clearInterval(progressInterval);
+              }
+            }, 5);
             let params = getParameters();
             if (params.dt > 0.7071067811865476*params.dx*params.dx)
             {
                 alert("Warning: CFL condition violated.");
             }
             initSimulations();
-            simInterval = setInterval(simulationStep, params.dt);
+            simInterval = setInterval(simulationStep, 0);
+            plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
-        }
+        //}
     });
     document.getElementById("stopBtn").addEventListener("click", function() {
       if (simulationRunning) {
         clearInterval(simInterval);
+        clearInterval(plotInterval)
         simulationRunning = false;
       }
     });
@@ -1014,14 +1095,6 @@
       Plotly.Plots.resize(document.getElementById("odePlot"));
       Plotly.Plots.resize(document.getElementById("pdePlot"));
     });
-    
-    /*document.getElementById("newtonProgressBar").addEventListener("change",  function() {
-        console.log("addEventListener here");
-        alert("hi");
-        this.outerHTML = String.raw`
-    <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-    `;
-    });*/
     
     </script>
 
