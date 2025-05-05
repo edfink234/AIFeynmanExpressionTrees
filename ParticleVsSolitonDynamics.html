@@ -14,7 +14,7 @@
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <!-- Math.js for complex arithmetic -->
   <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>  <!-- numeric.js for linear algebra operations -->
-  <script src="https://unpkg.com/ml-matrix@6.10.4/matrix.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ml-matrix@6.12.1"></script>
   <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script>
   <!-- In your HTML file, include myfunc.js after your other script tags, or import it as a module -->
   <script type="module">
@@ -23,7 +23,7 @@
     // This below ⬇️ worked!
     // emcc myfunc.c -Os -s WASM=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" -s EXPORTED_FUNCTIONS='["_sech"]' -s EXPORTED_RUNTIME_METHODS="['ccall']" -o myfunc.js
     import createModule from './myfunc.js';
-
+    window.createModule = createModule;
     // When you call createModule, it returns a Promise that resolves once the module is initialized.
     createModule().then((Module) => {
       // Now you can call your C function (f) from JavaScript.
@@ -34,6 +34,8 @@
       console.log("Result of sech(Math.PI/4) =", result);
       const sech = Module.cwrap('sech', 'number', ['number']);
       window.sech = sech; //put sech in global scope
+      const computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
+      window.computeEigenspectrumCpp = computeEigenspectrumCpp;
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
       // For example, if you want to call f(x) many times in your simulation, wrap this call.
@@ -196,9 +198,7 @@
         </div>
     </div>
 </div>
-
     
-
 <!-- Simulation JavaScript -->
 <script>
     // Global simulation variables
@@ -1158,10 +1158,47 @@
       }
       
       console.log("eigResult =",eigResult);
+      /*const MlfullMatrix = new mlMatrix.Matrix(fullMatrix);
+      let mathMlDecomp = new mlMatrix.EigenvalueDecomposition(MlfullMatrix)
+      console.log("eigenvalue decomposition with math-ml = ", mathMlDecomp);*/
 
       // eigResult.values is an array of complex numbers
       // eigResult.vectors is a 2N x 2N matrix where each column is an eigenvector.
-      
+      //TODO: Make synchronous! https://chatgpt.com/c/67f3117e-bb04-8012-a940-91ed82861c0f 
+      createModule().then((Module) =>
+      {
+          let flattened = new Float64Array(2 * N * N);
+              for (let i = 0; i < N; i++){
+                for (let j = 0; j < N; j++){
+                  let z = fullMatrix[i][j];  // assume fullMatrix[i][j] has properties re and im.
+                  let idx = 2 * (i * N + j);
+                  flattened[idx] = z.re;
+                  flattened[idx + 1] = z.im;
+                }
+              }
+              
+              // Allocate in the Emscripten heap:
+              let ptr = Module._malloc(flattened.length * flattened.BYTES_PER_ELEMENT);
+              Module.HEAPF64.set(flattened, ptr/8);
+              
+              // Call the function.
+              let resultPtr = Module.ccall(
+                "computeEigenspectrum", // C function name (without underscore, handled by Emscripten)
+                "number", // return type
+                ["number", "number"], // argument types
+                [ptr, N] // arguments: pointer and N
+              );
+              
+              // Read back the eigenvalues (an interleaved array of 2*N doubles).
+              let eigenvalues = new Float64Array(Module.HEAPF64.buffer, resultPtr, 2 * N);
+              console.log("Eigenvalues (Re, Im):", eigenvalues);
+              
+              // Free allocated memory.
+              Module._free(ptr);
+              Module._free(resultPtr);
+          
+      });
+      console.log("here");
       // Determine the effective number of eigenpairs by taking the minimum length:
       let numValues = eigResult.values.length;
       let numVecs = (eigResult.eigenvectors && eigResult.eigenvectors.length) || 0;
