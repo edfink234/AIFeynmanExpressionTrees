@@ -1,3 +1,6 @@
+<!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
+<!--run locally: python3 -m http.server 8000-->
+<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +15,8 @@
   <script id="MathJax-script" async
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <!-- Math.js for complex arithmetic -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.min.js"></script>
-  <!-- numeric.js for linear algebra operations -->
+  <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>  <!-- numeric.js for linear algebra operations -->
+  <script src="https://cdn.jsdelivr.net/npm/ml-matrix@6.12.1"></script>
   <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script>
   <!-- In your HTML file, include myfunc.js after your other script tags, or import it as a module -->
   <script type="module">
@@ -22,17 +25,18 @@
     // This below ⬇️ worked!
     // emcc myfunc.c -Os -s WASM=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" -s EXPORTED_FUNCTIONS='["_sech"]' -s EXPORTED_RUNTIME_METHODS="['ccall']" -o myfunc.js
     import createModule from './myfunc.js';
-
     // When you call createModule, it returns a Promise that resolves once the module is initialized.
-    createModule().then((Module) => {
+    window.cppReady = createModule().then((Module) => {
+      window.Module = Module;
       // Now you can call your C function (f) from JavaScript.
       const result = Module.ccall('sech',      // C function name
                                    'number', // return type
                                    ['number'], // argument type(s)
                                    [Math.PI / 4]); // arguments
       console.log("Result of sech(Math.PI/4) =", result);
-      const sech = Module.cwrap('sech', 'number', ['number']);
-      window.sech = sech; //put sech in global scope
+      window.sech = Module.cwrap('sech', 'number', ['number']); //put sech in global scope
+      console.log("Result of sech(Math.PI/4) =", sech(Math.PI / 4));
+      window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
       // For example, if you want to call f(x) many times in your simulation, wrap this call.
@@ -55,7 +59,7 @@
         <h3>Shared Parameters</h3>
         <div class="form-group">
           <label for="x0">Initial Position \( x_0 \)</label>
-          <input type="number" step="any" class="form-control" id="x0" value="2">
+          <input type="number" step="any" class="form-control" id="x0" value="0">
         </div>
         <div class="form-group">
           <label for="v0">Initial Velocity \( v_0 \)</label>
@@ -87,7 +91,7 @@
         </div>
         <div class="form-group">
           <label for="A">Amplitude \( A \)</label>
-          <input type="number" step="any" class="form-control" id="A" value="3">
+          <input type="number" step="any" class="form-control" id="A" value="1">
         </div>
         <div class="form-group">
           <label for="b">Width Factor \( b \)</label>
@@ -98,7 +102,7 @@
       <div class="col-md-4">
         <h3>PDE Parameters</h3>
         <div class="form-group">
-          <label for="A_sol">Soliton Amplitude \( A_{sol} \)</label>
+          <label for="A_sol">Soliton Amplitude \( A_{\text{sol}} \)</label>
           <input type="number" step="any" class="form-control" id="A_sol" value="1">
         </div>
         <div class="form-group">
@@ -106,15 +110,15 @@
           <input type="number" step="any" class="form-control" id="omega" value="0.5">
         </div>
         <div class="form-group">
-          <label for="Omega_pde">\( \Omega_{pde} \)</label>
+          <label for="Omega_pde">\( \Omega_{\text{pde}} \)</label>
           <input type="number" step="any" class="form-control" id="Omega_pde" value="0.2">
         </div>
         <div class="form-group">
-          <label for="A_pde">\( A_{pde} \)</label>
-          <input type="number" step="any" class="form-control" id="A_pde" value="3">
+          <label for="A_pde">\( A_{\text{pde}} \)</label>
+          <input type="number" step="any" class="form-control" id="A_pde" value="1">
         </div>
         <div class="form-group">
-          <label for="b_pde">\( b_{pde} \)</label>
+          <label for="b_pde">\( b_{\text{pde}} \)</label>
           <input type="number" step="any" class="form-control" id="b_pde" value="1">
         </div>
       </div>
@@ -128,12 +132,12 @@
           <input type="number" step="any" class="form-control" id="dx" value="0.38">
         </div>
         <div class="form-group">
-          <label for="x_min">\( x_{min} \)</label>
-          <input type="number" step="any" class="form-control" id="x_min" value="-20">
+          <label for="x_min">\( x_{\text{min}} \)</label>
+          <input type="number" step="any" class="form-control" id="x_min" value="-2">
         </div>
         <div class="form-group">
-          <label for="x_max">\( x_{max} \)</label>
-          <input type="number" step="any" class="form-control" id="x_max" value="20">
+          <label for="x_max">\( x_{\text{max}} \)</label>
+          <input type="number" step="any" class="form-control" id="x_max" value="2">
         </div>
       </div>
     </div>
@@ -143,6 +147,7 @@
   <div class="my-3">
     <button id="startBtn" class="btn btn-success">Start</button>
     <button id="stopBtn" class="btn btn-danger">Stop</button>
+    <button id="computeSpectrumBtn" class="btn btn-primary">Compute Steady-State Spectrum</button>
     <label class="ml-2">
       <input type="checkbox" id="loopToggle"> Auto-loop
     </label>
@@ -155,7 +160,7 @@
   </div>
   
   <div class="row">
-      <div class = "col" id="newtonProgressContainer" style="display:block; margin-bottom: 10px;">
+      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">
         <label>Newton Refinement Progress:</label>
         <progress id="newtonProgressBar" value={0} max="100"></progress>
       </div>
@@ -170,18 +175,114 @@
       <div id="pdePlot"></div>
     </div>
   </div>
+  
+    <!-- Eigen Mode Decomposition Plots: Four columns side-by-side -->
+    <div id = "stabilityPlots" style="display:none; margin-bottom: 10px;">
+        <div class="row">
+            <div class="col">
+                <div id="eigenvaluePlot" style="height:300px; width:100%;"></div>
+            </div>
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <button id="prevModeBtn" class="btn btn-secondary">Previous Mode</button>
+                    <span id="modeCounter">Mode: 0</span>
+                    <button id="nextModeBtn" class="btn btn-secondary">Next Mode</button>
+                </div>
+                <div id="eigenmodePlot" style="height:300px; width:100%;">
+                </div>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col" style="text-align:center">
+                <button id="closeStab" class="btn btn-danger" onclick = "document.getElementById('stabilityPlots').style.display='none';">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
-
+    
 <!-- Simulation JavaScript -->
 <script>
     // Global simulation variables
+    const A = new mlMatrix.Matrix([
+        [1, 2],
+        [3, 4]
+      ]); // Should log the ML namespace
+    console.log("A =",A);
     let simInterval = null;
     let plotInterval = null;
     let currentTime = 0;
     let simulationRunning = false;
     let tol = 1e-10; //For Newton refinement
     let progress = 0; //For Newton refinement
-    
+    let V;
+    // Global variable to track which eigenmode to display.
+    let currentEigenMode = 0;
+    let spectrum;
+
+    // This function updates the eigenmode plot for the mode at index currentEigenMode.
+    function updateEigenmodePlot(params) {
+      // Ensure we have at least one eigenmode:
+      if (!spectrum || !spectrum.eigenmodes || spectrum.eigenmodes.length === 0) return;
+      console.log("currentEigenMode =",currentEigenMode);
+      // Get the current eigenmode:
+      let mode = spectrum.eigenmodes[currentEigenMode];
+      console.log("mode "+currentEigenMode+" = ",mode);
+      // Create a grid for x:
+      let xgrid = linspace(params.x_min, params.x_max, params.N);
+      console.log("x_grid.length=",xgrid.length,"mode.length=",mode.length);
+      
+      // Set up three traces:
+      let modeRealTrace = {
+        x: xgrid,
+        y: mode.map(z => z.re),
+        mode: 'lines',
+        name: 'Real part'
+      };
+      let modeImagTrace = {
+        x: xgrid,
+        y: mode.map(z => z.im),
+        mode: 'lines',
+        name: 'Imaginary part'
+      };
+      let modeNormTrace = {
+        x: xgrid,
+        y: mode.map(z => math.pow(math.abs(z), 2)),
+        mode: 'lines',
+        name: '|Mode|²'
+      };
+      
+      let modeLayout = {
+        title: 'Eigenmode Details',
+        xaxis: { title: 'x' },
+        yaxis: { title: 'Value' },
+        annotations: [{
+          xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+          text: `Mode: ${currentEigenMode}`, showarrow: false, font: { size: 16 }
+        }]
+      };
+      
+      Plotly.newPlot('eigenmodePlot', [modeRealTrace, modeImagTrace, modeNormTrace], modeLayout);
+      
+      // Update the counter
+      document.getElementById("modeCounter").textContent = `Mode: ${currentEigenMode}`;
+    }
+
+    // Setup the event listeners for the buttons
+    document.getElementById("prevModeBtn").addEventListener("click", function() {
+      // Wrap around if needed:
+      if (spectrum && spectrum.eigenmodes) {
+        currentEigenMode = (currentEigenMode - 1 + spectrum.eigenmodes.length) % spectrum.eigenmodes.length;
+        updateEigenmodePlot(getParameters());
+      }
+    });
+
+    document.getElementById("nextModeBtn").addEventListener("click", function() {
+      if (spectrum && spectrum.eigenmodes) {
+        currentEigenMode = (currentEigenMode + 1) % spectrum.eigenmodes.length;
+        updateEigenmodePlot(getParameters());
+      }
+    });
+
     
     const interval = setInterval(() => {
         document.getElementById("newtonProgressBar").setAttribute("value", progress);
@@ -220,7 +321,10 @@
         // Spatial parameters (PDE)
         dx: parseFloat(document.getElementById("dx").value),
         x_min: parseFloat(document.getElementById("x_min").value),
-        x_max: parseFloat(document.getElementById("x_max").value)
+        x_max: parseFloat(document.getElementById("x_max").value),
+        N: Math.floor( ( parseFloat(document.getElementById("x_max").value) - parseFloat(document.getElementById("x_min").value) ) / parseFloat(document.getElementById("dx").value) ),
+        g: -1,
+        wfreq: parseFloat(document.getElementById("omega").value)
       };
     }
 
@@ -456,7 +560,7 @@
         );
       }
       // Compute potential V(x) on our grid.
-      let V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x +
+      V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x +
                             params.A_pde * Math.pow(sech(params.b_pde * x), 2));
       // Compute rhs for each grid point.
       let rhs = new Array(N);
@@ -499,7 +603,7 @@
       let rhs = new Array(N);
       let dx = params.dx;
       // Compute potential V(x) at grid points:
-      let V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
+      V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
       for (let i = 0; i < N; i++) {
         let ip = (i + 1) % N;
         let im = (i - 1 + N) % N;
@@ -578,32 +682,18 @@
                 u[i] = math.complex(amplitude * Math.cos(phase), amplitude * Math.sin(phase));
             }
         }
-        //console.log("u=",u);
-        // Refine initial u using Newton's method
-        //let newtonResult = u;//await refineNewton(u, params);
-        //let temp = u.slice();
-        //let newtonResult = refineNewton(u, params);
-        /*console.log("u after refineNewton = ",u);
-        console.log(`newtonResult = ${newtonResult}`);
-        console.log(`temp = ${temp}`);
-        alert(`${newtonResult}` === `${temp}`);
-        alert(`${newtonResult}` === `${u}`);*/
-        //refineNewton(u, params).then(U_pde = u.map(z => z.re).concat(u.map(z => z.im)));
         if (document.getElementById("applyNewtonToggle").checked)
         {
             alert("Applying Newton now, please wait.");
-            u = refineNewton(u, params);
+            [u, D2, x] = refineNewton(u, params);
             //tack on velocity afterwards
             for (let i = 0; i < N; i++)
             {
-                let x = pdeGrid[i];
-                let phase = v0 * x;
+                let phase = v0 * x[i];
                 u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im* Math.sin(phase));
             }
         }
-        
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
-        
         //console.log("U_pde=",U_pde);
     }
     
@@ -632,11 +722,16 @@
     // to refine U, which is a concatenation of real and imaginary parts.
     function refineNewtonHelper(u0, params, lr = 1) {
       // We'll override the initial u with our own ansatz on the refinement grid.
-      let g = -1;  // focusing NLS
+      let g = params.g;  // focusing NLS
       let L = params.x_min, R = params.x_max;
       let dx = params.dx;
 
-      let x = linspace(L, R, N);
+      let x = new Array(N);
+      for (let i = 0; i < N; i++)
+      {
+          x[i] = params.x_min + i * dx;
+      }
+
       // Adjust for periodic BCs: remove last point.
       let point5_over_dx_squared = 0.5/(dx*dx);
       let one_over_six = 1/6;
@@ -656,7 +751,7 @@
       }
       
       // Compute potential V on the refinement grid.
-      let V = new Array(N);
+      V = new Array(N);
       for (let i = 0; i < N; i++){
           V[i] = potentialForRefinement(x[i], params);
       }
@@ -727,7 +822,7 @@
         let F_vec = Fr.concat(Fi);
         //console.log("F_vec =", F_vec);
         err = numeric.norm2(F_vec);
-        //console.log("Newton iter:", iter, "err =", err);
+        console.log("Newton iter:", iter, "err =", err);
         if(err < tol) break;
         
         // Build the Jacobian J (2N x 2N).
@@ -763,50 +858,27 @@
       }
       
       //console.log("Newton refinement completed in", iter, "iterations; final err =", err);
-      return [refined_u, err];
+      return [refined_u, err, D2, x];
     }
-    /*function refineNewton(u, params)
-    {
-        let lr = 1;
-        let err = Infinity;
-        let maxIter = 10;
-        let iter = 0;
-        let u0 = u.slice();
-        do
-        {
-            console.log("lr=",lr);
-            //console.log("u0=",u0);
-            [u, err] = refineNewtonHelper(u0.slice(), params, lr);
-            console.log(`refineNewton err = ${err}`);
-            lr *= 0.9;
-            iter += 1
-        } while (err > tol && iter < maxIter);
-        if (err > tol)
-        {
-            alert(`Newton did not converge, err = ${err}`);
-            return u0;
-        }
-        return u;
-    }*/
-    
+
     function refineNewton(u, params) {
         let lr = 1;
         let err = Infinity;
         let maxIter = 10;
         let iter = 0;
         let u0 = u.slice();
+        //console.log("u0=",u0);
         progress = 0;
 
         // Show the progress bar:
         window.document.getElementById("newtonProgressContainer").style.display = "block";
         //window.document.getElementById("newtonProgressBar").style.width = "0%";
         //window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
-        let myWindow = undefined;
         
         do {
             console.log("lr=", lr);
             //params = getParameters()
-            [u, err] = refineNewtonHelper(u0.slice(), params, lr);
+            [u, err, D2, x] = refineNewtonHelper(u0.slice(), params, lr);
             iter += 1;
             // Update progress (as percentage of maxIter):
             progress = Math.min(100, (iter / maxIter) * 100);
@@ -819,8 +891,8 @@
                 }, 100);
                 progressBar.value = progress;
                 progressBar.setAttribute("value", progress);
-            }, 50)
-            console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
+            }, 50); //TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
+            //console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
             //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
             //setTimeout(() => {document.getElementById("newtonProgressBar").outerHTML =
             //String.raw`
@@ -838,66 +910,21 @@
         {
             alert(`Newton done, error = ${err.toExponential(2)} ` + ((err <= tol) ? ' 🎉' : ' ❌') + "\n(press return to continue)" ) ;
         }
+        if (err > tol)
+        {
+            alert(`Newton did not converge, error = ${err.toExponential(2)}. Returning starting ansatz.`);
+            return [u0, D2, x];
+        }
         progress = 100;
         // Hide the progress bar once Newton is done
-        //window.document.getElementById("newtonProgressContainer").style.display = "none";
+        window.document.getElementById("newtonProgressContainer").style.display = "none";
        // window.document.getElementById("newtonProgressBar").outerHTML =
         //String.raw`
         //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
         //`
         
-        return u;
+        return [u, D2, x];
     }
-    
-    
-    /*function refineNewton(u, params) {
-      const tol = 1e-10;
-      const maxIter = 10;
-      let lr = 1;
-      let iter = 0;
-      let u0 = u.slice();
-
-      // Show the progress bar.
-      const progressContainer = document.getElementById("newtonProgressContainer");
-      const progressBar = document.getElementById("newtonProgressBar");
-      progressContainer.style.display = "block";
-      progressBar.style.width = "0%";
-      progressBar.setAttribute("aria-valuenow", "0");
-
-      return new Promise(function(resolve) {
-        function newtonIteration(currentU) {
-          // Call your refineNewtonHelper function once.
-          let [u, err] = refineNewtonHelper(currentU.slice(), params, lr);
-          iter++;
-          lr *= 0.9;
-
-          // Update progress bar (as a percentage of maxIter)
-          let progress = Math.min(100, (iter / maxIter) * 100);
-          progressBar.style.width = progress + "%";
-          progressBar.setAttribute("aria-valuenow", progress);
-
-          if (err < tol || iter >= maxIter) {
-            // Hide the progress bar.
-            progressContainer.style.display = "none";
-            if (err < tol) {
-              resolve(u);
-            } else {
-              alert(`Newton did not converge, err = ${err.toFixed(2)}, proceeding with initial ansatz`);
-              resolve(u0); // or resolve(newU) as a fallback.
-            }
-          } else {
-            // Schedule the next iteration (give control back to browser)
-            setTimeout(() => {
-              newtonIteration(u);
-            }, 0);
-          }
-        }
-        newtonIteration(u0);
-      });
-    }*/
-    
-
-
 
     // ----------------------- Plotly Initialization & Update -----------------------
     function initPlots(params) {
@@ -1024,9 +1051,10 @@
         if (document.getElementById("loopToggle").checked) {
           setTimeout(() => {
             initSimulations();
-            simInterval = setInterval(simulationStep, params.dt);
+            simInterval = setInterval(simulationStep, 0);
+            plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
-          }, 1000);
+          }, 0);
         }
       }
     }
@@ -1044,11 +1072,272 @@
     function sleep (time) {
       return new Promise((resolve) => setTimeout(resolve, time));
     }
+    
+    // This function assumes that you already have computed the steady state u, D2, and the potential V as arrays.
+    // Also assume that your parameters object `params` contains:
+    // - g         (nonlinearity coefficient)
+    // - wfreq     (the steady-state frequency)
+    // - D2        (the finite difference Laplacian matrix)
+    // - V         (the potential vector evaluated on the grid)
+    // - u         (the steady state solution, as an array of length N with complex numbers from math.js)
+    // - N         (the number of grid points)
+    function computeEigenspectrum(params) {
+        N = params.N;
+        let g = params.g;
+        const wfreq = params.wfreq;
+        const D2 = params.D2;  // D2 should be an N x N numeric.js matrix
+        console.log("D2 =",D2);
+        console.log("V =",V);
+        V = params.V;    // V is an array of length N
+        u = params.u;    // u is an array of N math.js complex numbers
+        console.log("V =",V);
+        // Build the diagonal matrices.
+        // In MATLAB, the matrices M11 and M12 are defined as:
+        //   M11 = -(-0.5*D2+diag(2*g*u.*conj(u)+V+wfreq));
+        //   M12 = -diag(g*u.*u);
+        //   M21 = -conj(M12);
+        //   M22 = -conj(M11);
+        // and then M = 1i * [M11, M12; M21, M22].
+        // In JavaScript we build these blocks as arrays.
+      
+        // Precompute |u|^2, and u^2.
+        let abs2 = u.map(z => math.add(math.multiply(z.re, z.re), math.multiply(z.im, z.im)));
+        console.log("abs2 =",abs2);
+        let uSquared = u.map(z => math.square(z).re);  // returns a math.js Complex
+        console.log("uSquared =",uSquared);
+        let two_g_abs2 = abs2.map(val => 2 * g * val);
+        console.log("two_g_abs2 =",two_g_abs2);
+        let diagM11 = [];
+        let diagM12 = [];
+
+        // For each i = 0,...,N-1:
+        for (let i = 0; i < N; i++)
+        {
+            // M11 diagonal entry is 2*g|u_i|^2 + V(i) + wfreq.
+            diagM11.push(two_g_abs2[i] + V[i] + wfreq);
+            // M12 diagonal entry is g*u_i^2.
+            // We will construct these as complex numbers.
+            diagM12.push(-math.multiply(g, uSquared[i]));
+        }
+        console.log("diagM11 =",diagM11);
+      
+        // Build block matrices with D2.
+        // We define A = -0.5*D2 + diag(diagM11) and B = -diag(diagM12)
+        // (Note the double negation in the MATLAB code).
+        let A = numeric.neg(numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagM11)));  // Because MATLAB: M11 = -(-0.5*D2+diag(...))
+        console.log("A =",A);
+        // For B, we need a diagonal matrix whose diagonal entries are diagM12, but with a minus sign.
+        let B = numeric.diag(diagM12);
+        console.log("B =",B);
+
+        // For M21 and M22, we have:
+        // M21 = -conj(M12)   and   M22 = -conj(M11)
+        // So M21 is the conjugate of B:
+        let B_conj = numeric.diag(diagM12.map(x => math.unaryMinus(math.conj(x))));
+        console.log("B_conj = ",B_conj);
+        // And M22 is:
+        let A_conj = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagM11.map(x => x))); // conj of diag is itself (if real)
+        console.log("A_conj = ",A_conj);
+
+        // Now build the full 2N x 2N matrix M.
+        // M = 1i * [A, B; B_conj, A_conj].
+        let topRow = A.map((row, idx) => row.concat(B[idx]));
+        let bottomRow = A_conj.map((row, idx) => B_conj[idx].concat(row));
+        let fullMatrix = topRow.concat(bottomRow);
+        // Multiply fullMatrix by 1i.
+        fullMatrix = fullMatrix.map(row => row.map(val => math.multiply(math.complex(0, 1), val)));
+        console.log("fullMatrix =",fullMatrix);
+        // Now compute eigenvalues and eigenvectors using math.eigs.
+        // math.eigs() accepts a numeric.js matrix or a plain array.
+        let eigResult;
+        try {
+            eigResult = math.eigs(fullMatrix);
+        } catch (err) {
+        console.warn("Eigenvalue computation did not fully converge; using partial results.");
+        eigResult = {
+            values: err.values,
+            vectors: err.vectors
+            };
+        }
+      
+        console.log("eigResult =",eigResult);
+        /*
+        const MlfullMatrix = new mlMatrix.Matrix(fullMatrix);
+        let mathMlDecomp = new mlMatrix.EigenvalueDecomposition(MlfullMatrix)
+        console.log("eigenvalue decomposition with math-ml = ", mathMlDecomp);
+        */
+
+        // eigResult.values is an array of complex numbers
+        // eigResult.vectors is a 2N x 2N matrix where each column is an eigenvector.
+        if (!window.loadedCPPFunctions) {
+            alert("C++ module not ready yet!");
+            return;
+        }
+
+        const Module = window.Module;
+        const computeEigenspectrumCpp = window.computeEigenspectrumCpp;
+        //N = fullMatrix.length;  // ← fullMatrix is N x N
+
+        let flattened = new Float64Array(2 * N * N);
+        for (let i = 0; i < N; i++) {
+            for (let j = 0; j < N; j++) {
+                let z = fullMatrix[i][j];
+                let idx = 2 * (i * N + j);
+                flattened[idx] = z.re;
+                flattened[idx + 1] = z.im;
+            }
+        }
+
+        // Allocate in heap
+        let ptr = Module._malloc(flattened.length * 8);
+        if (!ptr) throw new Error("Memory allocation failed");
+        console.log("HEAP size (MB):", Module.HEAPU8.length / (1024 * 1024));
+        Module.HEAPF64.set(flattened, ptr / 8);
+        console.log("HEAP size (MB):", Module.HEAPU8.length / (1024 * 1024));
+        // Call C++ function
+        let resultPtr = computeEigenspectrumCpp(ptr, N);
+
+        // Read back eigenvalues
+        let eigenvalues = new Float64Array(Module.HEAPF64.buffer, resultPtr, 2 * N);
+        console.log("Eigenvalues (Re, Im):", eigenvalues);
+
+        // Free memory
+        Module._free(ptr);
+        Module._free(resultPtr);
+
+        console.log("here");
+        // Determine the effective number of eigenpairs by taking the minimum length:
+        let numValues = eigResult.values.length;
+        let numVecs = (eigResult.vectors && eigResult.vectors.length) || 0;
+        let numValid = Math.min(numValues, numVecs);
+        if (numValid < numValues) {
+            console.warn(`Mismatch: ${numValues} eigenvalues but only ${numVecs} eigenvectors. Using first ${numValid} pairs.`);
+        }
+
+        // Build an array of indices 0,..., numValid-1 and sort them by descending real part:
+        let indices = Array.from({length: numValid}, (_, i) => i);
+        indices.sort((i, j) => eigResult.values[j].re - eigResult.values[i].re);
+        console.log("indices =", indices);
+
+        // Sorted eigenvalues:
+        let sortedVals = indices.map(i => eigResult.values[i]);
+        console.log("sortedVals =", sortedVals);
+
+        // For eigenvectors, assume each eigenvector is an object with a property "vector" representing the eigenvector.
+        // If some eigenvector is missing, we can substitute an array of zeros.
+        let vecs = eigResult.vectors;
+        let sortedVecs = indices.map(i => {
+            if (vecs[i] && vecs[i].vector) {
+                return vecs[i].vector;
+            }
+            else {
+                console.warn(`No eigenvector available for index ${i}; substituting zero vector.`);
+                return new Array(N).fill(math.complex(0,0));
+            }
+        });
+        console.log("sortedVecs =", sortedVecs);
+
+        // Combine eigenvector components if desired; for instance, combining the first half and conjugate of the second half.
+        let modeVecs = sortedVecs.map(vec => {
+            let firstHalf = vec.slice(0, N);
+            let secondHalf = vec.slice(N, 2 * N);
+            // Combine as: combined = firstHalf + conj(secondHalf)
+            let combined = firstHalf.map((val, idx) => math.add(val, math.conj(secondHalf[idx])));
+            return combined;
+        });
+
+        try
+        {
+            console.log("sortedVals.length =",sortedVals.length);
+            console.log("eigResult.values.length =",eigResult.values.length);
+            console.log("sortedVecs.length =",sortedVecs.length);
+            console.log("eigResult.vectors.length =",eigResult.vectors.length);
+        }
+        catch (err)
+        {
+            console.log(`Error when printing, ${err}`);
+        }
+      
+        let returnVal = {eigenvalues: [], eigenmodes: []};
+
+        if (sortedVals !== undefined && eigResult !== undefined && eigResult.values !== undefined)
+        {
+            returnVal.eigenvalues = ((sortedVals.length >= eigResult.values.length) ? sortedVals : eigResult.values);
+        }
+        if (sortedVecs !== undefined && eigResult !== undefined && eigResult.vectors !== undefined)
+        {
+            returnVal.eigenmodes = ((sortedVecs.length >= eigResult.vectors.length) ? modeVecs : eigResult.vectors);
+        }
+        N = params.N; // reset N jic
+        return returnVal;
+    }
+
+    // Example of using the function:
+    // Assume params is built from getParameters() and that you have computed u, D2, V, N, g, wfreq as appropriate.
+    document.getElementById("computeSpectrumBtn").addEventListener("click", function() {
+        let params = getParameters();
+        // You must compute or obtain u, D2, V, and set N, g and wfreq appropriately.
+        // For example:
+        //   params.u = computed steady-state solution as an array of math.complex numbers (length N)
+        //   params.D2 = numeric.js matrix for the Laplacian (N x N)
+        //   params.V  = potential array (length N)
+        //   params.N  = N
+        //   params.g  = nonlinearity coefficient (e.g. -1 for focusing)
+        //   params.wfreq = the chemical potential or steady-state frequency.
+        let {x_min, x_max, dx, x0, A_sol, v0} = params;
+        params.N = Math.floor((x_max - x_min) / dx);
+        N = params.N;
+        params.g = -1;
+        params.wfreq = params.Omega;
+        let x;
+        u = new Array(N);
+        pdeGrid = new Array(N);
+        for (let i = 0; i < params.N; i++) {
+            pdeGrid[i] = x_min + i * dx;
+            x = pdeGrid[i];
+            let amplitude = params.A_sol * sech(params.A_sol * (x - x0));
+            //let phase = v0 * x;
+            u[i] = math.complex(amplitude, 0);
+            console.log("u[",i,"] = ", u[i], ", x[",i,"] = ", pdeGrid[i], ", dx = ",dx);
+        }
+      
+        [params.u, params.D2, x] = refineNewton(u, params);
+        params.V = new Array(N);
+        for (let i = 0; i < N; i++){
+            params.V[i] = potentialForRefinement(x[i], params);
+        }
+
+        console.log("u = ", params.u, ", D2 = ", params.D2);
+        spectrum = computeEigenspectrum(params);
+        console.log("Eigenvalues:", spectrum.eigenvalues);
+        console.log("Eigenmodes:", spectrum.eigenmodes);
+
+        // Plot the eigenvalues (Re vs Im) on the left.
+        let eigenvalueTrace = {
+            x: spectrum.eigenvalues.map(z => z.re),
+            y: spectrum.eigenvalues.map(z => z.im),
+            mode: 'markers',
+            marker: { size: 8 },
+            name: 'Eigenvalues'
+        };
+        let eigenvalueLayout = {
+            title: 'Eigenvalue Spectrum',
+            xaxis: { title: 'Re(λ)' },
+            yaxis: { title: 'Im(λ)' }
+        };
+        document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:red'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (numeric.js sucks by the way)`
+        Plotly.newPlot('eigenvaluePlot', [eigenvalueTrace], eigenvalueLayout);
+
+        // Set the global variable and plot the first eigenmode:
+        currentEigenMode = 0;
+        document.getElementById("stabilityPlots").style.display = "block";
+        updateEigenmodePlot(params);
+    });
 
     // ----------------------- Event Listeners -----------------------
     document.getElementById("startBtn").addEventListener("click", function() {
-        //if (!simulationRunning)
-        //{
+        if (!simulationRunning)
+        {
             // Set up an interval to update the progress bar every second.
             if (window.loadedCPPFunctions == false)
             {
@@ -1057,22 +1346,17 @@
             }
             progress = 0;
             let progressBar = document.getElementById("newtonProgressBar");
-            progressBar.style.display = "block";
-            //progressBar.style.width = 20 + "%";
-           // progressBar.setAttribute("aria-valuenow", progress);
-           let progressInterval = setInterval(() => {
+            let progressInterval = setInterval(() => {
                 //console.log(`hi ${progress}`);
-
+              
               // Update the progress bar using the global progress variable.
               progressBar.setAttribute("value", progress);
               progressBar.value = progress;
               if (progress >= 100) {
                   
-                  //progressBar.style.display = "none";
-
                 clearInterval(progressInterval);
               }
-            }, 5);
+            }, 0);
             let params = getParameters();
             if (params.dt > 0.7071067811865476*params.dx*params.dx)
             {
@@ -1082,9 +1366,10 @@
             simInterval = setInterval(simulationStep, 0);
             plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
-        //}
+        }
     });
     document.getElementById("stopBtn").addEventListener("click", function() {
+        //console.log("simulationRunning=",simulationRunning);
       if (simulationRunning) {
         clearInterval(simInterval);
         clearInterval(plotInterval)
