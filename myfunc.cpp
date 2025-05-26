@@ -43,16 +43,14 @@ extern "C"
                 int idx = 2 * (i * N + j);
                 double re = inMat[idx];
                 double im = inMat[idx + 1];
-                std::cout << "i=" << i << std::endl;
                 M(i, j) = complex<double>(re, im);
             }
         }
-        puts("done");
+//        std::cout << "done" << std::endl;
         // Compute the eigenvalues.
         ComplexEigenSolver<MatrixXcd> ces;
-        puts("before computing?");
-        std::cout << "Matrix M size: " << M.rows() << " x " << M.cols() << std::endl;
-        std::cout << "M(0,0) = " << M(0,0) << std::endl;  // check that data looks sane
+//        std::cout << "Matrix M size: " << M.rows() << " x " << M.cols() << std::endl;
+//        std::cout << "M(0,0) = " << M(0,0) << std::endl;  // check that data looks sane
         ces.compute(M);
         
         if (ces.info() != Eigen::Success)
@@ -60,9 +58,17 @@ extern "C"
             // Eigenvalue computation failed
             return nullptr;
         }
-        puts("here?");
+//        std::cout << "compute done." << std::endl;
+        
+        // Allocate a block of memory:
+        //   - 2*N for eigenvalues (real, imag)
+        //   - 2*N*N for eigenvectors (N vectors of length N, complex interleaved)
+        int totalSize = 2 * N + 2 * N * N;
+        double* output = (double*) malloc(totalSize * sizeof(double));
+
+//        std::cout << "done allocating." << std::endl;
         // Allocate an output array of 2*N doubles.
-        double* output = (double*) malloc(2 * N * sizeof(double));
+        //double* output = (double*) malloc(2 * N * sizeof(double));
         if (!output) return nullptr; // allocation failure
         
         // Write eigenvalues into the output array.
@@ -71,13 +77,22 @@ extern "C"
         for (int i = 0; i < N; i++)
         {
             complex<double> lambda = ces.eigenvalues()(i);
-            std::cout << "i=" << i
-            << ",lambda.real()="<<lambda.real()
-            << ",lambda.imag()="<<lambda.imag()
-            << std::endl;
+//            std::cout << "i=" << i << ",lambda.real()=" << lambda.real() << ",lambda.imag()="<<lambda.imag() << std::endl;
             output[2 * i]     = lambda.real();
             output[2 * i + 1] = lambda.imag();
         }
+        // Write eigenvectors: column-major (each column is an eigenvector)
+        for (int j = 0; j < N; j++)
+        {
+            VectorXcd v = ces.eigenvectors().col(j);
+            for (int i = 0; i < N; i++)
+            {
+                int idx = 2 * N + 2 * (j * N + i); // offset after eigenvalues
+                output[idx] = v(i).real();
+                output[idx + 1] = v(i).imag();
+            }
+        }
+//        std::cout << "done writing in C++" << std::endl;
         
         return output;
     }

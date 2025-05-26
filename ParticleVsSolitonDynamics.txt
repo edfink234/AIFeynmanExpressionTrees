@@ -12,11 +12,13 @@
   <!-- Explicit Plotly v2.16.1 -->
   <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
   <!-- MathJax for rendering LaTeX -->
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!--  <script id="MathJax-script" async-->
+<!--    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
   <!-- Math.js for complex arithmetic -->
   <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>  <!-- numeric.js for linear algebra operations -->
-  <script src="https://cdn.jsdelivr.net/npm/ml-matrix@6.12.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ml-matrix@6.12.1"></script> <!-- Example Usage: const MlfullMatrix = new mlMatrix.Matrix(fullMatrix); let mathMlDecomp = new mlMatrix.EigenvalueDecomposition(MlfullMatrix); console.log("eigenvalue decomposition with math-ml = ", mathMlDecomp);-->
   <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script>
   <!-- In your HTML file, include myfunc.js after your other script tags, or import it as a module -->
   <script type="module">
@@ -129,15 +131,15 @@
         <h3>Spatial Parameters (PDE)</h3>
         <div class="form-group">
           <label for="dx">Spatial Step \( \Delta x \)</label>
-          <input type="number" step="any" class="form-control" id="dx" value="0.38">
+          <input type="number" step="any" class="form-control" id="dx" value="0.27">
         </div>
         <div class="form-group">
           <label for="x_min">\( x_{\text{min}} \)</label>
-          <input type="number" step="any" class="form-control" id="x_min" value="-2">
+          <input type="number" step="any" class="form-control" id="x_min" value="-20">
         </div>
         <div class="form-group">
           <label for="x_max">\( x_{\text{max}} \)</label>
-          <input type="number" step="any" class="form-control" id="x_max" value="2">
+          <input type="number" step="any" class="form-control" id="x_max" value="20">
         </div>
       </div>
     </div>
@@ -246,7 +248,7 @@
       };
       let modeNormTrace = {
         x: xgrid,
-        y: mode.map(z => math.pow(math.abs(z), 2)),
+        y: mode.map(z => z.re*z.re + z.im*z.im),
         mode: 'lines',
         name: '|Mode|²'
       };
@@ -936,7 +938,7 @@
         x: pdeGrid,
         y: odePotential,
         mode: 'lines',
-        name: 'ODE Potential'
+        name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
       };
       let odeTraceParticle = {
         x: [params.x0],
@@ -965,13 +967,13 @@
         x: pdeGrid,
         y: pdePotential,
         mode: 'lines',
-        name: 'PDE Potential'
+        name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
       };
       let pdeTraceDensity = {
         x: pdeGrid,
         y: density,
         mode: 'lines',
-        name: 'Soliton Density |u|²'
+        name: 'Soliton Density $$|u|^2$$'
       };
       let pdeLayout = {
         title: 'PDE: Soliton in Potential',
@@ -1003,13 +1005,13 @@
         x: pdeGrid,
         y: pdePotential,
         mode: 'lines',
-        name: 'PDE Potential'
+        name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
       };
       let pdeTraceDensity = {
         x: pdeGrid,
         y: density,
         mode: 'lines',
-        name: 'Soliton Density |u|²'
+        name: 'Soliton Density $$|u|^2$$'
       };
       let pdeLayout = {
         title: 'PDE: Soliton in Potential',
@@ -1086,11 +1088,11 @@
         let g = params.g;
         const wfreq = params.wfreq;
         const D2 = params.D2;  // D2 should be an N x N numeric.js matrix
-        console.log("D2 =",D2);
-        console.log("V =",V);
+        //console.log("D2 =",D2);
+        //console.log("V =",V);
         V = params.V;    // V is an array of length N
         u = params.u;    // u is an array of N math.js complex numbers
-        console.log("V =",V);
+        //console.log("V =",V);
         // Build the diagonal matrices.
         // In MATLAB, the matrices M11 and M12 are defined as:
         //   M11 = -(-0.5*D2+diag(2*g*u.*conj(u)+V+wfreq));
@@ -1102,11 +1104,11 @@
       
         // Precompute |u|^2, and u^2.
         let abs2 = u.map(z => math.add(math.multiply(z.re, z.re), math.multiply(z.im, z.im)));
-        console.log("abs2 =",abs2);
+        //console.log("abs2 =",abs2);
         let uSquared = u.map(z => math.square(z).re);  // returns a math.js Complex
-        console.log("uSquared =",uSquared);
+        //console.log("uSquared =",uSquared);
         let two_g_abs2 = abs2.map(val => 2 * g * val);
-        console.log("two_g_abs2 =",two_g_abs2);
+        //console.log("two_g_abs2 =",two_g_abs2);
         let diagM11 = [];
         let diagM12 = [];
 
@@ -1119,25 +1121,25 @@
             // We will construct these as complex numbers.
             diagM12.push(-math.multiply(g, uSquared[i]));
         }
-        console.log("diagM11 =",diagM11);
+        //console.log("diagM11 =",diagM11);
       
         // Build block matrices with D2.
         // We define A = -0.5*D2 + diag(diagM11) and B = -diag(diagM12)
         // (Note the double negation in the MATLAB code).
         let A = numeric.neg(numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagM11)));  // Because MATLAB: M11 = -(-0.5*D2+diag(...))
-        console.log("A =",A);
+        //console.log("A =",A);
         // For B, we need a diagonal matrix whose diagonal entries are diagM12, but with a minus sign.
         let B = numeric.diag(diagM12);
-        console.log("B =",B);
+        //console.log("B =",B);
 
         // For M21 and M22, we have:
         // M21 = -conj(M12)   and   M22 = -conj(M11)
         // So M21 is the conjugate of B:
         let B_conj = numeric.diag(diagM12.map(x => math.unaryMinus(math.conj(x))));
-        console.log("B_conj = ",B_conj);
+        //console.log("B_conj = ",B_conj);
         // And M22 is:
         let A_conj = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagM11.map(x => x))); // conj of diag is itself (if real)
-        console.log("A_conj = ",A_conj);
+        //console.log("A_conj = ",A_conj);
 
         // Now build the full 2N x 2N matrix M.
         // M = 1i * [A, B; B_conj, A_conj].
@@ -1146,29 +1148,11 @@
         let fullMatrix = topRow.concat(bottomRow);
         // Multiply fullMatrix by 1i.
         fullMatrix = fullMatrix.map(row => row.map(val => math.multiply(math.complex(0, 1), val)));
-        console.log("fullMatrix =",fullMatrix);
+        //console.log("fullMatrix =",fullMatrix);
         // Now compute eigenvalues and eigenvectors using math.eigs.
         // math.eigs() accepts a numeric.js matrix or a plain array.
         let eigResult;
-        try {
-            eigResult = math.eigs(fullMatrix);
-        } catch (err) {
-        console.warn("Eigenvalue computation did not fully converge; using partial results.");
-        eigResult = {
-            values: err.values,
-            vectors: err.vectors
-            };
-        }
-      
-        console.log("eigResult =",eigResult);
-        /*
-        const MlfullMatrix = new mlMatrix.Matrix(fullMatrix);
-        let mathMlDecomp = new mlMatrix.EigenvalueDecomposition(MlfullMatrix)
-        console.log("eigenvalue decomposition with math-ml = ", mathMlDecomp);
-        */
 
-        // eigResult.values is an array of complex numbers
-        // eigResult.vectors is a 2N x 2N matrix where each column is an eigenvector.
         if (!window.loadedCPPFunctions) {
             alert("C++ module not ready yet!");
             return;
@@ -1176,7 +1160,6 @@
 
         const Module = window.Module;
         const computeEigenspectrumCpp = window.computeEigenspectrumCpp;
-        //N = fullMatrix.length;  // ← fullMatrix is N x N
 
         let flattened = new Float64Array(2 * N * N);
         for (let i = 0; i < N; i++) {
@@ -1189,26 +1172,79 @@
         }
 
         // Allocate in heap
-        let ptr = Module._malloc(flattened.length * 8);
+        let ptr = Module._malloc(flattened.length * 8); // allocates memory in WebAssembly for `flattened` (Float64Array), with each element requiring 8 bytes
         if (!ptr) throw new Error("Memory allocation failed");
         console.log("HEAP size (MB):", Module.HEAPU8.length / (1024 * 1024));
-        Module.HEAPF64.set(flattened, ptr / 8);
+        Module.HEAPF64.set(flattened, ptr / 8); //sets the values from `flattened` (a Float64Array) into WebAssembly memory at the index `ptr / 8` in HEAPF64, corresponding to byte address `ptr`
         console.log("HEAP size (MB):", Module.HEAPU8.length / (1024 * 1024));
+        console.log("N = ", N);
         // Call C++ function
         let resultPtr = computeEigenspectrumCpp(ptr, N);
+        if (resultPtr === 0)
+        {
+            alert("Eigenvalue decomposition failed");
+            Module._free(ptr);
+            return;
+        }
+        // Total number of doubles returned: 2*N (eigenvalues) + 2*N*N (eigenvectors)
+        const resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * N + 2 * N * N);
+        // Extract eigenvalues
+        let eigenvalues = new Array(N);
+        for (let i = 0; i < N; i++) {
+          eigenvalues[i] = { re: resultData[2 * i], im: resultData[2 * i + 1] };
+        }
 
-        // Read back eigenvalues
-        let eigenvalues = new Float64Array(Module.HEAPF64.buffer, resultPtr, 2 * N);
-        console.log("Eigenvalues (Re, Im):", eigenvalues);
+        // ✅ Preallocate eigenvector array: eigenvectors[j][i] = ith component of jth eigenvector
+        const eigenvectors = new Array(N);
+        for (let j = 0; j < N; j++)
+        {
+            eigenvectors[j] = new Array(N);
+        }
+        
+        // ✅ Fill eigenvectors efficiently — NO math.complex, NO console.log
+        for (let j = 0; j < N; j++) {
+          for (let i = 0; i < N; i++) {
+            const idx = 2 * N + 2 * (j * N + i);
+            eigenvectors[j][i] = { re: resultData[idx], im: resultData[idx + 1] };
+          }
+        }
 
-        // Free memory
+        // ✅ Clean up memory
         Module._free(ptr);
         Module._free(resultPtr);
 
-        console.log("here");
+        // ✅ Optionally log a quick summary
+        //console.log("Eigenvalue 0:", eigenvalues[0]);
+        //console.log("Eigenvector 0 component 0:", eigenvectors[0][0]);
+        
+        /* numeric.js
+        try {
+            eigResult = math.eigs(fullMatrix);
+        } catch (err) {
+        console.warn("Eigenvalue computation did not fully converge; using partial results.");
+        eigResult = {
+            values: err.values,
+            vectors: err.vectors
+            };
+        }
+        */
+        try {
+            eigResult = {
+                values: eigenvalues,
+                vectors: eigenvectors
+                };
+        } catch (err) {
+            console.warn("Eigenvalue computation did not fully converge; using partial results.");
+            return;
+        }
+        
+        console.log("eigResult =",eigResult);
+        
+        // eigResult.values is an array of complex numbers
+        // eigResult.vectors is a 2N x 2N matrix where each column is an eigenvector.
         // Determine the effective number of eigenpairs by taking the minimum length:
         let numValues = eigResult.values.length;
-        let numVecs = (eigResult.vectors && eigResult.vectors.length) || 0;
+        let numVecs = (eigResult.eigenvectors && eigResult.eigenvectors.length) || 0;
         let numValid = Math.min(numValues, numVecs);
         if (numValid < numValues) {
             console.warn(`Mismatch: ${numValues} eigenvalues but only ${numVecs} eigenvectors. Using first ${numValid} pairs.`);
@@ -1225,7 +1261,7 @@
 
         // For eigenvectors, assume each eigenvector is an object with a property "vector" representing the eigenvector.
         // If some eigenvector is missing, we can substitute an array of zeros.
-        let vecs = eigResult.vectors;
+        let vecs = eigResult.eigenvectors;
         let sortedVecs = indices.map(i => {
             if (vecs[i] && vecs[i].vector) {
                 return vecs[i].vector;
@@ -1325,7 +1361,7 @@
             xaxis: { title: 'Re(λ)' },
             yaxis: { title: 'Im(λ)' }
         };
-        document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:red'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (numeric.js sucks by the way)`
+        document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:blue'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://eigen.tuxfamily.org/" target="_blank">C++ Eigen</a> <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html" target="_blank">Emscripten</a> ftw)`;
         Plotly.newPlot('eigenvaluePlot', [eigenvalueTrace], eigenvalueLayout);
 
         // Set the global variable and plot the first eigenmode:
