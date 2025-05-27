@@ -17,9 +17,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
   <!-- Math.js for complex arithmetic -->
-  <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>  <!-- numeric.js for linear algebra operations -->
+  <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/ml-matrix@6.12.1"></script> <!-- Example Usage: const MlfullMatrix = new mlMatrix.Matrix(fullMatrix); let mathMlDecomp = new mlMatrix.EigenvalueDecomposition(MlfullMatrix); console.log("eigenvalue decomposition with math-ml = ", mathMlDecomp);-->
-  <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/numeric@1.2.6/numeric-1.2.6.min.js"></script> <!-- numeric.js for linear algebra operations -->
   <!-- In your HTML file, include myfunc.js after your other script tags, or import it as a module -->
   <script type="module">
     window.loadedCPPFunctions = false;
@@ -228,10 +228,10 @@
       console.log("currentEigenMode =",currentEigenMode);
       // Get the current eigenmode:
       let mode = spectrum.eigenmodes[currentEigenMode];
-      console.log("mode "+currentEigenMode+" = ",mode);
+      //console.log("mode "+currentEigenMode+" = ",mode);
       // Create a grid for x:
       let xgrid = linspace(params.x_min, params.x_max, params.N);
-      console.log("x_grid.length=",xgrid.length,"mode.length=",mode.length);
+      //console.log("x_grid.length=",xgrid.length,"mode.length=",mode.length);
       
       // Set up three traces:
       let modeRealTrace = {
@@ -1075,6 +1075,9 @@
       return new Promise((resolve) => setTimeout(resolve, time));
     }
     
+    const conj = (z) => ({ re: z.re, im: -z.im });
+    const add = (z1, z2) => ({ re: z1.re + z2.re, im: z1.im + z2.im });
+    
     // This function assumes that you already have computed the steady state u, D2, and the potential V as arrays.
     // Also assume that your parameters object `params` contains:
     // - g         (nonlinearity coefficient)
@@ -1186,6 +1189,9 @@
             Module._free(ptr);
             return;
         }
+        const residual = Module.ccall('getLastResidual', 'number', [], []);
+        console.log("Max residual ‖A v - λ v‖ =", residual);
+
         // Total number of doubles returned: 2*N (eigenvalues) + 2*N*N (eigenvectors)
         const resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * N + 2 * N * N);
         // Extract eigenvalues
@@ -1196,46 +1202,47 @@
 
         // ✅ Preallocate eigenvector array: eigenvectors[j][i] = ith component of jth eigenvector
         const eigenvectors = new Array(N);
+        
+        // ✅ Fill eigenvectors efficiently — NO math.complex, NO console.log
         for (let j = 0; j < N; j++)
         {
             eigenvectors[j] = new Array(N);
-        }
-        
-        // ✅ Fill eigenvectors efficiently — NO math.complex, NO console.log
-        for (let j = 0; j < N; j++) {
-          for (let i = 0; i < N; i++) {
-            const idx = 2 * N + 2 * (j * N + i);
-            eigenvectors[j][i] = { re: resultData[idx], im: resultData[idx + 1] };
-          }
+            for (let i = 0; i < N; i++)
+            {
+                const idx = 2 * N + 2 * (j * N + i);
+                eigenvectors[j][i] = { re: resultData[idx], im: resultData[idx + 1] };
+            }
         }
 
         // ✅ Clean up memory
         Module._free(ptr);
         Module._free(resultPtr);
-
-        // ✅ Optionally log a quick summary
-        //console.log("Eigenvalue 0:", eigenvalues[0]);
-        //console.log("Eigenvector 0 component 0:", eigenvectors[0][0]);
         
-        /* numeric.js
-        try {
-            eigResult = math.eigs(fullMatrix);
-        } catch (err) {
-        console.warn("Eigenvalue computation did not fully converge; using partial results.");
-        eigResult = {
-            values: err.values,
-            vectors: err.vectors
-            };
-        }
-        */
-        try {
-            eigResult = {
-                values: eigenvalues,
-                vectors: eigenvectors
-                };
-        } catch (err) {
+        // numeric.js
+        if (window.useNumericJs)
+        {
+            try {
+                eigResult = math.eigs(fullMatrix);
+            } catch (err) {
             console.warn("Eigenvalue computation did not fully converge; using partial results.");
-            return;
+            eigResult = {
+                values: err.values,
+                vectors: err.vectors
+                };
+            }
+        }
+        
+        else
+        {
+            try {
+                eigResult = {
+                    values: eigenvalues,
+                    vectors: eigenvectors
+                    };
+            } catch (err) {
+                console.warn("Eigenvalue computation did not fully converge...");
+                return;
+            }
         }
         
         console.log("eigResult =",eigResult);
@@ -1244,65 +1251,75 @@
         // eigResult.vectors is a 2N x 2N matrix where each column is an eigenvector.
         // Determine the effective number of eigenpairs by taking the minimum length:
         let numValues = eigResult.values.length;
-        let numVecs = (eigResult.eigenvectors && eigResult.eigenvectors.length) || 0;
+        console.log("numValues=",numValues);
+        let numVecs = eigResult.vectors.length;
+        console.log("numVecs=",numVecs);
         let numValid = Math.min(numValues, numVecs);
         if (numValid < numValues) {
             console.warn(`Mismatch: ${numValues} eigenvalues but only ${numVecs} eigenvectors. Using first ${numValid} pairs.`);
         }
 
-        // Build an array of indices 0,..., numValid-1 and sort them by descending real part:
-        let indices = Array.from({length: numValid}, (_, i) => i);
-        indices.sort((i, j) => eigResult.values[j].re - eigResult.values[i].re);
-        console.log("indices =", indices);
-
-        // Sorted eigenvalues:
-        let sortedVals = indices.map(i => eigResult.values[i]);
-        console.log("sortedVals =", sortedVals);
-
-        // For eigenvectors, assume each eigenvector is an object with a property "vector" representing the eigenvector.
-        // If some eigenvector is missing, we can substitute an array of zeros.
-        let vecs = eigResult.eigenvectors;
-        let sortedVecs = indices.map(i => {
-            if (vecs[i] && vecs[i].vector) {
-                return vecs[i].vector;
-            }
-            else {
-                console.warn(`No eigenvector available for index ${i}; substituting zero vector.`);
-                return new Array(N).fill(math.complex(0,0));
-            }
-        });
-        console.log("sortedVecs =", sortedVecs);
-
-        // Combine eigenvector components if desired; for instance, combining the first half and conjugate of the second half.
-        let modeVecs = sortedVecs.map(vec => {
-            let firstHalf = vec.slice(0, N);
-            let secondHalf = vec.slice(N, 2 * N);
-            // Combine as: combined = firstHalf + conj(secondHalf)
-            let combined = firstHalf.map((val, idx) => math.add(val, math.conj(secondHalf[idx])));
-            return combined;
-        });
-
-        try
+        if (window.useNumericJs)
         {
-            console.log("sortedVals.length =",sortedVals.length);
-            console.log("eigResult.values.length =",eigResult.values.length);
-            console.log("sortedVecs.length =",sortedVecs.length);
-            console.log("eigResult.vectors.length =",eigResult.vectors.length);
-        }
-        catch (err)
-        {
-            console.log(`Error when printing, ${err}`);
+            // Build an array of indices 0,..., numValid-1 and sort them by descending real part:
+            let indices = Array.from({length: numValid}, (_, i) => i);
+            indices.sort((i, j) => eigResult.values[j].re - eigResult.values[i].re);
+            console.log("indices =", indices);
+
+            // Sorted eigenvalues:
+            let sortedVals = indices.map(i => eigResult.values[i]);
+            console.log("sortedVals =", sortedVals);
+
+            // For eigenvectors, assume each eigenvector is an object with a property "vector" representing the eigenvector.
+            // If some eigenvector is missing, we can substitute an array of zeros.
+            let vecs = eigResult.vectors;
+            //console.log("vecs[0]=",vecs[0])
+            let sortedVecs = indices.map(i => {
+                if (vecs[i]) {
+                    return vecs[i];
+                }
+                else {
+                    console.warn(`No eigenvector available for index ${i}; substituting zero vector.`);
+                    return new Array(N).fill(math.complex(0,0));
+                }
+            });
+            console.log("sortedVecs =", sortedVecs);
+
+            // Combine eigenvector components if desired; for instance, combining the first half and conjugate of the second half.
+            let modeVecs = sortedVecs.map(vec => {
+                let firstHalf = vec.slice(0, N);
+                let secondHalf = vec.slice(N, 2 * N);
+                // Combine as: combined = firstHalf + conj(secondHalf)
+                let combined = firstHalf.map((val, idx) =>
+                  add(val, conj(secondHalf[idx]))
+                );
+                return combined;
+            });
+
+            try
+            {
+                console.log("sortedVals.length =",sortedVals.length);
+                console.log("eigResult.values.length =",eigResult.values.length);
+                console.log("sortedVecs.length =",sortedVecs.length);
+                console.log("eigResult.vectors.length =",eigResult.vectors.length);
+            }
+            catch (err)
+            {
+                console.log(`Error when printing, ${err}`);
+            }
         }
       
-        let returnVal = {eigenvalues: [], eigenmodes: []};
-
-        if (sortedVals !== undefined && eigResult !== undefined && eigResult.values !== undefined)
+        let returnVal = {eigenvalues: eigResult.values, eigenmodes: eigResult.vectors};
+        if (window.useNumericJs)
         {
-            returnVal.eigenvalues = ((sortedVals.length >= eigResult.values.length) ? sortedVals : eigResult.values);
-        }
-        if (sortedVecs !== undefined && eigResult !== undefined && eigResult.vectors !== undefined)
-        {
-            returnVal.eigenmodes = ((sortedVecs.length >= eigResult.vectors.length) ? modeVecs : eigResult.vectors);
+            if (sortedVals !== undefined && eigResult !== undefined && eigResult.values !== undefined)
+            {
+                returnVal.eigenvalues = ((sortedVals.length >= eigResult.values.length) ? sortedVals : eigResult.values);
+            }
+            if (sortedVecs !== undefined && eigResult !== undefined && eigResult.vectors !== undefined)
+            {
+                returnVal.eigenmodes = ((sortedVecs.length >= eigResult.vectors.length) ? modeVecs : eigResult.vectors);
+            }
         }
         N = params.N; // reset N jic
         return returnVal;
@@ -1361,7 +1378,15 @@
             xaxis: { title: 'Re(λ)' },
             yaxis: { title: 'Im(λ)' }
         };
-        document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:blue'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://eigen.tuxfamily.org/" target="_blank">C++ Eigen</a> <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html" target="_blank">Emscripten</a> ftw)`;
+        
+        if (window.useNumericJs)
+        {
+            document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:red'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://www.npmjs.com/package/numeric" target="_blank">Numeric JS</a> sucks btw)`;
+        }
+        else
+        {
+            document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:blue'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://eigen.tuxfamily.org/" target="_blank">C++ Eigen</a> <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html" target="_blank">Emscripten</a> ftw)`;
+        }
         Plotly.newPlot('eigenvaluePlot', [eigenvalueTrace], eigenvalueLayout);
 
         // Set the global variable and plot the first eigenmode:

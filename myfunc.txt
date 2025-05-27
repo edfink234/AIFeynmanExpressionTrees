@@ -9,6 +9,8 @@
 using namespace Eigen;
 using std::complex;
 
+double lastResidual = 0;
+
 // Example helper: hyperbolic secant
 extern "C"
 {
@@ -16,6 +18,12 @@ extern "C"
     double sech(double x)
     {
         return 1.0 / cosh(x);
+    }
+}
+extern "C" {
+    EMSCRIPTEN_KEEPALIVE
+    double getLastResidual() {
+        return lastResidual;
     }
 }
 // Export a function to compute eigenvalues from a complex matrix.
@@ -94,13 +102,26 @@ extern "C"
         }
 //        std::cout << "done writing in C++" << std::endl;
         
+        // Compute accuracy: ||Mv - lambda*v|| for each eigenpair
+        double max_residual = 0.0;
+        for (int j = 0; j < N; j++) {
+            VectorXcd v = ces.eigenvectors().col(j);
+            complex<double> lambda = ces.eigenvalues()(j);
+            VectorXcd residual = M * v - lambda * v;
+            double norm = residual.norm();  // 2-norm
+            if (norm > max_residual) max_residual = norm;
+        }
+        lastResidual = max_residual;
+        std::cout << "max residual =" << lastResidual << '\n';
+        // Store the max residual in a static variable so we can retrieve it in JS
+
         return output;
     }
 }
 
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_malloc", "_free"]' -s EXPORT_ES6=1 \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_getLastResidual", "_malloc", "_free"]' -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
 //  -s INITIAL_MEMORY=268435456 \

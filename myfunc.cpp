@@ -3,11 +3,14 @@
 #include <complex>
 #include <cstdlib>
 #include <iostream>
+#include <numeric>
 #include <Eigen/Dense>
 #include <emscripten/emscripten.h>
 
 using namespace Eigen;
 using std::complex;
+
+double lastResidual = 0;
 
 // Example helper: hyperbolic secant
 extern "C"
@@ -16,6 +19,12 @@ extern "C"
     double sech(double x)
     {
         return 1.0 / cosh(x);
+    }
+}
+extern "C" {
+    EMSCRIPTEN_KEEPALIVE
+    double getLastResidual() {
+        return lastResidual;
     }
 }
 // Export a function to compute eigenvalues from a complex matrix.
@@ -58,49 +67,64 @@ extern "C"
             // Eigenvalue computation failed
             return nullptr;
         }
-//        std::cout << "compute done." << std::endl;
         
-        // Allocate a block of memory:
-        //   - 2*N for eigenvalues (real, imag)
-        //   - 2*N*N for eigenvectors (N vectors of length N, complex interleaved)
-        int totalSize = 2 * N + 2 * N * N;
-        double* output = (double*) malloc(totalSize * sizeof(double));
+        
+        auto lambdas = ces.eigenvalues();
+        auto vectors = ces.eigenvectors();
 
-//        std::cout << "done allocating." << std::endl;
-        // Allocate an output array of 2*N doubles.
-        //double* output = (double*) malloc(2 * N * sizeof(double));
-        if (!output) return nullptr; // allocation failure
-        
-        // Write eigenvalues into the output array.
-        // (Here, we simply output them in the same order as Eigen returns them.
-        // You could sort them if required.)
-        for (int i = 0; i < N; i++)
-        {
-            complex<double> lambda = ces.eigenvalues()(i);
-//            std::cout << "i=" << i << ",lambda.real()=" << lambda.real() << ",lambda.imag()="<<lambda.imag() << std::endl;
+        // === STEP 1: Create index list [0, 1, ..., N-1]
+        std::vector<int> indices(N);
+        std::iota(indices.begin(), indices.end(), 0);
+
+        // === STEP 2: Sort indices by descending real part of eigenvalues
+        std::sort(indices.begin(), indices.end(), [&](int i, int j) {
+            return lambdas[i].real() > lambdas[j].real();
+        });
+
+        // === STEP 3: Allocate output buffer
+        int totalDoubles = 2 * N + 2 * N * N;
+        double* output = (double*) malloc(totalDoubles * sizeof(double));
+        if (!output) return nullptr;
+
+        // === STEP 4: Write sorted eigenvalues
+        for (int i = 0; i < N; i++) {
+            int idx = indices[i];
+            std::complex<double> lambda = lambdas[idx];
             output[2 * i]     = lambda.real();
             output[2 * i + 1] = lambda.imag();
         }
-        // Write eigenvectors: column-major (each column is an eigenvector)
-        for (int j = 0; j < N; j++)
-        {
-            VectorXcd v = ces.eigenvectors().col(j);
-            for (int i = 0; i < N; i++)
-            {
-                int idx = 2 * N + 2 * (j * N + i); // offset after eigenvalues
-                output[idx] = v(i).real();
-                output[idx + 1] = v(i).imag();
+
+        // === STEP 5: Write sorted eigenvectors (column-major: each col is a vec)
+        for (int j = 0; j < N; j++) {
+            int idx = indices[j];  // get sorted index
+            VectorXcd v = vectors.col(idx);
+            for (int i = 0; i < N; i++) {
+                int outIdx = 2 * N + 2 * (j * N + i);  // after eigenvalues
+                output[outIdx]     = v(i).real();
+                output[outIdx + 1] = v(i).imag();
             }
         }
-//        std::cout << "done writing in C++" << std::endl;
         
+        // Compute accuracy: ||Mv - lambda*v|| for each eigenpair
+        double max_residual = 0.0;
+        for (int j = 0; j < N; j++) {
+            VectorXcd v = ces.eigenvectors().col(j);
+            complex<double> lambda = ces.eigenvalues()(j);
+            VectorXcd residual = M * v - lambda * v;
+            double norm = residual.norm();  // 2-norm
+            if (norm > max_residual) max_residual = norm;
+        }
+        lastResidual = max_residual;
+        std::cout << "max residual =" << lastResidual << '\n';
+        // Store the max residual in a static variable so we can retrieve it in JS
+
         return output;
     }
 }
 
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_malloc", "_free"]' -s EXPORT_ES6=1 \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_getLastResidual", "_malloc", "_free"]' -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
 //  -s INITIAL_MEMORY=268435456 \
