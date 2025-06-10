@@ -1,6 +1,7 @@
 <!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
 <!--run locally: python3 -m http.server 8000-->
 <!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +29,7 @@
     // emcc myfunc.c -Os -s WASM=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" -s EXPORTED_FUNCTIONS='["_sech"]' -s EXPORTED_RUNTIME_METHODS="['ccall']" -o myfunc.js
     import createModule from './myfunc.js';
     // When you call createModule, it returns a Promise that resolves once the module is initialized.
+    console.log("Hello");
     window.cppReady = createModule().then((Module) => {
       window.Module = Module;
       // Now you can call your C function (f) from JavaScript.
@@ -39,6 +41,7 @@
       window.sech = Module.cwrap('sech', 'number', ['number']); //put sech in global scope
       console.log("Result of sech(Math.PI/4) =", sech(Math.PI / 4));
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
+      window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number']);
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
       // For example, if you want to call f(x) many times in your simulation, wrap this call.
@@ -46,7 +49,6 @@
       console.error("Error initializing module", err);
     });
   </script>
-
   
 </head>
 <body>
@@ -125,10 +127,10 @@
         </div>
       </div>
     </div>
-    <!-- Spatial parameters for the PDE -->
+    <!-- Spatial parameters -->
     <div class="row">
       <div class="col-md-4">
-        <h3>Spatial Parameters (PDE)</h3>
+        <h4>Spatial Parameters</h4>
         <div class="form-group">
           <label for="dx">Spatial Step \( \Delta x \)</label>
           <input type="number" step="any" class="form-control" id="dx" value="0.27">
@@ -150,23 +152,33 @@
     <button id="startBtn" class="btn btn-success">Start</button>
     <button id="stopBtn" class="btn btn-danger">Stop</button>
     <button id="computeSpectrumBtn" class="btn btn-primary">Compute Steady-State Spectrum</button>
-    <label class="ml-2">
-      <input type="checkbox" id="loopToggle"> Auto-loop
-    </label>
-    <label class="ml-2">
-      <input type="checkbox" id="applyNewtonToggle" unchecked> Apply Newton
-    </label>
-    <label class="ml-2">
-      <input type="checkbox" id="applyAlertToggle" unchecked> Alert Newton Progress
-    </label>
+    <div class = "row" style="text-align:center">
+        <div class = "col">
+            <label class="ml-2">
+              <input type="checkbox" id="loopToggle"> Auto-loop
+            </label>
+        </div>
+    </div>
+    <div class = "row" style="text-align:center">
+        <div class = "col">
+            <label class="ml-2">
+              <input type="checkbox" id="applyNewtonToggle" unchecked> Apply minimization routine to \(u(x,0) = A_{\text{sol}} \, \text{sech}\left(A_{\text{sol}} (x - x_0)\right)\) that minimizes the residual vector \(\mathcal{F} = \begin{pmatrix} \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{A}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{A}   \\[0.2cm] \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{B}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{B}
+                  \end{pmatrix}\), where \( \vec{A} \) is the real-part and \( \vec{B} \) is the imaginary part of the steady-state vector \( \vec{U} \), to get the steady-state solution starting point for bright-soliton simulation.
+            </label>
+        </div>
+    </div>
+<!--    <br>-->
+<!--    <label class="ml-2">-->
+<!--      <input type="checkbox" id="applyAlertToggle" unchecked> Alert Newton Progress-->
+<!--    </label>-->
   </div>
   
-  <div class="row">
-      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">
-        <label>Newton Refinement Progress:</label>
-        <progress id="newtonProgressBar" value={0} max="100"></progress>
-      </div>
-  </div>
+<!--  <div class="row">-->
+<!--      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">-->
+<!--        <label>Newton Refinement Progress:</label>-->
+<!--        <progress id="newtonProgressBar" value={0} max="100"></progress>-->
+<!--      </div>-->
+<!--  </div>-->
 
   <!-- Simulation Plots: Two columns side-by-side -->
   <div class="row">
@@ -220,7 +232,15 @@
     // Global variable to track which eigenmode to display.
     let currentEigenMode = 0;
     let spectrum;
-
+    
+    function toLatexExp(x, precision = 2)
+    {
+        const str = x.toExponential(precision); // e.g. "1.23e-4"
+        const [mantissa, exp] = str.split('e');
+        const sign = exp.startsWith('-') ? '-' : '+';
+        const power = exp.replace(/^[+-]/, ''); // remove + or -
+        return `${mantissa} \\times 10^{${sign}${power}}`;
+    }
     // This function updates the eigenmode plot for the mode at index currentEigenMode.
     function updateEigenmodePlot(params) {
       // Ensure we have at least one eigenmode:
@@ -253,8 +273,15 @@
         name: '|Mode|²'
       };
       
+      const ev = spectrum.eigenvalues[currentEigenMode];
+      const reLatex = toLatexExp(ev.re, 2);
+      const imLatex = Math.abs(ev.im).toFixed(2);
+      const imSign = ev.im >= 0 ? '+' : '-';
+
+      const evString = `\\text{Eigenmode Details, } \\lambda = \\left(${reLatex}\\right) ${imSign} ${imLatex}\\,i`;
+
       let modeLayout = {
-        title: 'Eigenmode Details',
+        title: `$${evString}$`,
         xaxis: { title: 'x' },
         yaxis: { title: 'Value' },
         annotations: [{
@@ -262,6 +289,7 @@
           text: `Mode: ${currentEigenMode}`, showarrow: false, font: { size: 16 }
         }]
       };
+
       
       Plotly.newPlot('eigenmodePlot', [modeRealTrace, modeImagTrace, modeNormTrace], modeLayout);
       
@@ -670,30 +698,63 @@
         let applyNewtonToggleChecked = document.getElementById("applyNewtonToggle").checked;
         // Set initial condition for u:
         u = new Array(N);
+        let U_init = new Float64Array(2 * params.N);
+        
+        let x = new Array(N);
+        
         for (let i = 0; i < N; i++) {
             pdeGrid[i] = x_min + i * dx;
-            let x = pdeGrid[i];
-            let amplitude = params.A_sol * sech(params.A_sol * (x - x0));
-            let phase = v0 * x;
+            let x_val = pdeGrid[i];
+            let amplitude = params.A_sol * sech(params.A_sol * (x_val - x0));
+            //let phase = v0 * x;
+            u[i] = math.complex(amplitude, 0);
+
             if (applyNewtonToggleChecked)
             {
-                u[i] = math.complex(amplitude, 0);
+                U_init[i] = u[i].re;
+                U_init[i + params.N] = u[i].im;
             }
-            else
+           
+            /*else
             {
                 u[i] = math.complex(amplitude * Math.cos(phase), amplitude * Math.sin(phase));
-            }
+            }*/
+            x[i] = params.x_min + i * dx;
+            
         }
-        if (document.getElementById("applyNewtonToggle").checked)
+        if (applyNewtonToggleChecked)
         {
-            alert("Applying Newton now, please wait.");
-            [u, D2, x] = refineNewton(u, params);
-            //tack on velocity afterwards
-            for (let i = 0; i < N; i++)
+            alert("Applying minimization now, please wait.");
+            //[u, D2, x] = refineNewton(u, params);
+            let V = pdeGrid.map(x => potentialForRefinement(x, params));
+            let V_arr = new Float64Array(V);
+            let U_ptr = Module._malloc(U_init.length * 8);
+            let V_ptr = Module._malloc(V_arr.length * 8);
+            Module.HEAPF64.set(U_init, U_ptr / 8);
+            Module.HEAPF64.set(V_arr, V_ptr / 8);
+
+            let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega);
+            let error = Module.ccall('getNLSResidual', 'number', [], []);
+            console.log("Residual error from C++ refinement:", error);
+
+            let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
+            u = new Array(params.N);
+            for (let i = 0; i < params.N; i++)
             {
-                let phase = v0 * x[i];
-                u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im* Math.sin(phase));
+                u[i] = math.complex(resultData[i], resultData[i + params.N]);
+                console.log(`u[${i}] = ${u[i]}`);
             }
+
+            // Cleanup
+            Module._free(U_ptr);
+            Module._free(V_ptr);
+            Module._free(resultPtr);
+        }
+        //tack on velocity afterwards
+        for (let i = 0; i < N; i++)
+        {
+            let phase = v0 * x[i];
+            u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im*Math.sin(phase));
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
@@ -733,10 +794,6 @@
       {
           x[i] = params.x_min + i * dx;
       }
-
-      // Adjust for periodic BCs: remove last point.
-      let point5_over_dx_squared = 0.5/(dx*dx);
-      let one_over_six = 1/6;
       
       // Use c = 0 for the refinement since it's a steady-state problem
       let A_sol = params.A_sol
@@ -784,10 +841,6 @@
       let diagJ11 = new Array(N), diagJ22 = new Array(N), diagJ12 = new Array(N);
 
       while(err > tol && iter < max_iter) {
-          /*setTimeout(() => {window.document.getElementById("newtonProgressBar").outerHTML =
-          String.raw`
-          <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-          `}, 0);*/
         // Extract Ur and Ui from U.
         let Ur = U.slice(indR_start, indR_end);
         let Ui = U.slice(indI_start, indI_end);
@@ -873,7 +926,7 @@
         progress = 0;
 
         // Show the progress bar:
-        window.document.getElementById("newtonProgressContainer").style.display = "block";
+        // window.document.getElementById("newtonProgressContainer").style.display = "block";
         //window.document.getElementById("newtonProgressBar").style.width = "0%";
         //window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
         
@@ -884,16 +937,16 @@
             iter += 1;
             // Update progress (as percentage of maxIter):
             progress = Math.min(100, (iter / maxIter) * 100);
-            const progressBar = document.getElementById("newtonProgressBar");
+            // const progressBar = document.getElementById("newtonProgressBar");
             console.log("progress = "+ progressBar.value);
-            const interval = setInterval(() => {
+            /*const interval = setInterval(() => {
                 setTimeout(() => {
                     progressBar.value = progress;
                     progressBar.setAttribute("value", progress);
                 }, 100);
                 progressBar.value = progress;
                 progressBar.setAttribute("value", progress);
-            }, 50); //TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
+            }, 50); *///TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
             //console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
             //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
             //setTimeout(() => {document.getElementById("newtonProgressBar").outerHTML =
@@ -901,17 +954,17 @@
             //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
             //`}, 0);
             //console.log(document.getElementById("newtonProgressBar"));
-            if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
+            /*if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
             {
                 alert(`Newton ${progress}% done\n(press return to continue)`);
-            }
+            }*/
             lr *= 0.9;
         } while (err > tol && iter < maxIter);
 
-        if (document.getElementById("applyAlertToggle").checked)
+        /*if (document.getElementById("applyAlertToggle").checked)
         {
             alert(`Newton done, error = ${err.toExponential(2)} ` + ((err <= tol) ? ' 🎉' : ' ❌') + "\n(press return to continue)" ) ;
-        }
+        }*/
         if (err > tol)
         {
             alert(`Newton did not converge, error = ${err.toExponential(2)}. Returning starting ansatz.`);
@@ -919,7 +972,7 @@
         }
         progress = 100;
         // Hide the progress bar once Newton is done
-        window.document.getElementById("newtonProgressContainer").style.display = "none";
+        // window.document.getElementById("newtonProgressContainer").style.display = "none";
        // window.document.getElementById("newtonProgressBar").outerHTML =
         //String.raw`
         //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -1189,8 +1242,6 @@
             Module._free(ptr);
             return;
         }
-        const residual = Module.ccall('getLastResidual', 'number', [], []);
-        console.log("Max residual ‖A v - λ v‖ =", residual);
 
         // Total number of doubles returned: 2*N (eigenvalues) + 2*N*N (eigenvectors)
         const resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * N + 2 * N * N);
@@ -1386,6 +1437,17 @@
         else
         {
             document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:blue'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://eigen.tuxfamily.org/" target="_blank">C++ Eigen</a> <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html" target="_blank">Emscripten</a> ftw)`;
+            
+            
+            const residual = Module.ccall('getLastResidual', 'number', [], []);
+            document.getElementById("eigenvaluePlot").innerHTML +=
+              '$$\\text{Max residual: }\\|Av - \\lambda v\\| ='+`${toLatexExp(residual, 2)}`+"$$";
+              
+
+            // Force MathJax to reprocess math in the page
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "eigenvaluePlot"]);
+
+            
         }
         Plotly.newPlot('eigenvaluePlot', [eigenvalueTrace], eigenvalueLayout);
 

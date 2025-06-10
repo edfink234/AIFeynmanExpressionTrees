@@ -1,6 +1,7 @@
 <!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
 <!--run locally: python3 -m http.server 8000-->
 <!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +29,7 @@
     // emcc myfunc.c -Os -s WASM=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" -s EXPORTED_FUNCTIONS='["_sech"]' -s EXPORTED_RUNTIME_METHODS="['ccall']" -o myfunc.js
     import createModule from './myfunc.js';
     // When you call createModule, it returns a Promise that resolves once the module is initialized.
+    console.log("Hello");
     window.cppReady = createModule().then((Module) => {
       window.Module = Module;
       // Now you can call your C function (f) from JavaScript.
@@ -39,6 +41,9 @@
       window.sech = Module.cwrap('sech', 'number', ['number']); //put sech in global scope
       console.log("Result of sech(Math.PI/4) =", sech(Math.PI / 4));
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
+      window.refineCpp = Module.cwrap('refineCpp', 'number',
+          ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
+
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
       // For example, if you want to call f(x) many times in your simulation, wrap this call.
@@ -46,13 +51,20 @@
       console.error("Error initializing module", err);
     });
   </script>
-
   
 </head>
 <body>
 <div class="container-fluid">
   <h1 class="text-center">ODE &amp; PDE Dynamics Simulation</h1>
-
+  <div class="text-center mb-3">
+    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) in the effective potential \( V(x) = \frac{1}{2} \Omega^2 x^2 + A \, \text{sech}^2(bx) \).</p>
+    <p><strong>PDE:</strong> Evolves the focusing 1D nonlinear Schrödinger equation (NLS)
+    \[
+    i u_t = -\frac{1}{2} u_{xx} + V(x) u - |u|^2 u,
+    \]
+    with periodic boundary conditions, using a finite-difference RK4 scheme.</p>
+    <p><strong>Initial Condition PDE:</strong> \( u(x, 0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}} (x - x_0)) \cdot e^{i v_0 x} \), optionally refined via Newton's method or Levenberg–Marquardt.</p>
+  </div>
   <!-- Parameter Input Form -->
   <form id="paramsForm">
     <div class="row">
@@ -72,12 +84,25 @@
           <input type="number" step="any" class="form-control" id="T" value="100">
         </div>
         <div class="form-group">
-          <label for="dt">Time Step \( \Delta t \)</label>
-          <input type="number" step="any" class="form-control" id="dt" value="0.05">
+          <label for="dt">Time Step \( \Delta_t \)</label>
+          <input type="number" step="any" class="form-control" id="dt" value="0.001">
         </div>
         <div class="form-group">
           <label for="stepsPerUpdate">How often to update the plot (milli-seconds)</label>
-          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="1">
+          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="100">
+        </div>
+<!--        <h4>Spatial Parameters</h4>-->
+        <div class="form-group">
+          <label for="dx">Spatial Step \( \Delta_x \)</label>
+          <input type="number" step="any" class="form-control" id="dx" value="0.05">
+        </div>
+        <div class="form-group">
+          <label for="x_min">\( x_{\text{min}} \)</label>
+          <input type="number" step="any" class="form-control" id="x_min" value="-10">
+        </div>
+        <div class="form-group">
+          <label for="x_max">\( x_{\text{max}} \)</label>
+          <input type="number" step="any" class="form-control" id="x_max" value="10">
         </div>
       </div>
       <!-- ODE parameters -->
@@ -123,26 +148,42 @@
           <label for="b_pde">\( b_{\text{pde}} \)</label>
           <input type="number" step="any" class="form-control" id="b_pde" value="1">
         </div>
-      </div>
-    </div>
-    <!-- Spatial parameters for the PDE -->
-    <div class="row">
-      <div class="col-md-4">
-        <h3>Spatial Parameters (PDE)</h3>
         <div class="form-group">
-          <label for="dx">Spatial Step \( \Delta x \)</label>
-          <input type="number" step="any" class="form-control" id="dx" value="0.27">
-        </div>
-        <div class="form-group">
-          <label for="x_min">\( x_{\text{min}} \)</label>
-          <input type="number" step="any" class="form-control" id="x_min" value="-20">
-        </div>
-        <div class="form-group">
-          <label for="x_max">\( x_{\text{max}} \)</label>
-          <input type="number" step="any" class="form-control" id="x_max" value="20">
+          <label for="solverDropdown">Steady-State Solver</label>
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="solverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span id="solverLabel">Newton: \( \vec{U}_{k+1} = \vec{U}_k - J_k^{-1} \mathcal{F}(\vec{U}_k) \)</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="solverDropdown">
+              <a class="dropdown-item solver-option" data-method="newton">
+                Newton: \( \vec{U}_{k+1} = \vec{U}_k - J_k^{-1} \mathcal{F}(\vec{U}_k) \)
+              </a>
+              <a class="dropdown-item solver-option" data-method="lm">
+                Levenberg–Marquardt: \( \min_{\vec{U}} \| \mathcal{F}(\vec{U}) \|^2 \)
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <!-- Spatial parameters -->
+<!--    <div class="row">-->
+<!--      <div class="col-md-4">-->
+<!--        <h4>Spatial Parameters</h4>-->
+<!--        <div class="form-group">-->
+<!--          <label for="dx">Spatial Step \( \Delta x \)</label>-->
+<!--          <input type="number" step="any" class="form-control" id="dx" value="0.27">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label for="x_min">\( x_{\text{min}} \)</label>-->
+<!--          <input type="number" step="any" class="form-control" id="x_min" value="-20">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label for="x_max">\( x_{\text{max}} \)</label>-->
+<!--          <input type="number" step="any" class="form-control" id="x_max" value="20">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </form>
   
   <!-- Simulation Control Buttons -->
@@ -150,23 +191,39 @@
     <button id="startBtn" class="btn btn-success">Start</button>
     <button id="stopBtn" class="btn btn-danger">Stop</button>
     <button id="computeSpectrumBtn" class="btn btn-primary">Compute Steady-State Spectrum</button>
-    <label class="ml-2">
-      <input type="checkbox" id="loopToggle"> Auto-loop
-    </label>
-    <label class="ml-2">
-      <input type="checkbox" id="applyNewtonToggle" unchecked> Apply Newton
-    </label>
-    <label class="ml-2">
-      <input type="checkbox" id="applyAlertToggle" unchecked> Alert Newton Progress
-    </label>
+    <div class = "row" style="text-align:center">
+        <div class = "col">
+            <label class="ml-2">
+              <input type="checkbox" id="loopToggle"> Auto-loop
+            </label>
+        </div>
+    </div>
+    <div class = "row" style="text-align:center">
+        <div class = "col">
+            <label class="ml-2">
+              <input type="checkbox" id="applyNewtonToggle" unchecked>
+<!--                  Apply minimization routine to \(u(x,0) = A_{\text{sol}} \, \text{sech}\left(A_{\text{sol}} (x - x_0)\right)\) that minimizes the residual vector \(\mathcal{F} = \begin{pmatrix} \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{A}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{A}   \\[0.2cm] \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{B}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{B} \end{pmatrix}\), where \( \vec{A} \) is the real-part and \( \vec{B} \) is the imaginary part of the steady-state vector \( \vec{U} \), to get the steady-state solution starting point for bright-soliton simulation.-->
+                Apply steady-state solver to minimize residual \( \mathcal{F} \) for initial soliton \( u(x,0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}}(x - x_0)) \)
+
+            </label>
+            
+
+        </div>
+
+
+    </div>
+<!--    <br>-->
+<!--    <label class="ml-2">-->
+<!--      <input type="checkbox" id="applyAlertToggle" unchecked> Alert Newton Progress-->
+<!--    </label>-->
   </div>
   
-  <div class="row">
-      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">
-        <label>Newton Refinement Progress:</label>
-        <progress id="newtonProgressBar" value={0} max="100"></progress>
-      </div>
-  </div>
+<!--  <div class="row">-->
+<!--      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">-->
+<!--        <label>Newton Refinement Progress:</label>-->
+<!--        <progress id="newtonProgressBar" value={0} max="100"></progress>-->
+<!--      </div>-->
+<!--  </div>-->
 
   <!-- Simulation Plots: Two columns side-by-side -->
   <div class="row">
@@ -210,6 +267,17 @@
         [3, 4]
       ]); // Should log the ML namespace
     console.log("A =",A);
+    window.useLM = false;
+
+    document.querySelectorAll(".solver-option").forEach(item => {
+    item.addEventListener("click", function () {
+      const method = this.getAttribute("data-method");
+      const latex = this.innerHTML;
+      document.getElementById("solverLabel").innerHTML = latex;
+      window.useLM = (method === "lm");
+      //MathJax.Hub.Queue(["Typeset", MathJax.Hub, "solverLabel"]);
+    });
+    });
     let simInterval = null;
     let plotInterval = null;
     let currentTime = 0;
@@ -302,9 +370,9 @@
     });
 
     
-    const interval = setInterval(() => {
+    /*const interval = setInterval(() => {
         document.getElementById("newtonProgressBar").setAttribute("value", progress);
-    }, 5)
+    }, 5)*/
 
     // ODE state (position and velocity)
     let odeState = {x: 0, v: 0};
@@ -686,30 +754,63 @@
         let applyNewtonToggleChecked = document.getElementById("applyNewtonToggle").checked;
         // Set initial condition for u:
         u = new Array(N);
+        let U_init = new Float64Array(2 * params.N);
+        
+        let x = new Array(N);
+        
         for (let i = 0; i < N; i++) {
             pdeGrid[i] = x_min + i * dx;
-            let x = pdeGrid[i];
-            let amplitude = params.A_sol * sech(params.A_sol * (x - x0));
-            let phase = v0 * x;
+            let x_val = pdeGrid[i];
+            let amplitude = params.A_sol * sech(params.A_sol * (x_val - x0));
+            //let phase = v0 * x;
+            u[i] = math.complex(amplitude, 0);
+
             if (applyNewtonToggleChecked)
             {
-                u[i] = math.complex(amplitude, 0);
+                U_init[i] = u[i].re;
+                U_init[i + params.N] = u[i].im;
             }
-            else
+           
+            /*else
             {
                 u[i] = math.complex(amplitude * Math.cos(phase), amplitude * Math.sin(phase));
-            }
+            }*/
+            x[i] = params.x_min + i * dx;
+            
         }
-        if (document.getElementById("applyNewtonToggle").checked)
+        if (applyNewtonToggleChecked)
         {
-            alert("Applying Newton now, please wait.");
-            [u, D2, x] = refineNewton(u, params);
-            //tack on velocity afterwards
-            for (let i = 0; i < N; i++)
+            alert("Applying minimization now, please wait.");
+            //[u, D2, x] = refineNewton(u, params);
+            let V = pdeGrid.map(x => potentialForRefinement(x, params));
+            let V_arr = new Float64Array(V);
+            let U_ptr = Module._malloc(U_init.length * 8);
+            let V_ptr = Module._malloc(V_arr.length * 8);
+            Module.HEAPF64.set(U_init, U_ptr / 8);
+            Module.HEAPF64.set(V_arr, V_ptr / 8);
+            
+            let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
+            let error = Module.ccall('getNLSResidual', 'number', [], []);
+            console.log("Residual error from C++ refinement:", error);
+
+            let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
+            u = new Array(params.N);
+            for (let i = 0; i < params.N; i++)
             {
-                let phase = v0 * x[i];
-                u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im* Math.sin(phase));
+                u[i] = math.complex(resultData[i], resultData[i + params.N]);
+                console.log(`u[${i}] = ${u[i]}`);
             }
+
+            // Cleanup
+            Module._free(U_ptr);
+            Module._free(V_ptr);
+            Module._free(resultPtr);
+        }
+        //tack on velocity afterwards
+        for (let i = 0; i < N; i++)
+        {
+            let phase = v0 * x[i];
+            u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im*Math.sin(phase));
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
@@ -749,10 +850,6 @@
       {
           x[i] = params.x_min + i * dx;
       }
-
-      // Adjust for periodic BCs: remove last point.
-      let point5_over_dx_squared = 0.5/(dx*dx);
-      let one_over_six = 1/6;
       
       // Use c = 0 for the refinement since it's a steady-state problem
       let A_sol = params.A_sol
@@ -800,10 +897,6 @@
       let diagJ11 = new Array(N), diagJ22 = new Array(N), diagJ12 = new Array(N);
 
       while(err > tol && iter < max_iter) {
-          /*setTimeout(() => {window.document.getElementById("newtonProgressBar").outerHTML =
-          String.raw`
-          <div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-          `}, 0);*/
         // Extract Ur and Ui from U.
         let Ur = U.slice(indR_start, indR_end);
         let Ui = U.slice(indI_start, indI_end);
@@ -889,7 +982,7 @@
         progress = 0;
 
         // Show the progress bar:
-        window.document.getElementById("newtonProgressContainer").style.display = "block";
+        // window.document.getElementById("newtonProgressContainer").style.display = "block";
         //window.document.getElementById("newtonProgressBar").style.width = "0%";
         //window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
         
@@ -900,16 +993,16 @@
             iter += 1;
             // Update progress (as percentage of maxIter):
             progress = Math.min(100, (iter / maxIter) * 100);
-            const progressBar = document.getElementById("newtonProgressBar");
-            console.log("progress = "+ progressBar.value);
-            const interval = setInterval(() => {
+            // const progressBar = document.getElementById("newtonProgressBar");
+            // console.log("progress = "+ progressBar.value);
+            /*const interval = setInterval(() => {
                 setTimeout(() => {
                     progressBar.value = progress;
                     progressBar.setAttribute("value", progress);
                 }, 100);
                 progressBar.value = progress;
                 progressBar.setAttribute("value", progress);
-            }, 50); //TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
+            }, 50); *///TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
             //console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
             //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
             //setTimeout(() => {document.getElementById("newtonProgressBar").outerHTML =
@@ -917,17 +1010,17 @@
             //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
             //`}, 0);
             //console.log(document.getElementById("newtonProgressBar"));
-            if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
+            /*if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
             {
                 alert(`Newton ${progress}% done\n(press return to continue)`);
-            }
+            }*/
             lr *= 0.9;
         } while (err > tol && iter < maxIter);
 
-        if (document.getElementById("applyAlertToggle").checked)
+        /*if (document.getElementById("applyAlertToggle").checked)
         {
             alert(`Newton done, error = ${err.toExponential(2)} ` + ((err <= tol) ? ' 🎉' : ' ❌') + "\n(press return to continue)" ) ;
-        }
+        }*/
         if (err > tol)
         {
             alert(`Newton did not converge, error = ${err.toExponential(2)}. Returning starting ansatz.`);
@@ -935,7 +1028,7 @@
         }
         progress = 100;
         // Hide the progress bar once Newton is done
-        window.document.getElementById("newtonProgressContainer").style.display = "none";
+        // window.document.getElementById("newtonProgressContainer").style.display = "none";
        // window.document.getElementById("newtonProgressBar").outerHTML =
         //String.raw`
         //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -1107,7 +1200,7 @@
         let g = params.g;
         const wfreq = params.wfreq;
         const D2 = params.D2;  // D2 should be an N x N numeric.js matrix
-        //console.log("D2 =",D2);
+        console.log("D2 =",D2);
         //console.log("V =",V);
         V = params.V;    // V is an array of length N
         u = params.u;    // u is an array of N math.js complex numbers
@@ -1356,19 +1449,55 @@
         N = params.N;
         params.g = -1;
         params.wfreq = params.Omega;
-        let x;
+        let x_val;
+        let x = new Array(N);
         u = new Array(N);
+        let U_init = new Float64Array(2 * N);
         pdeGrid = new Array(N);
         for (let i = 0; i < params.N; i++) {
             pdeGrid[i] = x_min + i * dx;
-            x = pdeGrid[i];
-            let amplitude = params.A_sol * sech(params.A_sol * (x - x0));
+            x_val = pdeGrid[i];
+            let amplitude = A_sol * sech(A_sol * (x_val - x0));
             //let phase = v0 * x;
             u[i] = math.complex(amplitude, 0);
-            console.log("u[",i,"] = ", u[i], ", x[",i,"] = ", pdeGrid[i], ", dx = ",dx);
+            //console.log("u[",i,"] = ", u[i], ", x[",i,"] = ", x_val, ", dx = ",dx);
+            x[i] = x_min + i * dx;
+            U_init[i] = u[i].re;
+            U_init[i + params.N] = u[i].im;
         }
       
-        [params.u, params.D2, x] = refineNewton(u, params);
+        //[params.u, params.D2, x] = refineNewton(u, params);
+        //[u, D2, x] = refineNewton(u, params);
+        let V = pdeGrid.map(x => potentialForRefinement(x, params));
+        let V_arr = new Float64Array(V);
+        let U_ptr = Module._malloc(U_init.length * 8);
+        let V_ptr = Module._malloc(V_arr.length * 8);
+        Module.HEAPF64.set(U_init, U_ptr / 8);
+        Module.HEAPF64.set(V_arr, V_ptr / 8);
+        
+        let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
+        let error = Module.ccall('getNLSResidual', 'number', [], []);
+        console.log("Residual error from C++ refinement:", error);
+
+        let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
+        params.u = new Array(params.N);
+        params.D2 = numeric.rep([N, N], 0);
+
+        for (let i = 0; i < params.N; i++)
+        {
+            params.u[i] = math.complex(resultData[i], resultData[i + params.N]);
+            params.D2[i][i] = -2;
+            params.D2[i][(i+1)%N] = 1;
+            params.D2[i][(i-1+N)%N] = 1;
+            //console.log(`u[${i}] = ${params.u[i]}`);
+        }
+        params.D2 = numeric.mul(params.D2, 1/(dx*dx));
+
+        // Cleanup
+        Module._free(U_ptr);
+        Module._free(V_ptr);
+        Module._free(resultPtr);
+        
         params.V = new Array(N);
         for (let i = 0; i < N; i++){
             params.V[i] = potentialForRefinement(x[i], params);
@@ -1430,7 +1559,7 @@
                 console.log("error, functions not loaded yet");
                 return;
             }
-            progress = 0;
+            /*progress = 0;
             let progressBar = document.getElementById("newtonProgressBar");
             let progressInterval = setInterval(() => {
                 //console.log(`hi ${progress}`);
@@ -1442,7 +1571,7 @@
                   
                 clearInterval(progressInterval);
               }
-            }, 0);
+            }, 0);*/
             let params = getParameters();
             if (params.dt > 0.7071067811865476*params.dx*params.dx)
             {

@@ -6,11 +6,14 @@
 #include <numeric>
 #include <Eigen/Dense>
 #include <emscripten/emscripten.h>
+#include <unsupported/Eigen/NonLinearOptimization>
+#include <unsupported/Eigen/NumericalDiff>
 
 using namespace Eigen;
 using std::complex;
 
 double lastResidual = 0;
+double lastNLSResidual = 0.0;
 
 // Example helper: hyperbolic secant
 extern "C"
@@ -25,6 +28,10 @@ extern "C" {
     EMSCRIPTEN_KEEPALIVE
     double getLastResidual() {
         return lastResidual;
+    }
+    EMSCRIPTEN_KEEPALIVE
+    double getNLSResidual() {
+        return lastNLSResidual;
     }
 }
 // Export a function to compute eigenvalues from a complex matrix.
@@ -122,9 +129,140 @@ extern "C"
     }
 }
 
+// Define a functor for Levenberg-Marquardt
+template<typename T>
+struct NLSResidualFunctor {
+    using Scalar = T;
+    using InputType = Eigen::Matrix<T, Eigen::Dynamic, 1>;
+    using ValueType = Eigen::Matrix<T, Eigen::Dynamic, 1>;
+    using JacobianType = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
+
+    enum {
+        InputsAtCompileTime = Eigen::Dynamic,
+        ValuesAtCompileTime = Eigen::Dynamic
+    };
+    
+    int N;
+    double dx;
+    double* V;
+    double g;
+    double omega;
+
+    NLSResidualFunctor(int N_, double dx_, double* V_, double g_, double omega_)
+        : N(N_), dx(dx_), V(V_), g(g_), omega(omega_) {}
+
+    int inputs() const { return 2 * N; }       // Real and Imag parts
+    int values() const { return 2 * N; }       // Residual vector size
+
+    // Computes F(x) = residual vector
+    int operator()(const Eigen::VectorXd& U, Eigen::VectorXd& F) const {
+        Eigen::VectorXd Ur = U.head(N);
+        Eigen::VectorXd Ui = U.tail(N);
+        Eigen::VectorXd D2Ur(N), D2Ui(N);
+
+        for (int i = 0; i < N; ++i) {
+            int ip = (i + 1) % N;
+            int im = (i - 1 + N) % N;
+            D2Ur[i] = (Ur[ip] - 2 * Ur[i] + Ur[im]) / (dx * dx);
+            D2Ui[i] = (Ui[ip] - 2 * Ui[i] + Ui[im]) / (dx * dx);
+        }
+
+        for (int i = 0; i < N; ++i) {
+            double r = Ur[i], im = Ui[i];
+            double U2 = r*r + im*im;
+            double common = g * U2 + V[i] + omega;
+            F[i] = -0.5 * D2Ur[i] + common * r;
+            F[N + i] = -0.5 * D2Ui[i] + common * im;
+        }
+        return 0;
+    }
+    
+    int df(const InputType& U, JacobianType& J) const {
+        Eigen::VectorXd Ur = U.head(N);
+        Eigen::VectorXd Ui = U.tail(N);
+
+        Eigen::MatrixXd D2 = Eigen::MatrixXd::Zero(N, N);
+        for (int i = 0; i < N; ++i) {
+            D2(i, i) = -2;
+            D2(i, (i + 1) % N) = 1;
+            D2(i, (i - 1 + N) % N) = 1;
+        }
+        D2 /= (dx * dx);
+
+        Eigen::VectorXd diagJ11(N), diagJ22(N), diagJ12(N);
+        for (int i = 0; i < N; ++i) {
+            double r = Ur[i], im = Ui[i];
+            diagJ11[i] = g * (3 * r * r + im * im) + V[i] + omega;
+            diagJ22[i] = g * (r * r + 3 * im * im) + V[i] + omega;
+            diagJ12[i] = 2 * g * r * im;
+        }
+
+        Eigen::MatrixXd J11 = (-0.5 * D2).eval() + diagJ11.asDiagonal().toDenseMatrix();
+        Eigen::MatrixXd J22 = (-0.5 * D2).eval() + diagJ22.asDiagonal().toDenseMatrix();
+        Eigen::MatrixXd J12 = diagJ12.asDiagonal();
+
+        // Assemble full 2N x 2N Jacobian
+        J.topLeftCorner(N, N)     = J11;
+        J.topRightCorner(N, N)    = J12;
+        J.bottomLeftCorner(N, N)  = J12;
+        J.bottomRightCorner(N, N) = J22;
+
+        return 0;
+    }
+};
+
+extern "C" {
+EMSCRIPTEN_KEEPALIVE
+double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM) {
+    Eigen::VectorXd U(2 * N);
+    for (int i = 0; i < 2 * N; ++i)
+    {
+        U[i] = U_init[i];
+    }
+    
+    Eigen::VectorXd F(2 * N);
+    NLSResidualFunctor<double> functor(N, dx, V, g, omega);
+    
+    if (useLM)
+    {
+        //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
+        //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
+        Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
+        lm.parameters.maxfev = 10000;
+        lm.parameters.xtol = 1e-10;
+        lm.minimize(U);
+        functor(U, F);
+    }
+    else
+    {
+        // Simple Newton with fixed iterations and learning rate
+        Eigen::VectorXd DU(2 * N);
+        for (int iter = 0; iter < 10; ++iter)
+        {
+            functor(U, F);
+            lastNLSResidual = F.norm();
+            std::cout << "iter " << iter << ", " << "||F|| = " << lastNLSResidual
+            << std::endl;
+            if (lastNLSResidual < 1e-10) break;
+            Eigen::MatrixXd J(2 * N, 2 * N);
+            functor.df(U, J);
+            DU = J.ldlt().solve(-F);  // Or .ldlt() if symmetric
+            U += DU;
+        }
+    }
+
+    lastNLSResidual = F.norm();  // L2 norm of residual
+    // Allocate result
+    double* result = (double*) malloc(sizeof(double) * 2 * N);
+    if (!result) return nullptr;
+    for (int i = 0; i < 2 * N; ++i) result[i] = U[i];
+    return result;
+}
+}
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_getLastResidual", "_malloc", "_free"]' -s EXPORT_ES6=1 \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_malloc", "_free"]' \
+//  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
 //  -s INITIAL_MEMORY=268435456 \
