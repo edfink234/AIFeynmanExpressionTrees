@@ -1285,8 +1285,8 @@
     </div>
     <script>
         Math.Pi = 3.141592653589793;
-        window.x_p = convertCppSymbolicStringToJs('sin(x0)');
-        window.x_p_ddot = convertCppSymbolicStringToJs('-sin(x0)');
+        window.x_p = convertCppSymbolicStringToJs('(0.998417 / acos(~(cos(cos((100.000000 * x0))))))');
+        window.x_p_ddot = convertCppSymbolicStringToJs('(((~((0.998417 * ~((((~((((100.000000 * ~(sin((100.000000 * x0)))) * ~(((100.000000 * ~(sin((100.000000 * x0)))) * cos(cos((100.000000 * x0)))))) + ((100.000000 * ~((100.000000 * cos((100.000000 * x0))))) * ~(sin(cos((100.000000 * x0))))))) * sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0)))))))) - (~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0)))))) * (~(((~(cos(cos((100.000000 * x0)))) * ~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0))))))) + (~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0)))))) * ~(cos(cos((100.000000 * x0))))))) / (2 * sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0))))))))))) / (sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0))))))) * sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0)))))))))))) * (acos(~(cos(cos((100.000000 * x0))))) * acos(~(cos(cos((100.000000 * x0))))))) - (~((0.998417 * ~((~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0)))))) / sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0))))))))))) * ((acos(~(cos(cos((100.000000 * x0))))) * ~((~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0)))))) / sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0)))))))))) + (~((~(((100.000000 * ~(sin((100.000000 * x0)))) * ~(sin(cos((100.000000 * x0)))))) / sqrt((1 - (~(cos(cos((100.000000 * x0)))) * ~(cos(cos((100.000000 * x0))))))))) * acos(~(cos(cos((100.000000 * x0))))))))) / ((acos(~(cos(cos((100.000000 * x0))))) * acos(~(cos(cos((100.000000 * x0)))))) * (acos(~(cos(cos((100.000000 * x0))))) * acos(~(cos(cos((100.000000 * x0))))))))');
         //window.x_p = convertCppSymbolicStringToJs('((x0 + 0.999487) ^ (4.176018 - sech(4)))')
         //window.x_p_ddot = convertCppSymbolicStringToJs('((((x0 + 0.999487) ^ 4.139399) * ((-1 / ((x0 + 0.999487) * (x0 + 0.999487))) * 4.139399)) + ((((x0 + 0.999487) ^ 4.139399) * ((1 / (x0 + 0.999487)) * 4.139399)) * ((1 / (x0 + 0.999487)) * 4.139399)))');
         window.original_x_p = window.x_p;
@@ -1680,8 +1680,9 @@
         
         function convertCppSymbolicStringToJs(s)
         {
-            return s.replace(/\^|cos|asin|sin|tanh|ln|x0|~|sqrt|log/g, match => ({
+            return s.replace(/\^|acos|cos|asin|sin|tanh|ln|x0|~|sqrt|log/g, match => ({
                 '^': '**',
+                'acos': 'Math.acos',
                 'cos': 'Math.cos',
                 'asin': 'Math.asin',
                 'sin': 'Math.sin',
