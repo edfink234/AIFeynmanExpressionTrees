@@ -810,7 +810,8 @@
         for (let i = 0; i < N; i++)
         {
             let phase = v0 * x[i];
-            u[i] = math.complex(u[i].re*Math.cos(phase), u[i].im*Math.sin(phase));
+            u[i] = math.multiply(u[i], math.exp(math. complex(0, phase)));//math.complex(u[i].re*Math.cos(phase), u[i].im*Math.sin(phase));
+            
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
         //console.log("U_pde=",U_pde);
