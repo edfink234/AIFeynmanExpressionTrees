@@ -86,7 +86,7 @@ Time from A = 0.7023076923076922 to 0.6938461538461538 b = 0.7807692307692308 to
 Time from A = 0.6938461538461538 to 0.6853846153846154 b = 0.7746153846153846 to 0.7684615384615384 = 795.92 with learning rate 0.000125, target achieved
 Time from A = 0.6853846153846154 to 0.676923076923077 b = 0.7684615384615385 to 0.7623076923076924 = 1012.40 with learning rate 0.000125, target achieved
 Time from A = 0.6769230769230768 to 0.6684615384615384 b = 0.7623076923076924 to 0.7561538461538462 = 1815.88 with learning rate 0.000125, target achieved
-Time from A = 0.6684615384615384 to 0.66 b = 0.7561538461538462 to 0.75 = 2129.84 with learning rate 0.000125, target achievedTime from A = 0.66 to 0.66, b = 0.74 to 0.74, = 24.35 with learning rate 0.000125, target achieved
+Time from A = 0.6684615384615384 to 0.66 b = 0.7561538461538462 to 0.75 = 2129.84 with learning rate 0.000125, target achieved
 Time from A = 0.66 to 0.655, b = 0.75 to 0.745, = 8577.24 with learning rate 0.000125, target achieved
 Time from A = 0.655 to 0.6572, b = 0.745 to 0.7356, = 7824.01 with learning rate 0.000125, target achieved
 Time from A = 0.6572 to 0.6594, b = 0.7356 to 0.7261, = 24.6484 with learning rate 0.000125, target achieved
@@ -97,3 +97,24 @@ Time from A = 0.6661 to 0.6683, b = 0.6978 to 0.6883, = 25.0714 with learning ra
 Time from A = 0.6683 to 0.6706, b = 0.6883 to 0.6809, = 1917.3621 with learning rate 6e-05, target achieved
 Time from A = 0.6706 to 0.6728, b = 0.6809 to 0.6734, = 27648.9364 with learning rate 6e-05, target achieved
 Time from A = 0.6728 to 0.6750, b = 0.6734 to 0.6660, = 22849.1395 with learning rate 6e-05, target achieved
+Time from A = 1.1000 to 1.1000, b = 1.0000 to 1.0000, Ω = 0.2000 to 0.2000, = 20.2274 with learning rate 0.0001, target achieved
+Time from A = 1.1000 to 1.0990, b = 1.0000 to 0.9900, Ω = 0.2000 to 0.2015, = 18.2284 with learning rate 0.0001, target achieved
+Time from A = 1.0990 to 1.0980, b = 0.9900 to 0.9800, Ω = 0.2015 to 0.2030, = 44.0198 with learning rate 0.0001, target achieved
+Time from A = 1.0980 to 1.0970, b = 0.9800 to 0.9700, Ω = 0.2030 to 0.2045, = 117.6881 with learning rate 0.0001, target achieved
+Time from A = 1.0970 to 1.0960, b = 0.9700 to 0.9600, Ω = 0.2045 to 0.2060, = 121.3106 with learning rate 0.0001, target achieved
+Time from A = 1.0960 to 1.0950, b = 0.9600 to 0.9500, Ω = 0.2060 to 0.2075, = 123.4981 with learning rate 0.0001, target achieved
+Time from A = 1.0950 to 1.0940, b = 0.9500 to 0.9400, Ω = 0.2075 to 0.2090, = 107.1844 with learning rate 0.0001, target achieved
+Time from A = 1.0940 to 1.0930, b = 0.9400 to 0.9300, Ω = 0.2090 to 0.2105, = 114.5218 with learning rate 0.0001, target achieved
+Time from A = 1.0930 to 1.0920, b = 0.9300 to 0.9200, Ω = 0.2105 to 0.2120, = 158.3590 with learning rate 0.0001, target achieved
+Time from A = 1.0920 to 1.0910, b = 0.9200 to 0.9100, Ω = 0.2120 to 0.2135, = 151.3835 with learning rate 0.0001, target achieved
+Time from A = 1.0910 to 1.0900, b = 0.9100 to 0.9000, Ω = 0.2135 to 0.2150, = 176.1296 with learning rate 0.0001, target achieved
+Time from A = 1.0900 to 1.0890, b = 0.9000 to 0.8900, Ω = 0.2150 to 0.2165, = 210.3658 with learning rate 0.0001, target achieved
+Time from A = 1.0890 to 1.0880, b = 0.8900 to 0.8800, Ω = 0.2165 to 0.2180, = 174.3779 with learning rate 0.0001, target achieved
+Time from A = 1.0880 to 1.0870, b = 0.8800 to 0.8700, Ω = 0.2180 to 0.2195, = 237.7556 with learning rate 0.0001, target achieved
+Time from A = 1.0870 to 1.0860, b = 0.8700 to 0.8600, Ω = 0.2195 to 0.2210, = 246.2450 with learning rate 0.0001, target achieved
+Time from A = 1.0860 to 1.0850, b = 0.8600 to 0.8500, Ω = 0.2210 to 0.2225, = 132.0969 with learning rate 0.0001, target achieved
+Time from A = 1.0850 to 1.0840, b = 0.8500 to 0.8400, Ω = 0.2225 to 0.2240, = 145.4952 with learning rate 0.0001, target achieved
+Time from A = 1.0840 to 1.0830, b = 0.8400 to 0.8300, Ω = 0.2240 to 0.2255, = 170.9475 with learning rate 0.0001, target achieved
+Time from A = 1.0830 to 1.0820, b = 0.8300 to 0.8200, Ω = 0.2255 to 0.2270, = 178.4887 with learning rate 0.0001, target achieved
+Time from A = 1.0820 to 1.0810, b = 0.8200 to 0.8100, Ω = 0.2270 to 0.2285, = 296.1646 with learning rate 0.0001, target achieved
+Time from A = 1.0810 to 1.0800, b = 0.8100 to 0.8000, Ω = 0.2285 to 0.2300, = 797.4785 with learning rate 0.0001, target achieved
