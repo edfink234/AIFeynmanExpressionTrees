@@ -65,7 +65,12 @@ file_parts_display_7 = []
 file_parts_display_8 = ['trajectory_data_IC_2_point_266292_1_point_1_1_point_0_1_point_0_0_point_2_.png', 'trajectory_data_IC_2_point_273769_1_point_099_0_point_99_1_point_0_0_point_2015_.png', 'trajectory_data_IC_2_point_281359_1_point_098_0_point_98_1_point_0_0_point_203_.png', 'trajectory_data_IC_2_point_289064_1_point_097_0_point_97_1_point_0_0_point_2045_.png', 'trajectory_data_IC_2_point_296884_1_point_096_0_point_96_1_point_0_0_point_206_.png', 'trajectory_data_IC_2_point_30482_1_point_095_0_point_95_1_point_0_0_point_2075_.png', 'trajectory_data_IC_2_point_312874_1_point_094_0_point_94_1_point_0_0_point_209_.png', 'trajectory_data_IC_2_point_321044_1_point_093_0_point_93_1_point_0_0_point_2105_.png', 'trajectory_data_IC_2_point_329333_1_point_092_0_point_92_1_point_0_0_point_212_.png', 'trajectory_data_IC_2_point_337739_1_point_091_0_point_91_1_point_0_0_point_2135_.png', 'trajectory_data_IC_2_point_346265_1_point_09_0_point_9_1_point_0_0_point_215_.png', 'trajectory_data_IC_2_point_354909_1_point_089_0_point_89_1_point_0_0_point_2165_.png', 'trajectory_data_IC_2_point_363673_1_point_088_0_point_88_1_point_0_0_point_218_.png', 'trajectory_data_IC_2_point_372557_1_point_087_0_point_87_1_point_0_0_point_2195_.png', 'trajectory_data_IC_2_point_38156_1_point_086_0_point_86_1_point_0_0_point_221_.png', 'trajectory_data_IC_2_point_390682_1_point_085_0_point_85_1_point_0_0_point_2225_.png', 'trajectory_data_IC_2_point_399923_1_point_084_0_point_84_1_point_0_0_point_224_.png', 'trajectory_data_IC_2_point_409283_1_point_083_0_point_83_1_point_0_0_point_2255_.png', 'trajectory_data_IC_2_point_418761_1_point_082_0_point_82_1_point_0_0_point_227_.png', 'trajectory_data_IC_2_point_428356_1_point_081_0_point_81_1_point_0_0_point_2285_.png', 'trajectory_data_IC_2_point_438068_1_point_08_0_point_8_1_point_0_0_point_23_.png']
 file_parts_display_8 = [extract_parts(filename) for filename in file_parts_display_8]
 file_parts_display_8 = [[string_to_float(part) for part in file] for file in file_parts_display_8]
-print(*file_parts_display_8, sep='\n')
+file_parts_display_9 = ['trajectory_data_IC_2_point_438068_1_point_08_0_point_8_1_point_0_0_point_23_.png', 'trajectory_data_IC_2_point_434087_1_point_0_1_point_0_1_point_0_0_point_2_Variational_.png']
+file_parts_display_9_mp4 = [i.replace('.png', '.mp4') for i in file_parts_display_9]
+file_parts_display_9_png = file_parts_display_9.copy()
+file_parts_display_9 = [extract_parts(filename) for filename in file_parts_display_9]
+file_parts_display_9 = [[string_to_float(part) for part in file] for file in file_parts_display_9]
+#print(*file_parts_display_8, sep='\n')
 
 for parts in file_float_parts:
     if parts[-3:] == base_parts[-3:] and parts != base_parts and not (1.4 < parts[1] < 1.5):
@@ -177,6 +182,8 @@ for file_part in file_parts_display_8:
     file_parts_display_8_mp4.append(f"{temp_str}.mp4")
     file_parts_display_8_png.append(f"{temp_str}.png")
 
+#print(file_parts_display_8_mp4, file_parts_display_8_png, file_parts_display_9_png, file_parts_display_9_mp4, sep=f'\n{"="*10}\n')
+
 #print("file_parts_display_5_mp4 =", file_parts_display_5_mp4)
 titles = open("result_times.txt").readlines()
 display_1_titles = ["Base Case"] + [i.strip('\n') for i in titles[:10]]
@@ -187,6 +194,7 @@ display_5_titles = ["Base Case, A = 1.4"] + [i.strip('\n') for i in titles[40:49
 display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:89]]
 display_7_titles = ["Base Case"] + [i.strip('\n').replace(', =', ' =') for i in titles[89:99]]
 display_8_titles = ["Base Case, A = 1.1"] + [i.strip('\n').replace(', =', ' =') for i in titles[100:]]
+display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = 1.4770857 \times 10^{-2}\)"]
 
 print(*display_1_titles, sep='\n', end="\n\n")
 print(*display_2_titles, sep='\n', end="\n\n")
@@ -196,6 +204,7 @@ print(*list(zip(range(1,1+len(display_5_titles)), display_5_titles)), sep='\n', 
 print(*display_6_titles, sep='\n', end="\n\n")
 print(*display_7_titles, sep='\n', end="\n\n")
 print(*display_8_titles, sep='\n', end="\n\n")
+print(*display_9_titles, sep='\n', end="\n\n")
 
 display_1_title_tokens = [i.split() for i in display_1_titles[1:]]
 display_2_title_tokens = [i.split() for i in display_2_titles[1:]]
@@ -312,7 +321,8 @@ print(*display_5_titles, sep='\n', end='\n\n')
 print(*display_6_titles, sep='\n', end='\n\n')
 print(*display_7_titles, sep='\n', end='\n\n')
 print(*display_8_titles, sep='\n', end='\n\n')
-
+display_9_titles[0] = display_8_titles[-1]
+print(*display_9_titles, sep='\n', end='\n\n')
 #print(*(file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png), sep='\n')
 #[os.system(f"ls {i}") for i in (file_parts_display_1_mp4+file_parts_display_1_png+file_parts_display_2_mp4+file_parts_display_2_png+file_parts_display_3_mp4+file_parts_display_3_png+file_parts_display_4_mp4+file_parts_display_4_png)]
 
@@ -403,7 +413,14 @@ def generate_html(file_data):
         m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
         V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\
         V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)
-        \end{align*}$$
+        \end{align*}$$<br>
+        $$
+            U_{\text{patched}}(x,\, A,\, \mathcal{A}_0,\, \Omega; \rho) = \left\{
+            \begin{array}{cc}
+                \text{$U_{\text{eff}}(x,\, A,\, \mathcal{A}_0,\, \Omega; \rho)\, = - \dfrac{256 A \mathcal{A}_0^{2} x}{\left(e^{2 \mathcal{A}_0 x} - 1\right)^{5}} - \dfrac{256 A \mathcal{A}_0 \left(2 \mathcal{A}_0 x - 1\right)}{\left(e^{2 \mathcal{A}_0 x} - 1\right)^{3}} - \dfrac{128 A \mathcal{A}_0 \left(5 \mathcal{A}_0 x - 1\right)}{\left(e^{2 \mathcal{A}_0 x} - 1\right)^{4}} - \dfrac{32 A \mathcal{A}_0 \left(12 \mathcal{A}_0 x - 13\right)}{3 \left(e^{2 \mathcal{A}_0 x} - 1\right)^{2}} + \dfrac{32 A \mathcal{A}_0}{3 \left(e^{2 \mathcal{A}_0 x} - 1\right)} + \dfrac{2 \Omega^{2} \mathcal{A}_0 x^{2}}{3} $} & \quad\text{if } |\mathcal{X} | \geq \rho, \\[0.2cm]
+                \text{$U_{\text{Taylor}}(x,\, A,\, \mathcal{A}_0,\, \Omega; \rho)\, = - \dfrac{64 A \mathcal{A}_0^{3} x^{2}}{105} + \dfrac{16 A \mathcal{A}_0}{15} + \dfrac{2 \Omega^{2} \mathcal{A}_0 x^{2}}{3}$} & \quad\text{if } |\mathcal{X} | < \rho.
+            \end{array}\right.
+        $$
     </div>
 </div>
 <h3><u>Constraints</u></h3>
@@ -534,11 +551,12 @@ file_data = [
     {"png": file_parts_display_5_png, "mp4": file_parts_display_5_mp4, "index": 0, "titles": display_5_titles},
     {"png": file_parts_display_6_png, "mp4": file_parts_display_6_mp4, "index": 0, "titles": display_6_titles},
     {"png": file_parts_display_7_png, "mp4": file_parts_display_7_mp4, "index": 0, "titles": display_7_titles},
-    {"png": file_parts_display_8_png, "mp4": file_parts_display_8_mp4, "index": 0, "titles": display_8_titles}
+    {"png": file_parts_display_8_png, "mp4": file_parts_display_8_mp4, "index": 0, "titles": display_8_titles},
+    {"png": file_parts_display_9_png, "mp4": file_parts_display_9_mp4, "index": 0, "titles": display_9_titles}
 ]
 
 
-[os.system(f"ls {i}") for i in file_parts_display_8_png]
+#[os.system(f"ls {i}") for i in file_parts_display_8_png]
 #exit()
 
 # Generate and save HTML
