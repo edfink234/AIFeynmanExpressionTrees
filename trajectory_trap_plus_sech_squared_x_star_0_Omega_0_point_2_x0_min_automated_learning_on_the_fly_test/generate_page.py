@@ -39,8 +39,9 @@ base_parts = [string_to_float(part) for part in extract_parts(base_file)]
 #print(base_parts)
 
 file_paths = glob.glob("*.*")
-mp4_files = [f for f in file_paths if f.endswith(".mp4") and 'random_initialized' not in f]
-png_files = [f for f in file_paths if f.endswith(".png") and 'random_initialized' not in f]
+is_normal = lambda f: 'random_initialized' not in f and 'Variational' not in f
+mp4_files = [f for f in file_paths if f.endswith(".mp4") and is_normal(f)]
+png_files = [f for f in file_paths if f.endswith(".png") and is_normal(f)]
 print(len(mp4_files))
 file_parts = []
 file_float_parts = []
@@ -88,13 +89,11 @@ for parts in file_float_parts:
     elif parts[-2:] == base_parts[-2:] and parts != base_parts and (0.66 <= parts[1] <= 0.68) and (0.67 <= parts[2] <= 0.74):
         file_parts_display_7.append(parts)
 
-
 #all_variables = globals()
 #print(sum([len(all_variables[i]) for i in all_variables if "file_parts_display_" in i]))
 #exit()
 # Print the results (or use them as needed)
 file_parts_display_1 = [i for i in file_parts_display_1 if i != [2.266292, 1.1, 1.0, 1.0, 0.2]]
-#print(f"file_parts_display_1 of length {len(file_parts_display_1)}:", *file_parts_display_1, sep = '\n')
 #print(f"file_parts_display_2 of length {len(file_parts_display_2)}:", *file_parts_display_2, sep = '\n')
 #print(f"file_parts_display_3 of length {len(file_parts_display_3)}:", *file_parts_display_3, sep = '\n')
 #print(f"file_parts_display_4 of length {len(file_parts_display_4)}:", *file_parts_display_4, sep = '\n')
@@ -108,8 +107,8 @@ file_parts_display_3.sort(key = lambda x: x[3])
 file_parts_display_4.sort(key = lambda x: x[4])
 file_parts_display_5.sort(key = lambda x: x[1])
 file_parts_display_6.sort(key = lambda x: x[1] + x[2])
-print("\n"*10)
-print(*list(zip(range(1, len(file_parts_display_6)+1),file_parts_display_6)), sep='\n')
+#print("\n"*10)
+#print(*list(zip(range(1, len(file_parts_display_6)+1),file_parts_display_6)), sep='\n')
 #exit()
 file_parts_display_6[-4], file_parts_display_6[-5] = file_parts_display_6[-5], file_parts_display_6[-4]
 file_parts_display_6[-17], file_parts_display_6[-18] = file_parts_display_6[-18], file_parts_display_6[-17]
@@ -183,6 +182,9 @@ for file_part in file_parts_display_8:
     file_parts_display_8_png.append(f"{temp_str}.png")
 
 #print(file_parts_display_8_mp4, file_parts_display_8_png, file_parts_display_9_png, file_parts_display_9_mp4, sep=f'\n{"="*10}\n')
+
+#print(f"file_parts_display_1_png of length {len(file_parts_display_1_png)}:", *file_parts_display_1_png, sep = '\n')
+#exit()
 
 #print("file_parts_display_5_mp4 =", file_parts_display_5_mp4)
 titles = open("result_times.txt").readlines()
