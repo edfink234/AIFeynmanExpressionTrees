@@ -213,24 +213,45 @@ struct NLSResidualFunctor {
 
 extern "C" {
 EMSCRIPTEN_KEEPALIVE
-double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega) {
+double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM) {
     Eigen::VectorXd U(2 * N);
-    for (int i = 0; i < 2 * N; ++i) U[i] = U_init[i];
+    for (int i = 0; i < 2 * N; ++i)
+    {
+        U[i] = U_init[i];
+    }
     
-    NLSResidualFunctor<double> functor(N, dx, V, g, omega);
-    //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
-    //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
-    Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
-
-    
-    
-    lm.parameters.maxfev = 10000;
-    //lm.parameters.xtol = 1e-5;
     Eigen::VectorXd F(2 * N);
-    lm.minimize(U);
-    functor(U, F);
-    lastNLSResidual = F.norm();  // L2 norm of residual
+    NLSResidualFunctor<double> functor(N, dx, V, g, omega);
+    
+    if (useLM)
+    {
+        //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
+        //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
+        Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
+        lm.parameters.maxfev = 10000;
+        lm.parameters.xtol = 1e-10;
+        lm.minimize(U);
+        functor(U, F);
+    }
+    else
+    {
+        // Simple Newton with fixed iterations and learning rate
+        Eigen::VectorXd DU(2 * N);
+        for (int iter = 0; iter < 10; ++iter)
+        {
+            functor(U, F);
+            lastNLSResidual = F.norm();
+            std::cout << "iter " << iter << ", " << "||F|| = " << lastNLSResidual
+            << std::endl;
+            if (lastNLSResidual < 1e-10) break;
+            Eigen::MatrixXd J(2 * N, 2 * N);
+            functor.df(U, J);
+            DU = J.ldlt().solve(-F);  // Or .ldlt() if symmetric
+            U += DU;
+        }
+    }
 
+    lastNLSResidual = F.norm();  // L2 norm of residual
     // Allocate result
     double* result = (double*) malloc(sizeof(double) * 2 * N);
     if (!result) return nullptr;
