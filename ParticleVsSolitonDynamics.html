@@ -1,6 +1,6 @@
 <!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
 <!--run locally: python3 -m http.server 8000-->
-<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html-->
+<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -298,81 +298,83 @@
         return `${mantissa} \\times 10^{${sign}${power}}`;
     }
     // This function updates the eigenmode plot for the mode at index currentEigenMode.
-    function updateEigenmodePlot(params) {
-      // Ensure we have at least one eigenmode:
-      if (!spectrum || !spectrum.eigenmodes || spectrum.eigenmodes.length === 0) return;
-      console.log("currentEigenMode =",currentEigenMode);
-      // Get the current eigenmode:
-      let mode = spectrum.eigenmodes[currentEigenMode];
-      //console.log("mode "+currentEigenMode+" = ",mode);
-      // Create a grid for x:
-      let xgrid = linspace(params.x_min, params.x_max, params.N);
-      //console.log("x_grid.length=",xgrid.length,"mode.length=",mode.length);
-      
-      // Set up three traces:
-      let modeRealTrace = {
-        x: xgrid,
-        y: mode.map(z => z.re),
-        mode: 'lines',
-        name: 'Real part'
-      };
-      let modeImagTrace = {
-        x: xgrid,
-        y: mode.map(z => z.im),
-        mode: 'lines',
-        name: 'Imaginary part'
-      };
-      let modeNormTrace = {
-        x: xgrid,
-        y: mode.map(z => z.re*z.re + z.im*z.im),
-        mode: 'lines',
-        name: '|Mode|²'
-      };
-      
-      const ev = spectrum.eigenvalues[currentEigenMode];
-      const reLatex = toLatexExp(ev.re, 2);
-      const imLatex = Math.abs(ev.im).toFixed(2);
-      const imSign = ev.im >= 0 ? '+' : '-';
+    function updateEigenmodePlot(params)
+    {
+        // Ensure we have at least one eigenmode:
+        if (!spectrum || !spectrum.eigenmodes || spectrum.eigenmodes.length === 0) return;
+        console.log("currentEigenMode =",currentEigenMode);
+        // Get the current eigenmode:
+        let mode = spectrum.eigenmodes[currentEigenMode];
+        //console.log("mode "+currentEigenMode+" = ",mode);
+        // Create a grid for x:
+        let xgrid = linspace(params.x_min, params.x_max, params.N);
+        //console.log("x_grid.length=",xgrid.length,"mode.length=",mode.length);
 
-      const evString = `\\text{Eigenmode Details, } \\lambda = \\left(${reLatex}\\right) ${imSign} ${imLatex}\\,i`;
+        // Set up three traces:
+        let modeRealTrace =
+        {
+            x: xgrid,
+            y: mode.map(z => z.re),
+            mode: 'lines',
+            name: 'Real part'
+        };
+        let modeImagTrace =
+        {
+            x: xgrid,
+            y: mode.map(z => z.im),
+            mode: 'lines',
+            name: 'Imaginary part'
+        };
+        let modeNormTrace =
+        {
+            x: xgrid,
+            y: mode.map(z => z.re*z.re + z.im*z.im),
+            mode: 'lines',
+            name: '|Mode|²'
+        };
 
-      let modeLayout = {
-        title: `$${evString}$`,
-        xaxis: { title: 'x' },
-        yaxis: { title: 'Value' },
-        annotations: [{
-          xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
-          text: `Mode: ${currentEigenMode}`, showarrow: false, font: { size: 16 }
-        }]
-      };
+        const ev = spectrum.eigenvalues[currentEigenMode];
+        const reLatex = toLatexExp(ev.re, 2);
+        const imLatex = Math.abs(ev.im).toFixed(2);
+        const imSign = ev.im >= 0 ? '+' : '-';
 
-      
-      Plotly.newPlot('eigenmodePlot', [modeRealTrace, modeImagTrace, modeNormTrace], modeLayout);
-      
-      // Update the counter
-      document.getElementById("modeCounter").textContent = `Mode: ${currentEigenMode}`;
+        const evString = `\\text{Eigenmode Details, } \\lambda = \\left(${reLatex}\\right) ${imSign} ${imLatex}\\,i`;
+
+        let modeLayout =
+        {
+            title: `$${evString}$`,
+            xaxis: { title: 'x' },
+            yaxis: { title: 'Value' },
+            annotations:
+            [{
+                xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+                text: `Mode: ${currentEigenMode}`, showarrow: false, font: { size: 16 }
+            }]
+        };
+        Plotly.newPlot('eigenmodePlot', [modeRealTrace, modeImagTrace, modeNormTrace], modeLayout);
+        // Update the counter
+        document.getElementById("modeCounter").textContent = `Mode: ${currentEigenMode}`;
     }
 
     // Setup the event listeners for the buttons
-    document.getElementById("prevModeBtn").addEventListener("click", function() {
-      // Wrap around if needed:
-      if (spectrum && spectrum.eigenmodes) {
-        currentEigenMode = (currentEigenMode - 1 + spectrum.eigenmodes.length) % spectrum.eigenmodes.length;
-        updateEigenmodePlot(getParameters());
-      }
+    document.getElementById("prevModeBtn").addEventListener("click", function()
+    {
+        // Wrap around if needed:
+        if (spectrum && spectrum.eigenmodes)
+        {
+            currentEigenMode = (currentEigenMode - 1 + spectrum.eigenmodes.length) % spectrum.eigenmodes.length;
+            updateEigenmodePlot(getParameters());
+        }
     });
 
-    document.getElementById("nextModeBtn").addEventListener("click", function() {
-      if (spectrum && spectrum.eigenmodes) {
-        currentEigenMode = (currentEigenMode + 1) % spectrum.eigenmodes.length;
-        updateEigenmodePlot(getParameters());
-      }
+    document.getElementById("nextModeBtn").addEventListener("click", function()
+    {
+        if (spectrum && spectrum.eigenmodes)
+        {
+            currentEigenMode = (currentEigenMode + 1) % spectrum.eigenmodes.length;
+            updateEigenmodePlot(getParameters());
+        }
     });
-
-    
-    /*const interval = setInterval(() => {
-        document.getElementById("newtonProgressBar").setAttribute("value", progress);
-    }, 5)*/
 
     // ODE state (position and velocity)
     let odeState = {x: 0, v: 0};
@@ -385,59 +387,64 @@
     let k = [];       // wavenumber array for FFT
     let U_pde = [];
     // Retrieve parameters from input fields
-    function getParameters() {
-      return {
-        // Shared
-        x0: parseFloat(document.getElementById("x0").value),
-        v0: parseFloat(document.getElementById("v0").value),
-        T: parseFloat(document.getElementById("T").value),
-        dt: parseFloat(document.getElementById("dt").value),
-        stepsPerUpdate: parseInt(document.getElementById("stepsPerUpdate").value),
-        // ODE
-        m: parseFloat(document.getElementById("m").value),
-        Omega: parseFloat(document.getElementById("Omega").value),
-        A: parseFloat(document.getElementById("A").value),
-        b: parseFloat(document.getElementById("b").value),
-        // PDE
-        A_sol: parseFloat(document.getElementById("A_sol").value),
-        omega: parseFloat(document.getElementById("omega").value),
-        Omega_pde: parseFloat(document.getElementById("Omega_pde").value),
-        A_pde: parseFloat(document.getElementById("A_pde").value),
-        b_pde: parseFloat(document.getElementById("b_pde").value),
-        // Spatial parameters (PDE)
-        dx: parseFloat(document.getElementById("dx").value),
-        x_min: parseFloat(document.getElementById("x_min").value),
-        x_max: parseFloat(document.getElementById("x_max").value),
-        N: Math.floor( ( parseFloat(document.getElementById("x_max").value) - parseFloat(document.getElementById("x_min").value) ) / parseFloat(document.getElementById("dx").value) ),
-        g: -1,
-        wfreq: parseFloat(document.getElementById("omega").value)
-      };
+    function getParameters()
+    {
+        return
+        {
+            // Shared
+            x0: parseFloat(document.getElementById("x0").value),
+            v0: parseFloat(document.getElementById("v0").value),
+            T: parseFloat(document.getElementById("T").value),
+            dt: parseFloat(document.getElementById("dt").value),
+            stepsPerUpdate: parseInt(document.getElementById("stepsPerUpdate").value),
+            // ODE
+            m: parseFloat(document.getElementById("m").value),
+            Omega: parseFloat(document.getElementById("Omega").value),
+            A: parseFloat(document.getElementById("A").value),
+            b: parseFloat(document.getElementById("b").value),
+            // PDE
+            A_sol: parseFloat(document.getElementById("A_sol").value),
+            omega: parseFloat(document.getElementById("omega").value),
+            Omega_pde: parseFloat(document.getElementById("Omega_pde").value),
+            A_pde: parseFloat(document.getElementById("A_pde").value),
+            b_pde: parseFloat(document.getElementById("b_pde").value),
+            // Spatial parameters (PDE)
+            dx: parseFloat(document.getElementById("dx").value),
+            x_min: parseFloat(document.getElementById("x_min").value),
+            x_max: parseFloat(document.getElementById("x_max").value),
+            N: Math.floor( ( parseFloat(document.getElementById("x_max").value) - parseFloat(document.getElementById("x_min").value) ) / parseFloat(document.getElementById("dx").value) ),
+            g: -1,
+            wfreq: parseFloat(document.getElementById("omega").value)
+        };
     }
 
-    // Utility: hyperbolic secant function
-    function linspace(a, b, n) {
-      let arr = [];
-      let step = (b - a) / (n - 1);
-      for(let i = 0; i < n; i++){
-        arr.push(a + step * i);
-      }
-      return arr;
+    function linspace(a, b, n)
+    {
+        let arr = [];
+        let step = (b - a) / (n - 1);
+        for(let i = 0; i < n; i++)
+        {
+            arr.push(a + step * i);
+        }
+        return arr;
     }
 
     // ---------------------- ODE Simulation ----------------------
-    function odeRHS(x, v, params) {
-      let acceleration = (-params.Omega * params.Omega * x + 2 * params.A * params.b * Math.pow(sech(params.b * x), 2) * Math.tanh(params.b * x)) / params.m;
-      return {dx: v, dv: acceleration};
+    function odeRHS(x, v, params)
+    {
+        let acceleration = (-params.Omega * params.Omega * x + 2 * params.A * params.b * Math.pow(sech(params.b * x), 2) * Math.tanh(params.b * x)) / params.m;
+        return {dx: v, dv: acceleration};
     }
 
-    function rk4Step(x, v, dt, params) {
-      let k1 = odeRHS(x, v, params);
-      let k2 = odeRHS(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, params);
-      let k3 = odeRHS(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, params);
-      let k4 = odeRHS(x + dt * k3.dx, v + dt * k3.dv, params);
-      let x_new = x + (dt/6) * (k1.dx + 2*k2.dx + 2*k3.dx + k4.dx);
-      let v_new = v + (dt/6) * (k1.dv + 2*k2.dv + 2*k3.dv + k4.dv);
-      return {x: x_new, v: v_new};
+    function rk4Step(x, v, dt, params)
+    {
+        let k1 = odeRHS(x, v, params);
+        let k2 = odeRHS(x + 0.5 * dt * k1.dx, v + 0.5 * dt * k1.dv, params);
+        let k3 = odeRHS(x + 0.5 * dt * k2.dx, v + 0.5 * dt * k2.dv, params);
+        let k4 = odeRHS(x + dt * k3.dx, v + dt * k3.dv, params);
+        let x_new = x + (dt/6) * (k1.dx + 2*k2.dx + 2*k3.dx + k4.dx);
+        let v_new = v + (dt/6) * (k1.dv + 2*k2.dv + 2*k3.dv + k4.dv);
+        return {x: x_new, v: v_new};
     }
 
     // ----------------------- PDE Simulation using RK4 -----------------------
@@ -446,12 +453,14 @@
     // using finite differences (with periodic BCs) for u_xx.
 
     // Trapezoidal integration helper.
-    function trapz(y, x) {
-      let sum = 0;
-      for (let i = 0; i < y.length - 1; i++) {
-        sum += 0.5 * (y[i] + y[i+1]) * (x[i+1] - x[i]);
-      }
-      return sum;
+    function trapz(y, x)
+    {
+        let sum = 0;
+        for (let i = 0; i < y.length - 1; i++)
+        {
+            sum += 0.5 * (y[i] + y[i+1]) * (x[i+1] - x[i]);
+        }
+        return sum;
     }
     
     //////////////////////////////////
@@ -472,12 +481,14 @@
     //      number[][]   // vector of y
     //   ]
     //////////////////////////////////
-    function SolveOde(func, solver, param, start, end, h, amt) {
+    function SolveOde(func, solver, param, start, end, h, amt)
+    {
         var n = Math.floor((end - start) / h);
         var t = start;
         var x = Array(n + 1);
         var y = Array(n + 1);
-        for (var i = 0; i < n - 1; i++) {
+        for (var i = 0; i < n - 1; i++)
+        {
             x[i] = t;
             y[i] = amt;
             amt = solver(func, param, amt, t, h, false)[0];
@@ -497,8 +508,10 @@
     // Reference
     // dop853.f
     // http://www.unige.ch/~hairer/software.html
-    function dop853(func, param, x, t, h, adaptive) {
-        function calc(param, x, t, h, adaptive) {
+    function dop853(func, param, x, t, h, adaptive)
+    {
+        function calc(param, x, t, h, adaptive)
+        {
             var k1 = func(x, param, t);
             var k2 = func(adds(x, multiple(5.26001519587677318785587544488e-2 * h, k1)), param, t + 0.526001519587677318785587544488e-1 * h);
             var k3 = func(adds(x, multiple(1.97250569845378994544595329183e-2 * h, k1), multiple(5.91751709536136983633785987549e-2 * h, k2)), param, t + 0.789002279381515978178381316732e-1 * h);
@@ -512,14 +525,16 @@
             var k11 = func(adds(x, multiple(-9.3714243008598732571704021658e-1 * h, k1), multiple(5.18637242884406370830023853209 * h, k4), multiple(1.09143734899672957818500254654 * h, k5), multiple(-8.14978701074692612513997267357 * h, k6), multiple(-1.85200656599969598641566180701e1 * h, k7), multiple(2.27394870993505042818970056734e1 * h, k8), multiple(2.49360555267965238987089396762 * h, k9), multiple(-3.0467644718982195003823669022 * h, k10)), param, t + 0.857142857142857142857142857142 * h);
             var k12 = func(adds(x, multiple(2.27331014751653820792359768449 * h, k1), multiple(-1.05344954667372501984066689879e1 * h, k4), multiple(-2.00087205822486249909675718444 * h, k5), multiple(-1.79589318631187989172765950534e1 * h, k6), multiple(2.79488845294199600508499808837e1 * h, k7), multiple(-2.85899827713502369474065508674 * h, k8), multiple(-8.87285693353062954433549289258 * h, k9), multiple(1.23605671757943030647266201528e1 * h, k10), multiple(6.43392746015763530355970484046e-1 * h, k11)), param, t + h);
             var x_ = adds(x, multiple(5.42937341165687622380535766363e-2 * h, k1), multiple(4.45031289275240888144113950566 * h, k6), multiple(1.89151789931450038304281599044 * h, k7), multiple(-5.8012039600105847814672114227 * h, k8), multiple(3.1116436695781989440891606237e-1 * h, k9), multiple(-1.52160949662516078556178806805e-1 * h, k10), multiple(2.01365400804030348374776537501e-1 * h, k11), multiple(4.47106157277725905176885569043e-2 * h, k12));
-            if (!adaptive) {
+            if (!adaptive)
+            {
                 return [x_, null];
             }
             var delta5 = adds(multiple(0.1312004499419488073250102996e-1, k1), multiple(-0.1225156446376204440720569753e+1, k6), multiple(-0.4957589496572501915214079952, k7), multiple(0.1664377182454986536961530415e+1, k8), multiple(-0.3503288487499736816886487290, k9), multiple(0.3341791187130174790297318841, k10), multiple(0.8192320648511571246570742613e-1, k11), multiple(-0.2235530786388629525884427845e-1, k12));
             var delta3 = adds(multiple(-0.189800754072407617468755659980, k1), multiple(4.45031289275240888144113950566, k6), multiple(1.89151789931450038304281599044, k7), multiple(-5.8012039600105847814672114227, k8), multiple(-0.422682321323791962932445679177, k9), multiple(-1.52160949662516078556178806805e-1, k10), multiple(2.01365400804030348374776537501e-1, k11), multiple(0.0226517921983608258118062039631, k12));
             var err5 = 0;
             var err3 = 0;
-            for (var i = 0; i < x.length; i++) {
+            for (var i = 0; i < x.length; i++)
+            {
                 var sc = adaptive.atol[i] +
                     Math.max(Math.abs(x[i]), Math.abs(x_[i])) * adaptive.rtol[i];
                 err5 += Math.pow((delta5[i] / sc), 2);
@@ -528,13 +543,14 @@
             var denominator = (err5 !== 0 || err3 !== 0) ? err5 + 0.01 * err3 : 1;
             var err = Math.abs(h) * err5 * Math.sqrt(1 / (x.length * denominator));
             return [x_, err];
-        }
-        ; // end of calc
-        var options = (adaptive === false) ? undefined : (function () {
+        }; // end of calc
+        var options = (adaptive === false) ? undefined : (function ()
+        {
             var atol = [];
             var rtol = [];
             var userOptions = (typeof adaptive === "boolean") ? undefined : adaptive;
-            for (var i = 0; i < x.length; i++) {
+            for (var i = 0; i < x.length; i++)
+            {
                 var a = userOptions ?
                     (Array.isArray(userOptions.atol) ? userOptions.atol[i] :
                         userOptions.atol) : undefined;
@@ -545,7 +561,8 @@
                     1e-12 : a);
                 rtol.push((typeof r === "undefined" || r < 0) ? 1e-6 : r);
             }
-            return {
+            return
+            {
                 atol: atol,
                 rtol: rtol,
                 maxiter: userOptions === null || userOptions === void 0 ? void 0 : userOptions.maxiter,
@@ -557,26 +574,33 @@
         return _ode(calc, param, x, t, h, options);
     }
     
-    function zip() {
+    function zip()
+    {
         var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
+        for (var _i = 0; _i < arguments.length; _i++)
+        {
             args[_i] = arguments[_i];
         }
         return Array.from(Array(Math.min.apply(Math, args.map(function (v) { return v.length; }))), function (_, i) {
             return args.map(function (v) { return v[i]; });
         });
     }
-    function adds() {
+    function adds()
+    {
         var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
+        for (var _i = 0; _i < arguments.length; _i++)
+        {
             args[_i] = arguments[_i];
         }
-        return zip.apply(void 0, args).map(function (v) {
+        return zip.apply(void 0, args).map(function (v)
+        {
             return v.reduce(function (a, b) { return a + b; });
         });
     }
-    function multiple(a, b) {
-        return b.map(function (v) {
+    function multiple(a, b)
+    {
+        return b.map(function (v)
+        {
             return a * v;
         });
     }
@@ -586,38 +610,47 @@
     // Solving Ordinary Differential Equations I: Nonstiff Problems.
     // Springer.
     //////////////////////////////////
-    function _ode(func, param, x, t, h, adaptive) {
+    function _ode(func, param, x, t, h, adaptive)
+    {
         var _a;
-        if (!adaptive) {
+        if (!adaptive)
+        {
             var x_ = func(param, x, t, h)[0];
             return [x_, t + h, h];
         }
         var maxiter = (_a = adaptive.maxiter) !== null && _a !== void 0 ? _a : 100;
         var facmax = 5;
-        if (adaptive.facmax && adaptive.facmax > 0) {
+        if (adaptive.facmax && adaptive.facmax > 0)
+        {
             facmax = adaptive.facmax;
         }
         var facmin = 0.1;
-        if (adaptive.facmin && adaptive.facmin > 0) {
+        if (adaptive.facmin && adaptive.facmin > 0)
+        {
             facmin = adaptive.facmin;
         }
         var fac = 0.9;
-        if (adaptive.fac && adaptive.fac > 0) {
+        if (adaptive.fac && adaptive.fac > 0)
+        {
             fac = adaptive.fac;
         }
         var h_ = h;
         var i = 0;
-        while (i++ < maxiter) {
-            var _b = func(param, x, t, h_, {
+        while (i++ < maxiter)
+        {
+            var _b = func(param, x, t, h_,
+            {
                 atol: adaptive.atol,
                 rtol: adaptive.rtol
             }), x_ = _b[0], err = _b[1];
-            if (!err) {
+            if (!err)
+            {
                 break;
             }
             var t_ = t + h_;
             h_ *= Math.min(facmax, Math.max(facmin, fac * (Math.pow((1 / err), 0.2))));
-            if (err < 1) {
+            if (err < 1)
+            {
                 return [x_, t_, h_];
             }
         }
@@ -626,128 +659,139 @@
     
     // This function computes the derivative of U (a real 2N‐vector)
     // at time t. It uses finite differences with periodic BCs.
-    function pde_rhs_dop853(U, params, t) {
-      // Let N be half the length of U.
-      N = U.length / 2;
-      let dx = params.dx;
-      // Reconstruct complex u from U (first N entries are real, next N are imag)
-      let u_complex = new Array(N);
-      for (let i = 0; i < N; i++) {
-        u_complex[i] = math.complex(U[i], U[i + N]);
-      }
-      // Compute u_xx with periodic BCs.
-      let u_xx = new Array(N);
-      for (let i = 0; i < N; i++) {
+    function pde_rhs_dop853(U, params, t)
+    {
+        // Let N be half the length of U.
+        N = U.length / 2;
+        let dx = params.dx;
+        // Reconstruct complex u from U (first N entries are real, next N are imag)
+        let u_complex = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            u_complex[i] = math.complex(U[i], U[i + N]);
+        }
+        // Compute u_xx with periodic BCs.
+        let u_xx = new Array(N);
+        for (let i = 0; i < N; i++) {
         let ip = (i + 1) % N;
         let im = (i - 1 + N) % N;
-        u_xx[i] = math.divide(
-          math.add(math.subtract(u_complex[ip], math.multiply(2, u_complex[i])), u_complex[im]),
-          dx * dx
-        );
-      }
-      // Compute potential V(x) on our grid.
-      V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x +
+        u_xx[i] = math.divide(math.add(math.subtract(u_complex[ip], math.multiply(2, u_complex[i])), u_complex[im]),dx * dx);
+        }
+        // Compute potential V(x) on our grid.
+        V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x +
                             params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-      // Compute rhs for each grid point.
-      let rhs = new Array(N);
-      for (let i = 0; i < N; i++) {
-        // nonlinear term: |u|^2 * u
-        let nonlinear = math.multiply(Math.pow(math.abs(u_complex[i]), 2), u_complex[i]);
-        // inside = 0.5*u_xx + nonlinear - V(x)*u
-        let inside = math.subtract(math.add(math.multiply(0.5, u_xx[i]), nonlinear),
-                                   math.multiply(V[i], u_complex[i]));
-        // Multiply by i (i.e., rotate by 90° in the complex plane)
-        rhs[i] = math.multiply(math.complex(0, 1), inside);
-      }
-      // Return Udot as the concatenation of real and imag parts.
-      let rhsReal = rhs.map(z => z.re);
-      let rhsImag = rhs.map(z => z.im);
-      return rhsReal.concat(rhsImag);
+        // Compute rhs for each grid point.
+        let rhs = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            // nonlinear term: |u|^2 * u
+            let nonlinear = math.multiply(Math.pow(math.abs(u_complex[i]), 2), u_complex[i]);
+            // inside = 0.5*u_xx + nonlinear - V(x)*u
+            let inside = math.subtract(math.add(math.multiply(0.5, u_xx[i]), nonlinear),
+                                       math.multiply(V[i], u_complex[i]));
+            // Multiply by i (i.e., rotate by 90° in the complex plane)
+            rhs[i] = math.multiply(math.complex(0, 1), inside);
+        }
+        // Return Udot as the concatenation of real and imag parts.
+        let rhsReal = rhs.map(z => z.re);
+        let rhsImag = rhs.map(z => z.im);
+        return rhsReal.concat(rhsImag);
     }
     
     // Assume that SolveOde and dop853 are defined (or imported) per your attached code.
-    function pdeStep_dop853(params) {
-      // Here, U_pde is a global variable holding the current 2N-vector,
-      // where N is the number of spatial points in pdeGrid.
-      // Integrate the PDE from time currentTime to currentTime+dt.
-      let startT = currentTime;
-      let endT = currentTime + params.dt;
-      let result = SolveOde(pde_rhs_dop853, dop853, params, startT, endT, params.dt, U_pde);
-      // result[1] is the list of solution vectors; take the last one.
-      U_pde = result[1][result[1].length - 1];
-      // Reconstruct u (complex) from U_pde.
-      N = U_pde.length / 2;
-      u = new Array(N);
-      for (let i = 0; i < N; i++) {
-        u[i] = math.complex(U_pde[i], U_pde[i+N]);
-      }
-      currentTime = endT;
+    function pdeStep_dop853(params)
+    {
+        // Here, U_pde is a global variable holding the current 2N-vector,
+        // where N is the number of spatial points in pdeGrid.
+        // Integrate the PDE from time currentTime to currentTime+dt.
+        let startT = currentTime;
+        let endT = currentTime + params.dt;
+        let result = SolveOde(pde_rhs_dop853, dop853, params, startT, endT, params.dt, U_pde);
+        // result[1] is the list of solution vectors; take the last one.
+        U_pde = result[1][result[1].length - 1];
+        // Reconstruct u (complex) from U_pde.
+        N = U_pde.length / 2;
+        u = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            u[i] = math.complex(U_pde[i], U_pde[i+N]);
+        }
+        currentTime = endT;
     }
 
     // Compute the PDE RHS for a given u array.
-    function pde_rhs(u, params) {
-      let rhs = new Array(N);
-      let dx = params.dx;
-      // Compute potential V(x) at grid points:
-      V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-      for (let i = 0; i < N; i++) {
-        let ip = (i + 1) % N;
-        let im = (i - 1 + N) % N;
-        // Second derivative using central difference (periodic BC):
-        let u_xx = math.divide(math.add(math.subtract(u[ip], math.multiply(2, u[i])), u[im]), dx * dx);
-        let nonlinear = math.multiply(Math.pow(math.abs(u[i]), 2), u[i]);
-        let potTerm = math.multiply(V[i], u[i]);
-        let inside = math.subtract(math.add(math.multiply(0.5, u_xx), nonlinear), potTerm);
-        // Multiply by i:
-        rhs[i] = math.multiply(math.complex(0, 1), inside);
-      }
-      return rhs;
+    function pde_rhs(u, params)
+    {
+        let rhs = new Array(N);
+        let dx = params.dx;
+        // Compute potential V(x) at grid points:
+        V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
+        for (let i = 0; i < N; i++)
+        {
+            let ip = (i + 1) % N;
+            let im = (i - 1 + N) % N;
+            // Second derivative using central difference (periodic BC):
+            let u_xx = math.divide(math.add(math.subtract(u[ip], math.multiply(2, u[i])), u[im]), dx * dx);
+            let nonlinear = math.multiply(Math.pow(math.abs(u[i]), 2), u[i]);
+            let potTerm = math.multiply(V[i], u[i]);
+            let inside = math.subtract(math.add(math.multiply(0.5, u_xx), nonlinear), potTerm);
+            // Multiply by i:
+            rhs[i] = math.multiply(math.complex(0, 1), inside);
+        }
+        return rhs;
     }
 
     // RK4 step for PDE: returns new u array.
-    function pdeRK4Step(u, dt, params) {
-      let k1 = pde_rhs(u, params);
-      let u2 = new Array(N);
-      for (let i = 0; i < N; i++) {
-        u2[i] = math.add(u[i], math.multiply(dt/2, k1[i]));
-      }
-      let k2 = pde_rhs(u2, params);
-      let u3 = new Array(N);
-      for (let i = 0; i < N; i++) {
-        u3[i] = math.add(u[i], math.multiply(dt/2, k2[i]));
-      }
-      let k3 = pde_rhs(u3, params);
-      let u4 = new Array(N);
-      for (let i = 0; i < N; i++) {
-        u4[i] = math.add(u[i], math.multiply(dt, k3[i]));
-      }
-      let k4 = pde_rhs(u4, params);
-      let newU = new Array(N);
-      for (let i = 0; i < N; i++) {
-        newU[i] = math.add(u[i],
-          math.multiply(dt/6,
-            math.add(k1[i],
-              math.multiply(2, k2[i]),
-              math.multiply(2, k3[i]),
-              k4[i]
-            )
-          )
-        );
-      }
-      return newU;
+    function pdeRK4Step(u, dt, params)
+    {
+        let k1 = pde_rhs(u, params);
+        let u2 = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            u2[i] = math.add(u[i], math.multiply(dt/2, k1[i]));
+        }
+        let k2 = pde_rhs(u2, params);
+        let u3 = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            u3[i] = math.add(u[i], math.multiply(dt/2, k2[i]));
+        }
+        let k3 = pde_rhs(u3, params);
+        let u4 = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            u4[i] = math.add(u[i], math.multiply(dt, k3[i]));
+        }
+        let k4 = pde_rhs(u4, params);
+        let newU = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            newU[i] = math.add(u[i],
+              math.multiply(dt/6,
+                math.add(k1[i],
+                  math.multiply(2, k2[i]),
+                  math.multiply(2, k3[i]),
+                  k4[i]
+                )
+              )
+            );
+        }
+        return newU;
     }
 
     // The PDE step simply applies one RK4 time step.
-    function pdeStep(params) {
-      //console.log("u=",u);
-      u = pdeRK4Step(u, params.dt, params);
+    function pdeStep(params)
+    {
+        //console.log("u=",u);
+        u = pdeRK4Step(u, params.dt, params);
     }
 
     // ----------------------- PDE Initialization -----------------------
     // Initialize the spatial grid and initial guess for u.
     // The initial ansatz is: u0(x) = A_sol * sech(A_sol*(x - x0)) * exp(i*v0*x)
     // (Optionally, one could refine this guess using Newton's method; here we assume the ansatz is acceptable.)
-    function initPDE(params) {
+    function initPDE(params)
+    {
         let {x_min, x_max, dx, x0, A_sol, v0} = params;
         N = Math.floor((x_max - x_min) / dx);
         pdeGrid = new Array(N);
@@ -758,7 +802,8 @@
         
         let x = new Array(N);
         
-        for (let i = 0; i < N; i++) {
+        for (let i = 0; i < N; i++)
+        {
             pdeGrid[i] = x_min + i * dx;
             let x_val = pdeGrid[i];
             let amplitude = params.A_sol * sech(params.A_sol * (x_val - x0));
@@ -810,29 +855,33 @@
         for (let i = 0; i < N; i++)
         {
             let phase = v0 * x[i];
-            u[i] = math.multiply(u[i], math.exp(math. complex(0, phase)));//math.complex(u[i].re*Math.cos(phase), u[i].im*Math.sin(phase));
-            
+            u[i] = math.multiply(u[i], math.exp(math. complex(0, phase)));
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
-        //console.log("U_pde=",U_pde);
     }
     
-    // For PDE refinement, we define a local potential function using PDE parameters.
-    function potentialForRefinement(x, params) {
-      return 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2);
+    function potentialForRefinement(x, params)
+    {
+        return 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2);
     }
     
     // Helper functions for matrix concatenation:
-    function hconcat(mat1, mat2) {
-      if (mat1.length !== mat2.length) { throw "Matrices must have the same number of rows"; }
-      let res = [];
-      for (let i = 0; i < mat1.length; i++) {
-        res.push(mat1[i].concat(mat2[i]));
-      }
-      return res;
+    function hconcat(mat1, mat2)
+    {
+        if (mat1.length !== mat2.length)
+        {
+          throw "Matrices must have the same number of rows";
+        }
+        let res = [];
+        for (let i = 0; i < mat1.length; i++)
+        {
+            res.push(mat1[i].concat(mat2[i]));
+        }
+        return res;
     }
-    function vconcat(mat1, mat2) {
-      return mat1.concat(mat2);
+    function vconcat(mat1, mat2)
+    {
+        return mat1.concat(mat2);
     }
     
     // --------------------------------------------------------------------
@@ -840,140 +889,144 @@
     // It builds a local grid, computes the initial guess u0 = A_sol*sech(A_sol*(x - xStart))*exp(1j*c*x)
     // and then iterates a Newton method (with a full Jacobian using a finite-difference Laplacian matrix)
     // to refine U, which is a concatenation of real and imaginary parts.
-    function refineNewtonHelper(u0, params, lr = 1) {
-      // We'll override the initial u with our own ansatz on the refinement grid.
-      let g = params.g;  // focusing NLS
-      let L = params.x_min, R = params.x_max;
-      let dx = params.dx;
+    function refineNewtonHelper(u0, params, lr = 1)
+    {
+        // We'll override the initial u with our own ansatz on the refinement grid.
+        let g = params.g;  // focusing NLS
+        let L = params.x_min, R = params.x_max;
+        let dx = params.dx;
 
-      let x = new Array(N);
-      for (let i = 0; i < N; i++)
-      {
+        let x = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
           x[i] = params.x_min + i * dx;
-      }
-      
-      // Use c = 0 for the refinement since it's a steady-state problem
-      let A_sol = params.A_sol
-      let c = 0;
-      // xStart from webpage: use params.x0.
-      let xStart = params.x0;
-      
-      // U: concatenation of real and imaginary parts; will be an array of length 2N.
-      let U = new Array(2 * N);
-      for (let i = 0; i < N; i++) {
-        //console.log(u0[i]);
-        U[i] = u0[i].re;
-        U[i + N] = u0[i].im;
-      }
-      
-      // Compute potential V on the refinement grid.
-      V = new Array(N);
-      for (let i = 0; i < N; i++){
-          V[i] = potentialForRefinement(x[i], params);
-      }
-      //console.log("V =",V);
-      let w_sol = params.omega;
-      
-      let err = Infinity;
-      let max_iter = 100;
-      let iter = 0;
-      
-      // Build the discrete Laplacian matrix D2 (NxN) with periodic boundaries.
-      let D2 = numeric.rep([N, N], 0);
-      for (let i = 0; i < N; i++){
-        D2[i][i] = -2;
-        D2[i][(i+1)%N] = 1;
-        D2[i][(i-1+N)%N] = 1;
-      }
-      D2 = numeric.mul(D2, 1/(dx*dx));
-      //console.log("D2 =", D2);
-      // Indices: first N entries for real parts, next N for imaginary parts.
-      let indR_start = 0, indR_end = N;
-      let indI_start = N, indI_end = 2*N;
-      
-      // Newton iteration.
-      let U2 = new Array(N);
-      let common_term = new Array(N);
-      let Fr = new Array(N), Fi = new Array(N);
-      let diagJ11 = new Array(N), diagJ22 = new Array(N), diagJ12 = new Array(N);
+        }
 
-      while(err > tol && iter < max_iter) {
-        // Extract Ur and Ui from U.
-        let Ur = U.slice(indR_start, indR_end);
-        let Ui = U.slice(indI_start, indI_end);
-        //console.log("Ur =", Ur);
-        //console.log("Ui =", Ui);
+        // Use c = 0 for the refinement since it's a steady-state problem
+        let A_sol = params.A_sol
+        let c = 0;
+        // xStart from webpage: use params.x0.
+        let xStart = params.x0;
 
-        // Compute modulus squared U2 = Ur^2 + Ui^2, elementwise.
-        for (let i = 0; i < N; i++){
-          U2.push(Ur[i]*Ur[i] + Ui[i]*Ui[i]);
+        // U: concatenation of real and imaginary parts; will be an array of length 2N.
+        let U = new Array(2 * N);
+        for (let i = 0; i < N; i++)
+        {
+            //console.log(u0[i]);
+            U[i] = u0[i].re;
+            U[i + N] = u0[i].im;
         }
-        //console.log("U2 =",U2);
-        // Compute common_term = g*U2 + V + w_sol.
-        for (let i = 0; i < N; i++){
-            //console.log(`g=${g}, U2[${i}]=${U2[i]}, V[${i}]=${V[i]}, w_sol = ${w_sol}`);
-            let r = Ur[i], im = Ui[i];
-            U2[i] = r * r + im * im;
-            common_term[i] = g * U2[i] + V[i] + w_sol;
+
+        // Compute potential V on the refinement grid.
+        V = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            V[i] = potentialForRefinement(x[i], params);
         }
-        //console.log("common_term =",common_term);
-        // Compute residual F:
-        // F_r = -0.5 * (D2 * Ur) + common_term .* Ur.
-        // F_i = -0.5 * (D2 * Ui) + common_term .* Ui.
-        let D2Ur = numeric.dot(D2, Ur);
-        let D2Ui = numeric.dot(D2, Ui);
-        //console.log("D2Ur =",D2Ur);
-        //console.log("D2Ui =",D2Ui);
-        for (let i = 0; i < N; i++) {
-          Fr[i] = -0.5 * D2Ur[i] + common_term[i] * Ur[i];
-          Fi[i] = -0.5 * D2Ui[i] + common_term[i] * Ui[i];
+        //console.log("V =",V);
+        let w_sol = params.omega;
+
+        let err = Infinity;
+        let max_iter = 100;
+        let iter = 0;
+
+        // Build the discrete Laplacian matrix D2 (NxN) with periodic boundaries.
+        let D2 = numeric.rep([N, N], 0);
+        for (let i = 0; i < N; i++)
+        {
+            D2[i][i] = -2;
+            D2[i][(i+1)%N] = 1;
+            D2[i][(i-1+N)%N] = 1;
         }
-        //console.log("Fr =",Fr);
-        //console.log("Fi =",Fi);
-        // F is concatenation of Fr and Fi.
-        let F_vec = Fr.concat(Fi);
-        //console.log("F_vec =", F_vec);
-        err = numeric.norm2(F_vec);
-        console.log("Newton iter:", iter, "err =", err);
-        if(err < tol) break;
-        
-        // Build the Jacobian J (2N x 2N).
-        for (let i = 0; i < N; i++) {
-            // J11 = -0.5*D2 + diag( g*(3*Ur^2 + Ui^2) + V + w_sol )
-            diagJ11[i] = g * (3 * Ur[i] * Ur[i] + Ui[i] * Ui[i]) + V[i] + w_sol;
-            // J22 = -0.5*D2 + diag( g*(Ur^2 + 3*Ui^2) + V + w_sol )
-            diagJ22[i] = g * (Ur[i] * Ur[i] + 3 * Ui[i] * Ui[i]) + V[i] + w_sol;
-            // J12 = diag(2 * g * Ur * Ui)
-            diagJ12[i] = 2 * g * Ur[i] * Ui[i];
+        D2 = numeric.mul(D2, 1/(dx*dx));
+        //console.log("D2 =", D2);
+        // Indices: first N entries for real parts, next N for imaginary parts.
+        let indR_start = 0, indR_end = N;
+        let indI_start = N, indI_end = 2*N;
+
+        // Newton iteration.
+        let U2 = new Array(N);
+        let common_term = new Array(N);
+        let Fr = new Array(N), Fi = new Array(N);
+        let diagJ11 = new Array(N), diagJ22 = new Array(N), diagJ12 = new Array(N);
+
+        while(err > tol && iter < max_iter)
+        {
+            // Extract Ur and Ui from U.
+            let Ur = U.slice(indR_start, indR_end);
+            let Ui = U.slice(indI_start, indI_end);
+            //console.log("Ur =", Ur);
+            //console.log("Ui =", Ui);
+            // Compute modulus squared U2 = Ur^2 + Ui^2, elementwise.
+            for (let i = 0; i < N; i++)
+            {
+                U2.push(Ur[i]*Ur[i] + Ui[i]*Ui[i]);
+            }
+            //console.log("U2 =",U2);
+            // Compute common_term = g*U2 + V + w_sol.
+            for (let i = 0; i < N; i++)
+            {
+                //console.log(`g=${g}, U2[${i}]=${U2[i]}, V[${i}]=${V[i]}, w_sol = ${w_sol}`);
+                let r = Ur[i], im = Ui[i];
+                U2[i] = r * r + im * im;
+                common_term[i] = g * U2[i] + V[i] + w_sol;
+            }
+            //console.log("common_term =",common_term);
+            // Compute residual F:
+            // F_r = -0.5 * (D2 * Ur) + common_term .* Ur.
+            // F_i = -0.5 * (D2 * Ui) + common_term .* Ui.
+            let D2Ur = numeric.dot(D2, Ur);
+            let D2Ui = numeric.dot(D2, Ui);
+            //console.log("D2Ur =",D2Ur);
+            //console.log("D2Ui =",D2Ui);
+            for (let i = 0; i < N; i++)
+            {
+                Fr[i] = -0.5 * D2Ur[i] + common_term[i] * Ur[i];
+                Fi[i] = -0.5 * D2Ui[i] + common_term[i] * Ui[i];
+            }
+            //console.log("Fr =",Fr);
+            //console.log("Fi =",Fi);
+            // F is concatenation of Fr and Fi.
+            let F_vec = Fr.concat(Fi);
+            //console.log("F_vec =", F_vec);
+            err = numeric.norm2(F_vec);
+            console.log("Newton iter:", iter, "err =", err);
+            if(err < tol) break;
+            // Build the Jacobian J (2N x 2N).
+            for (let i = 0; i < N; i++)
+            {
+                // J11 = -0.5*D2 + diag( g*(3*Ur^2 + Ui^2) + V + w_sol )
+                diagJ11[i] = g * (3 * Ur[i] * Ur[i] + Ui[i] * Ui[i]) + V[i] + w_sol;
+                // J22 = -0.5*D2 + diag( g*(Ur^2 + 3*Ui^2) + V + w_sol )
+                diagJ22[i] = g * (Ur[i] * Ur[i] + 3 * Ui[i] * Ui[i]) + V[i] + w_sol;
+                // J12 = diag(2 * g * Ur * Ui)
+                diagJ12[i] = 2 * g * Ur[i] * Ui[i];
+            }
+            let J11 = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagJ11));
+            let J22 = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagJ22));
+            let J12 = numeric.diag(diagJ12);
+            // Assemble full Jacobian J as a block matrix:
+            let top = hconcat(J11, J12);
+            let bottom = hconcat(J12, J22);
+            let J = vconcat(top, bottom);
+            // Solve for Newton correction: J * DU = -F_vec.
+            let DU = numeric.solve(J, numeric.neg(F_vec));
+            // Update U: with learning rate lr=1.
+            U = numeric.add(U, numeric.mul(lr, DU));
+            iter += 1;
         }
-        let J11 = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagJ11));
-        let J22 = numeric.add(numeric.mul(D2, -0.5), numeric.diag(diagJ22));
-        let J12 = numeric.diag(diagJ12);
-        // Assemble full Jacobian J as a block matrix:
-        let top = hconcat(J11, J12);
-        let bottom = hconcat(J12, J22);
-        let J = vconcat(top, bottom);
-        
-        // Solve for Newton correction: J * DU = -F_vec.
-        let DU = numeric.solve(J, numeric.neg(F_vec));
-        
-        // Update U: with learning rate lr=1.
-        U = numeric.add(U, numeric.mul(lr, DU));
-        
-        iter += 1;
-      }
-      
-      // Rebuild refined u from U: first N entries are real, next N are imaginary.
-      let refined_u = new Array(N);
-      for (let i = 0; i < N; i++) {
-        refined_u[i] = math.complex(U[i], U[i + N]);
-      }
-      
-      //console.log("Newton refinement completed in", iter, "iterations; final err =", err);
-      return [refined_u, err, D2, x];
+        // Rebuild refined u from U: first N entries are real, next N are imaginary.
+        let refined_u = new Array(N);
+        for (let i = 0; i < N; i++)
+        {
+            refined_u[i] = math.complex(U[i], U[i + N]);
+        }
+        //console.log("Newton refinement completed in", iter, "iterations; final err =", err);
+        return [refined_u, err, D2, x];
     }
 
-    function refineNewton(u, params) {
+    function refineNewton(u, params)
+    {
         let lr = 1;
         let err = Infinity;
         let maxIter = 10;
@@ -981,13 +1034,8 @@
         let u0 = u.slice();
         //console.log("u0=",u0);
         progress = 0;
-
-        // Show the progress bar:
-        // window.document.getElementById("newtonProgressContainer").style.display = "block";
-        //window.document.getElementById("newtonProgressBar").style.width = "0%";
-        //window.document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", "0");
-        
-        do {
+        do
+        {
             console.log("lr=", lr);
             //params = getParameters()
             [u, err, D2, x] = refineNewtonHelper(u0.slice(), params, lr);
@@ -1039,150 +1087,168 @@
     }
 
     // ----------------------- Plotly Initialization & Update -----------------------
-    function initPlots(params) {
-      // ODE plot: potential and particle marker.
-      let odePotential = pdeGrid.map(x => 0.5 * params.Omega * params.Omega * x * x + params.A * Math.pow(sech(params.b * x), 2));
-      let initialODEPotential = 0.5 * params.Omega * params.Omega * params.x0 * params.x0 + params.A * Math.pow(sech(params.b * params.x0), 2);
-      
-      let odeTracePotential = {
-        x: pdeGrid,
-        y: odePotential,
-        mode: 'lines',
-        name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
-      };
-      let odeTraceParticle = {
-        x: [params.x0],
-        y: [initialODEPotential],
-        mode: 'markers',
-        marker: { size: 12, color: 'red' },
-        name: 'Particle'
-      };
-      let odeLayout = {
-        title: 'ODE: Particle in Potential',
-        xaxis: { title: 'x' },
-        yaxis: { title: 'Potential Energy' },
-        annotations: [{
-          xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
-          text: 'Time: 0.00', showarrow: false, font: { size: 16 }
-        }]
-      };
-      Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
-      
-      // PDE plot: potential and soliton density.
-      pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-      //console.log("u=",u);
-      //console.log("pdeGrid=",pdeGrid);
-      let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
-      let pdeTracePotential = {
-        x: pdeGrid,
-        y: pdePotential,
-        mode: 'lines',
-        name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
-      };
-      let pdeTraceDensity = {
-        x: pdeGrid,
-        y: density,
-        mode: 'lines',
-        name: 'Soliton Density $$|u|^2$$'
-      };
-      let pdeLayout = {
-        title: 'PDE: Soliton in Potential',
-        xaxis: { title: 'x' },
-        yaxis: { title: 'Energy / Density' },
-        annotations: [{
-          xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
-          text: 'Time: 0.00', showarrow: false, font: { size: 16 }
-        }]
-      };
-      Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
+    function initPlots(params)
+    {
+        // ODE plot: potential and particle marker.
+        let odePotential = pdeGrid.map(x => 0.5 * params.Omega * params.Omega * x * x + params.A * Math.pow(sech(params.b * x), 2));
+        let initialODEPotential = 0.5 * params.Omega * params.Omega * params.x0 * params.x0 + params.A * Math.pow(sech(params.b * params.x0), 2);
+
+        let odeTracePotential =
+        {
+            x: pdeGrid,
+            y: odePotential,
+            mode: 'lines',
+            name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
+        };
+        let odeTraceParticle =
+        {
+            x: [params.x0],
+            y: [initialODEPotential],
+            mode: 'markers',
+            marker: { size: 12, color: 'red' },
+            name: 'Particle'
+        };
+        let odeLayout =
+        {
+            title: 'ODE: Particle in Potential',
+            xaxis: { title: 'x' },
+            yaxis: { title: 'Potential Energy' },
+            annotations:
+            [{
+                xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+                text: 'Time: 0.00', showarrow: false, font: { size: 16 }
+            }]
+        };
+        Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
+        // PDE plot: potential and soliton density.
+        pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
+        //console.log("u=",u);
+        //console.log("pdeGrid=",pdeGrid);
+        let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
+        let pdeTracePotential =
+        {
+            x: pdeGrid,
+            y: pdePotential,
+            mode: 'lines',
+            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
+        };
+        let pdeTraceDensity =
+        {
+            x: pdeGrid,
+            y: density,
+            mode: 'lines',
+            name: 'Soliton Density $$|u|^2$$'
+        };
+        let pdeLayout =
+        {
+            title: 'PDE: Soliton in Potential',
+            xaxis: { title: 'x' },
+            yaxis: { title: 'Energy / Density' },
+            annotations:
+            [{
+                xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+                text: 'Time: 0.00', showarrow: false, font: { size: 16 }
+            }]
+        };
+        Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
     }
 
-    function updatePlots(params) {
-      // Update ODE particle position:
-      let currentODEPotential = 0.5 * params.Omega * params.Omega * odeState.x * odeState.x + params.A * Math.pow(sech(params.b * odeState.x), 2);
-      Plotly.update('odePlot', {
-        x: [[odeState.x]],
-        y: [[currentODEPotential]]
-      }, {}, [1]);
-      Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
-      
-      // Update PDE density:
-      //console.log("u=",u);
-      pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-      //console.log("u=",u);
-      let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
-      let pdeTracePotential = {
-        x: pdeGrid,
-        y: pdePotential,
-        mode: 'lines',
-        name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
-      };
-      let pdeTraceDensity = {
-        x: pdeGrid,
-        y: density,
-        mode: 'lines',
-        name: 'Soliton Density $$|u|^2$$'
-      };
-      let pdeLayout = {
-        title: 'PDE: Soliton in Potential',
-        xaxis: { title: 'x' },
-        yaxis: { title: 'Energy / Density' },
-        annotations: [{
-          xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
-          text: `Time: ${currentTime.toFixed(2)}`, showarrow: false, font: { size: 16 }
-        }]
-      };
-      Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
+    function updatePlots(params)
+    {
+        // Update ODE particle position:
+        let currentODEPotential = 0.5 * params.Omega * params.Omega * odeState.x * odeState.x + params.A * Math.pow(sech(params.b * odeState.x), 2);
+        Plotly.update('odePlot',
+        {
+            x: [[odeState.x]],
+            y: [[currentODEPotential]]
+        }, {}, [1]);
+        Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
+        // Update PDE density:
+        //console.log("u=",u);
+        pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
+        //console.log("u=",u);
+        let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
+        let pdeTracePotential =
+        {
+            x: pdeGrid,
+            y: pdePotential,
+            mode: 'lines',
+            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
+        };
+        let pdeTraceDensity =
+        {
+            x: pdeGrid,
+            y: density,
+            mode: 'lines',
+            name: 'Soliton Density $$|u|^2$$'
+        };
+        let pdeLayout =
+        {
+            title: 'PDE: Soliton in Potential',
+            xaxis: { title: 'x' },
+            yaxis: { title: 'Energy / Density' },
+            annotations:
+            [{
+                xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+                text: `Time: ${currentTime.toFixed(2)}`, showarrow: false, font: { size: 16 }
+            }]
+        };
+        Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
-    function initSimulations() {
-      let params = getParameters();
-      currentTime = 0;
-      // Initialize ODE state:
-      odeState = { x: params.x0, v: params.v0 };
-      // Initialize PDE grid and initial condition:
-      initPDE(params);
-      initPlots(params);
+    function initSimulations()
+    {
+        let params = getParameters();
+        currentTime = 0;
+        // Initialize ODE state:
+        odeState = { x: params.x0, v: params.v0 };
+        // Initialize PDE grid and initial condition:
+        initPDE(params);
+        initPlots(params);
     }
 
-    function simulationStep() {
-      let params = getParameters();
-      // Update ODE state with RK4:
-      odeState = rk4Step(odeState.x, odeState.v, params.dt, params);
-      currentTime += params.dt;
-      
-      // Update PDE using our RK4 integrator:
-      //console.log("u=",u);
-      //pdeStep(params);
-      pdeStep_dop853(params);
-        
-      if (currentTime >= params.T) {
-        clearInterval(simInterval);
-        simulationRunning = false;
-        if (document.getElementById("loopToggle").checked) {
-          setTimeout(() => {
-            initSimulations();
-            simInterval = setInterval(simulationStep, 0);
-            plotInterval = setInterval(plotStep, params.stepsPerUpdate);
-            simulationRunning = true;
-          }, 0);
+    function simulationStep()
+    {
+        let params = getParameters();
+        // Update ODE state with RK4:
+        odeState = rk4Step(odeState.x, odeState.v, params.dt, params);
+        currentTime += params.dt;
+        // Update PDE using our RK4 integrator:
+        //console.log("u=",u);
+        //pdeStep(params);
+        pdeStep_dop853(params);
+        if (currentTime >= params.T)
+        {
+            clearInterval(simInterval);
+            simulationRunning = false;
+            if (document.getElementById("loopToggle").checked)
+            {
+                setTimeout(() =>
+                {
+                    initSimulations();
+                    simInterval = setInterval(simulationStep, 0);
+                    plotInterval = setInterval(plotStep, params.stepsPerUpdate);
+                    simulationRunning = true;
+                }, 0);
+            }
         }
-      }
     }
     
     function plotStep()
     {
         let params = getParameters();
         updatePlots(params);
-        if (currentTime >= params.T) {
+        if (currentTime >= params.T)
+        {
             clearInterval(plotInterval);
         }
     }
     
     // sleep time expects milliseconds
-    function sleep (time) {
-      return new Promise((resolve) => setTimeout(resolve, time));
+    function sleep (time)
+    {
+        return new Promise((resolve) => setTimeout(resolve, time));
     }
     
     const conj = (z) => ({ re: z.re, im: -z.im });
@@ -1196,7 +1262,8 @@
     // - V         (the potential vector evaluated on the grid)
     // - u         (the steady state solution, as an array of length N with complex numbers from math.js)
     // - N         (the number of grid points)
-    function computeEigenspectrum(params) {
+    function computeEigenspectrum(params)
+    {
         N = params.N;
         let g = params.g;
         const wfreq = params.wfreq;
@@ -1435,16 +1502,9 @@
 
     // Example of using the function:
     // Assume params is built from getParameters() and that you have computed u, D2, V, N, g, wfreq as appropriate.
-    document.getElementById("computeSpectrumBtn").addEventListener("click", function() {
+    document.getElementById("computeSpectrumBtn").addEventListener("click", function()
+    {
         let params = getParameters();
-        // You must compute or obtain u, D2, V, and set N, g and wfreq appropriately.
-        // For example:
-        //   params.u = computed steady-state solution as an array of math.complex numbers (length N)
-        //   params.D2 = numeric.js matrix for the Laplacian (N x N)
-        //   params.V  = potential array (length N)
-        //   params.N  = N
-        //   params.g  = nonlinearity coefficient (e.g. -1 for focusing)
-        //   params.wfreq = the chemical potential or steady-state frequency.
         let {x_min, x_max, dx, x0, A_sol, v0} = params;
         params.N = Math.floor((x_max - x_min) / dx);
         N = params.N;
@@ -1455,7 +1515,8 @@
         u = new Array(N);
         let U_init = new Float64Array(2 * N);
         pdeGrid = new Array(N);
-        for (let i = 0; i < params.N; i++) {
+        for (let i = 0; i < params.N; i++)
+        {
             pdeGrid[i] = x_min + i * dx;
             x_val = pdeGrid[i];
             let amplitude = A_sol * sech(A_sol * (x_val - x0));
@@ -1500,7 +1561,8 @@
         Module._free(resultPtr);
         
         params.V = new Array(N);
-        for (let i = 0; i < N; i++){
+        for (let i = 0; i < N; i++)
+        {
             params.V[i] = potentialForRefinement(x[i], params);
         }
 
@@ -1510,14 +1572,16 @@
         console.log("Eigenmodes:", spectrum.eigenmodes);
 
         // Plot the eigenvalues (Re vs Im) on the left.
-        let eigenvalueTrace = {
+        let eigenvalueTrace =
+        {
             x: spectrum.eigenvalues.map(z => z.re),
             y: spectrum.eigenvalues.map(z => z.im),
             mode: 'markers',
             marker: { size: 8 },
             name: 'Eigenvalues'
         };
-        let eigenvalueLayout = {
+        let eigenvalueLayout =
+        {
             title: 'Eigenvalue Spectrum',
             xaxis: { title: 'Re(λ)' },
             yaxis: { title: 'Im(λ)' }
@@ -1530,17 +1594,11 @@
         else
         {
             document.getElementById("eigenvaluePlot").innerHTML = `<b style='color:blue'>${spectrum.eigenvalues.length} eigenvalues and ${spectrum.eigenmodes.length} eigenvectors found</b> (<a href="https://eigen.tuxfamily.org/" target="_blank">C++ Eigen</a> <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/index.html" target="_blank">Emscripten</a> ftw)`;
-            
-            
             const residual = Module.ccall('getLastResidual', 'number', [], []);
             document.getElementById("eigenvaluePlot").innerHTML +=
               '$$\\text{Max residual: }\\|Av - \\lambda v\\| ='+`${toLatexExp(residual, 2)}`+"$$";
-              
-
             // Force MathJax to reprocess math in the page
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "eigenvaluePlot"]);
-
-            
         }
         Plotly.newPlot('eigenvaluePlot', [eigenvalueTrace], eigenvalueLayout);
 
@@ -1551,7 +1609,8 @@
     });
 
     // ----------------------- Event Listeners -----------------------
-    document.getElementById("startBtn").addEventListener("click", function() {
+    document.getElementById("startBtn").addEventListener("click", function()
+    {
         if (!simulationRunning)
         {
             // Set up an interval to update the progress bar every second.
@@ -1579,22 +1638,38 @@
                 alert("Warning: CFL condition violated.");
             }
             initSimulations();
-            simInterval = setInterval(simulationStep, 0);
+            simInterval = setInterval(simulationStep, 0); //TODO: Replace with SimulateAMAPinCPP or something like that
+            // Pseudo-code for your CPP sim step idea
+            /*
+             for (int i = 0; i < stepsPerSend; ++i)
+             {
+                 doODEstep();
+                 doPDEstep();
+                 time += dt;
+             }
+             if (time >= plotUpdateTime)
+             {
+                 sendToJS();
+             }
+             */
             plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
         }
     });
-    document.getElementById("stopBtn").addEventListener("click", function() {
+    document.getElementById("stopBtn").addEventListener("click", function()
+    {
         //console.log("simulationRunning=",simulationRunning);
-      if (simulationRunning) {
-        clearInterval(simInterval);
-        clearInterval(plotInterval)
-        simulationRunning = false;
-      }
+        if (simulationRunning)
+        {
+            clearInterval(simInterval);
+            clearInterval(plotInterval)
+            simulationRunning = false;
+        }
     });
-    window.addEventListener("resize", function() {
-      Plotly.Plots.resize(document.getElementById("odePlot"));
-      Plotly.Plots.resize(document.getElementById("pdePlot"));
+    window.addEventListener("resize", function()
+    {
+        Plotly.Plots.resize(document.getElementById("odePlot"));
+        Plotly.Plots.resize(document.getElementById("pdePlot"));
     });
     
     </script>
@@ -1603,5 +1678,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </body>
-    </html>
+  </body>
+</html>
