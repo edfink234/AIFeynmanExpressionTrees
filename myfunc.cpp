@@ -24,13 +24,57 @@ extern "C"
         return 1.0 / cosh(x);
     }
 }
-extern "C" {
+
+extern "C"
+{
     EMSCRIPTEN_KEEPALIVE
-    double getLastResidual() {
+    double getCurrentTime() { return current_time; }
+
+    EMSCRIPTEN_KEEPALIVE
+    double getXParticle() { return x_particle; }
+
+    EMSCRIPTEN_KEEPALIVE
+    double getVParticle() { return v_particle; }
+
+    EMSCRIPTEN_KEEPALIVE
+    double* getPsiPointer() { return psi_buffer; }  // Or similar
+}
+
+
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+
+    void stepForPlotInterval(double maxMillis)
+    {
+        using clock = std::chrono::high_resolution_clock;
+        auto start = clock::now();
+
+        while (current_time < total_time)
+        {
+            doODEstep(); // RK4 particle update
+            doPDEstep(); // Split-step or RK4 PDE update
+            current_time += dt;
+
+            auto now = clock::now();
+            double elapsed = std::chrono::duration<double, std::milli>(now - start).count();
+            if (elapsed >= maxMillis)
+                break;
+        }
+    }
+}
+
+
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+    double getLastResidual()
+    {
         return lastResidual;
     }
     EMSCRIPTEN_KEEPALIVE
-    double getNLSResidual() {
+    double getNLSResidual()
+    {
         return lastNLSResidual;
     }
 }
@@ -84,17 +128,22 @@ extern "C"
         std::iota(indices.begin(), indices.end(), 0);
 
         // === STEP 2: Sort indices by descending real part of eigenvalues
-        std::sort(indices.begin(), indices.end(), [&](int i, int j) {
+        std::sort(indices.begin(), indices.end(), [&](int i, int j)
+        {
             return lambdas[i].real() > lambdas[j].real();
         });
 
         // === STEP 3: Allocate output buffer
         int totalDoubles = 2 * N + 2 * N * N;
         double* output = (double*) malloc(totalDoubles * sizeof(double));
-        if (!output) return nullptr;
+        if (!output)
+        {
+            return nullptr;
+        }
 
         // === STEP 4: Write sorted eigenvalues
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++)
+        {
             int idx = indices[i];
             std::complex<double> lambda = lambdas[idx];
             output[2 * i]     = lambda.real();
@@ -102,10 +151,12 @@ extern "C"
         }
 
         // === STEP 5: Write sorted eigenvectors (column-major: each col is a vec)
-        for (int j = 0; j < N; j++) {
+        for (int j = 0; j < N; j++)
+        {
             int idx = indices[j];  // get sorted index
             VectorXcd v = vectors.col(idx);
-            for (int i = 0; i < N; i++) {
+            for (int i = 0; i < N; i++)
+            {
                 int outIdx = 2 * N + 2 * (j * N + i);  // after eigenvalues
                 output[outIdx]     = v(i).real();
                 output[outIdx + 1] = v(i).imag();
@@ -114,7 +165,8 @@ extern "C"
         
         // Compute accuracy: ||Mv - lambda*v|| for each eigenpair
         double max_residual = 0.0;
-        for (int j = 0; j < N; j++) {
+        for (int j = 0; j < N; j++)
+        {
             VectorXcd v = ces.eigenvectors().col(j);
             complex<double> lambda = ces.eigenvalues()(j);
             VectorXcd residual = M * v - lambda * v;
@@ -131,13 +183,15 @@ extern "C"
 
 // Define a functor for Levenberg-Marquardt
 template<typename T>
-struct NLSResidualFunctor {
+struct NLSResidualFunctor
+{
     using Scalar = T;
     using InputType = Eigen::Matrix<T, Eigen::Dynamic, 1>;
     using ValueType = Eigen::Matrix<T, Eigen::Dynamic, 1>;
     using JacobianType = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
 
-    enum {
+    enum
+    {
         InputsAtCompileTime = Eigen::Dynamic,
         ValuesAtCompileTime = Eigen::Dynamic
     };
@@ -155,19 +209,22 @@ struct NLSResidualFunctor {
     int values() const { return 2 * N; }       // Residual vector size
 
     // Computes F(x) = residual vector
-    int operator()(const Eigen::VectorXd& U, Eigen::VectorXd& F) const {
+    int operator()(const Eigen::VectorXd& U, Eigen::VectorXd& F) const
+    {
         Eigen::VectorXd Ur = U.head(N);
         Eigen::VectorXd Ui = U.tail(N);
         Eigen::VectorXd D2Ur(N), D2Ui(N);
 
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i)
+        {
             int ip = (i + 1) % N;
             int im = (i - 1 + N) % N;
             D2Ur[i] = (Ur[ip] - 2 * Ur[i] + Ur[im]) / (dx * dx);
             D2Ui[i] = (Ui[ip] - 2 * Ui[i] + Ui[im]) / (dx * dx);
         }
 
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i)
+        {
             double r = Ur[i], im = Ui[i];
             double U2 = r*r + im*im;
             double common = g * U2 + V[i] + omega;
@@ -177,12 +234,14 @@ struct NLSResidualFunctor {
         return 0;
     }
     
-    int df(const InputType& U, JacobianType& J) const {
+    int df(const InputType& U, JacobianType& J) const
+    {
         Eigen::VectorXd Ur = U.head(N);
         Eigen::VectorXd Ui = U.tail(N);
 
         Eigen::MatrixXd D2 = Eigen::MatrixXd::Zero(N, N);
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i)
+        {
             D2(i, i) = -2;
             D2(i, (i + 1) % N) = 1;
             D2(i, (i - 1 + N) % N) = 1;
@@ -190,7 +249,8 @@ struct NLSResidualFunctor {
         D2 /= (dx * dx);
 
         Eigen::VectorXd diagJ11(N), diagJ22(N), diagJ12(N);
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i)
+        {
             double r = Ur[i], im = Ui[i];
             diagJ11[i] = g * (3 * r * r + im * im) + V[i] + omega;
             diagJ22[i] = g * (r * r + 3 * im * im) + V[i] + omega;
@@ -211,53 +271,55 @@ struct NLSResidualFunctor {
     }
 };
 
-extern "C" {
-EMSCRIPTEN_KEEPALIVE
-double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM) {
-    Eigen::VectorXd U(2 * N);
-    for (int i = 0; i < 2 * N; ++i)
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+    double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM)
     {
-        U[i] = U_init[i];
-    }
-    
-    Eigen::VectorXd F(2 * N);
-    NLSResidualFunctor<double> functor(N, dx, V, g, omega);
-    
-    if (useLM)
-    {
-        //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
-        //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
-        Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
-        lm.parameters.maxfev = 10000;
-        lm.parameters.xtol = 1e-10;
-        lm.minimize(U);
-        functor(U, F);
-    }
-    else
-    {
-        // Simple Newton with fixed iterations and learning rate
-        Eigen::VectorXd DU(2 * N);
-        for (int iter = 0; iter < 10; ++iter)
+        Eigen::VectorXd U(2 * N);
+        for (int i = 0; i < 2 * N; ++i)
         {
-            functor(U, F);
-            lastNLSResidual = F.norm();
-            std::cout << "iter " << iter << ", " << "||F|| = " << lastNLSResidual
-            << std::endl;
-            if (lastNLSResidual < 1e-10) break;
-            Eigen::MatrixXd J(2 * N, 2 * N);
-            functor.df(U, J);
-            DU = J.ldlt().solve(-F);  // Or .ldlt() if symmetric
-            U += DU;
+            U[i] = U_init[i];
         }
-    }
+        
+        Eigen::VectorXd F(2 * N);
+        NLSResidualFunctor<double> functor(N, dx, V, g, omega);
+        
+        if (useLM)
+        {
+            //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
+            //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
+            Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
+            lm.parameters.maxfev = 10000;
+            lm.parameters.xtol = 1e-10;
+            lm.minimize(U);
+            functor(U, F);
+        }
+        else
+        {
+            // Simple Newton with fixed iterations and learning rate
+            Eigen::VectorXd DU(2 * N);
+            for (int iter = 0; iter < 10; ++iter)
+            {
+                functor(U, F);
+                lastNLSResidual = F.norm();
+                std::cout << "iter " << iter << ", " << "||F|| = " << lastNLSResidual
+                << std::endl;
+                if (lastNLSResidual < 1e-10) break;
+                Eigen::MatrixXd J(2 * N, 2 * N);
+                functor.df(U, J);
+                DU = J.ldlt().solve(-F);  // Or .ldlt() if symmetric
+                U += DU;
+            }
+        }
 
-    lastNLSResidual = F.norm();  // L2 norm of residual
-    // Allocate result
-    double* result = (double*) malloc(sizeof(double) * 2 * N);
-    if (!result) return nullptr;
-    for (int i = 0; i < 2 * N; ++i) result[i] = U[i];
-    return result;
-}
+        lastNLSResidual = F.norm();  // L2 norm of residual
+        // Allocate result
+        double* result = (double*) malloc(sizeof(double) * 2 * N);
+        if (!result) return nullptr;
+        for (int i = 0; i < 2 * N; ++i) result[i] = U[i];
+        return result;
+    }
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
