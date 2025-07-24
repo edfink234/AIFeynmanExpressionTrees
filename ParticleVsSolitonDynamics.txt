@@ -389,8 +389,7 @@
     // Retrieve parameters from input fields
     function getParameters()
     {
-        return
-        {
+        return {
             // Shared
             x0: parseFloat(document.getElementById("x0").value),
             v0: parseFloat(document.getElementById("v0").value),
@@ -561,8 +560,7 @@
                     1e-12 : a);
                 rtol.push((typeof r === "undefined" || r < 0) ? 1e-6 : r);
             }
-            return
-            {
+            return {
                 atol: atol,
                 rtol: rtol,
                 maxiter: userOptions === null || userOptions === void 0 ? void 0 : userOptions.maxiter,
@@ -672,10 +670,11 @@
         }
         // Compute u_xx with periodic BCs.
         let u_xx = new Array(N);
-        for (let i = 0; i < N; i++) {
-        let ip = (i + 1) % N;
-        let im = (i - 1 + N) % N;
-        u_xx[i] = math.divide(math.add(math.subtract(u_complex[ip], math.multiply(2, u_complex[i])), u_complex[im]),dx * dx);
+        for (let i = 0; i < N; i++)
+        {
+            let ip = (i + 1) % N;
+            let im = (i - 1 + N) % N;
+            u_xx[i] = math.divide(math.add(math.subtract(u_complex[ip], math.multiply(2, u_complex[i])), u_complex[im]),dx * dx);
         }
         // Compute potential V(x) on our grid.
         V = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x +
@@ -899,7 +898,7 @@
         let x = new Array(N);
         for (let i = 0; i < N; i++)
         {
-          x[i] = params.x_min + i * dx;
+            x[i] = params.x_min + i * dx;
         }
 
         // Use c = 0 for the refinement since it's a steady-state problem
@@ -1040,29 +1039,6 @@
             //params = getParameters()
             [u, err, D2, x] = refineNewtonHelper(u0.slice(), params, lr);
             iter += 1;
-            // Update progress (as percentage of maxIter):
-            progress = Math.min(100, (iter / maxIter) * 100);
-            // const progressBar = document.getElementById("newtonProgressBar");
-            // console.log("progress = "+ progressBar.value);
-            /*const interval = setInterval(() => {
-                setTimeout(() => {
-                    progressBar.value = progress;
-                    progressBar.setAttribute("value", progress);
-                }, 100);
-                progressBar.value = progress;
-                progressBar.setAttribute("value", progress);
-            }, 50); *///TODO: Investigate web workers https://gemini.google.com/app/7f7019458576a6f5
-            //console.log("progressBar.outerHTML=\n"+progressBar.outerHTML);
-            //document.getElementById("newtonProgressBar").setAttribute("aria-valuenow", progress);
-            //setTimeout(() => {document.getElementById("newtonProgressBar").outerHTML =
-            //String.raw`
-            //<div id="newtonProgressBar" class="progress-bar" role="progressbar" style="width: ${progress}%;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
-            //`}, 0);
-            //console.log(document.getElementById("newtonProgressBar"));
-            /*if (document.getElementById("applyAlertToggle").checked && iter % 2 === 0)
-            {
-                alert(`Newton ${progress}% done\n(press return to continue)`);
-            }*/
             lr *= 0.9;
         } while (err > tol && iter < maxIter);
 
