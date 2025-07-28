@@ -32,7 +32,7 @@
     console.log("Hello");
     window.cppReady = createModule().then((Module) => {
       window.Module = Module;
-      // Now you can call your C function from JavaScript.
+      // Now you can call your C function (f) from JavaScript.
       const result = Module.ccall('sech',      // C function name
                                    'number', // return type
                                    ['number'], // argument type(s)
@@ -41,14 +41,8 @@
       window.sech = Module.cwrap('sech', 'number', ['number']); //put sech in global scope
       console.log("Result of sech(Math.PI/4) =", sech(Math.PI / 4));
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
-      window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
-      window.stepForPlotInterval = Module.cwrap('stepForPlotInterval', null, ['number']);
-      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number']);
-      // getters for ode and pde simulations
-      window.getXParticle  = Module.cwrap('getXParticle','number',[]);
-      window.getVParticle  = Module.cwrap('getVParticle','number',[]);
-      window.getCurrentTime  = Module.cwrap('getCurrentTime','number',[]);
-      window.getPsiPointer  = Module.cwrap('getPsiPointer','number',[]);
+      window.refineCpp = Module.cwrap('refineCpp', 'number',
+          ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
 
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
@@ -95,7 +89,7 @@
         </div>
         <div class="form-group">
           <label for="stepsPerUpdate">How often to update the plot (milli-seconds)</label>
-          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="1">
+          <input type="number" step="1" min="1" class="form-control" id="stepsPerUpdate" value="100">
         </div>
 <!--        <h4>Spatial Parameters</h4>-->
         <div class="form-group">
@@ -285,6 +279,7 @@
     });
     });
     let simInterval = null;
+    let plotInterval = null;
     let currentTime = 0;
     let simulationRunning = false;
     let tol = 1e-10; //For Newton refinement
@@ -436,7 +431,6 @@
     // ---------------------- ODE Simulation ----------------------
     function odeRHS(x, v, params)
     {
-        //(-Ω² x + 2 A b sech²(bx) tanh(bx)) / m
         let acceleration = (-params.Omega * params.Omega * x + 2 * params.A * params.b * Math.pow(sech(params.b * x), 2) * Math.tanh(params.b * x)) / params.m;
         return {dx: v, dv: acceleration};
     }
@@ -787,6 +781,7 @@
     // The PDE step simply applies one RK4 time step.
     function pdeStep(params)
     {
+        //console.log("u=",u);
         u = pdeRK4Step(u, params.dt, params);
     }
 
@@ -859,7 +854,7 @@
         for (let i = 0; i < N; i++)
         {
             let phase = v0 * x[i];
-            u[i] = math.multiply(u[i], math.exp(math.complex(0, phase)));
+            u[i] = math.multiply(u[i], math.exp(math. complex(0, phase)));
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
     }
@@ -1103,21 +1098,9 @@
         Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
         // PDE plot: potential and soliton density.
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-        // --- grab ψ (length 2N doubles) from WASM -----------------------
-        const ptrPsi   = getPsiPointer();
-        const psiView  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
-
-        // build |u|² on the fly
-        const density = new Array(params.N);
-        for (let i = 0; i < params.N; ++i)
-        {
-            const Re = psiView[2*i];
-            const Im = psiView[2*i + 1];
-            density[i] = Re*Re + Im*Im;
-        }
         //console.log("u=",u);
         //console.log("pdeGrid=",pdeGrid);
-        //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
+        let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
         let pdeTracePotential =
         {
             x: pdeGrid,
@@ -1157,18 +1140,10 @@
         }, {}, [1]);
         Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
         // Update PDE density:
+        //console.log("u=",u);
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
-        //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
-        // --- grab ψ (length 2N doubles) from WASM -----------------------
-
-        // build |u|² on the fly
-        const density = new Array(params.N);
-        for (let i = 0; i < params.N; ++i)
-        {
-            const Re = u[i];
-            const Im = u[N + i];
-            density[i] = Re*Re + Im*Im;
-        }
+        //console.log("u=",u);
+        let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
         let pdeTracePotential =
         {
             x: pdeGrid,
@@ -1200,9 +1175,7 @@
     // ----------------------- Simulation Initialization & Loop -----------------------
     function initSimulations()
     {
-        const params = getParameters();
-        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol);
-        console.log(`setSimParameters called with ${params.dt} ${params.T} ${params.N} ${params.m} ${params.Omega} ${params.A} ${params.b} ${params.x0} ${params.v0} ${params.dx} ${params.Omega_pde} ${params.A_pde} ${params.b_pde}`)
+        let params = getParameters();
         currentTime = 0;
         // Initialize ODE state:
         odeState = { x: params.x0, v: params.v0 };
@@ -1215,11 +1188,11 @@
     {
         let params = getParameters();
         // Update ODE state with RK4:
-        //odeState = rk4Step(odeState.x, odeState.v, params.dt, params);
-        //currentTime += params.dt;
+        odeState = rk4Step(odeState.x, odeState.v, params.dt, params);
+        currentTime += params.dt;
         // Update PDE using our RK4 integrator:
         //console.log("u=",u);
-        //pdeStep(params);
+        pdeStep(params);
         //pdeStep_dop853(params);
         if (currentTime >= params.T)
         {
@@ -1230,19 +1203,8 @@
                 setTimeout(() =>
                 {
                     initSimulations();
-                    let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-                    simInterval = setInterval(() =>
-                    {
-                        plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-                        stepForPlotInterval(plotEveryMs);
-                        const ptrPsi   = getPsiPointer();
-                        u  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
-                        odeState.x = getXParticle();        // fresh position
-                        odeState.v = getVParticle();        // fresh velocity
-                        currentTime = getCurrentTime();     // C++ clock
-                        //simulationStep();
-                        plotStep(); // update both plots right after stepping
-                    }, plotEveryMs);
+                    simInterval = setInterval(simulationStep, 0);
+                    plotInterval = setInterval(plotStep, params.stepsPerUpdate);
                     simulationRunning = true;
                 }, 0);
             }
@@ -1253,6 +1215,10 @@
     {
         let params = getParameters();
         updatePlots(params);
+        if (currentTime >= params.T)
+        {
+            clearInterval(plotInterval);
+        }
     }
     
     // sleep time expects milliseconds
@@ -1648,21 +1614,7 @@
                 alert("Warning: CFL condition violated.");
             }
             initSimulations();
-            //simInterval = setInterval(simulationStep, 0);
-            let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-            simInterval = setInterval(() =>
-            {
-                plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-                stepForPlotInterval(plotEveryMs);
-                const ptrPsi   = getPsiPointer();
-                u  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
-                odeState.x = getXParticle();        // fresh position
-                odeState.v = getVParticle();        // fresh velocity
-                currentTime = getCurrentTime();     // C++ clock
-                //simulationStep();
-                plotStep(); // update both plots right after stepping
-            }, plotEveryMs);
-
+            simInterval = setInterval(simulationStep, 0); //TODO: Replace with SimulateAMAPinCPP or something like that
             // Pseudo-code for your CPP sim step idea
             /*
              for (int i = 0; i < stepsPerSend; ++i)
@@ -1676,6 +1628,7 @@
                  sendToJS();
              }
              */
+            plotInterval = setInterval(plotStep, params.stepsPerUpdate);
             simulationRunning = true;
         }
     });
@@ -1685,6 +1638,7 @@
         if (simulationRunning)
         {
             clearInterval(simInterval);
+            clearInterval(plotInterval)
             simulationRunning = false;
         }
     });
