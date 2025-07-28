@@ -175,7 +175,7 @@ extern "C"
         while (current_time < total_time)
         {
             doODEstep(); // RK4 particle update
-            printf("u[%d] = %lf + %lfi\n", Npsi/3, RE(Npsi/3), IM(Npsi/3));
+            //printf("u[%d] = %lf + %lfi\n", Npsi/3, RE(Npsi/3), IM(Npsi/3));
             doPDEstep(); // Split-step or RK4 PDE update
             current_time += dt;
 
@@ -242,7 +242,7 @@ extern "C"
             RE(i) = amp * std::cos(phase);
             IM(i) = amp * std::sin(phase);
         }
-        printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
+        //printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
     }
 }
 
