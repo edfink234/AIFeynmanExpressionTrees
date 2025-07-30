@@ -14,6 +14,9 @@
 using namespace Eigen;
 using std::complex;
 
+/* --- contiguous storage helpers --------------------------------- */
+#define RE(i)  (psi_buffer[(i)])          /* 0 … N-1           */
+#define IM(i)  (psi_buffer[(Npsi + (i))]) /* N … 2N-1          */
 double lastResidual = 0;
 double lastNLSResidual = 0.0;
 /* ──────────────────── global simulation state ─────────────────── */
@@ -37,7 +40,6 @@ static double x_min_pde   = 0.0;
 /* simple ψ-buffer so JS can peek at the field                 */
 static int    Npsi        = 1024; // grid size
 static double *psi_buffer = nullptr; // real‐imag interleaved
-static int numDones = 0;
 
 /* ---------------------------------------------------------------- */
 // tiny helpers the JS GUI expects
@@ -79,25 +81,22 @@ static inline void doODEstep()
 }
 
 /* central-difference Laplacian with periodic BC */
-inline void laplacian(int N, double dx,
-                      const double *Re, const double *Im,
-                      double *outRe, double *outIm)
+void laplacian(int N, double dx, const double *Re, const double *Im, double *outRe, double *outIm)
 {
     const double dx2 = dx*dx;
     for (int i = 0; i < N; ++i)
     {
         int ip = (i + 1) % N;
         int im = (i - 1 + N) % N;
-
-        outRe[i] = (Re[ip] - 2.0*Re[i] + Re[im]) / dx2;
-        outIm[i] = (Im[ip] - 2.0*Im[i] + Im[im]) / dx2;
+        outRe[i] = ( Re[ip] - 2.0*Re[i] + Re[im] ) / dx2;
+        outIm[i] = ( Im[ip] - 2.0*Im[i] + Im[im] ) / dx2;
     }
+    puts("ending laplacian");
 }
 
 /* one RK-4 step of  i u_t = -½ u_xx + V u - |u|² u  */
 static inline void doPDEstep()
 {
-    const int N = Npsi;
     const double h = dt;
 
     auto V_at = [](double x)
@@ -106,67 +105,62 @@ static inline void doPDEstep()
              + A_pde*std::pow(sech(b_pde*x), 2.0);
     };
 
-    /* helpers that treat ψ as two real arrays --------------------------- */
-    auto Re  = [&](int i) -> double& { return psi_buffer[2*i  ]; };
-    auto Im  = [&](int i) -> double& { return psi_buffer[2*i+1]; };
-
-    Eigen::VectorXd k1Re(N), k1Im(N), k2Re(N), k2Im(N), k3Re(N), k3Im(N), k4Re(N), k4Im(N), tmpRe(N), tmpIm(N);
-
-    auto rhs = [&](const double *ReIn, const double *ImIn, double *ReOut, double *ImOut)
+    auto pde_rhs = [&](const Eigen::VectorXd &ReIn, const Eigen::VectorXd &ImIn, Eigen::VectorXd &ReOut, Eigen::VectorXd &ImOut)
     {
-        Eigen::VectorXd LapR(N), LapI(N);
-        laplacian(N, dx_pde, ReIn, ImIn, LapR.data(), LapI.data());
-        for (int i = 0; i < N; ++i)
+        static Eigen::VectorXd LapR(Npsi), LapI(Npsi);
+        laplacian(Npsi, dx_pde, ReIn.data(), ImIn.data(), LapR.data(), LapI.data());
+
+        for (int i = 0; i < Npsi; ++i)
         {
-            double x   = x_min_pde + i * dx_pde;
+            double x   = x_min_pde + i*dx_pde;
             double Vx  = V_at(x);
             double mod2 = ReIn[i]*ReIn[i] + ImIn[i]*ImIn[i];
-            double inRe = 0.5*LapR[i] + mod2*ReIn[i] - Vx*ReIn[i];
-            double inIm = 0.5*LapI[i] + mod2*ImIn[i] - Vx*ImIn[i];
-            ReOut[i] = -inIm;
+
+            double inRe = -0.5*LapR[i] - mod2*ReIn[i] + Vx*ReIn[i];
+            double inIm = -0.5*LapI[i] - mod2*ImIn[i] + Vx*ImIn[i];
+
+            ReOut[i] = -inIm;              /* multiply by +i */
             ImOut[i] =  inRe;
-//            ReOut[i] =  inRe;
-//            ImOut[i] =  inIm;
         }
-        puts("new change 3:14");
     };
+    puts("starting doPDEstep");
+    /* copy ψ ⇒ Eigen vectors */
+    Eigen::VectorXd uR(Npsi), uI(Npsi);
+    for (int i = 0; i < Npsi; ++i) { uR[i] = RE(i);  uI[i] = IM(i); }
+    
+    /* buffers */
+    Eigen::VectorXd k1R(Npsi), k1I(Npsi),
+                        k2R(Npsi), k2I(Npsi),
+                        k3R(Npsi), k3I(Npsi),
+                        k4R(Npsi), k4I(Npsi),
+                        tmpR(Npsi), tmpI(Npsi);
 
-    /* --- k1 ------------------------------------------------------------ */
-    rhs(&Re(0), &Im(0), k1Re.data(), k1Im.data());
+    /* k1 */
+    pde_rhs(uR, uI, k1R, k1I);
+    puts("ending k1");
 
-    /* --- k2 ------------------------------------------------------------ */
-    for (int i = 0; i < N; ++i)
-    {
-        tmpRe[i] = Re(i) + 0.5*h*k1Re[i];
-        tmpIm[i] = Im(i) + 0.5*h*k1Im[i];
-    }
-    rhs(tmpRe.data(), tmpIm.data(), k2Re.data(), k2Im.data());
+    /* u2 = u + dt/2 * k1 */
+    tmpR = uR + 0.5*dt * k1R;
+    tmpI = uI + 0.5*dt * k1I;
+    pde_rhs(tmpR, tmpI, k2R, k2I);
 
-    /* --- k3 ------------------------------------------------------------ */
-    for (int i = 0; i < N; ++i)
-    {
-        tmpRe[i] = Re(i) + 0.5*h*k2Re[i];
-        tmpIm[i] = Im(i) + 0.5*h*k2Im[i];
-    }
-    rhs(tmpRe.data(), tmpIm.data(), k3Re.data(), k3Im.data());
+    /* u3 = u + dt/2 * k2 */
+    tmpR = uR + 0.5*dt * k2R;
+    tmpI = uI + 0.5*dt * k2I;
+    pde_rhs(tmpR, tmpI, k3R, k3I);
 
-    /* --- k4 ------------------------------------------------------------ */
-    for (int i = 0; i < N; ++i)
-    {
-        tmpRe[i] = Re(i) + h*k3Re[i];
-        tmpIm[i] = Im(i) + h*k3Im[i];
-    }
-    rhs(tmpRe.data(), tmpIm.data(), k4Re.data(), k4Im.data());
+    /* u4 = u + dt * k3 */
+    tmpR = uR + dt * k3R;
+    tmpI = uI + dt * k3I;
+    pde_rhs(tmpR, tmpI, k4R, k4I);
 
-    /* --- combine ------------------------------------------------------- */
-    for (int i = 0; i < N; ++i)
-    {
-        Re(i) += h/6.0*(k1Re[i] + 2*k2Re[i] + 2*k3Re[i] + k4Re[i]);
-        Im(i) += h/6.0*(k1Im[i] + 2*k2Im[i] + 2*k3Im[i] + k4Im[i]);
-//        printf("(psi_buffer[%d] = %lf, ", 2*i, psi_buffer[2*i]);
-//        printf("psi_buffer[%d] = %lf), ", 2*i+1, psi_buffer[2*i+1]);
-    }
-//    puts("");
+    /* new u = u + dt/6*(k1 + 2k2 + 2k3 + k4) */
+    uR += dt/6.0 * (k1R + 2.0*k2R + 2.0*k3R + k4R);
+    uI += dt/6.0 * (k1I + 2.0*k2I + 2.0*k3I + k4I);
+
+    /* write back to ψ-buffer */
+    for (int i = 0; i < Npsi; ++i) { RE(i) = uR[i];  IM(i) = uI[i]; }
+    puts("ending doPDEstep");
 }
 
 
@@ -183,22 +177,23 @@ extern "C"
         while (current_time < total_time)
         {
             doODEstep(); // RK4 particle update
+            //printf("u[%d] = %lf + %lfi\n", Npsi/3, RE(Npsi/3), IM(Npsi/3));
             doPDEstep(); // Split-step or RK4 PDE update
             current_time += dt;
 
             auto now = clock::now();
             double elapsed = std::chrono::duration<double, std::milli>(now - start).count();
             if (elapsed >= maxMillis)
+            {
                 break;
+            }
         }
-        printf("done with stepForPlotInterval %d\n", ++numDones);
     }
 
     /* allow JS to reset / configure the solver on each run */
     EMSCRIPTEN_KEEPALIVE
     void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double OmegaPDE, double Apde, double bpde, double A_sol)
     {
-        numDones = 0;
         dt = new_dt;
         total_time = new_T;
         current_time = 0.0; //restarting simulation here
@@ -214,42 +209,44 @@ extern "C"
         A_pde     = Apde;
         b_pde     = bpde;
         
-        
-        printf("Simulation Parameters:\n");
-        printf("  dt = %lf\n", dt);
-        printf("  total_time = %lf\n", total_time);
-        printf("  current_time = %lf\n", current_time);
-        printf("  m_param = %lf\n", m_param);
-        printf("  Omega_param = %lf\n", Omega_param);
-        printf("  A_param = %lf\n", A_param);
-        printf("  b_param = %lf\n", b_param);
-        printf("  x_particle = %lf\n", x_particle);
-        printf("  v_particle = %lf\n", v_particle);
-        printf("  dx_pde = %lf\n", dx_pde);
-        printf("  x_min_pde = %lf\n", x_min_pde);
-        printf("  Omega_pde = %lf\n", Omega_pde);
-        printf("  A_pde = %lf\n", A_pde);
-        printf("  b_pde = %lf\n", b_pde);
+//        printf("Simulation Parameters:\n");
+//        printf("  dt = %lf\n", dt);
+//        printf("  total_time = %lf\n", total_time);
+//        printf("  current_time = %lf\n", current_time);
+//        printf("  m_param = %lf\n", m_param);
+//        printf("  Omega_param = %lf\n", Omega_param);
+//        printf("  A_param = %lf\n", A_param);
+//        printf("  b_param = %lf\n", b_param);
+//        printf("  x_particle = %lf\n", x_particle);
+//        printf("  v_particle = %lf\n", v_particle);
+//        printf("  dx_pde = %lf\n", dx_pde);
+//        printf("  x_min_pde = %lf\n", x_min_pde);
+//        printf("  Omega_pde = %lf\n", Omega_pde);
+//        printf("  A_pde = %lf\n", A_pde);
+//        printf("  b_pde = %lf\n", b_pde);
 
-        if (new_Npsi != Npsi) // re-allocate ψ if grid changes
+        if ((new_Npsi != Npsi) || (!psi_buffer)) // re-allocate or initialise u if grid changes
         {
+            std::cout << "Re-initialising u\n";
             if (psi_buffer)
             {
                 free(psi_buffer);
             }
             Npsi = new_Npsi;
             psi_buffer = (double*) malloc(sizeof(double) * 2 * Npsi);
+            /* initialise u to a sech */
+            for (int i = 0; i < Npsi; ++i)
+            {
+                double xpos  = x_min + i * dx_pde;              // ← use x_min
+                double arg   = A_sol * (xpos - x0);
+                double amp   = A_sol * sech(arg);
+                double phase = v0  * xpos;
+                RE(i) = amp * std::cos(phase);
+                IM(i) = amp * std::sin(phase);
+            }
         }
-        /* initialise ψ to a sech – real part only, imag = 0 */
-        for (int i = 0; i < Npsi; ++i)
-        {
-            double xpos  = x_min + i * dx_pde;              // ← use x_min
-            double arg   = A_sol * (xpos - x0);
-            double amp   = A_sol * sech(arg);
-            double phase = v0  * xpos;
-            psi_buffer[2*i  ] = amp * std::cos(phase);
-            psi_buffer[2*i+1] = amp * std::sin(phase);
-        }
+
+        //printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
     }
 }
 
@@ -502,11 +499,24 @@ extern "C"
         }
 
         lastNLSResidual = F.norm();  // L2 norm of residual
-        // Allocate result
-        double* result = (double*) malloc(sizeof(double) * 2 * N);
-        if (!result) return nullptr;
-        for (int i = 0; i < 2 * N; ++i) result[i] = U[i];
-        return result;
+        
+        /* ---- make sure psi_buffer is big enough -------------------- */
+        if (!psi_buffer || N != Npsi)
+        {
+            if (psi_buffer) free(psi_buffer);
+            psi_buffer = (double*) malloc(sizeof(double)*2*N); // Allocate result
+            Npsi = N;
+        }
+        /* copy the refined steady state into the global buffer */
+        if (N < 20)
+        {
+            for (int i = 0; i < 2 * N; ++i) psi_buffer[i] = U[i];
+        }
+        else
+        {
+            std::memcpy(psi_buffer, U.data(), sizeof(double)*2*N);
+        }
+        return psi_buffer;        // JS may read it but must NOT free it
     }
 }
 

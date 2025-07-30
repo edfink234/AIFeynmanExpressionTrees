@@ -52,6 +52,16 @@ extern "C"
     EMSCRIPTEN_KEEPALIVE double *getPsiPointer()  { return psi_buffer; }
 }
 
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+    void freePsiBuffer()
+    {
+        if (psi_buffer) { free(psi_buffer); psi_buffer = nullptr; }
+        Npsi = 0;          // so next Start will resize correctly
+    }
+}
+
 /* acceleration a(x) = (-Ω² x + 2 A b sech²(bx) tanh(bx)) / m */
 static inline double accel(double x)
 {
@@ -96,7 +106,6 @@ void laplacian(int N, double dx, const double *Re, const double *Im, double *out
 /* one RK-4 step of  i u_t = -½ u_xx + V u - |u|² u  */
 static inline void doPDEstep()
 {
-    const int N = Npsi;
     const double h = dt;
 
     auto V_at = [](double x)
@@ -107,7 +116,7 @@ static inline void doPDEstep()
 
     auto pde_rhs = [&](const Eigen::VectorXd &ReIn, const Eigen::VectorXd &ImIn, Eigen::VectorXd &ReOut, Eigen::VectorXd &ImOut)
     {
-        static Eigen::VectorXd LapR(Npsi), LapI(Npsi);
+        Eigen::VectorXd LapR(Npsi), LapI(Npsi);
         laplacian(Npsi, dx_pde, ReIn.data(), ImIn.data(), LapR.data(), LapI.data());
 
         for (int i = 0; i < Npsi; ++i)
@@ -123,7 +132,6 @@ static inline void doPDEstep()
             ImOut[i] =  inRe;
         }
     };
-
     /* copy ψ ⇒ Eigen vectors */
     Eigen::VectorXd uR(Npsi), uI(Npsi);
     for (int i = 0; i < Npsi; ++i) { uR[i] = RE(i);  uI[i] = IM(i); }
@@ -223,25 +231,27 @@ extern "C"
 //        printf("  A_pde = %lf\n", A_pde);
 //        printf("  b_pde = %lf\n", b_pde);
 
-//        if (new_Npsi != Npsi) // re-allocate ψ if grid changes
-//        {
+        if ((new_Npsi != Npsi) || (!psi_buffer)) // re-allocate or initialise u if grid changes
+        {
+            std::cout << "Re-initialising u\n";
             if (psi_buffer)
             {
                 free(psi_buffer);
             }
             Npsi = new_Npsi;
             psi_buffer = (double*) malloc(sizeof(double) * 2 * Npsi);
-//        }
-        /* initialise ψ to a sech – real part only, imag = 0 */
-        for (int i = 0; i < Npsi; ++i)
-        {
-            double xpos  = x_min + i * dx_pde;              // ← use x_min
-            double arg   = A_sol * (xpos - x0);
-            double amp   = A_sol * sech(arg);
-            double phase = v0  * xpos;
-            RE(i) = amp * std::cos(phase);
-            IM(i) = amp * std::sin(phase);
+            /* initialise u to a sech */
+            for (int i = 0; i < Npsi; ++i)
+            {
+                double xpos  = x_min + i * dx_pde;              // ← use x_min
+                double arg   = A_sol * (xpos - x0);
+                double amp   = A_sol * sech(arg);
+                double phase = v0  * xpos;
+                RE(i) = amp * std::cos(phase);
+                IM(i) = amp * std::sin(phase);
+            }
         }
+
         //printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
     }
 }
@@ -495,16 +505,29 @@ extern "C"
         }
 
         lastNLSResidual = F.norm();  // L2 norm of residual
-        // Allocate result
-        double* result = (double*) malloc(sizeof(double) * 2 * N);
-        if (!result) return nullptr;
-        for (int i = 0; i < 2 * N; ++i) result[i] = U[i];
-        return result;
+        
+        /* ---- make sure psi_buffer is big enough -------------------- */
+        if (!psi_buffer || N != Npsi)
+        {
+            if (psi_buffer) free(psi_buffer);
+            psi_buffer = (double*) malloc(sizeof(double)*2*N); // Allocate result
+            Npsi = N;
+        }
+        /* copy the refined steady state into the global buffer */
+        if (N < 20)
+        {
+            for (int i = 0; i < 2 * N; ++i) psi_buffer[i] = U[i];
+        }
+        else
+        {
+            std::memcpy(psi_buffer, U.data(), sizeof(double)*2*N);
+        }
+        return psi_buffer;        // JS may read it but must NOT free it
     }
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free"]' \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer"]' \
 //  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
