@@ -52,6 +52,16 @@ extern "C"
     EMSCRIPTEN_KEEPALIVE double *getPsiPointer()  { return psi_buffer; }
 }
 
+extern "C"
+{
+    EMSCRIPTEN_KEEPALIVE
+    void freePsiBuffer()
+    {
+        if (psi_buffer) { free(psi_buffer); psi_buffer = nullptr; }
+        Npsi = 0;          // so next Start will resize correctly
+    }
+}
+
 /* acceleration a(x) = (-Ω² x + 2 A b sech²(bx) tanh(bx)) / m */
 static inline double accel(double x)
 {
@@ -91,7 +101,6 @@ void laplacian(int N, double dx, const double *Re, const double *Im, double *out
         outRe[i] = ( Re[ip] - 2.0*Re[i] + Re[im] ) / dx2;
         outIm[i] = ( Im[ip] - 2.0*Im[i] + Im[im] ) / dx2;
     }
-    puts("ending laplacian");
 }
 
 /* one RK-4 step of  i u_t = -½ u_xx + V u - |u|² u  */
@@ -107,7 +116,7 @@ static inline void doPDEstep()
 
     auto pde_rhs = [&](const Eigen::VectorXd &ReIn, const Eigen::VectorXd &ImIn, Eigen::VectorXd &ReOut, Eigen::VectorXd &ImOut)
     {
-        static Eigen::VectorXd LapR(Npsi), LapI(Npsi);
+        Eigen::VectorXd LapR(Npsi), LapI(Npsi);
         laplacian(Npsi, dx_pde, ReIn.data(), ImIn.data(), LapR.data(), LapI.data());
 
         for (int i = 0; i < Npsi; ++i)
@@ -123,7 +132,6 @@ static inline void doPDEstep()
             ImOut[i] =  inRe;
         }
     };
-    puts("starting doPDEstep");
     /* copy ψ ⇒ Eigen vectors */
     Eigen::VectorXd uR(Npsi), uI(Npsi);
     for (int i = 0; i < Npsi; ++i) { uR[i] = RE(i);  uI[i] = IM(i); }
@@ -137,7 +145,6 @@ static inline void doPDEstep()
 
     /* k1 */
     pde_rhs(uR, uI, k1R, k1I);
-    puts("ending k1");
 
     /* u2 = u + dt/2 * k1 */
     tmpR = uR + 0.5*dt * k1R;
@@ -160,7 +167,6 @@ static inline void doPDEstep()
 
     /* write back to ψ-buffer */
     for (int i = 0; i < Npsi; ++i) { RE(i) = uR[i];  IM(i) = uI[i]; }
-    puts("ending doPDEstep");
 }
 
 
@@ -192,11 +198,10 @@ extern "C"
 
     /* allow JS to reset / configure the solver on each run */
     EMSCRIPTEN_KEEPALIVE
-    void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double OmegaPDE, double Apde, double bpde, double A_sol)
+    void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double OmegaPDE, double Apde, double bpde, double A_sol, pause = true)
     {
         dt = new_dt;
         total_time = new_T;
-        current_time = 0.0; //restarting simulation here
         m_param     = m;
         Omega_param = Omega;
         A_param     = Atrap;
@@ -208,7 +213,6 @@ extern "C"
         Omega_pde = OmegaPDE;
         A_pde     = Apde;
         b_pde     = bpde;
-        
 //        printf("Simulation Parameters:\n");
 //        printf("  dt = %lf\n", dt);
 //        printf("  total_time = %lf\n", total_time);
@@ -224,10 +228,12 @@ extern "C"
 //        printf("  Omega_pde = %lf\n", Omega_pde);
 //        printf("  A_pde = %lf\n", A_pde);
 //        printf("  b_pde = %lf\n", b_pde);
+        
 
         if ((new_Npsi != Npsi) || (!psi_buffer)) // re-allocate or initialise u if grid changes
         {
             std::cout << "Re-initialising u\n";
+            current_time = 0.0; //restarting simulation here
             if (psi_buffer)
             {
                 free(psi_buffer);
@@ -521,7 +527,7 @@ extern "C"
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free"]' \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer"]' \
 //  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \

@@ -49,6 +49,7 @@
       window.getVParticle  = Module.cwrap('getVParticle','number',[]);
       window.getCurrentTime  = Module.cwrap('getCurrentTime','number',[]);
       window.getPsiPointer  = Module.cwrap('getPsiPointer','number',[]);
+      window.freePsi = Module.cwrap('freePsiBuffer', null, []);
 
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
@@ -196,6 +197,7 @@
   <div class="my-3">
     <button id="startBtn" class="btn btn-success">Start</button>
     <button id="stopBtn" class="btn btn-danger">Stop</button>
+    <button id="resetBtn" class="btn btn-warning">Reset</button>
     <button id="computeSpectrumBtn" class="btn btn-primary">Compute Steady-State Spectrum</button>
     <div class = "row" style="text-align:center">
         <div class = "col">
@@ -1104,17 +1106,18 @@
         // PDE plot: potential and soliton density.
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
         // --- grab ψ (length 2N doubles) from WASM -----------------------
-        const ptrPsi   = getPsiPointer();
-        const psiView  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
+//        const ptrPsi   = getPsiPointer();
+//        const psiView  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
 
         // build |u|² on the fly
-        const density = new Array(params.N);
-        for (let i = 0; i < params.N; ++i)
+        const density = new Array(params.N).fill(0);
+        /*for (let i = 0; i < params.N; ++i)
         {
             const Re = psiView[2*i];
             const Im = psiView[2*i + 1];
             density[i] = Re*Re + Im*Im;
-        }
+            
+        }*/
         //console.log("u=",u);
         //console.log("pdeGrid=",pdeGrid);
         //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
@@ -1209,7 +1212,6 @@
         initPDE(params);
         setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol);
         initPlots(params);
-        
     }
 
     function simulationStep()
@@ -1231,6 +1233,7 @@
                 setTimeout(() =>
                 {
                     initSimulations();
+                    let params = getParameters();
                     let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
                     simInterval = setInterval(() =>
                     {
@@ -1242,18 +1245,12 @@
                         odeState.v = getVParticle();        // fresh velocity
                         currentTime = getCurrentTime();     // C++ clock
                         simulationStep();
-                        plotStep(); // update both plots right after stepping
+                        updatePlots(params); // update both plots right after stepping
                     }, plotEveryMs);
                     simulationRunning = true;
                 }, 0);
             }
         }
-    }
-    
-    function plotStep()
-    {
-        let params = getParameters();
-        updatePlots(params);
     }
     
     // sleep time expects milliseconds
@@ -1618,6 +1615,17 @@
         document.getElementById("stabilityPlots").style.display = "block";
         updateEigenmodePlot(params);
     });
+    function clearPlots()
+    {
+        //pdePlot = document.getElementById("pdePlot");
+        //odePlot = document.getElementById("odePlot");
+        
+        
+        Plotly.newPlot('pdePlot', [[], []]);
+        Plotly.newPlot('odePlot', [[], []]);
+
+    }
+
 
     // ----------------------- Event Listeners -----------------------
     document.getElementById("startBtn").addEventListener("click", function()
@@ -1648,9 +1656,10 @@
             {
                 alert("Warning: CFL condition violated.");
             }
-            initSimulations(); //TODO: Investigate why the Soliton blits for a second at a wierd phantom location before starting at the actual (correct) starting location at t=0
+            initSimulations();
             //simInterval = setInterval(simulationStep, 0);
             let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
+            console.log("here?");
             simInterval = setInterval(() =>
             {
                 plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
@@ -1661,7 +1670,7 @@
                 odeState.v = getVParticle();        // fresh velocity
                 currentTime = getCurrentTime();     // C++ clock
                 simulationStep();
-                plotStep(); // update both plots right after stepping
+                updatePlots(params); // update both plots right after stepping
             }, plotEveryMs);
 
             // Pseudo-code for your CPP sim step idea
@@ -1689,6 +1698,21 @@
             simulationRunning = false;
         }
     });
+    document.getElementById("resetBtn").addEventListener("click", function()
+    {
+        /* 1. stop timers if they’re still running */
+        clearInterval(simInterval);
+        simulationRunning = false;
+
+        /* 2. free the big buffer on the C++ side */
+        freePsi();
+
+        /* 3. clear JS-side state / plots */
+        odeState = null;
+        currentTime = 0;
+        clearPlots();          // write your own helper
+    });
+
     window.addEventListener("resize", function()
     {
         Plotly.Plots.resize(document.getElementById("odePlot"));

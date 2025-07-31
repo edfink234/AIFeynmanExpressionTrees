@@ -43,13 +43,14 @@
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
       window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
       window.stepForPlotInterval = Module.cwrap('stepForPlotInterval', null, ['number']);
-      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number']);
+      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number']);
       // getters for ode and pde simulations
       window.getXParticle  = Module.cwrap('getXParticle','number',[]);
       window.getVParticle  = Module.cwrap('getVParticle','number',[]);
       window.getCurrentTime  = Module.cwrap('getCurrentTime','number',[]);
       window.getPsiPointer  = Module.cwrap('getPsiPointer','number',[]);
       window.freePsi = Module.cwrap('freePsiBuffer', null, []);
+      window.setCurrentTime = Module.cwrap('setCurrentTime', null, ['number']);
 
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
@@ -212,13 +213,10 @@
               <input type="checkbox" id="applyNewtonToggle" unchecked>
 <!--                  Apply minimization routine to \(u(x,0) = A_{\text{sol}} \, \text{sech}\left(A_{\text{sol}} (x - x_0)\right)\) that minimizes the residual vector \(\mathcal{F} = \begin{pmatrix} \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{A}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{A}   \\[0.2cm] \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{B}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{B} \end{pmatrix}\), where \( \vec{A} \) is the real-part and \( \vec{B} \) is the imaginary part of the steady-state vector \( \vec{U} \), to get the steady-state solution starting point for bright-soliton simulation.-->
                 Apply steady-state solver to minimize residual \( \mathcal{F} \) for initial soliton \( u(x,0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}}(x - x_0)) \)
-
             </label>
-            
-
         </div>
-
-
+    </div>
+    <div class = "row" style="text-align:center; display:none; margin-bottom: 10px;" id = "Fres">
     </div>
 <!--    <br>-->
 <!--    <label class="ml-2">-->
@@ -398,29 +396,29 @@
     {
         return {
             // Shared
-            x0: parseFloat(document.getElementById("x0").value),
-            v0: parseFloat(document.getElementById("v0").value),
-            T: parseFloat(document.getElementById("T").value),
-            dt: parseFloat(document.getElementById("dt").value),
-            stepsPerUpdate: parseInt(document.getElementById("stepsPerUpdate").value),
+            x0: (parseFloat(document.getElementById("x0").value) || 0),
+            v0: (parseFloat(document.getElementById("v0").value) || 0),
+            T: (parseFloat(document.getElementById("T").value) || 0),
+            dt: (parseFloat(document.getElementById("dt").value) || 0),
+            stepsPerUpdate: (parseInt(document.getElementById("stepsPerUpdate").value) || 0),
             // ODE
-            m: parseFloat(document.getElementById("m").value),
-            Omega: parseFloat(document.getElementById("Omega").value),
-            A: parseFloat(document.getElementById("A").value),
-            b: parseFloat(document.getElementById("b").value),
+            m: (parseFloat(document.getElementById("m").value) || 0),
+            Omega: (parseFloat(document.getElementById("Omega").value) || 0),
+            A: (parseFloat(document.getElementById("A").value) || 0),
+            b: (parseFloat(document.getElementById("b").value) || 0),
             // PDE
-            A_sol: parseFloat(document.getElementById("A_sol").value),
-            omega: parseFloat(document.getElementById("omega").value),
-            Omega_pde: parseFloat(document.getElementById("Omega_pde").value),
-            A_pde: parseFloat(document.getElementById("A_pde").value),
-            b_pde: parseFloat(document.getElementById("b_pde").value),
+            A_sol: (parseFloat(document.getElementById("A_sol").value) || 0),
+            omega: (parseFloat(document.getElementById("omega").value) || 0),
+            Omega_pde: (parseFloat(document.getElementById("Omega_pde").value) || 0),
+            A_pde: (parseFloat(document.getElementById("A_pde").value) || 0),
+            b_pde: (parseFloat(document.getElementById("b_pde").value) || 0),
             // Spatial parameters (PDE)
-            dx: parseFloat(document.getElementById("dx").value),
-            x_min: parseFloat(document.getElementById("x_min").value),
-            x_max: parseFloat(document.getElementById("x_max").value),
+            dx: (parseFloat(document.getElementById("dx").value) || 0),
+            x_min: (parseFloat(document.getElementById("x_min").value) || 0),
+            x_max: (parseFloat(document.getElementById("x_max").value) || 0),
             N: Math.floor( ( parseFloat(document.getElementById("x_max").value) - parseFloat(document.getElementById("x_min").value) ) / parseFloat(document.getElementById("dx").value) ),
             g: -1,
-            wfreq: parseFloat(document.getElementById("omega").value)
+            wfreq: (parseFloat(document.getElementById("omega").value) || 0)
         };
     }
 
@@ -842,7 +840,7 @@
             
             let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
             let error = Module.ccall('getNLSResidual', 'number', [], []);
-            console.log("Residual error from C++ refinement:", error);
+            alert("Residual error from C++ refinement 𝓕 = "+error);
 
             let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
             u = new Array(params.N);
@@ -1106,17 +1104,18 @@
         // PDE plot: potential and soliton density.
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
         // --- grab ψ (length 2N doubles) from WASM -----------------------
-        const ptrPsi   = getPsiPointer();
-        const psiView  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
+//        const ptrPsi   = getPsiPointer();
+//        const psiView  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
 
         // build |u|² on the fly
-        const density = new Array(params.N);
-        for (let i = 0; i < params.N; ++i)
+        const density = new Array(params.N).fill(0);
+        /*for (let i = 0; i < params.N; ++i)
         {
             const Re = psiView[2*i];
             const Im = psiView[2*i + 1];
             density[i] = Re*Re + Im*Im;
-        }
+            
+        }*/
         //console.log("u=",u);
         //console.log("pdeGrid=",pdeGrid);
         //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
@@ -1148,16 +1147,51 @@
         Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
     }
 
-    function updatePlots(params)
+    function updatePlots(params, replotOdePotential = false)
     {
         // Update ODE particle position:
         let currentODEPotential = 0.5 * params.Omega * params.Omega * odeState.x * odeState.x + params.A * Math.pow(sech(params.b * odeState.x), 2);
-        Plotly.update('odePlot',
+        if (replotOdePotential)
         {
-            x: [[odeState.x]],
-            y: [[currentODEPotential]]
-        }, {}, [1]);
-        Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
+            let odePotential = pdeGrid.map(x => 0.5 * params.Omega * params.Omega * x * x + params.A * Math.pow(sech(params.b * x), 2));
+
+            let odeTracePotential =
+            {
+                x: pdeGrid,
+                y: odePotential,
+                mode: 'lines',
+                name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
+            };
+            let odeTraceParticle =
+            {
+                x: [odeState.x],
+                y: [currentODEPotential],
+                mode: 'markers',
+                marker: { size: 12, color: 'red' },
+                name: 'Particle'
+            };
+            let odeLayout =
+            {
+                title: 'ODE: Particle in Potential',
+                xaxis: { title: 'x' },
+                yaxis: { title: 'Potential Energy' },
+                annotations:
+                [{
+                    xref: 'paper', yref: 'paper', x: 0.05, y: 0.95,
+                    text: ('Time: ' + currentTime.toFixed(2)), showarrow: false, font: { size: 16 }
+                }]
+            };
+            Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
+        }
+        else
+        {
+            Plotly.update('odePlot',
+            {
+                x: [[odeState.x]],
+                y: [[currentODEPotential]]
+            }, {}, [1]);
+            Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
+        }
         // Update PDE density:
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
         //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
@@ -1205,11 +1239,12 @@
         const params = getParameters();
         console.log(`setSimParameters called with ${params.dt} ${params.T} ${params.N} ${params.m} ${params.Omega} ${params.A} ${params.b} ${params.x0} ${params.v0} ${params.dx} ${params.Omega_pde} ${params.A_pde} ${params.b_pde}`)
         currentTime = 0;
+        setCurrentTime(0);
         // Initialize ODE state:
         odeState = { x: params.x0, v: params.v0 };
         // Initialize PDE grid and initial condition:
         initPDE(params);
-        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol);
+        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol);
         initPlots(params);
     }
 
@@ -1233,7 +1268,7 @@
                 {
                     initSimulations();
                     let params = getParameters();
-                    let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
+                    let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value); //WA
                     simInterval = setInterval(() =>
                     {
                         plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
@@ -1250,12 +1285,6 @@
                 }, 0);
             }
         }
-    }
-    
-    function plotStep()
-    {
-        //let params = getParameters();
-        updatePlots(params);
     }
     
     // sleep time expects milliseconds
@@ -1552,7 +1581,7 @@
         
         let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
         let error = Module.ccall('getNLSResidual', 'number', [], []);
-        console.log("Residual error from C++ refinement:", error);
+        alert("Residual error from C++ refinement 𝓕 = " + error);
 
         let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
         params.u = new Array(params.N);
@@ -1632,89 +1661,137 @@
     }
 
 
-    // ----------------------- Event Listeners -----------------------
-    document.getElementById("startBtn").addEventListener("click", function()
-    {
-        if (!simulationRunning)
-        {
-            // Set up an interval to update the progress bar every second.
-            if (window.loadedCPPFunctions == false)
-            {
-                console.log("error, functions not loaded yet");
-                return;
-            }
-            /*progress = 0;
-            let progressBar = document.getElementById("newtonProgressBar");
-            let progressInterval = setInterval(() => {
-                //console.log(`hi ${progress}`);
-              
-              // Update the progress bar using the global progress variable.
-              progressBar.setAttribute("value", progress);
-              progressBar.value = progress;
-              if (progress >= 100) {
-                  
-                clearInterval(progressInterval);
-              }
-            }, 0);*/
-            let params = getParameters();
-            if (params.dt > 0.7071067811865476*params.dx*params.dx)
-            {
-                alert("Warning: CFL condition violated.");
-            }
-            initSimulations(); //TODO: Investigate why the Soliton blits for a second at a wierd phantom location before starting at the actual (correct) starting location at t=0
-            //simInterval = setInterval(simulationStep, 0);
-            let plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-            simInterval = setInterval(() =>
-            {
-                plotEveryMs = parseInt(document.getElementById("stepsPerUpdate").value);
-                stepForPlotInterval(plotEveryMs);
-                const ptrPsi   = getPsiPointer();
-                u  = new Float64Array(Module.HEAPF64.buffer, ptrPsi, 2*params.N);
-                odeState.x = getXParticle();        // fresh position
-                odeState.v = getVParticle();        // fresh velocity
-                currentTime = getCurrentTime();     // C++ clock
-                simulationStep();
-                updatePlots(params); // update both plots right after stepping
-            }, plotEveryMs);
+    /* --------------- new global flags ------------------- */
+    let paused             = false;   // true ↔ simulation paused but state kept
+    let savedFieldPtr      = null;    // pointer to ψ in WASM when paused
+    let savedParticleState = null;    // {x , v}
 
-            // Pseudo-code for your CPP sim step idea
-            /*
-             for (int i = 0; i < stepsPerSend; ++i)
-             {
-                 doODEstep();
-                 doPDEstep();
-                 time += dt;
-             }
-             if (time >= plotUpdateTime)
-             {
-                 sendToJS();
-             }
-             */
-            simulationRunning = true;
-        }
-    });
-    document.getElementById("stopBtn").addEventListener("click", function()
+    /* --------------- helper: (re)arm JS ↔ C++ coupling -- */
+    function resumeCppLoop(plotEveryMs)
     {
-        //console.log("simulationRunning=",simulationRunning);
-        if (simulationRunning)
+        /* kick the C++ side as fast as it can for ≤ plotEveryMs ms
+           then ship back the new buffers & update the plots          */
+        const params   = getParameters();
+        simInterval = setInterval(() =>
         {
-            clearInterval(simInterval);
-            simulationRunning = false;
+            plotEveryMs = +document.getElementById("stepsPerUpdate").value;
+            stepForPlotInterval(plotEveryMs);           // C++ crunch
+
+            /* ----- pull fresh state out of WASM -------------------- */
+            const ptrPsi   = getPsiPointer();
+            u              = new Float64Array(Module.HEAPF64.buffer,
+                                              ptrPsi, 2*params.N);
+            odeState.x     = getXParticle();
+            odeState.v     = getVParticle();
+            currentTime    = getCurrentTime();
+
+            updatePlots(params, true);
+            simulationStep();                           // auto-loop logic
+        }, plotEveryMs);
+    }
+    
+    function atEnd()
+    {
+        
+        let at_end = (currentTime >= parseFloat(document.getElementById("T").value));
+        return at_end;
+    }
+
+    /* --------------- Start button ----------------------- */
+    document.getElementById("startBtn").addEventListener("click", () =>
+    {
+        if (simulationRunning || atEnd()) return;          // already running
+        const params = getParameters();
+
+        /* ───────── CASE 1 : resume after pause ───────── */
+        if (paused)
+        {
+            paused = false;
+            const sameGrid = (params.N === N);          // N is global
+
+            if (!sameGrid)
+            {
+                if (!confirm("Grid size changed – restart from t = 0 ?"))
+                    return;                             // user aborted
+
+                /* full restart */
+                freePsi();                              // C++
+                initSimulations();                      // JS (t = 0)
+            }
+            else
+            {
+                /* just refresh scalar parameters, keep ψ & particle */
+                setSimParameters(
+                    params.dt, params.T, params.N,
+                    params.m, params.Omega,
+                    params.A, params.b,
+                    odeState.x, odeState.v,          // keep current centre & velocity
+                    params.dx, params.x_min, params.x_max,
+                    params.Omega_pde, params.A_pde, params.b_pde,
+                    params.A_sol
+                );
+
+            }
+            resumeCppLoop(params.stepsPerUpdate);
+            simulationRunning = true;
+            paused            = false;
+            return;
         }
+        /* ───────── CASE 2 : completely fresh run ─────── */
+        console.log("restart");
+        freePsi();
+        initSimulations();
+        resumeCppLoop(params.stepsPerUpdate);
+        simulationRunning = true;
     });
+
+    /* --------------- Stop button ----------------------- */
+    document.getElementById("stopBtn").addEventListener("click", () =>
+    {
+        if (paused || !simulationRunning) //If the simulation is paused or not running, return.
+        {
+            //paused = true;
+            //simulationRunning = false;
+            return;
+        }
+
+        clearInterval(simInterval);
+        simulationRunning = false;
+        paused            = true;
+
+        const p = getParameters();
+        odeState    = {x: getXParticle(), v: getVParticle()};
+
+        /* re-init u in-place */
+        setSimParameters(
+            p.dt, p.T, p.N,
+            p.m, p.Omega,
+            p.A, p.b,
+            p.x0, p.v0,
+            p.dx, p.x_min, p.x_max,
+            p.Omega_pde, p.A_pde, p.b_pde,
+            p.A_sol
+        );
+        updatePlots(p, true);    // redraw potentials
+    });
+
+    /* ------------------ Reset button ---------------- */
+    /* Frees ψ, clears plots, and leaves everything idle */
     document.getElementById("resetBtn").addEventListener("click", function()
     {
         /* 1. stop timers if they’re still running */
         clearInterval(simInterval);
         simulationRunning = false;
-
+        paused = false;
+        
         /* 2. free the big buffer on the C++ side */
         freePsi();
 
         /* 3. clear JS-side state / plots */
         odeState = null;
         currentTime = 0;
-        clearPlots();          // write your own helper
+        setCurrentTime(0);
+        clearPlots();   //TODO Change with initplots but don't do Newton.
     });
 
     window.addEventListener("resize", function()

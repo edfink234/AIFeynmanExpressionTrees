@@ -36,6 +36,7 @@ static double Omega_pde   = 0.2;
 static double A_pde       = 1.0;
 static double b_pde       = 1.0;
 static double x_min_pde   = 0.0;
+static double x_max_pde   = 0.0;
 
 /* simple ψ-buffer so JS can peek at the field                 */
 static int    Npsi        = 1024; // grid size
@@ -59,6 +60,10 @@ extern "C"
     {
         if (psi_buffer) { free(psi_buffer); psi_buffer = nullptr; }
         Npsi = 0;          // so next Start will resize correctly
+    }
+    EMSCRIPTEN_KEEPALIVE void setCurrentTime(double currentTime)
+    {
+        current_time = currentTime;
     }
 }
 
@@ -86,7 +91,15 @@ static inline void doODEstep()
     double k4x = v_particle + dt * k3v;
     double k4v = accel(x_particle + dt * k3x);
 
-    x_particle += (dt / 6.0) * (k1x + 2*k2x + 2*k3x + k4x);
+    x_particle += (dt / 6.0) * (k1x + 2*k2x + 2*k3x + k4x); 
+    if (x_particle > x_max_pde)
+    {
+        x_particle = x_min_pde;
+    }
+    else if (x_particle < x_min_pde)
+    {
+        x_particle = x_max_pde;
+    }
     v_particle += (dt / 6.0) * (k1v + 2*k2v + 2*k3v + k4v);
 }
 
@@ -198,11 +211,10 @@ extern "C"
 
     /* allow JS to reset / configure the solver on each run */
     EMSCRIPTEN_KEEPALIVE
-    void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double OmegaPDE, double Apde, double bpde, double A_sol)
+void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol)
     {
         dt = new_dt;
         total_time = new_T;
-        current_time = 0.0; //restarting simulation here
         m_param     = m;
         Omega_param = Omega;
         A_param     = Atrap;
@@ -211,6 +223,7 @@ extern "C"
         v_particle  = v0;
         dx_pde    = dx;
         x_min_pde = x_min;
+        x_max_pde = x_max;
         Omega_pde = OmegaPDE;
         A_pde     = Apde;
         b_pde     = bpde;
@@ -234,6 +247,7 @@ extern "C"
         if ((new_Npsi != Npsi) || (!psi_buffer)) // re-allocate or initialise u if grid changes
         {
             std::cout << "Re-initialising u\n";
+            current_time = 0.0; //restarting simulation here
             if (psi_buffer)
             {
                 free(psi_buffer);
@@ -527,7 +541,7 @@ extern "C"
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer"]' \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime"]' \
 //  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
