@@ -41,7 +41,7 @@
       window.sech = Module.cwrap('sech', 'number', ['number']); //put sech in global scope
       console.log("Result of sech(Math.PI/4) =", sech(Math.PI / 4));
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
-      window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
+      window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']);
       window.stepForPlotInterval = Module.cwrap('stepForPlotInterval', null, ['number']);
       window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number']);
       // getters for ode and pde simulations
@@ -51,7 +51,8 @@
       window.getPsiPointer  = Module.cwrap('getPsiPointer','number',[]);
       window.freePsi = Module.cwrap('freePsiBuffer', null, []);
       window.setCurrentTime = Module.cwrap('setCurrentTime', null, ['number']);
-
+      window.tackVelocity = Module.cwrap('tackVelocity', null, ['number', 'number', 'number', 'number']);
+      
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
       // For example, if you want to call f(x) many times in your simulation, wrap this call.
@@ -838,7 +839,8 @@
             Module.HEAPF64.set(U_init, U_ptr / 8);
             Module.HEAPF64.set(V_arr, V_ptr / 8);
             
-            let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
+            let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0, 1 /* 1 → write into ψ (default)*/);
+            tackVelocity(params.x_min, params.dx, params.N, params.v0);
             let error = Module.ccall('getNLSResidual', 'number', [], []);
             alert("Residual error from C++ refinement 𝓕 = "+error);
 
@@ -1580,7 +1582,7 @@
         Module.HEAPF64.set(U_init, U_ptr / 8);
         Module.HEAPF64.set(V_arr, V_ptr / 8);
         
-        let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0);
+        let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0, 0 /* do NOT overwrite psi_buffer */);
         let error = Module.ccall('getNLSResidual', 'number', [], []);
         alert("Residual error from C++ refinement 𝓕 = " + error);
 

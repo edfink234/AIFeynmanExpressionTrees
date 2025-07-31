@@ -61,9 +61,44 @@ extern "C"
         if (psi_buffer) { free(psi_buffer); psi_buffer = nullptr; }
         Npsi = 0;          // so next Start will resize correctly
     }
-    EMSCRIPTEN_KEEPALIVE void setCurrentTime(double currentTime)
+    EMSCRIPTEN_KEEPALIVE
+    void setCurrentTime(double currentTime)
     {
         current_time = currentTime;
+    }
+    
+    EMSCRIPTEN_KEEPALIVE
+    void tackVelocity(double x_min, double dx, int N, double v0)
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            double x   = x_min + i * dx;
+            double ph  = v0 * x;
+            double c   = std::cos(ph);
+            double s   = std::sin(ph);
+
+            double re  = RE(i);
+            double im  = IM(i);
+            
+            /*
+                Proof
+                =====
+                 
+                result = psi*e^{iv0*x}
+                       = (Re(psi) + i*Im(psi))*(cos(v0*x) + i*sin(v0*x))
+                       = Re(psi)*cos(v0*x) + i*Re(psi)*sin(v0*x) +
+                         i*Im(psi)*cos(v0*x) - Im(psi)*sin(v0*x)
+                 
+                   ===========================================
+                -> | {Re(result), Im(result)} =              |
+                   | {Re(psi)*cos(v0*x) - Im(psi)*sin(v0*x), |
+                   |  Re(psi)*sin(v0*x) + Im(psi)*cos(v0*x)} |
+                   ===========================================
+             */
+            
+            RE(i) = re*c - im*s;
+            IM(i) = re*s + im*c;
+        }
     }
 }
 
@@ -261,11 +296,27 @@ void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, doubl
                 double arg   = A_sol * (xpos - x0);
                 double amp   = A_sol * sech(arg);
                 double phase = v0  * xpos;
+                /*
+                    Proof
+                    =====
+                     
+                    result = psi*e^{iv0*x}
+                           = psi*(cos(v0*x) + i*sin(v0*x))
+                           = psi*cos(v0*x) + psi*i*sin(v0*x)
+                     
+                       ==================================
+                    -> | {Re(result), Im(result)} =     |
+                       | {psi*cos(v0*x), psi*sin(v0*x)} |
+                       ==================================
+                 */
+                
+                //This works because amp is real (0 imaginary part)
                 RE(i) = amp * std::cos(phase);
                 IM(i) = amp * std::sin(phase);
+                
             }
         }
-
+    
         //printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
     }
 }
@@ -379,7 +430,7 @@ extern "C"
             if (norm > max_residual) max_residual = norm;
         }
         lastResidual = max_residual;
-        std::cout << "max residual =" << lastResidual << '\n';
+        std::cout << "max residual = " << lastResidual << '\n';
         // Store the max residual in a static variable so we can retrieve it in JS
 
         return output;
@@ -478,8 +529,10 @@ struct NLSResidualFunctor
 
 extern "C"
 {
+    /*  writeIntoPsi :   true  → overwrite global ψ (normal workflow)
+                         false → return a temporary copy               */
     EMSCRIPTEN_KEEPALIVE
-    double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM)
+    double* refineCpp(double* U_init, double* V, int N, double dx, double g, double omega, int useLM, int writeIntoPsi)
     {
         Eigen::VectorXd U(2 * N);
         for (int i = 0; i < 2 * N; ++i)
@@ -520,28 +573,37 @@ extern "C"
 
         lastNLSResidual = F.norm();  // L2 norm of residual
         
-        /* ---- make sure psi_buffer is big enough -------------------- */
-        if (!psi_buffer || N != Npsi)
+        if (writeIntoPsi)
         {
-            if (psi_buffer) free(psi_buffer);
-            psi_buffer = (double*) malloc(sizeof(double)*2*N); // Allocate result
-            Npsi = N;
-        }
-        /* copy the refined steady state into the global buffer */
-        if (N < 20)
-        {
-            for (int i = 0; i < 2 * N; ++i) psi_buffer[i] = U[i];
+            /* ---- make sure psi_buffer is big enough -------------------- */
+            if (!psi_buffer || N != Npsi)
+            {
+                if (psi_buffer) free(psi_buffer);
+                psi_buffer = (double*) malloc(sizeof(double)*2*N); // Allocate result
+                Npsi = N;
+            }
+            /* copy the refined steady state into the global buffer */
+            if (N < 20)
+            {
+                for (int i = 0; i < 2 * N; ++i) psi_buffer[i] = U[i];
+            }
+            else
+            {
+                std::memcpy(psi_buffer, U.data(), sizeof(double)*2*N);
+            }
+            return psi_buffer;        // JS may read it but must NOT free it
         }
         else
         {
-            std::memcpy(psi_buffer, U.data(), sizeof(double)*2*N);
+            double* tmp = (double*) malloc(sizeof(double)*2*N);
+            std::memcpy(tmp, U.data(), sizeof(double)*2*N);
+            return tmp;
         }
-        return psi_buffer;        // JS may read it but must NOT free it
     }
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime"]' \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime", "_tackVelocity"]' \
 //  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
