@@ -37,6 +37,13 @@ static double A_pde       = 1.0;
 static double b_pde       = 1.0;
 static double x_min_pde   = 0.0;
 static double x_max_pde   = 0.0;
+/* ─────────--------------- error‑metric bookkeeping -------───────── */
+static double kappa_shape = 1.0;          // weight κ (adjust to taste)
+static double com_accum   = 0.0;          // ∫(ΔX)^2 dt
+static double shape_accum = 0.0;          // ∫((σ-σ0)/σ0)^2 dt
+static double sigma0      = 0.0;          // width at t=0
+static bool   sigma0_set  = false;
+
 
 /* simple ψ-buffer so JS can peek at the field                 */
 static int    Npsi        = 1024; // grid size
@@ -151,6 +158,23 @@ void laplacian(int N, double dx, const double *Re, const double *Im, double *out
     }
 }
 
+/* compute CoM X_sol and width σ on the fly */
+static inline void soliton_moments(double &Xsol, double &sigma)
+{
+    double m0 = 0.0, m1 = 0.0, m2 = 0.0;
+    for (int i = 0; i < Npsi; ++i)
+    {
+        double x   = x_min_pde + i*dx_pde;
+        double amp2 = RE(i)*RE(i) + IM(i)*IM(i);
+        m0 += amp2;
+        m1 += amp2 * x;
+        m2 += amp2 * x * x;
+    }
+    Xsol  = m1 / m0;
+    double var = m2 / m0 - Xsol*Xsol;
+    sigma = std::sqrt(std::max(var, 0.0));
+}
+
 /* one RK-4 step of  i u_t = -½ u_xx + V u - |u|² u  */
 static inline void doPDEstep()
 {
@@ -221,8 +245,23 @@ static inline void doPDEstep()
 
 extern "C"
 {
+    /* return final metric D once simulation stops */
     EMSCRIPTEN_KEEPALIVE
+    double getErrorMetric()
+    {
+        if (total_time <= 0.0) return 0.0;
+        return (com_accum + kappa_shape * shape_accum) / total_time;
+    }
 
+    /* handy if you want to clear it from JS without restarting everything */
+    EMSCRIPTEN_KEEPALIVE
+    void resetErrorMetric()
+    {
+        com_accum = shape_accum = 0.0;
+        sigma0_set = false;
+    }
+
+    EMSCRIPTEN_KEEPALIVE
     void stepForPlotInterval(double maxMillis)
     {
         using clock = std::chrono::high_resolution_clock;
@@ -234,6 +273,16 @@ extern "C"
             //printf("u[%d] = %lf + %lfi\n", Npsi/3, RE(Npsi/3), IM(Npsi/3));
             doPDEstep(); // Split-step or RK4 PDE update
             current_time += dt;
+            /* -------- error‑metric update -------- */
+            double Xsol, sigma;
+            soliton_moments(Xsol, sigma);
+
+            if (!sigma0_set) { sigma0 = sigma; sigma0_set = true; }
+
+            double dX2      = (Xsol - x_particle)*(Xsol - x_particle);
+            double dsig_rel = (sigma - sigma0) / sigma0;
+            com_accum   += dX2 * dt;
+            shape_accum += dsig_rel*dsig_rel * dt;
 
             auto now = clock::now();
             double elapsed = std::chrono::duration<double, std::milli>(now - start).count();
@@ -316,6 +365,10 @@ void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, doubl
                 
             }
         }
+        /* ---- reset error metric ---- */
+        com_accum = shape_accum = 0.0;
+        sigma0_set = false;           // will set on first call inside time loop
+
     
         //printf("u[%d] = %lf + %lfi\n", Npsi/3, psi_buffer[(2*(Npsi/3))], psi_buffer[(2*(Npsi/3))+1]);
     }
@@ -603,7 +656,7 @@ extern "C"
 }
 
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
-//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime", "_tackVelocity"]' \
+//  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime", "_tackVelocity", "_getErrorMetric", "_resetErrorMetric"]' \
 //  -s EXPORT_ES6=1 \
 //  -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
 //  -s TOTAL_MEMORY=1073741824 \
