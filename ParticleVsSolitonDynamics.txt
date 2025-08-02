@@ -52,6 +52,8 @@
       window.freePsi = Module.cwrap('freePsiBuffer', null, []);
       window.setCurrentTime = Module.cwrap('setCurrentTime', null, ['number']);
       window.tackVelocity = Module.cwrap('tackVelocity', null, ['number', 'number', 'number', 'number']);
+      window.getErrorMetric  = Module.cwrap('getErrorMetric', 'number', []);
+      window.resetErrorMetric = Module.cwrap('resetErrorMetric', null, []);
       
       window.loadedCPPFunctions = true;
       // You can now use this function in your performance-critical code.
@@ -205,6 +207,14 @@
         <div class = "col">
             <label class="ml-2">
               <input type="checkbox" id="loopToggle"> Auto-loop
+            </label>
+        </div>
+    </div>
+    <div class="row" style="text-align:center">
+        <div class="col">
+            <label class="ml-2">
+                  <input type="checkbox" id="computeErrorToggle">
+                  Compute particle–soliton error metric
             </label>
         </div>
     </div>
@@ -1238,6 +1248,7 @@
     // ----------------------- Simulation Initialization & Loop -----------------------
     function initSimulations()
     {
+        resetErrorMetric();
         const params = getParameters();
         console.log(`setSimParameters called with ${params.dt} ${params.T} ${params.N} ${params.m} ${params.Omega} ${params.A} ${params.b} ${params.x0} ${params.v0} ${params.dx} ${params.Omega_pde} ${params.A_pde} ${params.b_pde}`)
         currentTime = 0;
@@ -1264,6 +1275,11 @@
         {
             clearInterval(simInterval);
             simulationRunning = false;
+            if (document.getElementById("computeErrorToggle").checked)
+            {
+                const D = getErrorMetric();
+                alert(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
+            }
             if (document.getElementById("loopToggle").checked)
             {
                 setTimeout(() =>
@@ -1787,14 +1803,15 @@
         simulationRunning = false;
         paused = false;
         
-        /* 2. free the big buffer on the C++ side */
+        /* 2. free the big buffer on the C++ side and reset error metric */
         freePsi();
+        resetErrorMetric();
 
         /* 3. clear JS-side state / plots */
         odeState = null;
         currentTime = 0;
         setCurrentTime(0);
-        clearPlots();   //TODO Change with initplots but don't do Newton.
+        clearPlots();
     });
 
     window.addEventListener("resize", function()
