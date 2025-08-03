@@ -1,6 +1,6 @@
 <!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
 <!--run locally: python3 -m http.server 8000-->
-<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html -->
+<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html, http://localhost:8080/ParticleVsSolitonDynamics.html -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,16 +68,22 @@
 <div class="container-fluid">
   <h1 class="text-center">ODE &amp; PDE Dynamics Simulation</h1>
   <div class="text-center mb-3">
-    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) in the external potential \( V(x) = \frac{1}{2} \Omega^2 x^2 + A \, \text{sech}^2(bx) \).</p>
-<!--        <br>-->
-    <p><strong>Optional "patched" variational potential (ODE only)</strong>
-        \[
-            U_{\text{patched}}(x;A,b,\Omega,\epsilon)=
-            \begin{cases}
-            U_{\text{eff}}(x;A,b,\Omega) & \text{if }|x|\ge\epsilon,\\[4pt]
-            U_{\text{Taylor}}(x;A,b,\Omega) & \text{if }|x|<\epsilon,
-            \end{cases}
-        \]
+    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) using Newton's second law
+    \[
+        m\dfrac{d^2 x}{dt^2} = F, \quad x(0) = x_0, \:\, v(0) = v_0
+    \]
+    in either an external potential
+    \[
+        V(x) = \frac{1}{2} \Omega^2 x^2 + A \, \text{sech}^2(bx)
+    \]</p>
+    or a "patched" variational potential:
+    \[
+        U_{\text{patched}}(x;A,b,\Omega,\epsilon)=
+        \begin{cases}
+        U_{\text{eff}}(x;A,b,\Omega) & \text{if }|x|\ge\epsilon,\\[4pt]
+        U_{\text{Taylor}}(x;A,b,\Omega) & \text{if }|x|<\epsilon,
+        \end{cases}
+    \]
             with
         \[
             \begin{aligned}
@@ -282,7 +288,51 @@
 <!--      <input type="checkbox" id="applyAlertToggle" unchecked> Alert Newton Progress-->
 <!--    </label>-->
   </div>
-  
+  <!----- GRID-SCAN TAB -------------------------------------------------------->
+  <ul class="nav nav-tabs mt-4" id="viewTabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#liveView">Live view</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#scanView">Grid scan</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- liveView keeps your existing plots ------------------------------ -->
+    <div class="tab-pane fade show active" id="liveView">
+        <!-- existing live-plots row stays here -->
+    </div>
+
+    <!---- grid scan ----------------------------------------------------->
+    <div class="tab-pane fade" id="scanView">
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <h4>Scan ranges</h4> <br>
+            <label>\(\boxed{b = A_{\mathrm{sol}}}\)</label><br>
+            <label for="bMin" style="display: inline;">\( b_{\text{min}} \)</label>
+            <input type="number" step="0.05" id="bMin" class="form-control" value="0.5">
+            <label for="bMax">\( b_{\text{max}} \)</label>
+            <input type="number" step="0.05" id="bMax" class="form-control" value="2.0">
+            <label for="bStep">\( \Delta b \)</label>
+            <input type="number" step="0.02" id="bStep" class="form-control" value="0.05">
+            <br>
+            <label class="mt-2">\(\boxed{\Omega}\)</label> <br>
+            <label for="OmMin" style="display: inline;">\( \Omega_{\text{min}} \)</label>
+            <input type="number" step="0.02" id="OmMin" class="form-control" value="0.02">
+            <label for="OmMax">\( \Omega_{\text{max}} \)</label>
+            <input type="number" step="0.02" id="OmMax" class="form-control" value="0.40">
+            <label for="OmStep">\( \Delta \Omega \)</label>
+            <input type="number" step="0.02" id="OmStep" class="form-control" value="0.02">
+          <button id="runScan" class="btn btn-primary mt-3">Run grid scan</button>
+        </div>
+        <div class="col-md-9">
+          <div id="scanHeatmap" style="height:500px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!--  <div class="row">-->
 <!--      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">-->
 <!--        <label>Newton Refinement Progress:</label>-->
@@ -482,6 +532,65 @@
             epsilon       : parseFloat(document.getElementById("epsilon").value) || 0
         };
     }
+    
+    async function runGridScan()
+    {
+        /* lattice */
+        const bMin  = +document.getElementById("bMin").value;
+        const bMax  = +document.getElementById("bMax").value;
+        const bStep  = +document.getElementById("bStep").value;
+
+        const OmMin = +document.getElementById("OmMin").value;
+        const OmMax = +document.getElementById("OmMax").value;
+        const OmStep  = +document.getElementById("OmStep").value;
+
+        const bVals  = numeric.linspace(bMin,  bMax,  Math.round((bMax-bMin)/bStep)+1);
+        const OmVals = numeric.linspace(OmMin, OmMax, Math.round((OmMax-OmMin)/OmStep)+1);
+        console.log("bVals = ", bVals);
+        console.log("OmVals = ", OmVals);
+
+        const Z = [];                                 // 2-D array of 𝒟
+        for (let i=0; i<bVals.length; i++)
+        {
+            Z[i] = [];
+            for (let j=0; j<OmVals.length; j++)
+            {
+                /* --- configure this grid point -------------------------------- */
+                const p = getParameters();
+                p.b   = p.b_pde = p.A_sol = bVals[i];
+                p.Omega = p.Omega_pde = OmVals[j];
+                p.x0 = 0;                                  // will be replaced by x⋆ in C++
+                p.v0 = 0.3;
+                p.epsilon = 0.25 / p.b;
+                p.T = 4*Math.PI/p.Omega;                   // two trap periods
+                initSimulations(p);                         // alloc + ground-state
+                /* --- run to end silently -------------------------------------- */
+                const start = performance.now();
+                while (currentTime < p.T)
+                {
+                    stepForPlotInterval(20);                 // integrate ≤20 ms chunks
+                    /* safety to avoid infinite loops in Ω≈0 case */
+                    if (performance.now()-start > 2000) break;
+                }
+                const D = getErrorMetric();
+                Z[i][j] = D;
+            }
+        }
+        /* --- Plotly heat-map ---------------------------------------------- */
+        Plotly.newPlot('scanHeatmap', [{
+            z: Z, x: OmVals, y: bVals, type:'heatmap',
+            colorscale:'RdYlGn', reversescale:true,
+            colorbar:{title:'𝒟'}}], {title:'Particle vs soliton agreement',
+          xaxis:{title:'Ω'}, yaxis:{title:'b (=A_sol)'}});
+    }
+
+    /* attach to button */
+    document.getElementById("runScan").addEventListener("click", async ()=>{
+        document.getElementById("runScan").disabled = true;
+        await runGridScan();
+        document.getElementById("runScan").disabled = false;
+    });
+
 
     function linspace(a, b, n)
     {
@@ -920,7 +1029,7 @@
         //tack on velocity afterwards
         for (let i = 0; i < N; i++)
         {
-            let phase = v0 * x[i];
+            let phase = -v0 * x[i];
             u[i] = math.multiply(u[i], math.exp(math.complex(0, phase)));
         }
         U_pde = u.map(z => z.re).concat(u.map(z => z.im));
@@ -1173,7 +1282,7 @@
             mode: 'lines',
             name: 'ODE Potential: '+
             ((params.potentialType == "external") ?
-            '$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$' :
+            '$V(x) = \\frac{1}{2}\\Omega^2 x^2 + A\\cdot\\text{sech}^2(bx)$' :
             '$U_{\\text{patched}}(x;A,b,\\Omega,\\epsilon)$')
         };
         let odeTraceParticle =
@@ -1219,7 +1328,7 @@
             x: pdeGrid,
             y: pdePotential,
             mode: 'lines',
-            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
+            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 x^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
         };
         let pdeTraceDensity =
         {
@@ -1257,7 +1366,7 @@
                 mode: 'lines',
                 name: 'ODE Potential: '+
                 ((params.potentialType == "external") ?
-                '$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$' :
+                '$V(x) = \\frac{1}{2}\\Omega^2 x^2 + A\\cdot\\text{sech}^2(bx)$' :
                 '$U_{\\text{patched}}(x;A,b,\\Omega,\\epsilon)$')
             };
             let odeTraceParticle =
@@ -1308,7 +1417,7 @@
             x: pdeGrid,
             y: pdePotential,
             mode: 'lines',
-            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
+            name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 x^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
         };
         let pdeTraceDensity =
         {
@@ -1332,11 +1441,11 @@
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
-    function initSimulations()
+    function initSimulations(params_dict = {})
     {
         resetErrorMetric();
-        const params = getParameters();
-        console.log(`setSimParameters called with ${params.dt} ${params.T} ${params.N} ${params.m} ${params.Omega} ${params.A} ${params.b} ${params.x0} ${params.v0} ${params.dx} ${params.Omega_pde} ${params.A_pde} ${params.b_pde}`)
+        const params = (Object.keys(params_dict).length === 0) ? getParameters() : params_dict;
+        console.log(`setSimParameters called with dt = ${params.dt}, T = ${params.T}, N = ${params.N}, m = ${params.m}, Ω = ${params.Omega} A = ${params.A}, A_sol = ${params.A_sol}, b = ${params.b}, x_0 = ${params.x0}, v0 = ${params.v0},  dx = ${params.dx}, Ω_pde = ${params.Omega_pde}, A_pde = ${params.A_pde}, b_pde = ${params.b_pde}`)
         currentTime = 0;
         setCurrentTime(0);
         // Initialize ODE state:

@@ -83,7 +83,7 @@ extern "C"
         for (int i = 0; i < N; ++i)
         {
             double x   = x_min + i * dx;
-            double ph  = v0 * x;
+            double ph  = -v0 * x;
             double c   = std::cos(ph);
             double s   = std::sin(ph);
 
@@ -413,7 +413,7 @@ void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, doubl
                 double xpos  = x_min + i * dx_pde;              // ← use x_min
                 double arg   = A_sol * (xpos - x0);
                 double amp   = A_sol * sech(arg);
-                double phase = v0  * xpos;
+                double phase = -v0  * xpos;
                 /*
                     Proof
                     =====
