@@ -43,7 +43,7 @@
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
       window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']);
       window.stepForPlotInterval = Module.cwrap('stepForPlotInterval', null, ['number']);
-      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number']);
+      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number', 'number','number']);
       // getters for ode and pde simulations
       window.getXParticle  = Module.cwrap('getXParticle','number',[]);
       window.getVParticle  = Module.cwrap('getVParticle','number',[]);
@@ -68,7 +68,35 @@
 <div class="container-fluid">
   <h1 class="text-center">ODE &amp; PDE Dynamics Simulation</h1>
   <div class="text-center mb-3">
-    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) in the effective potential \( V(x) = \frac{1}{2} \Omega^2 x^2 + A \, \text{sech}^2(bx) \).</p>
+    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) in the external potential \( V(x) = \frac{1}{2} \Omega^2 x^2 + A \, \text{sech}^2(bx) \).</p>
+        <br>
+    <p><strong>Optional "patched" variational potential (ODE only)</strong>
+        \[
+            U_{\text{patched}}(x;A,b,\Omega,\epsilon)=
+            \begin{cases}
+            U_{\text{eff}}(x;A,b,\Omega) & \text{if }|x|\ge\epsilon,\\[4pt]
+            U_{\text{Taylor}}(x;A,b,\Omega) & \text{if }|x|<\epsilon,
+            \end{cases}
+        \]
+            with
+        \[
+            \begin{aligned}
+            U_{\text{eff}} &= {}
+            -\frac{256A b^{2} x}{\!\bigl(e^{2bx}-1\bigr)^{5}}
+            -\frac{256A b(2bx-1)}{\!\bigl(e^{2bx}-1\bigr)^{3}}
+            -\frac{128A b(5bx-1)}{\!\bigl(e^{2bx}-1\bigr)^{4}} \\[-2pt]
+            &\hphantom{={}}
+            -\frac{32A b(12bx-13)}{3\bigl(e^{2bx}-1\bigr)^{2}}
+            +\frac{32A b}{3\bigl(e^{2bx}-1\bigr)}
+            +\frac{2\Omega^{2} b x^{2}}{3},\\[6pt]
+            U_{\text{Taylor}} &= {}
+            -\frac{64A b^{3}x^{2}}{105}
+            +\frac{16A b}{15}
+            +\frac{2\Omega^{2} b x^{2}}{3}.
+            \end{aligned}
+        \]
+    </p>
+        <br>
     <p><strong>PDE:</strong> Evolves the focusing 1D nonlinear Schrödinger equation (NLS)
     \[
     i u_t = -\frac{1}{2} u_{xx} + V(x) u - |u|^2 u,
@@ -135,6 +163,26 @@
           <label for="b">Width Factor \( b \)</label>
           <input type="number" step="any" class="form-control" id="b" value="1">
         </div>
+        <hr>
+        <div class="form-group">
+          <label for="odePotentialType">External \( V(x) \) or Variational \(U_{\text{patched}}(x)\)</label>
+          <select class="form-control" id="odePotentialType">
+            <option value="external" selected>External V</option>
+            <option value="patched">Variational U</option>
+          </select>
+        </div>
+        <div class="form-group" id="epsilonContainer" style="display:none">
+          <label for="epsilon">Patch radius \( \epsilon \)</label>
+          <input type="number" step="any" class="form-control" id="epsilon" value="0.5">
+        </div>
+        <script>
+          /* show / hide ε only when patched is selected */
+          document.getElementById('odePotentialType').addEventListener('change', e=>{
+            document.getElementById('epsilonContainer').style.display =
+              e.target.value==='patched' ? 'block' : 'none';
+          });
+        </script>
+
       </div>
       <!-- PDE parameters -->
       <div class="col-md-4">
@@ -429,7 +477,9 @@
             x_max: (parseFloat(document.getElementById("x_max").value) || 0),
             N: Math.floor( ( parseFloat(document.getElementById("x_max").value) - parseFloat(document.getElementById("x_min").value) ) / parseFloat(document.getElementById("dx").value) ),
             g: -1,
-            wfreq: (parseFloat(document.getElementById("omega").value) || 0)
+            wfreq: (parseFloat(document.getElementById("omega").value) || 0),
+            potentialType : document.getElementById("odePotentialType").value,
+            epsilon       : parseFloat(document.getElementById("epsilon").value) || 0
         };
     }
 
@@ -881,6 +931,36 @@
         return 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2);
     }
     
+    /* -------- choose which potential to plot (ODE only) -------- */
+    function odePotentialAt(x, params)
+    {
+        if (params.potentialType !== 'patched') {
+            /* plain external V */
+            return 0.5 * params.Omega * params.Omega * x * x
+                 + params.A * Math.pow(sech(params.b * x), 2);
+        }
+
+        /* patched variational U_patched */
+        const A   = params.A;
+        const b   = params.b;
+        const Om2 = params.Omega * params.Omega;
+        const eps = params.epsilon;
+
+        if (Math.abs(x) < eps) { /* Taylor patch */
+            return - (64  * A * Math.pow(b,3) * x * x) / 105
+                   + (16  * A * b) / 15
+                   + (2   * Om2 * b * x * x) / 3;
+        }
+        /* far field: U_eff */
+        const expTerm = Math.exp(2 * b * x) - 1;
+        return - 256 * A * b * b * x / Math.pow(expTerm,5)
+               - 256 * A * b * (2 * b * x - 1) / Math.pow(expTerm,3)
+               - 128 * A * b * (5 * b * x - 1) / Math.pow(expTerm,4)
+               -  32 * A * b * (12 * b * x - 13) / (3 * Math.pow(expTerm,2))
+               +  32 * A * b / (3 * expTerm)
+               +   2 * Om2 * b * x * x / 3;
+    }
+    
     // Helper functions for matrix concatenation:
     function hconcat(mat1, mat2)
     {
@@ -1083,15 +1163,18 @@
     function initPlots(params)
     {
         // ODE plot: potential and particle marker.
-        let odePotential = pdeGrid.map(x => 0.5 * params.Omega * params.Omega * x * x + params.A * Math.pow(sech(params.b * x), 2));
-        let initialODEPotential = 0.5 * params.Omega * params.Omega * params.x0 * params.x0 + params.A * Math.pow(sech(params.b * params.x0), 2);
+        let odePotential = pdeGrid.map(x => odePotentialAt(x, params));
+        let initialODEPotential = odePotentialAt(params.x0, params);
 
         let odeTracePotential =
         {
             x: pdeGrid,
             y: odePotential,
             mode: 'lines',
-            name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
+            name: 'ODE Potential: '+
+            ((params.potentialType == "external") ?
+            '$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$' :
+            '$U_{\\text{patched}}(x;A,b,\\Omega,\\epsilon)$')
         };
         let odeTraceParticle =
         {
@@ -1162,17 +1245,20 @@
     function updatePlots(params, replotOdePotential = false)
     {
         // Update ODE particle position:
-        let currentODEPotential = 0.5 * params.Omega * params.Omega * odeState.x * odeState.x + params.A * Math.pow(sech(params.b * odeState.x), 2);
+        let currentODEPotential = odePotentialAt(odeState.x, params);
         if (replotOdePotential)
         {
-            let odePotential = pdeGrid.map(x => 0.5 * params.Omega * params.Omega * x * x + params.A * Math.pow(sech(params.b * x), 2));
+            let odePotential = pdeGrid.map(x => odePotentialAt(x, params));
 
             let odeTracePotential =
             {
                 x: pdeGrid,
                 y: odePotential,
                 mode: 'lines',
-                name: 'ODE Potential: '+'$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$'
+                name: 'ODE Potential: '+
+                ((params.potentialType == "external") ?
+                '$V(x) = \\frac{1}{2}\\Omega^2 + A\\cdot\\text{sech}^2(bx)$' :
+                '$U_{\\text{patched}}(x;A,b,\\Omega,\\epsilon)$')
             };
             let odeTraceParticle =
             {
@@ -1257,7 +1343,8 @@
         odeState = { x: params.x0, v: params.v0 };
         // Initialize PDE grid and initial condition:
         initPDE(params);
-        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol);
+        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol, params.potentialType==='patched', params.epsilon);
+        console.log(params.potentialType);
         initPlots(params);
     }
 
@@ -1747,7 +1834,7 @@
                     odeState.x, odeState.v,          // keep current centre & velocity
                     params.dx, params.x_min, params.x_max,
                     params.Omega_pde, params.A_pde, params.b_pde,
-                    params.A_sol
+                    params.A_sol, params.potentialType==='patched', params.epsilon
                 );
 
             }
@@ -1789,7 +1876,7 @@
             p.x0, p.v0,
             p.dx, p.x_min, p.x_max,
             p.Omega_pde, p.A_pde, p.b_pde,
-            p.A_sol
+            p.A_sol, p.potentialType==='patched', p.epsilon
         );
         updatePlots(p, true);    // redraw potentials
     });

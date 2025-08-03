@@ -43,6 +43,9 @@ static double com_accum   = 0.0;          // ∫(ΔX)^2 dt
 static double shape_accum = 0.0;          // ∫((σ-σ0)/σ0)^2 dt
 static double sigma0      = 0.0;          // width at t=0
 static bool   sigma0_set  = false;
+/* ------------ patched‑potential switches --------------------------- */
+static bool   use_patched  = false;
+static double eps_patch    = 0.5;   // ε
 
 
 /* simple ψ-buffer so JS can peek at the field                 */
@@ -109,13 +112,77 @@ extern "C"
     }
 }
 
-/* acceleration a(x) = (-Ω² x + 2 A b sech²(bx) tanh(bx)) / m */
+static inline double U_eff(double x)
+{
+    double b = b_param, A = A_param, Om = Omega_param;
+    double e = std::exp(2.0*b*x);
+    double d = e - 1.0;
+    return -256.0*A*b*b*x/std::pow(d,5)
+           -256.0*A*b*(2*b*x-1)/std::pow(d,3)
+           -128.0*A*b*(5*b*x-1)/std::pow(d,4)
+           -32.0*A*b*(12*b*x-13)/(3.0*std::pow(d,2))
+           +32.0*A*b/(3.0*d)
+           +2.0*Om*Om*b*x*x/3.0;
+}
+static inline double U_taylor(double x)
+{
+    double b = b_param, A = A_param, Om = Omega_param;
+    return -64.0*A*std::pow(b,3)*x*x/105.0
+           +16.0*A*b/15.0
+           +2.0*Om*Om*b*x*x/3.0;
+}
+static inline double U_patched(double x)
+{
+    return (std::abs(x) >= eps_patch ? U_eff(x) : U_taylor(x));
+}
+
+/* ---------- analytic forces for patched potential ---------- */
+static inline double force_taylor(double x)
+{
+    /* F = -dU_Taylor/dx  ( valid when |x| < ε ) */
+    const double  A  = A_param;
+    const double  b  = b_param;
+    const double  b3 = b*b*b;
+    const double  Om2 = Omega_param*Omega_param;
+    return ( 128.0 * A * b3 * x / 105.0 )
+         - (   4.0 * Om2 * b * x /  3.0 );
+}
+
+static inline double force_eff(double x)
+{
+    /* F = -dU_eff/dx  ( valid when |x| ≥ ε ) */
+    const double  A  = A_param;
+    const double  b  = b_param;
+    const double  b2 = b*b;
+    const double  b3 = b2*b;
+    const double  Om2 = Omega_param*Omega_param;
+
+    const double  exp_term = std::exp(2.0*b*x) - 1.0;
+
+    const double  term1 = -2560.0 * A * b3 * x                  / std::pow(exp_term, 6);
+    const double  term2 = -1280.0 * A * b2 * (6.0*b*x - 1.0)    / std::pow(exp_term, 5);
+    const double  term3 =   -64.0 * A * b2 * (8.0*b*x - 11.0)   / std::pow(exp_term, 2);
+    const double  term4 =  -128.0 * A *  b * (64.0*b*x - 25.0)  / std::pow(exp_term, 4);
+    const double  term5 =  -128.0 * A * b2 * (84.0*b*x - 61.0)  / (3.0 * std::pow(exp_term, 3));
+    const double  term6 =    64.0 * A * b2                      / (3.0 * exp_term);
+    const double  trap  =   -4.0/3.0 * b * Om2 * x;
+
+    return term1 + term2 + term3 + term4 + term5 + term6 + trap;
+}
+
 static inline double accel(double x)
 {
-    const double s  = sech(b_param * x);
-    const double t  = std::tanh(b_param * x);
-    return (-Omega_param * Omega_param * x +
-            2.0 * A_param * b_param * s * s * t) / m_param;
+    if (!use_patched)
+    {
+        /* external V:  (-Ω² x + 2 A b sech²(bx) tanh(bx)) / m  */
+        const double s = sech(b_param * x);
+        const double t = std::tanh(b_param * x);
+        return (-Omega_param*Omega_param*x + 2.0*A_param*b_param*s*s*t) / m_param;
+    }
+    /* patched variational potential */
+    const double F = (std::abs(x) < eps_patch) ? force_taylor(x)
+                                               : force_eff(x);
+    return F / m_param;
 }
 
 /* ───────────── dummy integrators – replace with real code ───────── */
@@ -295,7 +362,7 @@ extern "C"
 
     /* allow JS to reset / configure the solver on each run */
     EMSCRIPTEN_KEEPALIVE
-void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol)
+void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol, int patchedFlag, double eps)
     {
         dt = new_dt;
         total_time = new_T;
@@ -311,6 +378,8 @@ void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, doubl
         Omega_pde = OmegaPDE;
         A_pde     = Apde;
         b_pde     = bpde;
+        use_patched = (patchedFlag != 0);
+        eps_patch   = eps;
         
 //        printf("Simulation Parameters:\n");
 //        printf("  dt = %lf\n", dt);
