@@ -68,7 +68,7 @@
 <div class="container-fluid">
   <h1 class="text-center">ODE &amp; PDE Dynamics Simulation</h1>
   <div class="text-center mb-3">
-    <p><strong>ODE:</strong> Simulates a particle of mass \( m \) using Newton's second law
+    <p><h4>ODE</h4> Simulates a particle of mass \( m \) using Newton's second law
     \[
         m\dfrac{d^2 x}{dt^2} = F, \quad x(0) = x_0, \:\, v(0) = v_0
     \]
@@ -102,13 +102,12 @@
             \end{aligned}
         \]
     </p>
-        <br>
-    <p><strong>PDE:</strong> Evolves the focusing 1D nonlinear Schrödinger equation (NLS)
+    <p><h4>PDE</h4> Evolves the focusing 1D nonlinear Schrödinger equation (NLS)
     \[
     i u_t = -\frac{1}{2} u_{xx} + V(x) u - |u|^2 u,
     \]
     with periodic boundary conditions, using a finite-difference RK4 scheme.</p>
-    <p><strong>Initial Condition PDE:</strong> \( u(x, 0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}} (x - x_0)) \cdot e^{i v_0 x} \), optionally refined via Newton's method or Levenberg–Marquardt.</p>
+    <p><strong>Initial Condition PDE</strong> \[ u(x, 0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}} (x - x_0)) \cdot e^{i v_0 x}, \] optionally refined via Newton's method or Levenberg–Marquardt.</p>
   </div>
   <!-- Parameter Input Form -->
   <form id="paramsForm">
@@ -268,7 +267,7 @@
         <div class="col">
             <label class="ml-2">
                   <input type="checkbox" id="computeErrorToggle">
-                  Compute particle–soliton error metric
+                  Compute point particle-soliton error metric \(\mathcal{D} \;\equiv\; \frac{1}{T}\displaystyle\int_{0}^{T} \left[\Big|X_{\mathrm{sol}}(t) - X_{\mathrm{pp}}(t)\Big|^2 \;+\;  \left(\frac{\sigma(t)-\sigma_0}{\sigma_0}\right)^2~ \,\right]\,dt~\)
             </label>
         </div>
     </div>
@@ -315,7 +314,7 @@
             <label for="bMax">\( b_{\text{max}} \)</label>
             <input type="number" step="0.05" id="bMax" class="form-control" value="2.0">
             <label for="bStep">\( \Delta b \)</label>
-            <input type="number" step="0.02" id="bStep" class="form-control" value="0.05">
+            <input type="number" step="0.02" id="bStep" class="form-control" value="0.5">
             <br>
             <label class="mt-2">\(\boxed{\Omega}\)</label> <br>
             <label for="OmMin" style="display: inline;">\( \Omega_{\text{min}} \)</label>
@@ -323,7 +322,7 @@
             <label for="OmMax">\( \Omega_{\text{max}} \)</label>
             <input type="number" step="0.02" id="OmMax" class="form-control" value="0.40">
             <label for="OmStep">\( \Delta \Omega \)</label>
-            <input type="number" step="0.02" id="OmStep" class="form-control" value="0.02">
+            <input type="number" step="0.02" id="OmStep" class="form-control" value="0.2">
           <button id="runScan" class="btn btn-primary mt-3">Run grid scan</button>
         </div>
         <div class="col-md-9">
@@ -563,7 +562,7 @@
                 p.v0 = 0.3;
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
-                initSimulations(p);                         // alloc + ground-state
+                initSimulations(p, false);                         // alloc + ground-state
                 /* --- run to end silently -------------------------------------- */
                 const start = performance.now();
                 while (currentTime < p.T)
@@ -577,11 +576,14 @@
             }
         }
         /* --- Plotly heat-map ---------------------------------------------- */
-        Plotly.newPlot('scanHeatmap', [{
-            z: Z, x: OmVals, y: bVals, type:'heatmap',
-            colorscale:'RdYlGn', reversescale:true,
-            colorbar:{title:'𝒟'}}], {title:'Particle vs soliton agreement',
-          xaxis:{title:'Ω'}, yaxis:{title:'b (=A_sol)'}});
+        MathJax.Hub.Queue(()=> {
+            Plotly.newPlot('scanHeatmap', [{
+                z: Z, x: OmVals, y: bVals, type:'heatmap',
+                colorscale:'RdYlGn', reversescale:true,
+                colorbar:{title:'$\\mathcal{D}$'}}], {title:'Particle vs soliton agreement',
+              xaxis:{title:'$\\Omega$'}, yaxis:{title:'$b = A_{sol}$'}});
+        });
+        
     }
 
     /* attach to button */
@@ -1441,7 +1443,7 @@
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
-    function initSimulations(params_dict = {})
+    function initSimulations(params_dict = {}, initThePlots = true)
     {
         resetErrorMetric();
         const params = (Object.keys(params_dict).length === 0) ? getParameters() : params_dict;
@@ -1454,7 +1456,10 @@
         initPDE(params);
         setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol, params.potentialType==='patched', params.epsilon);
         console.log(params.potentialType);
-        initPlots(params);
+        if (initThePlots)
+        {
+            initPlots(params);
+        }
     }
 
     function simulationStep()
