@@ -352,17 +352,25 @@ extern "C"
             shape_accum += dsig_rel*dsig_rel * dt;
 
             auto now = clock::now();
-            double elapsed = std::chrono::duration<double, std::milli>(now - start).count();
-            if (elapsed >= maxMillis)
+            
+            if (maxMillis < 0.0)
             {
-                break;
+                continue;
+            }
+            else
+            {
+                double elapsed = std::chrono::duration<double, std::milli>(now - start).count();
+                if (elapsed >= maxMillis)
+                {
+                    break;
+                }
             }
         }
     }
 
     /* allow JS to reset / configure the solver on each run */
     EMSCRIPTEN_KEEPALIVE
-void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol, int patchedFlag, double eps)
+void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol, int patchedFlag, double eps, bool reset = false)
     {
         dt = new_dt;
         total_time = new_T;
@@ -397,7 +405,7 @@ void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, doubl
 //        printf("  A_pde = %lf\n", A_pde);
 //        printf("  b_pde = %lf\n", b_pde);
 
-        if ((new_Npsi != Npsi) || (!psi_buffer)) // re-allocate or initialise u if grid changes
+        if ((new_Npsi != Npsi) || (!psi_buffer) || reset) // re-allocate or initialise u if grid changes
         {
             std::cout << "Re-initialising u\n";
             current_time = 0.0; //restarting simulation here
@@ -667,6 +675,7 @@ extern "C"
         
         if (useLM)
         {
+            std::cout << "Using Levenberg-Marquardt\n";
             //Eigen::NumericalDiff<NLSResidualFunctor<double>> numDiff(functor);
             //Eigen::LevenbergMarquardt<Eigen::NumericalDiff<NLSResidualFunctor<double>>> lm(numDiff);
             Eigen::LevenbergMarquardt<NLSResidualFunctor<double>> lm(functor);
@@ -678,6 +687,7 @@ extern "C"
         else
         {
             // Simple Newton with fixed iterations and learning rate
+            std::cout << "Using Newton\n";
             Eigen::VectorXd DU(2 * N);
             for (int iter = 0; iter < 10; ++iter)
             {
@@ -723,7 +733,7 @@ extern "C"
         }
     }
 }
-
+//
 //emcc myfunc.cpp -O2 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="createModule" \
 //  -s EXPORTED_FUNCTIONS='["_sech", "_setSimParameters", "_computeEigenspectrum", "_getLastResidual", "_refineCpp", "_stepForPlotInterval",  "_getCurrentTime", "_getXParticle", "_getVParticle", "_getPsiPointer", "_malloc", "_free", "_freePsiBuffer", "_setCurrentTime", "_tackVelocity", "_getErrorMetric", "_resetErrorMetric"]' \
 //  -s EXPORT_ES6=1 \

@@ -43,7 +43,7 @@
       window.computeEigenspectrumCpp = Module.cwrap('computeEigenspectrum', 'number', ["number", "number"]);
       window.refineCpp = Module.cwrap('refineCpp', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']);
       window.stepForPlotInterval = Module.cwrap('stepForPlotInterval', null, ['number']);
-      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number', 'number','number']);
+      window.setSimParameters    = Module.cwrap('setSimParameters', null, ['number','number','number','number','number','number','number','number','number','number','number','number','number','number','number', 'number', 'number','number', 'number']);
       // getters for ode and pde simulations
       window.getXParticle  = Module.cwrap('getXParticle','number',[]);
       window.getVParticle  = Module.cwrap('getVParticle','number',[]);
@@ -172,8 +172,8 @@
         <div class="form-group">
           <label for="odePotentialType">External \( V(x) \) or Variational \(U_{\text{patched}}(x)\)</label>
           <select class="form-control" id="odePotentialType">
-            <option value="external" selected>External V</option>
-            <option value="patched">Variational U</option>
+            <option value="external">External V</option>
+            <option value="patched" selected>Variational U</option>
           </select>
         </div>
         <div class="form-group" id="epsilonContainer" style="display:none">
@@ -216,15 +216,15 @@
           <label for="solverDropdown">Steady-State Solver</label>
           <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="solverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span id="solverLabel">Newton: \( \vec{U}_{k+1} = \vec{U}_k - J_k^{-1} \mathcal{F}(\vec{U}_k) \)</span>
+              <span id="solverLabel">Levenberg–Marquardt: \( \min_{\vec{U}} \| \mathcal{F}(\vec{U}) \|^2 \)</span>
             </button>
             <div class="dropdown-menu" aria-labelledby="solverDropdown">
-              <a class="dropdown-item solver-option" data-method="newton">
-                Newton: \( \vec{U}_{k+1} = \vec{U}_k - J_k^{-1} \mathcal{F}(\vec{U}_k) \)
-              </a>
-              <a class="dropdown-item solver-option" data-method="lm">
-                Levenberg–Marquardt: \( \min_{\vec{U}} \| \mathcal{F}(\vec{U}) \|^2 \)
-              </a>
+                <a class="dropdown-item solver-option" data-method="lm">
+                    Levenberg–Marquardt: \( \min_{\vec{U}} \| \mathcal{F}(\vec{U}) \|^2 \)
+                </a>
+                <a class="dropdown-item solver-option" data-method="newton">
+                    Newton: \( \vec{U}_{k+1} = \vec{U}_k - J_k^{-1} \mathcal{F}(\vec{U}_k) \)
+                </a>
             </div>
           </div>
         </div>
@@ -274,7 +274,7 @@
     <div class = "row" style="text-align:center">
         <div class = "col">
             <label class="ml-2">
-              <input type="checkbox" id="applyNewtonToggle" unchecked>
+              <input type="checkbox" id="applyNewtonToggle" checked>
 <!--                  Apply minimization routine to \(u(x,0) = A_{\text{sol}} \, \text{sech}\left(A_{\text{sol}} (x - x_0)\right)\) that minimizes the residual vector \(\mathcal{F} = \begin{pmatrix} \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{A}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{A}   \\[0.2cm] \texttt{diag}\left(\left(\omega - \left( \vec{A}^2 +  \vec{B}^2\right) + V\right) \vec{B}\right) - \dfrac{D^{\text{(1D)}}_2}{2}  \vec{B} \end{pmatrix}\), where \( \vec{A} \) is the real-part and \( \vec{B} \) is the imaginary part of the steady-state vector \( \vec{U} \), to get the steady-state solution starting point for bright-soliton simulation.-->
                 Apply steady-state solver to minimize residual \( \mathcal{F} \) for initial soliton \( u(x,0) = A_{\text{sol}} \, \text{sech}(A_{\text{sol}}(x - x_0)) \)
             </label>
@@ -381,7 +381,7 @@
         [3, 4]
       ]); // Should log the ML namespace
     console.log("A =",A);
-    window.useLM = false;
+    window.useLM = true;
 
     document.querySelectorAll(".solver-option").forEach(item => {
     item.addEventListener("click", function () {
@@ -562,15 +562,11 @@
                 p.v0 = 0.3;
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
-                initSimulations(p);                         // alloc + ground-state
+                initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, true /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
                 /* --- run to end silently -------------------------------------- */
                 const start = performance.now();
-                while (currentTime < p.T)
-                {
-                    stepForPlotInterval(20);                 // integrate ≤20 ms chunks
-                    /* safety to avoid infinite loops in Ω≈0 case */
-                    if (performance.now()-start > 2000) break;
-                }
+                stepForPlotInterval(-1.);  // integrate all the way to p.T
+                
                 const D = getErrorMetric();
                 Z[i][j] = D;
             }
@@ -580,8 +576,8 @@
             Plotly.newPlot('scanHeatmap', [{
                 z: Z, x: OmVals, y: bVals, type:'heatmap',
                 colorscale:'RdYlGn', reversescale:true,
-                colorbar:{title:'$\mathcal{D}$'}}], {title:'Particle vs soliton agreement',
-              xaxis:{title:'$\Omega$'}, yaxis:{title:'$b = A_{sol}$'}});
+                colorbar:{title:'$\\mathcal{D}\\vspace(1cm}$'}}], {title:'Particle vs soliton agreement',
+              xaxis:{title:'$\\Omega$'}, yaxis:{title:'$b = A_{\\mathrm{sol}}$'}});
         });
         
     }
@@ -966,7 +962,7 @@
     // Initialize the spatial grid and initial guess for u.
     // The initial ansatz is: u0(x) = A_sol * sech(A_sol*(x - x0)) * exp(i*v0*x)
     // (Optionally, one could refine this guess using Newton's method; here we assume the ansatz is acceptable.)
-    function initPDE(params)
+    function initPDE(params, alertMessages = true)
     {
         let {x_min, x_max, dx, x0, A_sol, v0} = params;
         N = Math.floor((x_max - x_min) / dx);
@@ -1001,7 +997,14 @@
         }
         if (applyNewtonToggleChecked)
         {
-            alert("Applying minimization now, please wait.");
+            if (alertMessages)
+            {
+                alert("Applying minimization now, please wait.");
+            }
+            else
+            {
+                console.log("Applying minimization now, please wait.");
+            }
             //[u, D2, x] = refineNewton(u, params);
             let V = pdeGrid.map(x => potentialForRefinement(x, params));
             let V_arr = new Float64Array(V);
@@ -1013,8 +1016,14 @@
             let resultPtr = refineCpp(U_ptr, V_ptr, params.N, params.dx, params.g, params.omega, window.useLM ? 1 : 0, 1 /* 1 → write into ψ (default)*/);
             tackVelocity(params.x_min, params.dx, params.N, params.v0);
             let error = Module.ccall('getNLSResidual', 'number', [], []);
-            alert("Residual error from C++ refinement 𝓕 = "+error);
-
+            if (alertMessages)
+            {
+                alert("Residual error from C++ refinement 𝓕 = "+error);
+            }
+            else
+            {
+                console.log("Residual error from C++ refinement 𝓕 = "+error);
+            }
             let resultData = Module.HEAPF64.slice(resultPtr / 8, resultPtr / 8 + 2 * params.N);
             u = new Array(params.N);
             for (let i = 0; i < params.N; i++)
@@ -1443,7 +1452,7 @@
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
-    function initSimulations(params_dict = {})
+    function initSimulations(params_dict = {}, initThePlots = true, resetTheMatrix = false, alertMessages = true)
     {
         resetErrorMetric();
         const params = (Object.keys(params_dict).length === 0) ? getParameters() : params_dict;
@@ -1453,10 +1462,13 @@
         // Initialize ODE state:
         odeState = { x: params.x0, v: params.v0 };
         // Initialize PDE grid and initial condition:
-        initPDE(params);
-        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol, params.potentialType==='patched', params.epsilon);
+        initPDE(params, alertMessages);
+        setSimParameters(params.dt, params.T, params.N, params.m, params.Omega, params.A, params.b, params.x0, params.v0, params.dx, params.x_min, params.x_max, params.Omega_pde, params.A_pde, params.b_pde, params.A_sol, params.potentialType==='patched', params.epsilon, resetTheMatrix);
         console.log(params.potentialType);
-        initPlots(params);
+        if (initThePlots)
+        {
+            initPlots(params);
+        }
     }
 
     function simulationStep()
@@ -1945,7 +1957,7 @@
                     odeState.x, odeState.v,          // keep current centre & velocity
                     params.dx, params.x_min, params.x_max,
                     params.Omega_pde, params.A_pde, params.b_pde,
-                    params.A_sol, params.potentialType==='patched', params.epsilon
+                    params.A_sol, params.potentialType==='patched', params.epsilon, 0
                 );
 
             }
@@ -1987,7 +1999,7 @@
             p.x0, p.v0,
             p.dx, p.x_min, p.x_max,
             p.Omega_pde, p.A_pde, p.b_pde,
-            p.A_sol, p.potentialType==='patched', p.epsilon
+            p.A_sol, p.potentialType==='patched', p.epsilon, 0
         );
         updatePlots(p, true);    // redraw potentials
     });
