@@ -1,6 +1,8 @@
 <!--open myfunc.cpp ParticleVsSolitonDynamics.html-->
 <!--run locally: python3 -m http.server 8000-->
-<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html, http://localhost:8080/ParticleVsSolitonDynamics.html -->
+<!--Then go to the following site in a browser: http://localhost:8000/ParticleVsSolitonDynamics.html
+or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.html
+-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,11 +119,11 @@
         <h3>Shared Parameters</h3>
         <div class="form-group">
           <label for="x0">Initial Position \( x_0 \)</label>
-          <input type="number" step="any" class="form-control" id="x0" value="0">
+          <input type="number" step="any" class="form-control" id="x0" value="1.2203876591800795">
         </div>
         <div class="form-group">
           <label for="v0">Initial Velocity \( v_0 \)</label>
-          <input type="number" step="any" class="form-control" id="v0" value="0">
+          <input type="number" step="any" class="form-control" id="v0" value="0.3">
         </div>
         <div class="form-group">
           <label for="T">Total Time \( T \)</label>
@@ -166,7 +168,7 @@
         </div>
         <div class="form-group">
           <label for="b">Width Factor \( b \)</label>
-          <input type="number" step="any" class="form-control" id="b" value="1">
+          <input type="number" step="any" class="form-control" id="b" value="2">
         </div>
         <hr>
         <div class="form-group">
@@ -176,9 +178,9 @@
             <option value="patched" selected>Variational U</option>
           </select>
         </div>
-        <div class="form-group" id="epsilonContainer" style="display:none">
+        <div class="form-group" id="epsilonContainer" style="display:block">
           <label for="epsilon">Patch radius \( \epsilon \)</label>
-          <input type="number" step="any" class="form-control" id="epsilon" value="0.5">
+          <input type="number" step="any" class="form-control" id="epsilon" value="0.125">
         </div>
         <script>
           /* show / hide ε only when patched is selected */
@@ -194,7 +196,7 @@
         <h3>PDE Parameters</h3>
         <div class="form-group">
           <label for="A_sol">Soliton Amplitude \( A_{\text{sol}} \)</label>
-          <input type="number" step="any" class="form-control" id="A_sol" value="1">
+          <input type="number" step="any" class="form-control" id="A_sol" value="2">
         </div>
         <div class="form-group">
           <label for="omega">Chemical Potential \( \omega \)</label>
@@ -210,7 +212,7 @@
         </div>
         <div class="form-group">
           <label for="b_pde">\( b_{\text{pde}} \)</label>
-          <input type="number" step="any" class="form-control" id="b_pde" value="1">
+          <input type="number" step="any" class="form-control" id="b_pde" value="2">
         </div>
         <div class="form-group">
           <label for="solverDropdown">Steady-State Solver</label>
@@ -332,12 +334,24 @@
     </div>
   </div>
 
-<!--  <div class="row">-->
-<!--      <div class = "col" id="newtonProgressContainer" style="display:none; margin-bottom: 10px;">-->
-<!--        <label>Newton Refinement Progress:</label>-->
-<!--        <progress id="newtonProgressBar" value={0} max="100"></progress>-->
-<!--      </div>-->
-<!--  </div>-->
+  <!-- X-range controls (layout only; no effect on simulation grid) -->
+  <div class="row mt-2">
+    <div class="col">
+      <label class="mr-2">ODE x-range</label>
+      <input id="ode_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <input id="ode_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <button id="applyOdeX" class="btn btn-sm btn-outline-secondary mr-2">Apply</button>
+      <button id="resetOdeX" class="btn btn-sm btn-link">Auto</button>
+    </div>
+    <div class="col">
+      <label class="mr-2">PDE x-range</label>
+      <input id="pde_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <input id="pde_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <button id="applyPdeX" class="btn btn-sm btn-outline-secondary mr-2">Apply</button>
+      <button id="resetPdeX" class="btn btn-sm btn-link">Auto</button>
+    </div>
+  </div>
+
 
   <!-- Simulation Plots: Two columns side-by-side -->
   <div class="row">
@@ -558,7 +572,9 @@
                 const p = getParameters();
                 p.b   = p.b_pde = p.A_sol = bVals[i];
                 p.Omega = p.Omega_pde = OmVals[j];
-                p.x0 = 0;                                  // will be replaced by x⋆ in C++
+                /* find starting position x⋆ at potential minimum */
+                p.x0 = findPotentialMinimum(p);
+                console.log(`x_0 = ${p.x0}, V(x_0) ≅ ${odePotentialAt(p.x0, p)}`);
                 p.v0 = 0.3;
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
@@ -569,6 +585,7 @@
                 
                 const D = getErrorMetric();
                 Z[i][j] = D;
+                console.log(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
             }
         }
         /* --- Plotly heat-map ---------------------------------------------- */
@@ -1081,6 +1098,45 @@
                +   2 * Om2 * b * x * x / 3;
     }
     
+    /* ------------------------------------------------------------------
+     * Helper: locate potential minimum x⋆ for the current parameter set
+     * ------------------------------------------------------------------
+     * Strategy: coarse grid scan on [x_min,x_max] followed by a local
+     *           quadratic fit for sub‑grid accuracy. Works for both the
+     *           external V and the patched U_patched potential.
+     */
+    function findPotentialMinimum(params, coarseSamples = 200) {
+        const { x_min, x_max } = params;
+        const h = (x_max - x_min) / coarseSamples;
+
+        // --- (1) coarse pass --------------------------------------------------
+        let bestX = x_min, bestV = odePotentialAt(x_min, params);
+        for (let i = 1; i <= coarseSamples; ++i) {
+            const x = x_min + i * h;
+            const v = odePotentialAt(x, params);
+            if (v < bestV) { bestV = v; bestX = x; }
+        }
+
+        // --- (2) three‑point quadratic refinement ----------------------------
+        // take neighbours around bestX (clamped to domain)
+        const xm = Math.max(bestX - h, x_min);
+        const xp = Math.min(bestX + h, x_max);
+        const vm = odePotentialAt(xm, params);
+        const vp = odePotentialAt(xp, params);
+
+        /* quadratic through (xm,vm), (bestX,bestV), (xp,vp):
+           v(x) ≈ a x² + b x + c   ⇒   vertex at x⋆ = -b/(2a)            */
+        const denom = ( (xm - bestX)*(xm - xp)*(bestX - xp) );
+        let xStar = bestX;                       // fallback
+        if (Math.abs(denom) > 1e-14) {
+            const a = ( xm*(vp - bestV) + bestX*(vm - vp) + xp*(bestV - vm) ) / denom;
+            const b = ( xm*xm*(bestV - vp) + bestX*bestX*(vp - vm) + xp*xp*(vm - bestV) ) / denom;
+            xStar = -b / (2*a);
+            if (xStar < x_min || xStar > x_max || !Number.isFinite(xStar)) xStar = bestX;
+        }
+        return xStar;
+    }
+    
     // Helper functions for matrix concatenation:
     function hconcat(mat1, mat2)
     {
@@ -1316,6 +1372,7 @@
             }]
         };
         Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
+        applyXRange('odePlot', window.plotXRanges.ode);
         // PDE plot: potential and soliton density.
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
         // --- grab ψ (length 2N doubles) from WASM -----------------------
@@ -1360,6 +1417,7 @@
             }]
         };
         Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
+        applyXRange('pdePlot', window.plotXRanges.pde);
     }
 
     function updatePlots(params, replotOdePotential = false)
@@ -1400,6 +1458,7 @@
                 }]
             };
             Plotly.newPlot('odePlot', [odeTracePotential, odeTraceParticle], odeLayout);
+            applyXRange('odePlot', window.plotXRanges.ode);   // <<< add this
         }
         else
         {
@@ -1409,6 +1468,7 @@
                 y: [[currentODEPotential]]
             }, {}, [1]);
             Plotly.relayout('odePlot', {'annotations[0].text': 'Time: ' + currentTime.toFixed(2)});
+            applyXRange('odePlot', window.plotXRanges.ode);   // <<< add this
         }
         // Update PDE density:
         pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
@@ -1449,6 +1509,7 @@
             }]
         };
         Plotly.newPlot('pdePlot', [pdeTracePotential, pdeTraceDensity], pdeLayout);
+        applyXRange('pdePlot', window.plotXRanges.pde);
     }
 
     // ----------------------- Simulation Initialization & Loop -----------------------
@@ -2029,6 +2090,53 @@
         Plotly.Plots.resize(document.getElementById("odePlot"));
         Plotly.Plots.resize(document.getElementById("pdePlot"));
     });
+    
+    // Persist user-chosen x-axis ranges for the plots (null => autorange)
+    window.plotXRanges = { ode: null, pde: null };
+
+    function applyXRange(plotId, range)
+    {
+        if (range && Number.isFinite(range[0]) && Number.isFinite(range[1]))
+        {
+            Plotly.relayout(plotId, {'xaxis.range': [range[0], range[1]], 'xaxis.autorange': false});
+        }
+        else
+        {
+            Plotly.relayout(plotId, {'xaxis.autorange': true});
+        }
+    }
+
+    // Wire up the controls once DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+        const getNum = el =>
+        {
+            const v = parseFloat(el.value);
+            return Number.isFinite(v) ? v : null;
+        };
+
+        document.getElementById('applyOdeX').addEventListener('click', () => {
+            const xmin = getNum(document.getElementById('ode_xmin'));
+            const xmax = getNum(document.getElementById('ode_xmax'));
+            window.plotXRanges.ode = (xmin !== null && xmax !== null) ? [xmin, xmax] : null;
+            applyXRange('odePlot', window.plotXRanges.ode);
+        });
+        document.getElementById('resetOdeX').addEventListener('click', () => {
+            window.plotXRanges.ode = null;
+            applyXRange('odePlot', null);
+        });
+
+        document.getElementById('applyPdeX').addEventListener('click', () => {
+            const xmin = getNum(document.getElementById('pde_xmin'));
+            const xmax = getNum(document.getElementById('pde_xmax'));
+            window.plotXRanges.pde = (xmin !== null && xmax !== null) ? [xmin, xmax] : null;
+            applyXRange('pdePlot', window.plotXRanges.pde);
+            });
+            document.getElementById('resetPdeX').addEventListener('click', () => {
+            window.plotXRanges.pde = null;
+            applyXRange('pdePlot', null);
+            });
+    });
+
     
     </script>
 

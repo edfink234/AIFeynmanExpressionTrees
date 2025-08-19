@@ -368,8 +368,8 @@ extern "C"
         }
     }
 
-    /* allow JS to reset / configure the solver on each run */
-    EMSCRIPTEN_KEEPALIVE
+/* allow JS to reset / configure the solver on each run */
+EMSCRIPTEN_KEEPALIVE
 void setSimParameters(double new_dt, double new_T, int new_Npsi, double m, double Omega, double Atrap, double btrap, double x0, double v0, double dx, double x_min, double x_max, double OmegaPDE, double Apde, double bpde, double A_sol, int patchedFlag, double eps, bool reset = false)
     {
         dt = new_dt;
