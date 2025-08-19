@@ -127,7 +127,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="T">Total Time \( T \)</label>
-          <input type="number" step="any" class="form-control" id="T" value="100">
+          <input type="number" step="any" class="form-control" id="T" value="31.41592653589793">
         </div>
         <div class="form-group">
           <label for="dt">Time Step \( \Delta_t \)</label>
@@ -160,7 +160,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega">\( \Omega \)</label>
-          <input type="number" step="any" class="form-control" id="Omega" value="0.2">
+          <input type="number" step="any" class="form-control" id="Omega" value="0.4">
         </div>
         <div class="form-group">
           <label for="A">Amplitude \( A \)</label>
@@ -204,7 +204,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega_pde">\( \Omega_{\text{pde}} \)</label>
-          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.2">
+          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.4">
         </div>
         <div class="form-group">
           <label for="A_pde">\( A_{\text{pde}} \)</label>
@@ -338,15 +338,15 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
   <div class="row mt-2">
     <div class="col">
       <label class="mr-2">ODE x-range</label>
-      <input id="ode_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
-      <input id="ode_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <input id="ode_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" value=-5>
+      <input id="ode_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" value=5>
       <button id="applyOdeX" class="btn btn-sm btn-outline-secondary mr-2">Apply</button>
       <button id="resetOdeX" class="btn btn-sm btn-link">Auto</button>
     </div>
     <div class="col">
       <label class="mr-2">PDE x-range</label>
-      <input id="pde_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
-      <input id="pde_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" placeholder="auto">
+      <input id="pde_xmin" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" value=-5>
+      <input id="pde_xmax" type="number" step="any" class="form-control d-inline-block mr-2" style="width: 8rem" value=5>
       <button id="applyPdeX" class="btn btn-sm btn-outline-secondary mr-2">Apply</button>
       <button id="resetPdeX" class="btn btn-sm btn-link">Auto</button>
     </div>
@@ -573,12 +573,13 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
                 p.b   = p.b_pde = p.A_sol = bVals[i];
                 p.Omega = p.Omega_pde = OmVals[j];
                 /* find starting position x⋆ at potential minimum */
-                p.x0 = findPotentialMinimum(p);
+                p.x0 = Math.abs(findPotentialMinimum(p));
                 console.log(`x_0 = ${p.x0}, V(x_0) ≅ ${odePotentialAt(p.x0, p)}`);
                 p.v0 = 0.3;
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
-                initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, true /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
+                initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, false /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
+                //TODO: setSimParameters is overwriding the newton-refined u because reset = true, so need a work-around to reset
                 /* --- run to end silently -------------------------------------- */
                 const start = performance.now();
                 stepForPlotInterval(-1.);  // integrate all the way to p.T
@@ -1422,8 +1423,13 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
 
     function updatePlots(params, replotOdePotential = false)
     {
+        console.log("Enter update plots");
         // Update ODE particle position:
         let currentODEPotential = odePotentialAt(odeState.x, params);
+        if (!(Number.isFinite(currentODEPotential)))
+        {
+            currentODEPotential = 0;
+        }
         if (replotOdePotential)
         {
             let odePotential = pdeGrid.map(x => odePotentialAt(x, params));
@@ -1440,7 +1446,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
             };
             let odeTraceParticle =
             {
-                x: [odeState.x],
+                x: [odeState.x ],
                 y: [currentODEPotential],
                 mode: 'markers',
                 marker: { size: 12, color: 'red' },
@@ -1471,33 +1477,70 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
             applyXRange('odePlot', window.plotXRanges.ode);   // <<< add this
         }
         // Update PDE density:
-        pdePotential = pdeGrid.map(x => 0.5 * params.Omega_pde * params.Omega_pde * x * x + params.A_pde * Math.pow(sech(params.b_pde * x), 2));
+        const Nloc = params.N;  // ← local, consistent
+        // Instead of: pdePotential = pdeGrid.map(...)
+
+        pdePotential = new Array(pdeGrid.length);
+        for (let i = 0; i < pdeGrid.length; ++i)
+        {
+            const x = pdeGrid[i];
+            let val = 0.5 * params.Omega_pde * params.Omega_pde * x * x;
+            const sechVal = sech(params.b_pde * x);
+            if (Number.isFinite(sechVal))
+            {
+                val += params.A_pde * Math.pow(sechVal, 2);
+            }
+            // if sechVal was NaN or val turned NaN/Inf, zero it out
+            pdePotential[i] = Number.isFinite(val) ? val : 0;
+        }
+
         //let density = pdeGrid.map((x, i) => math.abs(u[i]) ** 2);
         // --- grab ψ (length 2N doubles) from WASM -----------------------
 
         // build |u|² on the fly
-        const density = new Array(params.N);
-        for (let i = 0; i < params.N; ++i)
+        // Build |u|²robustly
+        const density = new Array(Nloc);
+        if (u && typeof u[0] === 'number' && u.length >= 2 * Nloc)
         {
-            const Re = u[i];
-            const Im = u[N + i];
-            density[i] = Re*Re + Im*Im;
+            // WASM buffer layout: [Re(0..N-1), Im(0..N-1)]
+            for (let i = 0; i < Nloc; ++i)
+            {
+                const Re = u[i];
+                const Im = u[Nloc + i];           // ← use Nloc, not global N
+                const val = Re * Re + Im * Im;
+                density[i] = Number.isFinite(val) ? val : 0;
+            }
         }
-        let pdeTracePotential =
+        else if (u && u[0] && typeof u[0].re === 'number')
+        {
+            // math.complex[]
+            for (let i = 0; i < Nloc; ++i)
+            {
+                const z = u[i];
+                const val = z.re * z.re + z.im * z.im;
+                density[i] = Number.isFinite(val) ? val : 0;
+            }
+        }
+        else
+        {
+            // Fallback (shouldn’t happen, but keeps Plotly happy)
+            for (let i = 0; i < Nloc; ++i) {density[i] = 0;}
+        }
+        const pdeTracePotential =
         {
             x: pdeGrid,
             y: pdePotential,
             mode: 'lines',
             name: 'PDE Potential'+'$V(x) = \\frac{1}{2}\\Omega_{\\text{pde}}^2 x^2 + A_{\\text{pde}}\\cdot\\text{sech}^2(b_{\\text{pde}}x)$'
         };
-        let pdeTraceDensity =
+        const pdeTraceDensity =
         {
             x: pdeGrid,
             y: density,
             mode: 'lines',
             name: 'Soliton Density $$|u|^2$$'
         };
-        let pdeLayout =
+        const pdeLayout =
         {
             title: 'PDE: Soliton in Potential',
             xaxis: { title: 'x' },
@@ -1550,6 +1593,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
             {
                 const D = getErrorMetric();
                 alert(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
+                console.log(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
             }
             if (document.getElementById("loopToggle").checked)
             {
@@ -2096,12 +2140,17 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
 
     function applyXRange(plotId, range)
     {
+        const div = document.getElementById(plotId);
+        // Don’t relayout until the plot has been created
+        if (!div || !div.data || !div.layout) return;
         if (range && Number.isFinite(range[0]) && Number.isFinite(range[1]))
         {
-            Plotly.relayout(plotId, {'xaxis.range': [range[0], range[1]], 'xaxis.autorange': false});
+            Plotly.relayout(plotId, {'xaxis.range': [range[0], range[1]], 'xaxis.autorange': false, 'yaxis.autorange': true});
+            //console.log("applyXRange if, "+[range[0], range[1]]);
         }
         else
         {
+            //console.log("applyXRange else");
             Plotly.relayout(plotId, {'xaxis.autorange': true});
         }
     }

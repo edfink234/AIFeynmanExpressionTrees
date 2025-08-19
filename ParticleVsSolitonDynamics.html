@@ -14,6 +14,8 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Explicit Plotly v2.16.1 -->
   <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
   <!-- MathJax for rendering LaTeX -->
 <!--  <script id="MathJax-script" async-->
 <!--    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>-->
@@ -127,7 +129,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="T">Total Time \( T \)</label>
-          <input type="number" step="any" class="form-control" id="T" value="100">
+          <input type="number" step="any" class="form-control" id="T" value="31.41592653589793">
         </div>
         <div class="form-group">
           <label for="dt">Time Step \( \Delta_t \)</label>
@@ -160,7 +162,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega">\( \Omega \)</label>
-          <input type="number" step="any" class="form-control" id="Omega" value="0.2">
+          <input type="number" step="any" class="form-control" id="Omega" value="0.4">
         </div>
         <div class="form-group">
           <label for="A">Amplitude \( A \)</label>
@@ -204,7 +206,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega_pde">\( \Omega_{\text{pde}} \)</label>
-          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.2">
+          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.4">
         </div>
         <div class="form-group">
           <label for="A_pde">\( A_{\text{pde}} \)</label>
@@ -326,6 +328,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
             <label for="OmStep">\( \Delta \Omega \)</label>
             <input type="number" step="0.02" id="OmStep" class="form-control" value="0.2">
           <button id="runScan" class="btn btn-primary mt-3">Run grid scan</button>
+          <button id="downloadScanPDF" class="btn btn-outline-secondary mt-2" disabled>Download PDF</button>
         </div>
         <div class="col-md-9">
           <div id="scanHeatmap" style="height:500px"></div>
@@ -573,12 +576,13 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
                 p.b   = p.b_pde = p.A_sol = bVals[i];
                 p.Omega = p.Omega_pde = OmVals[j];
                 /* find starting position x⋆ at potential minimum */
-                p.x0 = findPotentialMinimum(p);
+                p.x0 = Math.abs(findPotentialMinimum(p));
                 console.log(`x_0 = ${p.x0}, V(x_0) ≅ ${odePotentialAt(p.x0, p)}`);
                 p.v0 = 0.3;
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
-                initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, true /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
+                initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, false /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
+                //TODO: setSimParameters is overwriding the newton-refined u because reset = true, so need a work-around to reset
                 /* --- run to end silently -------------------------------------- */
                 const start = performance.now();
                 stepForPlotInterval(-1.);  // integrate all the way to p.T
@@ -596,7 +600,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
                 colorbar:{title:'$\\mathcal{D}\\vspace(1cm}$'}}], {title:'Particle vs soliton agreement',
               xaxis:{title:'$\\Omega$'}, yaxis:{title:'$b = A_{\\mathrm{sol}}$'}});
         });
-        
+        document.getElementById('downloadScanPDF').disabled = false;
     }
 
     /* attach to button */
@@ -605,6 +609,50 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         await runGridScan();
         document.getElementById("runScan").disabled = false;
     });
+    
+    document.getElementById('downloadScanPDF').addEventListener('click', async () =>{
+        const gd = document.getElementById('scanHeatmap');
+        if (!gd) return;
+
+        try
+        {
+            // Render a high-res image of the current heatmap
+            const dataUrl = await Plotly.toImage(gd, {
+                format: 'png',
+                width: 1200,
+                height: 750,
+                scale: 2
+            });
+
+            // Create a landscape PDF and fit the image to the page with margins
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+            const pageW = doc.internal.pageSize.getWidth();
+            const pageH = doc.internal.pageSize.getHeight();
+            const margin = 36; // 0.5in
+
+            const img = new Image();
+            img.onload = () => {
+                const scale = Math.min(
+                    (pageW - 2 * margin) / img.width,
+                    (pageH - 2 * margin) / img.height
+                );
+                const w = img.width * scale;
+                const h = img.height * scale;
+                const x = (pageW - w) / 2;
+                const y = (pageH - h) / 2;
+                doc.addImage(dataUrl, 'PNG', x, y, w, h);
+                doc.save('grid_scan_heatmap.pdf');
+            };
+            img.src = dataUrl;
+        }
+        catch (err)
+        {
+            console.error('PDF export failed:', err);
+            alert('Sorry, failed to export PDF.');
+        }
+    });
+
 
 
     function linspace(a, b, n)
@@ -1592,6 +1640,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
             {
                 const D = getErrorMetric();
                 alert(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
+                console.log(`Particle–soliton error metric 𝒟 = ${D.toExponential(3)}`);
             }
             if (document.getElementById("loopToggle").checked)
             {
