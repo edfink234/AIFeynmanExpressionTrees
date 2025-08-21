@@ -121,7 +121,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         <h3>Shared Parameters</h3>
         <div class="form-group">
           <label for="x0">Initial Position \( x_0 \)</label>
-          <input type="number" step="any" class="form-control" id="x0" value="1.2203876591800795">
+          <input type="number" step="any" class="form-control" id="x0" value="3">
         </div>
         <div class="form-group">
           <label for="v0">Initial Velocity \( v_0 \)</label>
@@ -129,7 +129,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="T">Total Time \( T \)</label>
-          <input type="number" step="any" class="form-control" id="T" value="31.41592653589793">
+          <input type="number" step="any" class="form-control" id="T" value="70">
         </div>
         <div class="form-group">
           <label for="dt">Time Step \( \Delta_t \)</label>
@@ -162,7 +162,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega">\( \Omega \)</label>
-          <input type="number" step="any" class="form-control" id="Omega" value="0.4">
+          <input type="number" step="any" class="form-control" id="Omega" value="0.18">
         </div>
         <div class="form-group">
           <label for="A">Amplitude \( A \)</label>
@@ -170,7 +170,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="b">Width Factor \( b \)</label>
-          <input type="number" step="any" class="form-control" id="b" value="2">
+          <input type="number" step="any" class="form-control" id="b" value="0.75">
         </div>
         <hr>
         <div class="form-group">
@@ -182,7 +182,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group" id="epsilonContainer" style="display:block">
           <label for="epsilon">Patch radius \( \epsilon \)</label>
-          <input type="number" step="any" class="form-control" id="epsilon" value="0.125">
+          <input type="number" step="any" class="form-control" id="epsilon" value="0.333">
         </div>
         <script>
           /* show / hide ε only when patched is selected */
@@ -198,7 +198,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         <h3>PDE Parameters</h3>
         <div class="form-group">
           <label for="A_sol">Soliton Amplitude \( A_{\text{sol}} \)</label>
-          <input type="number" step="any" class="form-control" id="A_sol" value="2">
+          <input type="number" step="any" class="form-control" id="A_sol" value="0.75">
         </div>
         <div class="form-group">
           <label for="omega">Chemical Potential \( \omega \)</label>
@@ -206,7 +206,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="Omega_pde">\( \Omega_{\text{pde}} \)</label>
-          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.4">
+          <input type="number" step="any" class="form-control" id="Omega_pde" value="0.18">
         </div>
         <div class="form-group">
           <label for="A_pde">\( A_{\text{pde}} \)</label>
@@ -214,7 +214,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
         </div>
         <div class="form-group">
           <label for="b_pde">\( b_{\text{pde}} \)</label>
-          <input type="number" step="any" class="form-control" id="b_pde" value="2">
+          <input type="number" step="any" class="form-control" id="b_pde" value="0.75">
         </div>
         <div class="form-group">
           <label for="solverDropdown">Steady-State Solver</label>
@@ -270,7 +270,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
     <div class="row" style="text-align:center">
         <div class="col">
             <label class="ml-2">
-                  <input type="checkbox" id="computeErrorToggle">
+                  <input type="checkbox" id="computeErrorToggle" checked>
                   Compute point particle-soliton error metric \(\mathcal{D} \;\equiv\; \frac{1}{T}\displaystyle\int_{0}^{T} \left[\Big|X_{\mathrm{sol}}(t) - X_{\mathrm{pp}}(t)\Big|^2 \;+\;  \left(\frac{\sigma(t)-\sigma_0}{\sigma_0}\right)^2~ \,\right]\,dt~\)
             </label>
         </div>
