@@ -1,0 +1,1002 @@
+“mathvariant='script'” on MathML elements is deprecated and will be removed at a future date. ParticleVsSolitonDynamics.html
+MathML length value “mediummathspace” is deprecated and will be removed at a future date. ParticleVsSolitonDynamics.html
+x_0 = 1.4682603610811016, V(x_0) ≅ 0.35924647221261785 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.7, b = 1.7, x_0 = 1.4682603610811016, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.7 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.8892845050376286e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.582e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4339510078584523, V(x_0) ≅ 0.39063957569754165 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.7, b = 1.7, x_0 = -1.4339510078584523, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.7 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.566145010050442e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.331e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4024380097072882, V(x_0) ≅ 0.4224269166532361 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.7, b = 1.7, x_0 = -1.4024380097072882, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.7 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 2.1916803252307127e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.320e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3705961375932874, V(x_0) ≅ 0.4545372127540971 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.7, b = 1.7, x_0 = -1.3705961375932874, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.7 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7347520816923362e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.309e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.340346492616849, V(x_0) ≅ 0.4869225777139212 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.7, b = 1.7, x_0 = -1.340346492616849, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.7 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3210860009952075e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.298e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.888824907180223, V(x_0) ≅ 0.004651554139878419 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 1.75, b = 1.75, x_0 = 2.888824907180223, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2575380507616066e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.527988126030264, V(x_0) ≅ 0.014596203886176199 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 1.75, b = 1.75, x_0 = -2.527988126030264, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3811592231126102e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.3190239119026024, V(x_0) ≅ 0.02810208478053299 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 1.75, b = 1.75, x_0 = 2.3190239119026024, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3601458090744326e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.932e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.169417355093913, V(x_0) ≅ 0.04439849987590238 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 1.75, b = 1.75, x_0 = -2.169417355093913, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.614708553446069e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.052403752414669, V(x_0) ≅ 0.06299887703872381 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 1.75, b = 1.75, x_0 = 2.052403752414669, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6050896147409116e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.369e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.9588890582344332, V(x_0) ≅ 0.08355579245481305 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.9588890582344332, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.55525177140875e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.564e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.880739238388568, V(x_0) ≅ 0.10580189825671535 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.880739238388568, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4978336429197297e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 7.089e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.8117002047412925, V(x_0) ≅ 0.12951968486918103 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.8117002047412925, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5731833032358586e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 5.547e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.7473464632048847, V(x_0) ≅ 0.15452650360411296 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 1.75, b = 1.75, x_0 = -1.7473464632048847, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.617188735718483e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.464e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6948052969666023, V(x_0) ≅ 0.1806832007371877 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 1.75, b = 1.75, x_0 = -1.6948052969666023, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.734470887167051e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.437e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.6424018847893813, V(x_0) ≅ 0.2078421657186274 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.6424018847893813, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.653404671185537e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.132e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.5983350013037256, V(x_0) ≅ 0.23590537950089174 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.5983350013037256, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5554125344370544e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.699e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.5530422861530722, V(x_0) ≅ 0.2647512365305431 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.5530422861530722, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5267694749937073e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.303e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.5155787276265946, V(x_0) ≅ 0.2943095546645502 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.5155787276265946, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.478008837049833e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.987e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.477911477555554, V(x_0) ≅ 0.32447950365675077 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.477911477555554, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7152721173780452e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.815e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4416118826014492, V(x_0) ≅ 0.35518988065617485 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.75, b = 1.75, x_0 = -1.4416118826014492, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7729826847822762e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.337e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4100876078838558, V(x_0) ≅ 0.3863824752670901 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.75, b = 1.75, x_0 = -1.4100876078838558, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.436251248098407e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.327e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3781251971662343, V(x_0) ≅ 0.417977011656234 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.75, b = 1.75, x_0 = -1.3781251971662343, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5176922385004257e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.317e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3465746118804902, V(x_0) ≅ 0.4499188919748781 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.3465746118804902, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.749627723733792e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.186e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3195461962632797, V(x_0) ≅ 0.4821656421418635 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.75, b = 1.75, x_0 = 1.3195461962632797, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.75 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.300038212038372e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.108e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.8227851402228925, V(x_0) ≅ 0.004564642734792269 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 1.8, b = 1.8, x_0 = 2.8227851402228925, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2812164593456325e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.4718093006557846, V(x_0) ≅ 0.014339334234309487 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 1.8, b = 1.8, x_0 = 2.4718093006557846, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.9006996046112441e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.229e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.267648836763957, V(x_0) ≅ 0.02762901902450111 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 1.8, b = 1.8, x_0 = -2.267648836763957, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2538921368029516e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.124310922439218, V(x_0) ≅ 0.04368036796776854 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 1.8, b = 1.8, x_0 = 2.124310922439218, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.519556356106163e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.112e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.012858904554787, V(x_0) ≅ 0.06201617797246944 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 1.8, b = 1.8, x_0 = 2.012858904554787, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.667427597823808e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.371e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.9208195115772246, V(x_0) ≅ 0.0822937408749702 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 1.8, b = 1.8, x_0 = 1.9208195115772246, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5011767271119411e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.561e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.8412775073555439, V(x_0) ≅ 0.1042494291900089 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 1.8, b = 1.8, x_0 = 1.8412775073555439, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4620642002333693e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 7.089e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.775043448985667, V(x_0) ≅ 0.12767718876784814 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 1.8, b = 1.8, x_0 = 1.775043448985667, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.445488886691124e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 5.474e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.7159446248962167, V(x_0) ≅ 0.15239867137059132 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 1.8, b = 1.8, x_0 = 1.7159446248962167, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5303952446769925e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 4.370e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.6603016437459375, V(x_0) ≅ 0.1782600944523754 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 1.8, b = 1.8, x_0 = 1.6603016437459375, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6328478524784208e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.546e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6134190592624231, V(x_0) ≅ 0.2051454145581403 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.6134190592624231, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.661451768805357e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.408e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5673333470679216, V(x_0) ≅ 0.2329265706321105 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.5673333470679216, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.470635680744604e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.387e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5265132346939605, V(x_0) ≅ 0.2615156182416273 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.5265132346939605, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5854956797760644e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.370e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.488442656186573, V(x_0) ≅ 0.29081794337312483 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.488442656186573, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.8582489016353824e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.354e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4496901657288417, V(x_0) ≅ 0.32074297245779937 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.4496901657288417, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.884168422579664e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.341e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4181112803679026, V(x_0) ≅ 0.3512387892757004 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.4181112803679026, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.564782192828505e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.331e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3859725671597602, V(x_0) ≅ 0.38221767197933165 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.3859725671597602, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.764545633926537e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.322e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3534405157346647, V(x_0) ≅ 0.4136162545022425 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.3534405157346647, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.642677474928245e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.313e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3259296635095263, V(x_0) ≅ 0.4453949531382048 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.3259296635095263, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.501421762436817e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.304e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2987280215256056, V(x_0) ≅ 0.4774864317294486 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.8, b = 1.8, x_0 = -1.2987280215256056, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.8 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7607815908575241e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.294e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.7578868649623733, V(x_0) ≅ 0.0044814202232971966 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 1.85, b = 1.85, x_0 = 2.7578868649623733, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.42740647008067e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.4196406625744102, V(x_0) ≅ 0.0140933837184855 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 1.85, b = 1.85, x_0 = -2.4196406625744102, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2935227992650236e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.2212073790121645, V(x_0) ≅ 0.02717581194789111 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 1.85, b = 1.85, x_0 = 2.2212073790121645, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4317168865078196e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.728e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.080531389194167, V(x_0) ≅ 0.04298995868142884 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 1.85, b = 1.85, x_0 = 2.080531389194167, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7682515077733967e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.141e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.970811037522313, V(x_0) ≅ 0.061067976286218226 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.970811037522313, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4834587958226905e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.395e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.8824928418491316, V(x_0) ≅ 0.08107658512592476 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.8824928418491316, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4159944788023054e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.710e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.8074464847361833, V(x_0) ≅ 0.10275712098651896 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.8074464847361833, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3011629566226248e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 7.137e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.7396574944942707, V(x_0) ≅ 0.12589828469419756 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.7396574944942707, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5472069249701337e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 5.487e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.6831265375877302, V(x_0) ≅ 0.15033815084451782 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.6831265375877302, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5837877165563603e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 4.392e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6302624536487664, V(x_0) ≅ 0.17592112172519023 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.6302624536487664, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4526238864779074e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5834487316405996, V(x_0) ≅ 0.20252803627228022 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.5834487316405996, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6361210573885234e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.401e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5385215354899395, V(x_0) ≅ 0.23003967142459184 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.5385215354899395, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3508308564139e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.383e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5000483908233382, V(x_0) ≅ 0.25837213564023964 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.5000483908233382, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7697114172213977e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.365e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4606017807499547, V(x_0) ≅ 0.28741604764149753 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.4606017807499547, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5428811555134315e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.351e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.426671169105746, V(x_0) ≅ 0.3171133566155563 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.426671169105746, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6801861078122048e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.621e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3943153830339992, V(x_0) ≅ 0.34738105944704534 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.3943153830339992, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3477266145331384e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.464e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3614467992672499, V(x_0) ≅ 0.37814291517172405 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.85, b = 1.85, x_0 = 1.3614467992672499, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6230063078865987e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.370e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.332422933315523, V(x_0) ≅ 0.4093560148605573 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.332422933315523, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4947475422229101e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.309e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3052381932419554, V(x_0) ≅ 0.4409578668414898 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.3052381932419554, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.733312316830139e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.300e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2777595612290982, V(x_0) ≅ 0.4728841664920429 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.85, b = 1.85, x_0 = -1.2777595612290982, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.85 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2914208425300243e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.291e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.7014244618909165, V(x_0) ≅ 0.004401947631363362 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 1.9, b = 1.9, x_0 = 2.7014244618909165, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3885492154580011e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.118e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.367477849135847, V(x_0) ≅ 0.013857014860117941 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 1.9, b = 1.9, x_0 = 2.367477849135847, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6768058829662348e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 8.777e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.1750636911293113, V(x_0) ≅ 0.026739819905101006 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 1.9, b = 1.9, x_0 = 2.1750636911293113, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2573537653789237e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.724e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.0373773933890007, V(x_0) ≅ 0.04232518304830486 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 1.9, b = 1.9, x_0 = 2.0373773933890007, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.1767357740714835e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.219e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.9319071272549035, V(x_0) ≅ 0.06015597846064821 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.9319071272549035, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5164607109703385e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.424e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.8436631368834933, V(x_0) ≅ 0.07990124633059825 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.8436631368834933, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3491518643238043e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.816e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.7715537350383257, V(x_0) ≅ 0.10131231746233198 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.7715537350383257, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.794007305134068e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 7.202e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.7089389129408832, V(x_0) ≅ 0.12418488871147265 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.7089389129408832, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3191719432556377e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6489813830506943, V(x_0) ≅ 0.14834134801519727 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.6489813830506943, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.46957067986228e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.601588368669709, V(x_0) ≅ 0.17365800809582563 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.601588368669709, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5697560931129555e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5522784922833945, V(x_0) ≅ 0.19998610312504816 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.5522784922833945, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7038157177387533e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5129004301147946, V(x_0) ≅ 0.227244129497183 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.5129004301147946, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7707181685083892e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.378e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4728357872854239, V(x_0) ≅ 0.25531128672217873 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.4728357872854239, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7333731409335538e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.361e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.435909606552947, V(x_0) ≅ 0.2841126616378435 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.435909606552947, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3975784707746136e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.836e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.403314181389283, V(x_0) ≅ 0.313576320648312 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.403314181389283, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3775676920314532e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.597e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3700684784799122, V(x_0) ≅ 0.3436113477081888 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.9, b = 1.9, x_0 = 1.3700684784799122, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5649236698930136e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.392e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3391626564610193, V(x_0) ≅ 0.37416679320938323 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.3391626564610193, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3658462284332323e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.311e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3119546224620848, V(x_0) ≅ 0.40518882305271353 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.3119546224620848, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4036259745884194e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.303e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2843687178306196, V(x_0) ≅ 0.4366036768122822 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.2843687178306196, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5981366815580498e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.296e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2565202822882102, V(x_0) ≅ 0.46836101409999437 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.9, b = 1.9, x_0 = -1.2565202822882102, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.9 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6593435501501513e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.288e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.6417164484393125, V(x_0) ≅ 0.004325473132795078 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 1.95, b = 1.95, x_0 = 2.6417164484393125, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.1913121525742463e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.131e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.3205113644074427, V(x_0) ≅ 0.013630514390156003 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 1.95, b = 1.95, x_0 = -2.3205113644074427, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4190147005292285e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.131341119506814, V(x_0) ≅ 0.026320705903000674 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 1.95, b = 1.95, x_0 = 2.131341119506814, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.576237052692938e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.838e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.9994600499206798, V(x_0) ≅ 0.04168717938817703 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.9994600499206798, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4225085408828468e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.8960010486736887, V(x_0) ≅ 0.05927837266814203 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.8960010486736887, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3382341294563705e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.8113733606248876, V(x_0) ≅ 0.07877231953537017 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.8113733606248876, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3224794063432995e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.7377571900972826, V(x_0) ≅ 0.09991807189575423 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.7377571900972826, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6566002636020442e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6765854906312918, V(x_0) ≅ 0.12252336012031717 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.6765854906312918, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5006181142131607e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.6218932169964608, V(x_0) ≅ 0.14641802327355613 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.6218932169964608, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.711167264898996e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5716982598137037, V(x_0) ≅ 0.17145925570495543 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.5716982598137037, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5490289878327153e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.5271414059908788, V(x_0) ≅ 0.19753099944078087 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 1.95, b = 1.95, x_0 = 1.5271414059908788, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6041315306942362e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 3.049e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.486498223227098, V(x_0) ≅ 0.22452482227064935 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 1.95, b = 1.95, x_0 = 1.486498223227098, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.8229178332999434e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.558e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.4459484452618585, V(x_0) ≅ 0.2523352895661638 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 1.95, b = 1.95, x_0 = 1.4459484452618585, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7753694705855483e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.174e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.41311332821353, V(x_0) ≅ 0.28090276682612825 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 1.95, b = 1.95, x_0 = 1.41311332821353, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7938949214821823e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.841e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3794674815687793, V(x_0) ≅ 0.31012361227328644 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 1.95, b = 1.95, x_0 = 1.3794674815687793, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.614120433575313e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.590e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.346268084554875, V(x_0) ≅ 0.3399332692621737 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.346268084554875, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4552907581594053e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.318e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3190080891765683, V(x_0) ≅ 0.37028857394687664 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.3190080891765683, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.718837657575272e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.307e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2912769487307276, V(x_0) ≅ 0.40110715407605807 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.2912769487307276, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7642444977320053e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.298e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2632015077496461, V(x_0) ≅ 0.43233167750028484 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.2632015077496461, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2836200594235815e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.291e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.2378444299625033, V(x_0) ≅ 0.46392861480032155 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 1.95, b = 1.95, x_0 = -1.2378444299625033, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 1.95 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.9655177838281347e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.285e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = -2.5900772658832665, V(x_0) ≅ 0.004252349325990747 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 628.3185307179587, N = 400, m = 1, Ω = 0.02 A = 1, A_sol = 2, b = 2, x_0 = -2.5900772658832665, v0 = 0.3,  dx = 0.05, Ω_pde = 0.02, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 2.1820520214538967e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.273327357935163, V(x_0) ≅ 0.013412356092636132 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 314.1592653589793, N = 400, m = 1, Ω = 0.04 A = 1, A_sol = 2, b = 2, x_0 = 2.273327357935163, v0 = 0.3,  dx = 0.05, Ω_pde = 0.04, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2649214768219355e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 8.611e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 2.0909553223274435, V(x_0) ≅ 0.02591792660151397 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 209.43951023931953, N = 400, m = 1, Ω = 0.060000000000000005 A = 1, A_sol = 2, b = 2, x_0 = 2.0909553223274435, v0 = 0.3,  dx = 0.05, Ω_pde = 0.060000000000000005, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.576367702681778e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 4.045e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.958098685094355, V(x_0) ≅ 0.04106940745132219 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 157.07963267948963, N = 400, m = 1, Ω = 0.08000000000000002 A = 1, A_sol = 2, b = 2, x_0 = 1.958098685094355, v0 = 0.3,  dx = 0.05, Ω_pde = 0.08000000000000002, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.355540865182709e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 2.344e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.85723583200453, V(x_0) ≅ 0.058428086611746685 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 125.66370614359172, N = 400, m = 1, Ω = 0.1 A = 1, A_sol = 2, b = 2, x_0 = 1.85723583200453, v0 = 0.3,  dx = 0.05, Ω_pde = 0.1, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 2.107658428831173e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.471e+0 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.7768852371004487, V(x_0) ≅ 0.07767835158114716 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 104.71975511965977, N = 400, m = 1, Ω = 0.12000000000000001 A = 1, A_sol = 2, b = 2, x_0 = -1.7768852371004487, v0 = 0.3,  dx = 0.05, Ω_pde = 0.12000000000000001, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4543920059910783e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.7080353470334537, V(x_0) ≅ 0.09857487113831602 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 89.7597901025655, N = 400, m = 1, Ω = 0.14 A = 1, A_sol = 2, b = 2, x_0 = -1.7080353470334537, v0 = 0.3,  dx = 0.05, Ω_pde = 0.14, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4748708291947456e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.6444125763435453, V(x_0) ≅ 0.12091473601714162 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 78.53981633974483, N = 400, m = 1, Ω = 0.16 A = 1, A_sol = 2, b = 2, x_0 = 1.6444125763435453, v0 = 0.3,  dx = 0.05, Ω_pde = 0.16, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6914700897554924e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 5.667e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.5935985565119526, V(x_0) ≅ 0.14455270819376614 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 69.81317007977317, N = 400, m = 1, Ω = 0.18000000000000002 A = 1, A_sol = 2, b = 2, x_0 = 1.5935985565119526, v0 = 0.3,  dx = 0.05, Ω_pde = 0.18000000000000002, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5377973843975957e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 4.496e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5428737725244799, V(x_0) ≅ 0.16932861920756664 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 62.83185307179586, N = 400, m = 1, Ω = 0.2 A = 1, A_sol = 2, b = 2, x_0 = -1.5428737725244799, v0 = 0.3,  dx = 0.05, Ω_pde = 0.2, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.2645395619952017e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.5017471417268946, V(x_0) ≅ 0.19514809655803586 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 57.11986642890534, N = 400, m = 1, Ω = 0.21999999999999997 A = 1, A_sol = 2, b = 2, x_0 = -1.5017471417268946, v0 = 0.3,  dx = 0.05, Ω_pde = 0.21999999999999997, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7769715029079237e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.459148021706365, V(x_0) ≅ 0.22187754752733088 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 52.35987755982988, N = 400, m = 1, Ω = 0.24000000000000002 A = 1, A_sol = 2, b = 2, x_0 = -1.459148021706365, v0 = 0.3,  dx = 0.05, Ω_pde = 0.24000000000000002, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7644542716747324e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.4238395452959856, V(x_0) ≅ 0.2494525774656541 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 48.3321946706122, N = 400, m = 1, Ω = 0.26 A = 1, A_sol = 2, b = 2, x_0 = -1.4238395452959856, v0 = 0.3,  dx = 0.05, Ω_pde = 0.26, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5999592706305607e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3897928325481135, V(x_0) ≅ 0.2777729691816162 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 44.87989505128275, N = 400, m = 1, Ω = 0.28 A = 1, A_sol = 2, b = 2, x_0 = -1.3897928325481135, v0 = 0.3,  dx = 0.05, Ω_pde = 0.28, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.8412707094939458e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = NaN ParticleVsSolitonDynamics.html:574:25
+x_0 = -1.3549923541468614, V(x_0) ≅ 0.3067539498576315 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 41.88790204786391, N = 400, m = 1, Ω = 0.3 A = 1, A_sol = 2, b = 2, x_0 = -1.3549923541468614, v0 = 0.3,  dx = 0.05, Ω_pde = 0.3, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.7131799846659875e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.325e+2 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.3265151685579044, V(x_0) ≅ 0.33635569261796383 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 39.269908169872416, N = 400, m = 1, Ω = 0.32 A = 1, A_sol = 2, b = 2, x_0 = 1.3265151685579044, v0 = 0.3,  dx = 0.05, Ω_pde = 0.32, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5542152311056555e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.409e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.2986117712817071, V(x_0) ≅ 0.36649630267333344 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 36.95991357164462, N = 400, m = 1, Ω = 0.34 A = 1, A_sol = 2, b = 2, x_0 = 1.2986117712817071, v0 = 0.3,  dx = 0.05, Ω_pde = 0.34, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.6403913039032047e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.231e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.2702720414404287, V(x_0) ≅ 0.39710770231823983 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 34.906585039886586, N = 400, m = 1, Ω = 0.36000000000000004 A = 1, A_sol = 2, b = 2, x_0 = 1.2702720414404287, v0 = 0.3,  dx = 0.05, Ω_pde = 0.36000000000000004, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.5021924769160098e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.090e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.2433672878223172, V(x_0) ≅ 0.42814999454261826 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 33.06939635357677, N = 400, m = 1, Ω = 0.38 A = 1, A_sol = 2, b = 2, x_0 = 1.2433672878223172, v0 = 0.3,  dx = 0.05, Ω_pde = 0.38, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.4705748035801227e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 1.008e-1 ParticleVsSolitonDynamics.html:574:25
+x_0 = 1.2203876591800795, V(x_0) ≅ 0.45958446521268165 ParticleVsSolitonDynamics.html:563:25
+setSimParameters called with dt = 0.001, T = 31.41592653589793, N = 400, m = 1, Ω = 0.4 A = 1, A_sol = 2, b = 2, x_0 = 1.2203876591800795, v0 = 0.3,  dx = 0.05, Ω_pde = 0.4, A_pde = 1, b_pde = 2 ParticleVsSolitonDynamics.html:1501:17
+Applying minimization now, please wait. ParticleVsSolitonDynamics.html:1009:25
+Using Levenberg-Marquardt myfunc.js:8:18012
+Residual error from C++ refinement 𝓕 = 1.3827457458387324e-13 ParticleVsSolitonDynamics.html:1028:25
+Re-initialising u myfunc.js:8:18012
+patched ParticleVsSolitonDynamics.html:1509:17
+Particle–soliton error metric 𝒟 = 9.626e-2 ParticleVsSolitonDynamics.html:574:25

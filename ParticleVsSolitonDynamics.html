@@ -665,7 +665,7 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
 
         // Build CSV: header row is Ω values, first col is b
         let rows = [];
-        rows.push([...OmVals].join(','));
+        rows.push(['b/Omega', ...OmVals].join(','));
         for (let i = 0; i < bVals.length; i++)
         {
             rows.push([bVals[i], ...Z[i]].join(','));
