@@ -1,0 +1,13 @@
+pandoc main.tex \
+  --from=latex \
+  --to=html5 \
+  --standalone \
+  --toc \
+  --metadata title="Stabilization and Bifurcation of the Inverted Pendulum" \
+  --mathjax \
+  --citeproc --bibliography=FinalReport.bib \
+  --metadata link-citations=true \
+  --lua-filter=use-svg.lua \
+  --number-sections \
+  --css=paper.css \
+  -o PaulBelinsky.html

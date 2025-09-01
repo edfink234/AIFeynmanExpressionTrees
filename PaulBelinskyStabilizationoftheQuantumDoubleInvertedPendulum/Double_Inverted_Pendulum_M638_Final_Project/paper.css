@@ -1,0 +1,71 @@
+/* paper.css */
+
+body {
+  max-width: min(1000px, 92vw); /* was 800px */
+  margin: 2rem auto;
+  padding: 0 1rem;
+  line-height: 1.6;
+  font-family: Georgia, serif;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 1.4em;
+  margin-bottom: 0.6em;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+p {
+  margin: 1em 0;
+}
+
+figure {
+  margin: 2em auto;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Figures: consistent width, no overflow */
+figure img,
+figure svg {
+  display: block;
+  width: 100% !important;   /* override any inline width from LaTeX */
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* If a figure still overflows (e.g., odd inline styles), clip safely */
+figure { overflow-x: hidden; }
+
+
+table, th, td {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  padding: 0.4em 0.6em;
+}
+
+/*nav#TOC ul { list-style: decimal; }*/
+/*nav#TOC ul ul { list-style: decimal; }*/
+
+table {
+  margin: 1.5em auto;
+}
+
+code {
+  background: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+header, footer {
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+  margin: 2em 0;
+}
+
