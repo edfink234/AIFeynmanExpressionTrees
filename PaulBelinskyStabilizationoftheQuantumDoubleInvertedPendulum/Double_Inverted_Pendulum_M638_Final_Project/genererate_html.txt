@@ -8,6 +8,8 @@ pandoc main.tex \
   --citeproc --bibliography=FinalReport.bib \
   --metadata link-citations=true \
   --lua-filter=use-svg.lua \
+  --lua-filter=eq-labels.lua \
+  --lua-filter=bm-to-mathbf.lua \
   --number-sections \
   --css=paper.css \
   -o PaulBelinsky.html

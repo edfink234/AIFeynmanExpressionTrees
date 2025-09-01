@@ -132,13 +132,13 @@ class="header-section-number">1</span> Introduction</h1>
 representation and stability of physical, continuous-time systems of the
 form <span class="citation" data-cites="strogatz2018nonlinear">(<a
 href="#ref-strogatz2018nonlinear" role="doc-biblioref">Strogatz
-2018</a>)</span>: <span class="math display">\[\begin{aligned}
+2018</a>)</span>: <span id="eq:general_system_framework"><span
+class="math display">\[\begin{aligned}
     \dot{x}_1 &amp;= f_1\left(x_1, \ldots, x_n\right) \nonumber \\
     &amp;\vdots \nonumber \\
-    \dot{x}_n &amp;= f_n\left(x_1, \ldots, x_n\right)
-\label{eq:general_system_framework},
-\end{aligned}\]</span> where <span class="math inline">\(x_i\)</span>
-are the state variables and the <span
+    \dot{x}_n &amp;= f_n\left(x_1, \ldots, x_n\right) ,
+\end{aligned}\]</span></span> where <span
+class="math inline">\(x_i\)</span> are the state variables and the <span
 class="math inline">\(\dot{x}_{i=1,\ldots,n} \equiv
 d{x}_{i=1,\ldots,n}/dt\)</span> terms denote how the state variables
 change in time.</p>
@@ -155,9 +155,9 @@ was later built to completion and patented by Christiaan Huygens on June
 with deriving the formula for the natural period of the mathematical
 pendulum <span class="citation" data-cites="aps_huygens_2017">(<a
 href="#ref-aps_huygens_2017" role="doc-biblioref">APS News
-2017</a>)</span>: <span class="math display">\[T = 2\pi \omega_0 =
-2\pi\sqrt{\dfrac{g}{l}}
-\label{eq:natural_period_math_pendulum}\]</span></p>
+2017</a>)</span>: <span id="eq:natural_period_math_pendulum"><span
+class="math display">\[T = 2\pi \omega_0 = 2\pi\sqrt{\dfrac{g}{l}}
+\]</span></span></p>
 <p>A particularly intriguing behavior exhibited by the pendulum system
 is the dynamic stabilization of the inverted position through vertical
 oscillations of the pivot point. The first observation of this
@@ -234,28 +234,27 @@ class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is
 given in <span class="citation" data-cites="Butikov2017KapitzaS">(<a
 href="#ref-Butikov2017KapitzaS" role="doc-biblioref">Butikov
 2017</a>)</span> by the equation: <span
-class="math display">\[\ddot{\phi} + 2\gamma\dot{\phi} +
-\left(\dfrac{g}{l} - \dfrac{a}{l}\omega^2 \cos(\omega
-t)\right)\sin(\phi) = 0            
-    \label{eq:Kapitza_pendulum_system},\]</span> where <span
-class="math inline">\(\phi(t)\)</span> is the time-dependent angular
-deflection of the pendulum from the vertical axis (note <span
-class="math inline">\(\phi=0\)</span> radians denotes the bottom
-position and <span class="math inline">\(\pi\)</span> radians the
-inverted position), <span class="math inline">\(g\)</span> is the
-acceleration due to gravity (around <a
+id="eq:Kapitza_pendulum_system"><span class="math display">\[\ddot{\phi}
++ 2\gamma\dot{\phi} + \left(\dfrac{g}{l} - \dfrac{a}{l}\omega^2
+\cos(\omega t)\right)\sin(\phi) = 0            
+    ,\]</span></span> where <span class="math inline">\(\phi(t)\)</span>
+is the time-dependent angular deflection of the pendulum from the
+vertical axis (note <span class="math inline">\(\phi=0\)</span> radians
+denotes the bottom position and <span class="math inline">\(\pi\)</span>
+radians the inverted position), <span class="math inline">\(g\)</span>
+is the acceleration due to gravity (around <a
 href="https://physics.nist.gov/cgi-bin/cuu/Value?gn"><span
 class="math inline">\(9.81 \text{ m/s}^2\)</span></a> on Earth), and
 <span class="math inline">\(l\)</span> is the length of the massless,
 taught rod connecting the pivot point to the opposite point of mass
 <span class="math inline">\(M\)</span>. Unique to the Kapitza pendulum,
 the pivot point undergoes a parallel-to-gravity sinusoidal oscillation
-of the form <span class="math display">\[z(t) = a\cos(\omega t)
-\label{eq:pivot_point_osc_function},\]</span> where <span
-class="math inline">\(a\)</span> is the oscillation amplitude and <span
-class="math inline">\(f=\omega/2\pi\)</span> the number of oscillations
-per second. Lastly, a damping term controlled by the parameter <span
-class="math inline">\(\gamma\)</span> is included in <a
+of the form <span id="eq:pivot_point_osc_function"><span
+class="math display">\[z(t) = a\cos(\omega t) ,\]</span></span> where
+<span class="math inline">\(a\)</span> is the oscillation amplitude and
+<span class="math inline">\(f=\omega/2\pi\)</span> the number of
+oscillations per second. Lastly, a damping term controlled by the
+parameter <span class="math inline">\(\gamma\)</span> is included in <a
 href="#eq:Kapitza_pendulum_system" data-reference-type="ref"
 data-reference="eq:Kapitza_pendulum_system">[eq:Kapitza_pendulum_system]</a>
 (from <span class="citation" data-cites="Butikov2017KapitzaS">(<a
@@ -268,14 +267,14 @@ data-reference="eq:Kapitza_pendulum_system">[eq:Kapitza_pendulum_system]</a>
 can be written in the form of <a href="#eq:general_system_framework"
 data-reference-type="ref"
 data-reference="eq:general_system_framework">[eq:general_system_framework]</a>,
-namely: <span class="math display">\[\begin{aligned}
+namely: <span id="eq:Kapitza_pendulum_gen_framework_form"><span
+class="math display">\[\begin{aligned}
       \mathbf{\Phi} = \begin{pmatrix} \dot{\phi}_1 \\ \dot{\phi}_2 \\
 \dot{t} \end{pmatrix} = \begin{pmatrix} \phi_2 \\ -2\gamma\phi_2 -
 \left(\dfrac{g}{l} - \dfrac{a}{l}\omega^2 \cos(\omega
-t)\right)\sin(\phi_1) \\ 1 \end{pmatrix}
-\label{eq:Kapitza_pendulum_gen_framework_form},
-\end{aligned}\]</span> where the change of variables applied to <a
-href="#eq:Kapitza_pendulum_system" data-reference-type="ref"
+t)\right)\sin(\phi_1) \\ 1 \end{pmatrix} ,
+\end{aligned}\]</span></span> where the change of variables applied to
+<a href="#eq:Kapitza_pendulum_system" data-reference-type="ref"
 data-reference="eq:Kapitza_pendulum_system">[eq:Kapitza_pendulum_system]</a>
 is <span class="math inline">\(\phi_1 \equiv \phi\)</span>, <span
 class="math inline">\(\dot{\phi} = \dot{\phi}_1 = \phi_2\)</span>, <span
@@ -285,8 +284,8 @@ class="math inline">\(\dot{\phi}_2 = \ddot{\phi}_1 =
 href="#eq:Kapitza_pendulum_gen_framework_form" data-reference-type="ref"
 data-reference="eq:Kapitza_pendulum_gen_framework_form">[eq:Kapitza_pendulum_gen_framework_form]</a>
 clearly has no fixed points (points were <span
-class="math inline">\(\mathbf{\Phi} = 0\)</span>). Instead, the system may
-exhibit periodic orbits. In this section, in lieu of an anlytical
+class="math inline">\(\mathbf{\Phi} = 0\)</span>). Instead, the system
+may exhibit periodic orbits. In this section, in lieu of an anlytical
 solution, we’ll apply and numerically validate different techniques for
 ascertaining regions in parameter space corresponding to <em>stable</em>
 periodic orbits, i.e., orbits that nearby nearby trajectories converge
@@ -375,65 +374,65 @@ class="math inline">\(\delta(t)\)</span> varies quickly compared to
 approximately apply the law of sines from trigonometry, assuming <span
 class="math inline">\(\Delta l\)</span> is small so that <span
 class="math inline">\(l - \Delta l \sim l\)</span>: <span
+id="eq:law_of_sines_to_delta"><span
 class="math display">\[\dfrac{\sin(\theta)}{l} \approx
 \dfrac{\sin(\delta)}{z(t)} \Rightarrow \sin(\delta) \approx z(t)
-\dfrac{\sin(\theta)}{l} \label{eq:law_of_sines_to_delta},\]</span> and
-then apply the small angle approximation to <span
-class="math inline">\(\delta\)</span>, which tells us that <span
-class="math inline">\(\sin(\delta) \approx \delta\)</span>, to get the
-formula Butikov quotes at the end of the first paragraph of page 7 of
-<span class="citation" data-cites="Butikov2017KapitzaS">(<a
-href="#ref-Butikov2017KapitzaS" role="doc-biblioref">Butikov
-2017</a>)</span>: <span class="math display">\[\delta(t) \approx z(t)
-\dfrac{\sin(\theta(t))}{l}
-\label{eq:time_averaged_approximation_of_delta}.\]</span> This implies
-that <span class="math inline">\(l\delta(t) \sim
-z(t)\sin(\theta)\)</span>. We can also observe from Figure <a
+\dfrac{\sin(\theta)}{l} ,\]</span></span> and then apply the small angle
+approximation to <span class="math inline">\(\delta\)</span>, which
+tells us that <span class="math inline">\(\sin(\delta) \approx
+\delta\)</span>, to get the formula Butikov quotes at the end of the
+first paragraph of page 7 of <span class="citation"
+data-cites="Butikov2017KapitzaS">(<a href="#ref-Butikov2017KapitzaS"
+role="doc-biblioref">Butikov 2017</a>)</span>: <span
+id="eq:time_averaged_approximation_of_delta"><span
+class="math display">\[\delta(t) \approx z(t) \dfrac{\sin(\theta(t))}{l}
+.\]</span></span> This implies that <span
+class="math inline">\(l\delta(t) \sim z(t)\sin(\theta)\)</span>. We can
+also observe from Figure <a
 href="#fig:ButikovKapitzaFig3bTopMoreDetailedGravity"
 data-reference-type="ref"
 data-reference="fig:ButikovKapitzaFig3bTopMoreDetailedGravity">2</a>
-that the variable arm <span class="math display">\[\mathcal{A} =
-z(t)\sin(\theta)\cos(\theta) \sim l\delta(t)\cos(\theta)
-\label{eq:variable_arm}.\]</span> Then, using the formula for Newton’s
-2nd law in the pivot point’s reference frame as in <span
+that the variable arm <span id="eq:variable_arm"><span
+class="math display">\[\mathcal{A} = z(t)\sin(\theta)\cos(\theta) \sim
+l\delta(t)\cos(\theta) .\]</span></span> Then, using the formula for
+Newton’s 2nd law in the pivot point’s reference frame as in <span
 class="citation" data-cites="Butikov2017KapitzaS">(<a
 href="#ref-Butikov2017KapitzaS" role="doc-biblioref">Butikov
 2017</a>)</span> and <span class="math inline">\(z(t)\)</span> from
 equation <a href="#eq:pivot_point_osc_function"
 data-reference-type="ref"
 data-reference="eq:pivot_point_osc_function">[eq:pivot_point_osc_function]</a>,
-one obtains: <span class="math display">\[F_{\text{in}} = -M\ddot{z}(t)
-= -M\left(-a\omega^2\sin(\omega t)\right) = M\omega^2
-z(t)\label{eq:pseudo_inertia_force},\]</span> and thus it follows that
-the inertial torque is given as: <span
+one obtains: <span id="eq:pseudo_inertia_force"><span
+class="math display">\[F_{\text{in}} = -M\ddot{z}(t) =
+-M\left(-a\omega^2\sin(\omega t)\right) = M\omega^2
+z(t),\]</span></span> and thus it follows that the inertial torque is
+given as: <span id="eq:intertial_torque_from_vert_osc"><span
 class="math display">\[F_{\text{in}} \mathcal{A} = M\omega^2 z^2(t)
-\sin(\theta)\cos(\theta)
-\label{eq:intertial_torque_from_vert_osc}.\]</span> Since this inertial
-torque varies quickly in time, Butikov in <span class="citation"
+\sin(\theta)\cos(\theta) .\]</span></span> Since this inertial torque
+varies quickly in time, Butikov in <span class="citation"
 data-cites="Butikov2017KapitzaS">(<a href="#ref-Butikov2017KapitzaS"
 role="doc-biblioref">Butikov 2017</a>)</span> averages this quantity
 over one period to get the “mean value” of the torque as follows<a
 href="#fn2" class="footnote-ref" id="fnref2"
 role="doc-noteref"><sup>2</sup></a>: <span
+id="eq:averaged_inertial_torque"><span
 class="math display">\[\begin{aligned}
     \left&lt;T_{\text{in}}\right&gt; =
 \left&lt;-F_{\text{in}}\mathcal{A}\right&gt; &amp;= - \dfrac{M\omega^2
 a^2}{2}\sin(\theta)\cos(\theta)  \nonumber \\
     &amp;= -\dfrac{M\omega^2 a^2}{4}\sin(2\theta) \nonumber \\
-    &amp;= -\frac{d\left&lt;V_{\mathrm{eff}}\right&gt;}{d\theta}
-\label{eq:averaged_inertial_torque},
-\end{aligned}\]</span> where the relations <span
+    &amp;= -\frac{d\left&lt;V_{\mathrm{eff}}\right&gt;}{d\theta} ,
+\end{aligned}\]</span></span> where the relations <span
 class="math inline">\(\left&lt;z^2(t)\right&gt; = \left&lt; a^2
 \sin^2(\omega t) \right&gt; = \left(a^2/2\right)\)</span> and <span
 class="math inline">\(\sin(2\theta) = 2\sin(\theta)\cos(\theta)\)</span>
 are utilized. Integrating then yields <span
+id="eq:averaged_potential_without_gravity"><span
 class="math display">\[\left&lt;V_{\mathrm{eff}}\right&gt; = \int
 \dfrac{M\omega^2 a^2}{4}\sin(2\theta) \, d \theta =
 -\frac{Ma^{2}\omega^{2}\cos\left(2\theta\right)}{8} + C, \quad \left(C
-\in \mathbb{R}^1\right)
-\label{eq:averaged_potential_without_gravity},\]</span> shown in Figure
-<a href="#fig:ButikovKapitzaVeff_without_Gravity"
-data-reference-type="ref"
+\in \mathbb{R}^1\right) ,\]</span></span> shown in Figure <a
+href="#fig:ButikovKapitzaVeff_without_Gravity" data-reference-type="ref"
 data-reference="fig:ButikovKapitzaVeff_without_Gravity">3</a>.</p>
 <figure id="fig:ButikovKapitzaVeff_without_Gravity">
 <img src="Veff_without_Gravity.svg" style="width:50.0%" />
@@ -463,19 +462,20 @@ class="math inline">\(\theta = 0\)</span> radians.</p>
 <p>Finally, to get the complete picture, including gravity appends a
 destabilizing <span class="math inline">\(Mgl\sin(\theta)\)</span> term
 to the total averaged effective torque, yielding the formula <span
+id="eq:total_averaged_eff_torque"><span
 class="math display">\[\left&lt;T_{\text{in}}\right&gt; =
 -\dfrac{M\omega^2 a^2}{4}\sin(2\theta) + Mgl\sin(\theta)
-\label{eq:total_averaged_eff_torque},\]</span> which implies that the
-net averaged effective potential felt by the pendulum over one period of
-the pivot-point oscillation is: <span
+,\]</span></span> which implies that the net averaged effective
+potential felt by the pendulum over one period of the pivot-point
+oscillation is: <span id="eq:averaged_potential_with_gravity"><span
 class="math display">\[\begin{aligned}
 \left&lt;V_{\mathrm{eff}}\right&gt; &amp;= \int \left(\dfrac{M\omega^2
 a^2}{4}\sin(2\theta) - Mgl\sin(\theta)\right) \, d \theta \nonumber \\
 &amp;=
 -\frac{Ma^{2}\omega^{2}\cos\left(2\theta\right)}{8} + Mgl\cos(\theta) +
 C, \quad \left(C
-\in \mathbb{R}^1\right) \label{eq:averaged_potential_with_gravity},
-\end{aligned}\]</span> shown in Figure <a
+\in \mathbb{R}^1\right) ,
+\end{aligned}\]</span></span> shown in Figure <a
 href="#fig:ButikovKapitzaVeff_with_Gravity" data-reference-type="ref"
 data-reference="fig:ButikovKapitzaVeff_with_Gravity">4</a>.</p>
 <figure id="fig:ButikovKapitzaVeff_with_Gravity">
@@ -514,7 +514,7 @@ data-cites="Butikov2017KapitzaS">(<a href="#ref-Butikov2017KapitzaS"
 role="doc-biblioref">Butikov 2017</a>)</span> by equating the averaged
 restoring torque generated by the pivot-point oscillation with the
 destabilizing torque caused by the force of gravity as follows: <span
-class="math display">\[\begin{aligned}
+id="eq:max_slow_angle_dev"><span class="math display">\[\begin{aligned}
   \dfrac{M\omega^2
 a^2}{4}\sin(2\theta) &amp;= Mgl\sin(\theta) \nonumber \\
 \Rightarrow \dfrac{a^2\omega^2}{4}\sin(2\theta) &amp;=
@@ -523,10 +523,10 @@ gl\sin(\theta)  \nonumber \\
 &amp;= gl\sin(\theta)  \nonumber \\
 \Rightarrow \dfrac{a^2\omega^2\cos(\theta)}{2} &amp;=
 gl\sin(\theta)  \nonumber \\
-\cos\left(\theta_{\mathrm{max}}\right) &amp;= \dfrac{2gl}{a^2\omega^2}
-\label{eq:max_slow_angle_dev}.
-\end{aligned}\]</span> For the parameter values used in the simulation
-of Figure <a href="#fig:butikov_2017_figure_2" data-reference-type="ref"
+\cos\left(\theta_{\mathrm{max}}\right) &amp;= \dfrac{2gl}{a^2\omega^2} .
+\end{aligned}\]</span></span> For the parameter values used in the
+simulation of Figure <a href="#fig:butikov_2017_figure_2"
+data-reference-type="ref"
 data-reference="fig:butikov_2017_figure_2">1</a>, <span
 class="math inline">\(\theta_{\mathrm{max}} \approx
 78.74^\circ\)</span>, which agrees with the value <span
@@ -572,15 +572,8 @@ data-reference="fig:ButikovKapitza2017Figure2_phi0_92_to_91">5</a>.</p>
 amusement, the dynamic vector field for <a
 href="#eq:Kapitza_pendulum_gen_framework_form" data-reference-type="ref"
 data-reference="eq:Kapitza_pendulum_gen_framework_form">[eq:Kapitza_pendulum_gen_framework_form]</a>
-using the parameter values considered in this section, shown below:
-</p>
-<iframe
-  src="https://anvaka.github.io/fieldplay/?cx=-5.4424&amp;cy=0.2769999999999999&amp;w=6.611800000000001&amp;h=6.611800000000001&amp;dt=0.005&amp;fo=0.998&amp;dp=0.009&amp;cm=2&amp;vf=vec2%20get_velocity%28vec2%20p%29%20%7B%0A%20%20vec2%20v%20%3D%20vec2%280.%2C%200.%29%3B%0A%20%20float%20g%20%3D%209.81%3B%0A%20%20float%20l%20%3D%20100.0%3B%0A%20%20float%20omega_0%20%3D%20sqrt%28g%2Fl%29%3B%0A%20%20float%20gamma%20%3D%20omega_0%20%2F%2010.0%3B%0A%20%20float%20a%20%3D%200.2*l%3B%0A%20%20float%20omega%20%3D%2016.0*sqrt%28g%2Fl%29%3B%0A%20%20float%20t%20%3D%20frame%2F100.0%3B%0A%20%20%2F%2F%20float%20t%20%3D%201.0%3B%0A%0A%20%20v.x%20%3D%20p.y%3B%0A%20%20v.y%20%3D%20-2.0*gamma*p.y%20-%20%28%28g%2Fl%29-%28a%2Fl%29*omega*omega*cos%28omega*t%29%29*sin%28p.x%29%3B%0A%20%20return%20v%3B%0A%7D&amp;code=vec2%20get_velocity%28vec2%20p%29%20%7B%0A%20%20vec2%20v%20%3D%20vec2%280.%2C%200.%29%3B%0A%20%20float%20g%20%3D%209.81%3B%0A%20%20float%20l%20%3D%20100.0%3B%0A%20%20float%20omega_0%20%3D%20sqrt%28g%2Fl%29%3B%0A%20%20float%20gamma%20%3D%20omega_0%20%2F%2010.0%3B%0A%20%20float%20a%20%3D%200.2*l%3B%0A%20%20float%20omega%20%3D%2016.0*sqrt%28g%2Fl%29%3B%0A%20%20float%20t%20%3D%20frame%2F100.0%3B%0A%20%20%2F%2F%20float%20t%20%3D%201.0%3B%0A%0A%20%20v.x%20%3D%20p.y%3B%0A%20%20v.y%20%3D%20-2.0*gamma*p.y%20-%20%28%28g%2Fl%29-%28a%2Fl%29*omega*omega*cos%28omega*t%29%29*sin%28p.x%29%3B%0A%20%20return%20v%3B%0A%7D&amp;pc=100000"
-  width="100%"
-  height="600"
-  style="border:1px solid #ccc; border-radius:8px;"
-  loading="lazy">
-</iframe>
+using the parameter values considered in this section, <a
+href="https://anvaka.github.io/fieldplay/?cx=-5.4424&amp;cy=0.2769999999999999&amp;w=6.611800000000001&amp;h=6.611800000000001&amp;dt=0.005&amp;fo=0.998&amp;dp=0.009&amp;cm=2&amp;vf=vec2%20get_velocity%28vec2%20p%29%20%7B%0A%20%20vec2%20v%20%3D%20vec2%280.%2C%200.%29%3B%0A%20%20float%20g%20%3D%209.81%3B%0A%20%20float%20l%20%3D%20100.0%3B%0A%20%20float%20omega_0%20%3D%20sqrt%28g%2Fl%29%3B%0A%20%20float%20gamma%20%3D%20omega_0%20%2F%2010.0%3B%0A%20%20float%20a%20%3D%200.2*l%3B%0A%20%20float%20omega%20%3D%2016.0*sqrt%28g%2Fl%29%3B%0A%20%20float%20t%20%3D%20frame%2F100.0%3B%0A%20%20%2F%2F%20float%20t%20%3D%201.0%3B%0A%0A%20%20v.x%20%3D%20p.y%3B%0A%20%20v.y%20%3D%20-2.0*gamma*p.y%20-%20%28%28g%2Fl%29-%28a%2Fl%29*omega*omega*cos%28omega*t%29%29*sin%28p.x%29%3B%0A%20%20return%20v%3B%0A%7D&amp;code=vec2%20get_velocity%28vec2%20p%29%20%7B%0A%20%20vec2%20v%20%3D%20vec2%280.%2C%200.%29%3B%0A%20%20float%20g%20%3D%209.81%3B%0A%20%20float%20l%20%3D%20100.0%3B%0A%20%20float%20omega_0%20%3D%20sqrt%28g%2Fl%29%3B%0A%20%20float%20gamma%20%3D%20omega_0%20%2F%2010.0%3B%0A%20%20float%20a%20%3D%200.2*l%3B%0A%20%20float%20omega%20%3D%2016.0*sqrt%28g%2Fl%29%3B%0A%20%20float%20t%20%3D%20frame%2F100.0%3B%0A%20%20%2F%2F%20float%20t%20%3D%201.0%3B%0A%0A%20%20v.x%20%3D%20p.y%3B%0A%20%20v.y%20%3D%20-2.0*gamma*p.y%20-%20%28%28g%2Fl%29-%28a%2Fl%29*omega*omega*cos%28omega*t%29%29*sin%28p.x%29%3B%0A%20%20return%20v%3B%0A%7D&amp;pc=100000">here</a>.</p>
 <figure id="fig:ButikovKapitza2017Figure2_phi0_92_to_91">
 <img src="ButikovKapitza2017Figure2_phi0_92_to_91.svg" />
 <figcaption>Destabilizing transition that occurs from <span
@@ -618,18 +611,19 @@ which stabilize the inverted position.</p>
 class="math inline">\(\sin{\phi}\)</span>, so we can use a Taylor
 polynomial expansion about the inverted position <span
 class="math inline">\(\phi = \pi\)</span> to arrive at <span
-class="math display">\[\ddot{\phi} - \left(\dfrac{g}{l} -
-\dfrac{a}{l}\omega^2 \cos(\omega t)\right)(\phi-\pi) = 0            
-    \label{eq:linear_inv},\]</span> Damping can be ignored for now as it
-has little effect on the linear stability of the inverted position.
-Making the transformation <span class="math inline">\(\theta =
-\phi-\pi\)</span> and <span class="math inline">\(\tau=t\omega\)</span>
-we obtain the dimensionless form of equation <a href="#eq:linear_inv"
+id="eq:linear_inv"><span class="math display">\[\ddot{\phi} -
+\left(\dfrac{g}{l} - \dfrac{a}{l}\omega^2 \cos(\omega
+t)\right)(\phi-\pi) = 0            
+    ,\]</span></span> Damping can be ignored for now as it has little
+effect on the linear stability of the inverted position. Making the
+transformation <span class="math inline">\(\theta = \phi-\pi\)</span>
+and <span class="math inline">\(\tau=t\omega\)</span> we obtain the
+dimensionless form of equation <a href="#eq:linear_inv"
 data-reference-type="eqref"
 data-reference="eq:linear_inv">[eq:linear_inv]</a> <span
-class="math display">\[\ddot{\theta} - \left(k - m
+id="eq:mathieu"><span class="math display">\[\ddot{\theta} - \left(k - m
 \cos(\tau)\right)\theta = 0
-    \label{eq:mathieu},\]</span> where <span class="math inline">\(k =
+    ,\]</span></span> where <span class="math inline">\(k =
 \frac{g}{l\omega^2}\)</span> and <span class="math inline">\(m
 =a/l\)</span>. Equation <a href="#eq:mathieu"
 data-reference-type="eqref" data-reference="eq:mathieu">[eq:mathieu]</a>
@@ -686,10 +680,10 @@ data-reference="eq:mathieu">[eq:mathieu]</a>, we transform equation <a
 href="#eq:Kapitza_pendulum_system" data-reference-type="eqref"
 data-reference="eq:Kapitza_pendulum_system">[eq:Kapitza_pendulum_system]</a>
 to arrive at the damped nonlinear Mathieu equation <span
-class="math display">\[\ddot{\theta} +c\sqrt{k}\dot{\theta} - \left(k -
-m \cos(\tau)\right)\sin(\theta) = 0
-    \label{eq:damped_mathieu}\]</span> where <span
-class="math inline">\(c = \gamma\sqrt{l/g}\)</span> and <span
+id="eq:damped_mathieu"><span class="math display">\[\ddot{\theta}
++c\sqrt{k}\dot{\theta} - \left(k - m \cos(\tau)\right)\sin(\theta) = 0
+    \]</span></span> where <span class="math inline">\(c =
+\gamma\sqrt{l/g}\)</span> and <span
 class="math inline">\(\theta=0\)</span> denotes the inverted position.
 This form for the damped Mathieu deviates from that presented in <span
 class="citation" data-cites="kim1998hu">(<a href="#ref-kim1998hu"
@@ -734,13 +728,13 @@ bifurcations. When we reduce the second-order differential equation <a
 href="#eq:damped_mathieu" data-reference-type="eqref"
 data-reference="eq:damped_mathieu">[eq:damped_mathieu]</a> to a system
 of two first-order differential equations <span
-class="math display">\[\begin{aligned}
+id="eq:damped_system"><span class="math display">\[\begin{aligned}
 \begin{cases}
     \dot{x} &amp;= y \\
     \dot{y} &amp;= -2c\sqrt{k}y+(k-m\cos(\tau))\sin(x)
 \end{cases}
-\label{eq:damped_system},
-\end{aligned}\]</span> we can observe that the system has space
+,
+\end{aligned}\]</span></span> we can observe that the system has space
 inversion symmetry, i.e., the transformation <span
 class="math inline">\(S:x\rightarrow-x, ~y\rightarrow-y, ~t\rightarrow
 t\)</span> leaves <a href="#eq:damped_system"
