@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ξ(t) – Interactive Applet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1220; --panel:#161a2b; --ink:#e8ecf1; --muted:#9aa3af; --accent:#5aa9ff;
+    --pos:#2e7d32; --neg:#c62828; --node:#1f6feb; --node2:#00bcd4; --out:#f57c00; --in:#f6d32d;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink); font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+  }
+  h1{font-size:20px; margin:12px 0 10px}
+  h2{font-size:16px; margin:14px 0 8px}
+  .wrap{
+    display:grid; grid-template-columns: 620px 1fr; gap:18px; padding:16px; align-items:start;
+  }
+  @media (max-width:1100px){ .wrap{grid-template-columns:1fr} }
+
+  /* Network pane */
+  .viz{
+    background:var(--panel); border-radius:12px; padding:14px; top:14px;
+    box-shadow: 0 10px 0px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .net{
+    position:relative; height:370px; width:100%; border-radius:10px; background:#0e1120; overflow:hidden;
+    /*--pad:180px; /* reuse for IO anchors */
+    border:1px solid rgba(255,255,255,.06);
+  }
+  .nodes{
+    display:grid; position:absolute; inset:0; padding:10px;
+    /*grid-template-columns: 30px repeat(4, 1fr) 30px; /* input | 4 hidden | output */
+    grid-template-rows: repeat(4, 1fr);
+    gap:7px 10px;
+  }
+  .node{
+    width:62px; height:62px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+    margin:auto; color:#fff; border:2px solid rgba(255,255,255,.2);
+    box-shadow: 0 6px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+    user-select:none;
+  }
+  .node.input{ background:var(--in); color:#1b1d1f }
+  .node.tanh{ background:linear-gradient(180deg, var(--node2), var(--node)); }
+  .node.output{ background:var(--out) }
+  .node small{font-weight:800; font-size:12px; letter-spacing:.3px}
+  .node .xi{font-weight:900; font-size:16px}
+
+  svg#edges{ position:absolute; inset:0; width:100%; height:100%}
+  .edge{ stroke:#9fb3ff; stroke-opacity:.9 }
+  .edge.pos{ stroke: var(--pos) }
+  .edge.neg{ stroke: var(--neg) }
+  /*.edge.skip{ stroke:#ff80ab; stroke-dasharray:4 3 }*/
+  .legend{display:flex; gap:14px; margin-top:10px; color:var(--muted); font-size:13px}
+
+  /* Controls */
+  .row{ display:flex; align-items:center; gap:10px; margin:8px 0 }
+  .row label{min-width:80px; color:var(--muted)}
+  input[type="range"]{ width:220px }
+  input[type="number"]{
+    width:96px; background:#0b0f1b; border:1px solid rgba(255,255,255,.12); border-radius:6px; color:var(--ink);
+    padding:6px 8px; font-weight:600;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:7px; padding:6px 10px; border-radius:999px;
+    background:#0c1326; border:1px solid rgba(255,255,255,.08);
+  }
+  .btn{
+    appearance:none; border:1px solid rgba(255,255,255,.14); background:#0c1326; color:var(--ink);
+    padding:7px 10px; border-radius:8px; font-weight:700; cursor:pointer;
+  }
+  .btn:active{ transform: translateY(1px) }
+  .btn.primary{ background:linear-gradient(180deg, #5aa9ff, #2a7de6); border-color:#2a7de6 }
+  .btn.warn{ background:linear-gradient(180deg, #f06292, #d81b60); border-color:#d81b60 }
+  .btn.solid{ background:#1a233a }
+
+  details{ background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:10px 12px; margin:10px 0 }
+  details[open]{ box-shadow: inset 0 1px 0 rgba(255,255,255,.06) }
+  summary{ cursor:pointer; font-weight:800 }
+  .grid2{ display:grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap:10px }
+  @media (max-width:900px){ .grid2{ grid-template-columns: 1fr } }
+  .paramTable{ width:100%; border-collapse:collapse; font-size:13px }
+  .paramTable td{ padding:6px 4px; vertical-align:middle; }
+  .paramTable th{ text-align:left; color:var(--muted); padding:6px 4px; font-weight:800 }
+  code, pre{ background:#0b0f1b; color:#e6f0ff; border:1px solid rgba(255,255,255,.12); padding:8px 10px; border-radius:8px }
+  pre{ overflow:auto; white-space:pre-wrap; word-break:break-word; }
+  .muted{ color:var(--muted) }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="viz">
+    <h1>Interactive \(\xi(t)\)</h1>
+    <div class="net" id="net">
+      <svg id="edges" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="5.2" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 z" fill="currentColor"></path>
+          </marker>
+        </defs>
+        <!-- edges injected by JS -->
+      </svg>
+      <div class="nodes" id="nodes">
+        <!-- input -->
+        <div class="node input" id="node-input" style="grid-column:1; grid-row:3;">
+          <small>t</small>
+        </div>
+        <!-- four hidden layers × four neurons -->
+        <!-- layer 1 -->
+        <div class="node tanh" id="node-h1-1" style="grid-column:2; grid-row:1;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h1-2" style="grid-column:2; grid-row:2;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h1-3" style="grid-column:2; grid-row:4;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h1-4" style="grid-column:2; grid-row:5;"><small>tanh</small></div>
+        <!-- layer 2 -->
+        <div class="node tanh" id="node-h2-1" style="grid-column:3; grid-row:1;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h2-2" style="grid-column:3; grid-row:2;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h2-3" style="grid-column:3; grid-row:4;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h2-4" style="grid-column:3; grid-row:5;"><small>tanh</small></div>
+        <!-- layer 3 -->
+        <div class="node tanh" id="node-h3-1" style="grid-column:4; grid-row:1;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h3-2" style="grid-column:4; grid-row:2;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h3-3" style="grid-column:4; grid-row:4;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h3-4" style="grid-column:4; grid-row:5;"><small>tanh</small></div>
+        <!-- layer 4 -->
+        <div class="node tanh" id="node-h4-1" style="grid-column:5; grid-row:1;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h4-2" style="grid-column:5; grid-row:2;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h4-3" style="grid-column:5; grid-row:4;"><small>tanh</small></div>
+        <div class="node tanh" id="node-h4-4" style="grid-column:5; grid-row:5;"><small>tanh</small></div>
+        <!-- output -->
+        <div class="node output" id="node-output" style="grid-column:6; grid-row:3;">
+          <span class="xi">ξ(t)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="pill"><svg width="12" height="12"><line x1="1" y1="6" x2="11" y2="6" stroke-width="3" stroke="#2e7d32"/></svg> positive weight</span>
+      <span class="pill"><svg width="12" height="12"><line x1="1" y1="6" x2="11" y2="6" stroke-width="3" stroke="#c62828"/></svg> negative weight</span>
+<!--      <span class="pill"><svg width="12" height="12"><line x1="1" y1="6" x2="11" y2="6" stroke-dasharray="4 3" stroke-width="3" stroke="#ff80ab"/></svg> skip t→ξ(t)</span>-->
+    </div>
+
+    <h2 style="margin-top:16px">Evaluate ξ(t)</h2>
+    <div class="row">
+      <label for="tSlider">t</label>
+      <input id="tSlider" type="range" min="-10" max="10" step="0.01" value="0">
+      <input id="tBox" type="number" step="0.01" value="0">
+      <span class="pill">ξ(t) = <strong id="xiVal">0</strong></span>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="btnRandom">Randomize params</button>
+      <button class="btn solid" id="btnZero">Zero everything</button>
+    </div>
+    <h2 style="margin-top:14px">Plot ξ(t) over a range</h2>
+    <div class="row">
+      <label>range</label>
+      <input id="tMin" type="number" step="0.01" value="0">
+      <span class="muted">to</span>
+      <input id="tMax" type="number" step="0.01" value="10">
+      <label style="margin-left:10px">points</label>
+      <input id="tN" type="number" min="50" max="2000" step="10" value="400">
+      <button class="btn" id="btnReplot">Replot</button>
+    </div>
+<!--    <canvas id="xiPlot" width="600" height="220" style="width:100%; max-width:600px; background:#0b0f1b; border:1px solid rgba(255,255,255,.12); border-radius:8px"></canvas>-->
+    <div id="xiPlot" style="width:100%; max-width:650px; height:260px; background:#0b0f1b; border:1px solid rgba(255,255,255,.12); border-radius:8px"></div>
+
+  </section>
+
+  <section id="controls">
+      <!-- Analytic forms -->
+      <details open>
+        <summary>Analytic form — symbolic (LaTeX)</summary>
+        <div id="exprSym"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="copySym">Copy LaTeX</button>
+        </div>
+      </details>
+
+      <details>
+        <summary>Analytic form — fully instantiated with current numbers</summary>
+        <div id="exprNum" class="muted" style="margin-bottom:8px;">(Rendered with MathJax when available, otherwise as text.)</div>
+        <div id="exprNumContent"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="copyNum">Copy text</button>
+        </div>
+      </details>
+    <h1>Parameters (sliders for all weights & biases)</h1>
+
+    <!-- Layer 1 -->
+    <details open>
+      <summary>Layer 1 (t → 4 tanh): weights <em>w<sup>(1)</sup><sub>j</sub></em> & biases <em>b<sup>(1)</sup><sub>j</sub></em></summary>
+      <table class="paramTable" id="tblL1"></table>
+    </details>
+
+    <!-- Layer 2 -->
+    <details>
+      <summary>Layer 2 (4 → 4 tanh): weights <em>W<sup>(2)</sup><sub>j,i</sub></em> & biases <em>b<sup>(2)</sup><sub>j</sub></em></summary>
+      <div class="grid2" id="tblL2"></div>
+    </details>
+
+    <!-- Layer 3 -->
+    <details>
+      <summary>Layer 3 (4 → 4 tanh): weights <em>W<sup>(3)</sup><sub>j,i</sub></em> & biases <em>b<sup>(3)</sup><sub>j</sub></em></summary>
+      <div class="grid2" id="tblL3"></div>
+    </details>
+
+    <!-- Layer 4 -->
+    <details>
+      <summary>Layer 4 (4 → 4 tanh): weights <em>W<sup>(4)</sup><sub>j,i</sub></em> & biases <em>b<sup>(4)</sup><sub>j</sub></em></summary>
+      <div class="grid2" id="tblL4"></div>
+    </details>
+
+    <!-- Output -->
+    <details open>
+      <summary>Output (4 → 1 linear): weights <em>v<sub>j</sub></em>, bias <em>b<sup>(5)</sup></em> & skip <em>s</em></summary>
+      <table class="paramTable" id="tblOut"></table>
+    </details>
+
+  </section>
+</div>
+
+<!-- MathJax (optional; page works without it) -->
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+<script>
+/* ----------------------- Model definition ----------------------- */
+const H = 4;            // neurons per hidden layer
+const Lhidden = 4;      // number of hidden layers
+
+// Parameter container
+const P = {
+  // Layer 1: t -> 4
+  w1: Array(H).fill(0),
+  b1: Array(H).fill(0),
+  // Layer 2..4: 4 -> 4
+  W2: [...Array(H)].map(()=>Array(H).fill(0)),
+  b2: Array(H).fill(0),
+  W3: [...Array(H)].map(()=>Array(H).fill(0)),
+  b3: Array(H).fill(0),
+  W4: [...Array(H)].map(()=>Array(H).fill(0)),
+  b4: Array(H).fill(0),
+  // Output: 4 -> 1
+  v: Array(H).fill(0),
+  b5: 0,
+  // Skip t -> output
+  s: 0,
+  skipEnabled: true
+};
+
+// Utilities
+/*const randn = (() => {
+  // Box–Muller
+  let spare = null;
+  return (mu=0, sigma=0.35) => {
+    if (spare !== null){ const v = spare*sigma+mu; spare=null; return v; }
+    let u=0, v=0, s=0;
+    do { u = Math.random()*2-1; v = Math.random()*2-1; s = u*u + v*v; } while (s===0 || s>=1);
+    const m = Math.sqrt(-2*Math.log(s)/s);
+    spare = v*m;
+    return mu + sigma*(u*m);
+  };
+})();*/
+    
+const randn = (() => {return (Math.random()-0.5)*2;});
+
+function initRandom(){ // small randoms
+  for(let j=0;j<H;j++){ P.w1[j]=randn(); P.b1[j]=randn(); }
+  for(let j=0;j<H;j++){ for(let i=0;i<H;i++) P.W2[j][i]=randn(); P.b2[j]=randn(); }
+  for(let j=0;j<H;j++){ for(let i=0;i<H;i++) P.W3[j][i]=randn(); P.b3[j]=randn(); }
+  for(let j=0;j<H;j++){ for(let i=0;i<H;i++) P.W4[j][i]=randn(); P.b4[j]=randn(); }
+  for(let j=0;j<H;j++){ P.v[j]=randn(); } P.b5=randn();
+  P.s = randn(); // sometimes off
+}
+function initZero(){
+  for(const k of ['w1','b1','b2','b3','b4','v']) P[k].fill(0);
+  for(const K of ['W2','W3','W4']) for(let j=0;j<H;j++) P[K][j].fill(0);
+  P.b5=0; P.s=0;
+}
+function initXavier(){
+  const xavier = (fanIn, fanOut) => Math.sqrt(6/(fanIn+fanOut));
+  // L1: fanIn=1 fanOut=4
+  const a1 = xavier(1,H);
+  for(let j=0;j<H;j++){ P.w1[j]=(Math.random()*2-1)*a1; P.b1[j]=0; }
+  // L2..4
+  const a = xavier(H,H);
+  for(const K of ['W2','W3','W4']){
+    for(let j=0;j<H;j++){ for(let i=0;i<H;i++) P[K][j][i]=(Math.random()*2-1)*a; }
+  }
+  P.b2.fill(0); P.b3.fill(0); P.b4.fill(0);
+  // Output
+  const ao = xavier(H,1);
+  for(let j=0;j<H;j++) P.v[j]=(Math.random()*2-1)*ao;
+  P.b5=0; P.s=0;
+}
+
+// Forward pass
+const Tanh = x => Math.tanh(x);
+function forward(t){
+  const z1 = Array(H), a1 = Array(H);
+  for(let j=0;j<H;j++){ z1[j] = P.w1[j]*t + P.b1[j]; a1[j] = Tanh(z1[j]); }
+  const z2 = Array(H), a2 = Array(H);
+  for(let j=0;j<H;j++){ let s=0; for(let i=0;i<H;i++) s += P.W2[j][i]*a1[i]; z2[j]=s+P.b2[j]; a2[j]=Tanh(z2[j]); }
+  const z3 = Array(H), a3 = Array(H);
+  for(let j=0;j<H;j++){ let s=0; for(let i=0;i<H;i++) s += P.W3[j][i]*a2[i]; z3[j]=s+P.b3[j]; a3[j]=Tanh(z3[j]); }
+  const z4 = Array(H), a4 = Array(H);
+  for(let j=0;j<H;j++){ let s=0; for(let i=0;i<H;i++) s += P.W4[j][i]*a3[i]; z4[j]=s+P.b4[j]; a4[j]=Tanh(z4[j]); }
+  let y = P.b5;
+  for(let j=0;j<H;j++) y += P.v[j]*a4[j];
+  if(P.skipEnabled) y += P.s * t;
+  return {y, a1,a2,a3,a4,z1,z2,z3,z4};
+}
+
+function drawXiPlot(){
+  const canvas = document.getElementById('xiPlot');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, Hc = canvas.height;
+
+  const tMin = parseFloat(document.getElementById('tMin').value);
+  const tMax = parseFloat(document.getElementById('tMax').value);
+  const N    = Math.max(50, Math.min(2000, parseInt(document.getElementById('tN').value||400)));
+
+  // Sample
+  const xs = new Array(N);
+  const ys = new Array(N);
+  let ymin= Infinity, ymax= -Infinity;
+  for(let i=0;i<N;i++){
+    const t = tMin + (tMax - tMin) * i/(N-1);
+    xs[i]=t;
+    const {y} = forward(t);
+    ys[i]=y;
+    if(y<ymin) ymin=y;
+    if(y>ymax) ymax=y;
+  }
+  if(!isFinite(ymin) || !isFinite(ymax)) { ymin=-1; ymax=1; }
+  if(ymax===ymin){ ymax=ymin+1; } // avoid flat scale
+  // padding
+  const padL=40, padR=10, padT=12, padB=28;
+  const w = W - padL - padR, h = Hc - padT - padB;
+
+  // clear
+  ctx.clearRect(0,0,W,Hc);
+
+  // axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  // x axis at y=0 if within range, else bottom
+  const y0 = (0>=ymin && 0<=ymax) ? padT + h*(1 - (0 - ymin)/(ymax - ymin)) : padT + h;
+  ctx.moveTo(padL, y0); ctx.lineTo(W - padR, y0);
+  ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + h);
+  ctx.stroke();
+
+  // ticks
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.font = '12px system-ui';
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  ctx.fillText(ymax.toFixed(2), padL-6, padT+4);
+  ctx.fillText(ymin.toFixed(2), padL-6, padT+h-4);
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText(tMin.toFixed(2), padL, padT+h+6);
+  ctx.fillText(tMax.toFixed(2), padL+w, padT+h+6);
+
+  // line
+  ctx.strokeStyle = '#5aa9ff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const x = padL + w * (xs[i]-tMin)/(tMax - tMin);
+    const y = padT + h * (1 - (ys[i]-ymin)/(ymax - ymin));
+    (i===0) ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+}
+
+function drawXiPlot(){
+  const el = document.getElementById('xiPlot');
+  if (!el || !window.Plotly) return;
+
+  const tMin = parseFloat(document.getElementById('tMin').value);
+  const tMax = parseFloat(document.getElementById('tMax').value);
+  const N    = Math.max(50, Math.min(2000, parseInt(document.getElementById('tN').value || 400)));
+
+  // sample xi(t)
+  const xs = new Array(N);
+  const ys = new Array(N);
+  let ymin = Infinity, ymax = -Infinity;
+  for (let i=0; i<N; i++){
+    const t = tMin + (tMax - tMin) * i/(N-1);
+    xs[i] = t;
+    const { y } = forward(t);
+    ys[i] = y;
+    if (y < ymin) ymin = y;
+    if (y > ymax) ymax = y;
+  }
+  if (!isFinite(ymin) || !isFinite(ymax)) { ymin = -1; ymax = 1; }
+  if (ymax === ymin) { ymax = ymin + 1; }
+
+  const trace = {
+    x: xs,
+    y: ys,
+    type: 'scatter',
+    mode: 'lines',
+    line: { width: 2 }
+  };
+
+  const layout = {
+    margin: { l: 45, r: 12, t: 10, b: 36 },
+    paper_bgcolor: '#0b0f1b',
+    plot_bgcolor: '#0b0f1b',
+    font: { color: 'rgba(232,236,241,0.9)' },
+    xaxis: {
+      title: 't',
+      range: [tMin, tMax],
+      gridcolor: 'rgba(255,255,255,0.12)',
+      zerolinecolor: 'rgba(255,255,255,0.3)'
+    },
+    yaxis: {
+      title: 'ξ(t)',
+      range: [ymin, ymax],
+      gridcolor: 'rgba(255,255,255,0.12)',
+      zerolinecolor: 'rgba(255,255,255,0.3)'
+    }
+  };
+
+  const config = { displayModeBar: false, responsive: true };
+
+  // Efficient re-draw
+  Plotly.react(el, [trace], layout, config);
+}
+
+/* ----------------------- DOM helpers ----------------------- */
+const $ = sel => document.querySelector(sel);
+function fmt(x, d=4){ const s = (Math.abs(x) < 1e-12) ? 0 : x; return (Math.round(s*10**d)/10**d).toFixed(d); }
+function edgeStroke(w){
+  const width = 0.6 + Math.min(3.4, Math.abs(w)*1.2);
+  const cls = 'edge ' + (w>=0 ? 'pos' : 'neg');
+  return {width, cls};
+}
+
+/* ----------------------- Network drawing ----------------------- */
+const edgesSvg = $('#edges');
+const nodesContainer = $('#nodes');
+const allEdgeElems = {}; // map from key -> SVG line
+
+function nodeCenter(id){
+  const cRect = nodesContainer.getBoundingClientRect();
+  const r = $('#'+id).getBoundingClientRect();
+  return {
+    x: ( (r.left - cRect.left) + r.width/2 ) / cRect.width * 100,
+    y: ( (r.top  - cRect.top ) + r.height/2 ) / cRect.height * 100
+  };
+}
+
+function addEdge(key, fromId, toId, isSkip=false){
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('data-key', key);
+  //line.setAttribute('class', 'edge'+(isSkip?' skip':''));
+  line.setAttribute('class', 'edge');
+  line.setAttribute('marker-end', 'url(#arrow)');
+  edgesSvg.appendChild(line);
+  allEdgeElems[key] = { line, fromId, toId, isSkip };
+}
+
+function layoutEdges(){
+  for(const key in allEdgeElems){
+    const {line, fromId, toId} = allEdgeElems[key];
+    const A = nodeCenter(fromId), B = nodeCenter(toId);
+    line.setAttribute('x1', A.x); line.setAttribute('y1', A.y);
+    line.setAttribute('x2', B.x); line.setAttribute('y2', B.y);
+  }
+}
+
+function createAllEdges(){
+  // input -> layer1 (w1_j)
+  for(let j=1;j<=H;j++) addEdge(`w1-${j}`, 'node-input', `node-h1-${j}`);
+
+  // layer l -> l+1 (W2,W3,W4)
+  for(let L=2; L<=4; L++){
+    const prev = `h${L-1}`, curr = `h${L}`;
+    for(let j=1;j<=H;j++){
+      for(let i=1;i<=H;i++){
+        addEdge(`W${L}-${j}-${i}`, `node-${prev}-${i}`, `node-${curr}-${j}`);
+      }
+    }
+  }
+
+  // layer4 -> output (v_j)
+  for(let j=1;j<=H;j++) addEdge(`v-${j}`, `node-h4-${j}`, 'node-output');
+
+  // skip t -> output
+  addEdge('s', 'node-input', 'node-output', false); //true means treat skip differently
+  layoutEdges();
+}
+
+function updateEdgeStyles(){
+  // map param value to each edge
+  function valForKey(key){
+    if(key.startsWith('w1-')){ const j=+key.split('-')[1]-1; return P.w1[j]; }
+    if(key.startsWith('W2-')){ const [_,j,i]=key.split('-'); return P.W2[+j-1][+i-1]; }
+    if(key.startsWith('W3-')){ const [_,j,i]=key.split('-'); return P.W3[+j-1][+i-1]; }
+    if(key.startsWith('W4-')){ const [_,j,i]=key.split('-'); return P.W4[+j-1][+i-1]; }
+    if(key.startsWith('v-')) { const j=+key.split('-')[1]-1; return P.v[j]; }
+    //if(key==='s') return P.skipEnabled ? P.s : 0;
+    if(key==='s') return P.s;
+    return 0;
+  }
+  for(const key in allEdgeElems){
+    const {line, isSkip} = allEdgeElems[key];
+    const w = valForKey(key);
+    const {width, cls} = edgeStroke(w);
+    line.setAttribute('stroke-width', width);
+    //line.setAttribute('class', (isSkip?'edge skip ': 'edge ') + (w>=0 ? 'pos' : 'neg'));
+    line.setAttribute('class', 'edge ' + (w>=0 ? 'pos' : 'neg'));
+  }
+}
+
+/* ----------------------- Parameter Controls ----------------------- */
+function makeRangeRow(label, key, val, min=-3, max=3, step=0.001){
+  const tr = document.createElement('tr');
+  const tdL = document.createElement('td'); tdL.innerHTML = `<code>${label}</code>`;
+  const tdS = document.createElement('td');
+  const slider = document.createElement('input');
+  slider.type='range'; slider.min=min; slider.max=max; slider.step=step; slider.value=val;
+  slider.style.width='100%';
+  const tdN = document.createElement('td');
+  const box = document.createElement('input');
+  box.type='number'; box.step='0.001'; box.value=val; box.className='num';
+  box.style.width='100%';
+  tdS.appendChild(slider); tdN.appendChild(box);
+  tr.appendChild(tdL); tr.appendChild(tdS); tr.appendChild(tdN);
+  tr.dataset.key = key;
+
+  function setVal(x){
+    box.value=x; slider.value=x;
+    setParam(key, +x);
+  }
+  slider.addEventListener('input', e=> setVal(e.target.value));
+  box.addEventListener('input', e=> setVal(e.target.value));
+  return tr;
+}
+
+function setParam(key, value){
+  if(key.startsWith('w1[')){ P.w1[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key.startsWith('b1[')){ P.b1[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key.startsWith('W2[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; P.W2[+m[0][1]][+m[1][1]] = +value; }
+  else if(key.startsWith('b2[')){ P.b2[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key.startsWith('W3[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; P.W3[+m[0][1]][+m[1][1]] = +value; }
+  else if(key.startsWith('b3[')){ P.b3[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key.startsWith('W4[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; P.W4[+m[0][1]][+m[1][1]] = +value; }
+  else if(key.startsWith('b4[')){ P.b4[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key.startsWith('v[')) { P.v[+key.match(/\[(\d+)\]/)[1]] = +value; }
+  else if(key==='b5') { P.b5 = +value; }
+  else if(key==='s')  { P.s  = +value; }
+  updateAll();
+}
+
+function buildControls(){
+  // Layer 1
+  const tbl1 = $('#tblL1');
+  const header = document.createElement('tr');
+  header.innerHTML = '<th>param</th><th>slider</th><th>value</th>';
+  tbl1.appendChild(header);
+  for(let j=0;j<H;j++) tbl1.appendChild( makeRangeRow(`w^{(1)}_{${j+1}}`, `w1[${j}]`, P.w1[j]) );
+  for(let j=0;j<H;j++) tbl1.appendChild( makeRangeRow(`b^{(1)}_{${j+1}}`, `b1[${j}]`, P.b1[j]) );
+
+  // Layers 2..4
+  for(const L of [2,3,4]){
+    const host = document.getElementById(`tblL${L}`);
+    for(let j=0;j<H;j++){
+      const panel=document.createElement('div');
+      panel.innerHTML = `<div style="font-weight:800; margin:4px 0 8px">Neuron j=${j+1} (incoming W^{(${L})}_{${j+1},i})</div>`;
+      const table=document.createElement('table'); table.className='paramTable';
+      const h=document.createElement('tr'); h.innerHTML='<th>param</th><th>slider</th><th>value</th>'; table.appendChild(h);
+      for(let i=0;i<H;i++){
+        const key=`W${L}[${j}][${i}]`;
+        table.appendChild( makeRangeRow(`W^{(${L})}_{${j+1},${i+1}}`, key, P[`W${L}`][j][i]) );
+      }
+      table.appendChild( makeRangeRow(`b^{(${L})}_{${j+1}}`, `b${L}[${j}]`, P[`b${L}`][j]) );
+      panel.appendChild(table);
+      host.appendChild(panel);
+    }
+  }
+
+  // Output layer
+  const tblOut = $('#tblOut');
+  const h2 = document.createElement('tr'); h2.innerHTML = '<th>param</th><th>slider</th><th>value</th>'; tblOut.appendChild(h2);
+  for(let j=0;j<H;j++) tblOut.appendChild( makeRangeRow(`v_{${j+1}}`, `v[${j}]`, P.v[j]) );
+  tblOut.appendChild( makeRangeRow(`b^{(5)}`, 'b5', P.b5) );
+  tblOut.appendChild( makeRangeRow(`<em>skip</em> s (t→ξ)`, 's', P.s) );
+}
+
+/* ----------------------- Analytic forms ----------------------- */
+function latexSymbolic(){
+  // ξ(t) = b5 + sum_j v_j tanh( b4_j + sum_i W4_{j,i} tanh( b3_i + sum_k W3_{i,k} tanh( b2_k + sum_m W2_{k,m} tanh( b1_m + w1_m t ) ) ) ) + s t
+  const base = String.raw`\[
+\begin{aligned}
+\xi(t) &= b^{(5)} + \sum_{j=1}^{4} v_{j}\,\tanh\!\Bigg(
+b^{(4)}_{j} + \sum_{i=1}^{4} W^{(4)}_{j,i}\,\tanh\!\bigg(
+b^{(3)}_{i} + \sum_{k=1}^{4} W^{(3)}_{i,k}\,\tanh\!\Big(
+b^{(2)}_{k} + \sum_{m=1}^{4} W^{(2)}_{k,m}\,\tanh\!\big(
+b^{(1)}_{m} + w^{(1)}_{m}\,t \big)\Big)\bigg)\Bigg)`;
+  const skip = P.skipEnabled ? String.raw` + s\,t` : '';
+  const end  = String.raw`\\
+\end{aligned}
+\]`;
+  return base + skip + end;
+}
+
+function latexNumeric(){
+  // Recursive construction of z^{(L)}_j(t) = b^{(L)}_j + Σ W^{(L)}_{j,i} tanh(z^{(L-1)}_i(t))
+  const z1 = j => `${fmt(P.b1[j])} + ${fmt(P.w1[j])} t`;
+  const z2 = j => P.W2[j].map((w,i)=>`${fmt(w)}\\tanh\\big(${z1(i)}\\big)`).join(' + ') + ` + ${fmt(P.b2[j])}`;
+  const z3 = j => P.W3[j].map((w,i)=>`${fmt(w)}\\tanh\\big(${z2(i)}\\big)`).join(' + ') + ` + ${fmt(P.b3[j])}`;
+  const z4 = j => P.W4[j].map((w,i)=>`${fmt(w)}\\tanh\\Big(${z3(i)}\\Big)`).join(' + ') + ` + ${fmt(P.b4[j])}`;
+
+  const terms = [];
+  for(let j=0;j<H;j++){
+    terms.push(`${fmt(P.v[j])}\\tanh\\Big(${z4(j)}\\Big)`);
+  }
+  let ex = String.raw`\[
+\xi(t) = ` + `${fmt(P.b5)} + ` + terms.join(' + ');
+  if(P.skipEnabled) ex += ` + ${fmt(P.s)}\,t`;
+  ex += String.raw`\]`;
+  return ex;
+}
+
+/* ----------------------- Evaluate + render ----------------------- */
+function updateAll(){
+  // output value
+  const t = +$('#tBox').value;
+  const {y} = forward(t);
+  $('#xiVal').textContent = fmt(y, 6);
+
+  // edges styling
+  updateEdgeStyles();
+
+  // expressions
+  $('#exprSym').innerHTML = latexSymbolic();
+  const numericLatex = latexNumeric();
+  $('#exprNumContent').innerHTML = numericLatex;
+  
+    // plot
+    drawXiPlot();
+
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.typesetPromise([$('#exprSym'), $('#exprNumContent')]).catch(()=>{});
+  }else{
+    // fallback to <pre> text if MathJax not yet loaded
+    $('#exprSym').innerHTML = '<pre>'+latexSymbolic().replace(/\\\[/g,'').replace(/\\\]/g,'')+'</pre>';
+    $('#exprNumContent').innerHTML = '<pre>'+numericLatex.replace(/\\\[/g,'').replace(/\\\]/g,'')+'</pre>';
+  }
+}
+
+/* ----------------------- IO helpers ----------------------- */
+function copyText(s){ navigator.clipboard?.writeText(s); }
+function exportJSON(){
+  const obj = JSON.parse(JSON.stringify(P));
+  delete obj.skipEnabled;
+  copyText(JSON.stringify(obj, null, 2));
+  alert('Parameters copied to clipboard as JSON.');
+}
+function loadJSONFromFile(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const obj = JSON.parse(reader.result);
+      // Assign if shapes match (basic check)
+      ['w1','b1','b2','b3','b4','v'].forEach(k=> P[k] = obj[k].map(x=>+x));
+      ['W2','W3','W4'].forEach(K=>{
+        P[K] = obj[K].map(row=>row.map(x=>+x));
+      });
+      P.b5 = +obj.b5; P.s = +obj.s ?? 0;
+      // update controls UI to reflect new values
+      document.querySelectorAll('[data-key]').forEach(tr=>{
+        const key = tr.dataset.key;
+        let val = 0;
+        if(key.startsWith('w1[')){ val = P.w1[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key.startsWith('b1[')){ val = P.b1[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key.startsWith('W2[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W2[+m[0][1]][+m[1][1]]; }
+        else if(key.startsWith('b2[')){ val = P.b2[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key.startsWith('W3[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W3[+m[0][1]][+m[1][1]]; }
+        else if(key.startsWith('b3[')){ val = P.b3[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key.startsWith('W4[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W4[+m[0][1]][+m[1][1]]; }
+        else if(key.startsWith('b4[')){ val = P.b4[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key.startsWith('v[')) { val = P.v[+key.match(/\[(\d+)\]/)[1]]; }
+        else if(key==='b5'){ val = P.b5; }
+        else if(key==='s'){ val = P.s; }
+        const slider = tr.querySelector('input[type="range"]');
+        const box    = tr.querySelector('input[type="number"]');
+        if(slider) slider.value = val;
+        if(box)    box.value = val;
+      });
+      updateAll();
+    }catch(err){ alert('Invalid JSON'); }
+  };
+  reader.readAsText(file);
+}
+    
+function syncUIFromParams(){
+  document.querySelectorAll('[data-key]').forEach(tr=>{
+    const key = tr.dataset.key;
+    let val = 0;
+    if(key.startsWith('w1['))  val = P.w1[+key.match(/\[(\d+)\]/)[1]];
+    else if(key.startsWith('b1['))  val = P.b1[+key.match(/\[(\d+)\]/)[1]];
+    else if(key.startsWith('W2[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val = P.W2[+m[0][1]][+m[1][1]]; }
+    else if(key.startsWith('b2['))  val = P.b2[+key.match(/\[(\d+)\]/)[1]];
+    else if(key.startsWith('W3[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val = P.W3[+m[0][1]][+m[1][1]]; }
+    else if(key.startsWith('b3['))  val = P.b3[+key.match(/\[(\d+)\]/)[1]];
+    else if(key.startsWith('W4[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val = P.W4[+m[0][1]][+m[1][1]]; }
+    else if(key.startsWith('b4['))  val = P.b4[+key.match(/\[(\d+)\]/)[1]];
+    else if(key.startsWith('v['))   val = P.v[+key.match(/\[(\d+)\]/)[1]];
+    else if(key==='b5')             val = P.b5;
+    else if(key==='s')              val = P.s;
+    const slider = tr.querySelector('input[type="range"]');
+    if (slider) slider.value = val;
+    const box = tr.querySelector('input[type="number"]');
+    if (box) box.value = val;
+  });
+}
+
+/* ----------------------- Wire up UI ----------------------- */
+function main(){
+  //initXavier(); // good defaults; you can click Randomize later
+  buildControls();
+  createAllEdges();
+  layoutEdges();
+  updateEdgeStyles();
+
+  // t controls
+  const tSlider = $('#tSlider'), tBox = $('#tBox');
+  tSlider.addEventListener('input', e => { tBox.value = e.target.value; updateAll(); });
+  tBox.addEventListener('input',  e => { tSlider.value = e.target.value; updateAll(); });
+
+  // plot controls
+  $('#btnReplot').addEventListener('click', updateAll);
+  $('#tMin').addEventListener('input', updateAll);
+  $('#tMax').addEventListener('input', updateAll);
+  $('#tN').addEventListener('input', updateAll);
+  window.addEventListener('resize', () => { layoutEdges(); drawXiPlot(); });
+
+  
+  // buttons
+  $('#btnRandom').addEventListener('click', () => {
+    initRandom();
+    syncUIFromParams();
+    updateAll();
+  });
+  $('#btnZero').addEventListener('click', () => {
+    initZero();
+    syncUIFromParams();
+    updateAll();
+  });
+  /*$('#btnXavier').addEventListener('click', () => { initXavier();
+    document.querySelectorAll('[data-key]').forEach(tr=>{
+      const key=tr.dataset.key; let val=0;
+      if(key.startsWith('w1[')){ val = P.w1[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key.startsWith('b1[')){ val = P.b1[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key.startsWith('W2[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W2[+m[0][1]][+m[1][1]]; }
+      else if(key.startsWith('b2[')){ val = P.b2[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key.startsWith('W3[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W3[+m[0][1]][+m[1][1]]; }
+      else if(key.startsWith('b3[')){ val = P.b3[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key.startsWith('W4[')){ const m=[...key.matchAll(/\[(\d+)\]/g)]; val=P.W4[+m[0][1]][+m[1][1]]; }
+      else if(key.startsWith('b4[')){ val = P.b4[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key.startsWith('v[')) { val = P.v[+key.match(/\[(\d+)\]/)[1]]; }
+      else if(key==='b5'){ val = P.b5; }
+      else if(key==='s') { val = P.s; }
+      const slider = tr.querySelector('input[type="range"]');
+      if (slider) slider.value = val;
+      const box = tr.querySelector('input[type="number"]');
+      if (box) box.value = val;
+    });
+    updateAll();
+  });
+  $('#skipToggle').addEventListener('change', e => { P.skipEnabled = e.target.checked; updateAll(); });
+
+  $('#btnExport').addEventListener('click', exportJSON);
+  $('#btnImport').addEventListener('click', ()=> $('#fileImport').click());
+  $('#fileImport').addEventListener('change', e => { if(e.target.files?.[0]) loadJSONFromFile(e.target.files[0]); });*/
+
+  $('#copySym').addEventListener('click', ()=> copyText(latexSymbolic()));
+  $('#copyNum').addEventListener('click', ()=> copyText( $('#exprNumContent').innerText || $('#exprNumContent').textContent ));
+
+  // initial render
+  updateAll();
+  window.addEventListener('resize', layoutEdges);
+}
+
+window.addEventListener('DOMContentLoaded', main);
+</script>
+</body>
+</html>
