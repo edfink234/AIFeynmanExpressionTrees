@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("EEExljEgt5CBufRnx");  // replace with your actual public key
+  </script>
+  <title>Richard Finkelstein – Video Editor & Post‑Production Specialist</title>
+  <style>
+    :root {
+      --bg-dark: #0e0e11;
+      --bg-light: #f5f7fa;
+      --accent: #ff6b00;
+      --text-light: #e4e4e4;
+      --text-dark: #1a1a1d;
+      --max-width: 1100px;
+      --radius-lg: 1.25rem;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+      background: rgba(14, 14, 17, 0.65);
+      z-index: 999;
+    }
+    nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links a:focus::after {
+      width: 100%;
+    }
+    /* Mobile nav toggle */
+    #burger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+    #burger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text-light);
+      border-radius: 2px;
+    }
+    @media (max-width: 720px) {
+      .nav-links { display: none; position: absolute; right: 1rem; top: 70px; background: rgba(14,14,17,0.95); flex-direction: column; width: 200px; padding: 1rem; border-radius: var(--radius-lg); }
+      .nav-links a { padding: 0.75rem; }
+      #burger { display: flex; }
+    }
+
+    /* Hero section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 160px 1rem 120px;
+      background: linear-gradient(120deg, rgba(255,107,0,0.25), rgba(255,107,0,0) 60%), url('https://source.unsplash.com/1600x900/?editing,studio') center/cover fixed;
+    }
+    .hero h1 { font-size: clamp(2.25rem, 8vw, 4rem); margin: 0 0 1rem; }
+    .hero p { font-size: clamp(1rem, 3.5vw, 1.25rem); max-width: 700px; margin: 0 0 2rem; }
+    
+    /* Profile photo & social links */
+    .profile-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    }
+    .social-links {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      margin-top: 0.75rem;
+      justify-content: center;
+    }
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 2px solid var(--text-light);
+      border-radius: 50%;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .social-links a:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .social-links svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--text-light);
+      transition: fill 0.3s ease;
+    }
+    .social-links a:hover svg {
+      fill: var(--bg-dark);
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: var(--accent);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-3px); }
+
+    /* Section wrapper */
+    section { max-width: var(--max-width); margin: 0 auto; padding: 4rem 1rem; }
+    section h2 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--accent); }
+
+    /* About */
+    .about p { font-size: 1.1rem; }
+
+    /* Experience */
+    .timeline { border-left: 3px solid var(--accent); padding-left: 1.25rem; }
+    .entry { margin-bottom: 2rem; position: relative; }
+    /*.entry::before { content: ""; position: absolute; left: -9px; top: 5px; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; }*/
+    .entry h3 { margin: 0; font-size: 1.25rem; }
+    .entry span { font-size: 0.9rem; color: #aaa; }
+    .entry p { margin-top: 0.5rem; }
+
+    /* Skills grid */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .skill { background: #1c1c21; border-radius: var(--radius-lg); padding: 1rem; text-align: center; }
+
+    /* Portfolio */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .thumb { position: relative; overflow: hidden; border-radius: var(--radius-lg); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .thumb:hover img { transform: scale(1.08); }
+
+    /* Contact */
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto; }
+    .contact-form input, .contact-form textarea { padding: 0.75rem 1rem; border: 2px solid transparent; border-radius: var(--radius-lg); background: #1c1c21; color: var(--text-light); resize: vertical; }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); outline: none; }
+
+    /* Footer */
+    footer { text-align: center; padding: 2rem 1rem; background: #0a0a0c; color: #666; font-size: 0.9rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">R Finkelstein</div>
+      <div id="burger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="nav-links" role="menu">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- === HERO SECTION START === -->
+  <section class="hero">
+    <!-- Profile Photo -->
+    <img src="RichardProfilePhoto.jpg"
+         alt="Richard Finkelstein headshot"
+         class="profile-photo" />
+
+    <h1>Richard Finkelstein</h1>
+    <p>Video Editor &amp; Post‑Production Specialist passionate about crafting compelling visual narratives.</p>
+
+    <!-- Social Media Links -->
+    <div class="social-links">
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/richard-finkelstein-427b88a1"
+         target="_blank" rel="noopener"
+         aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.25 8h4.5v14h-4.5V8zM8 8h4.29v2.08h.06c.6-1.14 2.06-2.34 4.25-2.34 4.5 0 5.39 2.97 5.39 6.83V22h-4.5v-6.05c0-1.44-.03-3.3-2.03-3.3-2.04 0-2.34 1.6-2.34 3.2V22H8V8z"/>
+        </svg>
+      </a>
+
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@richardjansen8462"
+         target="_blank" rel="noopener"
+         aria-label="YouTube">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.498 6.186a2.996 2.996 0 0 0-2.12-2.12C19.68 3.5 12 3.5 12 3.5s-7.68 0-9.378.566a2.996 2.996 0 0 0-2.12 2.12C0 7.884 0 12 0 12s0 4.116.502 5.814a2.996 2.996 0 0 0 2.12 2.12C4.32 20.5 12 20.5 12 20.5s7.68 0 9.378-.566a2.996 2.996 0 0 0 2.12-2.12C24 16.116 24 12 24 12s0-4.116-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <p>Based in California, my expertise spans Adobe Premiere Pro, Final Cut Pro, Avid, and motion graphics workflows. I thrive on transforming raw footage into polished stories that resonate with audiences.</p>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="timeline">
+      <div class="entry">
+        <h3>Video Editor – Suffolk County Community College</h3>
+        <span>Feb&nbsp;2025&nbsp;–&nbsp;May&nbsp;2025</span>
+        <p>Edited multi‑camera television productions and orientation videos for campus initiatives in collaboration with the Radio &amp; Television Department.</p>
+      </div>
+      <div class="entry">
+        <h3>Video Editor – Fraunhofer&nbsp;ISI</h3>
+        <span>Oct&nbsp;2023&nbsp;–&nbsp;Nov&nbsp;2024</span>
+        <p>Advised scientists on lecture‑capture workflows, edited sustainability course content, coordinated schedules, and integrated materials into Moodle.</p>
+      </div>
+      <div class="entry">
+        <h3>Documentary Video Editor – TV&nbsp;Mainz</h3>
+        <span>Oct&nbsp;2022&nbsp;–&nbsp;Nov&nbsp;2024</span>
+        <p>Produced and edited journalistic documentaries covering social issues; trained on Sony HXR‑NX800 to support field production.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="timeline">
+      <div class="entry">
+        <h3>Suffolk County Community College</h3>
+        <span>2023&nbsp;–&nbsp;2025 • GPA&nbsp;3.9/4.0</span>
+        <p>A.A.S. Radio &amp; Television Production (Video Editing focus)</p>
+      </div>
+      <div class="entry">
+        <h3>Johannes Gutenberg University of Mainz</h3>
+        <span>2022&nbsp;–&nbsp;2023 • GPA&nbsp;4.0/4.0</span>
+        <p>International Studies (Exchange)</p>
+      </div>
+      <div class="entry">
+        <h3>City College of New York</h3>
+        <span>2014&nbsp;–&nbsp;2019 • Biology</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill">Adobe Premiere Pro</div>
+      <div class="skill">Adobe After Effects</div>
+      <div class="skill">Final Cut Pro</div>
+      <div class="skill">Avid Media Composer</div>
+      <div class="skill">Camtasia</div>
+      <div class="skill">Motion Graphics</div>
+      <div class="skill">Color Grading</div>
+      <div class="skill">English • German (C2)</div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>Portfolio Highlights</h2>
+    <p>You can explore my full portfolio at <a href="https://portfolio.malloy.sg/richardfinkelstein" target="_blank" rel="noopener">portfolio.malloy.sg</a>. Below are some selected works.</p>
+    <div class="portfolio-grid">
+      <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="thumb" aria-label="Sample Documentary">
+        <img src="https://source.unsplash.com/featured/?film" alt="Documentary screenshot" />
+      </a>
+      <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="thumb" aria-label="Lecture Series Editing">
+        <img src="https://source.unsplash.com/featured/?lecture,video" alt="Lecture editing screenshot" />
+      </a>
+      <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank" class="thumb" aria-label="Television Production">
+        <img src="https://source.unsplash.com/featured/?studio,video" alt="TV production screenshot" />
+      </a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Get in Touch</h2>
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="5" placeholder="Tell me about your project" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+<!--    <p style="text-align:center;margin-top:1rem;">Or reach me directly: <a href="mailto:richard.finkelstein@example.com">richard.finkelstein@example.com</a> | (949) 740‑9298</p>-->
+  </section>
+
+  <footer>
+    © <span id="year"></span> Richard Finkelstein · <a href="https://www.linkedin.com/in/richard-finkelstein-427b88a1" target="_blank" rel="noopener">LinkedIn</a>
+  </footer>
+
+  <script>
+    // Update year automatically
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    const burger = document.getElementById('burger');
+    const navLinks = document.querySelector('.nav-links');
+    burger.addEventListener('click', () => {
+        const expanded = burger.getAttribute('aria-expanded') === 'true' || false;
+        burger.setAttribute('aria-expanded', !expanded);
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Smooth scroll for nav links (redundant with CSS but improves older browsers)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            if (window.innerWidth < 720)
+            {
+                navLinks.style.display = 'none';
+            }
+        });
+    });
+
+    // Simple form handler (replace with EmailJS or Formspree for production)
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // collect the form fields
+        const formData =
+        {
+            name: this.name.value,
+            email: this.email.value,
+            message: this.message.value,
+        };
+
+        emailjs.send("service_cjtqbzn", "template_ik7yo9r", formData).then(() => {
+            alert("Thanks! Your message has been emailed over.");
+            this.reset();
+        }).catch((err) => {
+            console.error("EmailJS error", err);
+            alert("Error sending email—please try again later.");
+        });
+    });
+  </script>
+
+  
+</body>
+</html>
