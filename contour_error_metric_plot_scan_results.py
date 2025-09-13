@@ -17,6 +17,16 @@ omega_vals = pd.to_numeric(df.iloc[0, 1:], errors="coerce").to_numpy(dtype=float
 b_vals = pd.to_numeric(df.iloc[1:, 0], errors="coerce").to_numpy(dtype=float)
 Z = df.iloc[1:, 1:].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float)
 
+# --- Find the minimum D and its corresponding (b, Omega) ---------
+min_idx = np.unravel_index(np.nanargmin(Z), Z.shape)
+min_D = Z[min_idx]
+min_b = b_vals[min_idx[0]]
+min_omega = omega_vals[min_idx[1]]
+
+print(f"Minimum 𝒟 = {min_D:.6g} at b = {min_b}, Ω = {min_omega}")
+# ---------------------------------------------------------------
+
+
 # Build meshgrid
 Om_grid, b_grid = np.meshgrid(omega_vals, b_vals)
 
