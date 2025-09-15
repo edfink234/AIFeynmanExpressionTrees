@@ -71,6 +71,7 @@ file_parts_display_9_mp4 = [i.replace('.png', '.mp4') for i in file_parts_displa
 file_parts_display_9_png = file_parts_display_9.copy()
 file_parts_display_9 = [extract_parts(filename) for filename in file_parts_display_9]
 file_parts_display_9 = [[string_to_float(part) for part in file] for file in file_parts_display_9]
+
 #print(*file_parts_display_8, sep='\n')
 
 for parts in file_float_parts:
@@ -196,7 +197,7 @@ display_5_titles = ["Base Case, A = 1.4"] + [i.strip('\n') for i in titles[40:49
 display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:89]]
 display_7_titles = ["Base Case"] + [i.strip('\n').replace(', =', ' =') for i in titles[89:99]]
 display_8_titles = ["Base Case, A = 1.1"] + [i.strip('\n').replace(', =', ' =') for i in titles[100:]]
-display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = 1.4770857 \times 10^{-2}\)"]
+display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = 1.394920 \times 10^{-2}\)"]
 
 print(*display_1_titles, sep='\n', end="\n\n")
 print(*display_2_titles, sep='\n', end="\n\n")
