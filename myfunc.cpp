@@ -237,9 +237,9 @@ static inline void soliton_moments(double &Xsol, double &sigma)
         m1 += amp2 * x;
         m2 += amp2 * x * x;
     }
-    Xsol  = m1 / m0;
+    Xsol  = m1 / m0; //CoM
     double var = m2 / m0 - Xsol*Xsol;
-    sigma = std::sqrt(std::max(var, 0.0));
+    sigma = std::sqrt(std::max(var, 0.0)); //width
 }
 
 /* one RK-4 step of  i u_t = -½ u_xx + V u - |u|² u  */
