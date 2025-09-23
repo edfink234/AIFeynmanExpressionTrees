@@ -583,7 +583,6 @@ or, do `http-server` then go to http://localhost:8080/ParticleVsSolitonDynamics.
                 p.epsilon = 0.25 / p.b;
                 p.T = 4*Math.PI/p.Omega;                   // two trap periods
                 initSimulations(p /*initialize with these parameters*/, false /*don't plot*/, false /*reset psi-matrix*/, false /*alert messages*/);     // alloc + ground-state + setting final time
-                //TODO: setSimParameters is overwriding the newton-refined u because reset = true, so need a work-around to reset
                 /* --- run to end silently -------------------------------------- */
                 const start = performance.now();
                 stepForPlotInterval(-1.);  // integrate all the way to p.T
