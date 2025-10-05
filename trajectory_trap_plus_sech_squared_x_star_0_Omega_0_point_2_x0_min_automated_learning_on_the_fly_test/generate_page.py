@@ -2,6 +2,7 @@ import os
 import glob
 import json
 import re
+import numpy as np
 
 def extract_parts(filename):
   """
@@ -211,9 +212,34 @@ display_5_titles = ["Base Case, A = 1.4"] + [i.strip('\n') for i in titles[40:49
 display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:89]]
 display_7_titles = ["Base Case"] + [i.strip('\n').replace(', =', ' =') for i in titles[89:99]]
 display_8_titles = ["Base Case, A = 1.1"] + [i.strip('\n').replace(', =', ' =') for i in titles[100:]]
-display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = 1.394920 \times 10^{-2}\)"]
-#display_10_titles =
-
+L_val = f"{1.394529}"+r" \times 10^{-2}\)"
+display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = "+L_val]
+display_10_str = r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) \(\,\rightarrow \,\mathcal{L} = "+L_val
+display_10_titles = [display_10_str]
+start_b, end_b = 1.0, 0.75
+start_Ω, end_Ω = 0.2, 0.18
+num_points = 25
+b_space = np.linspace(start_b, end_b, 25)[1:]
+Ω_space = np.linspace(start_Ω, end_Ω, 25)[1:]
+variation_contination_mat = np.genfromtxt('ICsVariational.txt', delimiter=',')
+loss_vals = variation_contination_mat[:, 5][1:]
+#print(temp:="variation_contination_mat");print(len(temp)*'=');
+#print(variation_contination_mat)
+#print(temp:="loss_vals");print(len(temp)*'=');
+#print(*zip(range(1,1+len(loss_vals)),loss_vals),sep='\n')
+#exit()
+for b, Ω, l_val in zip(b_space, Ω_space, loss_vals):
+    temp = display_10_str.replace(r'\mathcal{A}_0 = 1', r'\mathcal{A}_0 = '+str(round(b, 6)))
+    temp = temp.replace(r'\Omega = 0.2', r'\Omega = '+str(round(Ω, 6)))
+    temp_l_val = f"{l_val:e}"
+    exp_pos = temp_l_val.find('e')
+    temp_l_val_base = round(float(temp_l_val[:exp_pos]), 6)
+    temp_l_val_exp = float(temp_l_val[exp_pos+1:])
+    l_val_str = f"{temp_l_val_base}"+r" \times 10^{"+f"{temp_l_val_exp:.0f}"+r"}\)"
+    temp = temp.replace(L_val, l_val_str)
+    print(f"temp={temp}")
+    display_10_titles.append(temp)
+#exit()
 print(*display_1_titles, sep='\n', end="\n\n")
 print(*display_2_titles, sep='\n', end="\n\n")
 print(*display_3_titles, sep='\n', end="\n\n")
@@ -223,9 +249,9 @@ print(*display_6_titles, sep='\n', end="\n\n")
 print(*display_7_titles, sep='\n', end="\n\n")
 print(*display_8_titles, sep='\n', end="\n\n")
 print(*display_9_titles, sep='\n', end="\n\n")
-print(*display_10_titles, sep='\n', end="\n\n")
+print(temp:="display_10_titles");print(len(temp)*'=');print(*display_10_titles, sep='\n', end="\n\n")
 
-exit()
+#exit()
 
 display_1_title_tokens = [i.split() for i in display_1_titles[1:]]
 display_2_title_tokens = [i.split() for i in display_2_titles[1:]]
@@ -573,9 +599,9 @@ file_data = [
     {"png": file_parts_display_6_png, "mp4": file_parts_display_6_mp4, "index": 0, "titles": display_6_titles},
     {"png": file_parts_display_7_png, "mp4": file_parts_display_7_mp4, "index": 0, "titles": display_7_titles},
     {"png": file_parts_display_8_png, "mp4": file_parts_display_8_mp4, "index": 0, "titles": display_8_titles},
-    {"png": file_parts_display_9_png, "mp4": file_parts_display_9_mp4, "index": 0, "titles": display_9_titles}
+    {"png": file_parts_display_9_png, "mp4": file_parts_display_9_mp4, "index": 0, "titles": display_9_titles},
+    {"png": file_parts_display_10_png, "mp4": file_parts_display_10_mp4, "index": 0, "titles": display_10_titles}
 ]
-
 
 #[os.system(f"ls {i}") for i in file_parts_display_8_png]
 #exit()
