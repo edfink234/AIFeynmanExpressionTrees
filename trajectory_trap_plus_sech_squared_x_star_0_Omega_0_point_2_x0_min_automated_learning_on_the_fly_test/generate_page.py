@@ -213,8 +213,8 @@ display_6_titles = ["Base Case"] + [i.strip('\n') for i in titles[49:89]]
 display_7_titles = ["Base Case"] + [i.strip('\n').replace(', =', ' =') for i in titles[89:99]]
 display_8_titles = ["Base Case, A = 1.1"] + [i.strip('\n').replace(', =', ' =') for i in titles[100:]]
 L_val = f"{1.394529}"+r" \times 10^{-2}\)"
-display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = "+L_val]
-display_10_str = r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.2)\) \(\,\rightarrow \,\mathcal{L} = "+L_val
+display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.25)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = "+L_val]
+display_10_str = r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.25)\) \(\,\rightarrow \,\mathcal{L} = "+L_val
 display_10_titles = [display_10_str]
 start_b, end_b = 1.0, 0.75
 start_Ω, end_Ω = 0.2, 0.18
@@ -231,6 +231,7 @@ loss_vals = variation_contination_mat[:, 5][1:]
 for b, Ω, l_val in zip(b_space, Ω_space, loss_vals):
     temp = display_10_str.replace(r'\mathcal{A}_0 = 1', r'\mathcal{A}_0 = '+str(round(b, 6)))
     temp = temp.replace(r'\Omega = 0.2', r'\Omega = '+str(round(Ω, 6)))
+    temp = temp.replace(r'\rho = 0.2', r'\rho = '+str(round(0.25/b, 6)))
     temp_l_val = f"{l_val:e}"
     exp_pos = temp_l_val.find('e')
     temp_l_val_base = round(float(temp_l_val[:exp_pos]), 6)
