@@ -76,7 +76,6 @@ file_parts_display_9 = [[string_to_float(part) for part in file] for file in fil
 file_parts_display_10 = r' ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_84088_1_point_0_0_point_8125_1_point_0_0_point_185_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_814732_1_point_0_0_point_822917_1_point_0_0_point_185833_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_789061_1_point_0_0_point_833333_1_point_0_0_point_186667_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_763853_1_point_0_0_point_84375_1_point_0_0_point_1875_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_739098_1_point_0_0_point_854167_1_point_0_0_point_188333_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_714784_1_point_0_0_point_864583_1_point_0_0_point_189167_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_690898_1_point_0_0_point_875_1_point_0_0_point_19_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_667431_1_point_0_0_point_885417_1_point_0_0_point_190833_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_644371_1_point_0_0_point_895833_1_point_0_0_point_191667_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_621709_1_point_0_0_point_90625_1_point_0_0_point_1925_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_599435_1_point_0_0_point_916667_1_point_0_0_point_193333_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_577538_1_point_0_0_point_927083_1_point_0_0_point_194167_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_556009_1_point_0_0_point_9375_1_point_0_0_point_195_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_53484_1_point_0_0_point_947917_1_point_0_0_point_195833_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_514022_1_point_0_0_point_958333_1_point_0_0_point_196667_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_493545_1_point_0_0_point_96875_1_point_0_0_point_1975_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_473403_1_point_0_0_point_979167_1_point_0_0_point_198333_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_453586_1_point_0_0_point_989583_1_point_0_0_point_199167_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_434087_1_point_0_1_point_0_1_point_0_0_point_2_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_3_point_008519_1_point_0_0_point_75_1_point_0_0_point_18_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_979229_1_point_0_0_point_760417_1_point_0_0_point_180833_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_950499_1_point_0_0_point_770833_1_point_0_0_point_181667_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_922313_1_point_0_0_point_78125_1_point_0_0_point_1825_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_894657_1_point_0_0_point_791667_1_point_0_0_point_183333_Variational_.mp4 ../movies/trajectory_trap_plus_sech_squared/trajectory_data_IC_2_point_867517_1_point_0_0_point_802083_1_point_0_0_point_184167_Variational_.mp4'.split()
 file_parts_display_10 = [i.replace('../movies/trajectory_trap_plus_sech_squared/','') for i in file_parts_display_10]
 file_parts_display_10_mp4 = file_parts_display_10.copy()
-
 file_parts_display_10 = [extract_parts(filename) for filename in file_parts_display_10]
 file_parts_display_10 = [[string_to_float(part) for part in file] for file in file_parts_display_10]
 argsort_indices = sorted(range(len(file_parts_display_10)), key=lambda i: file_parts_display_10[i][2], reverse=True)
@@ -88,6 +87,12 @@ print(*file_parts_display_10_mp4,sep='\n')
 file_parts_display_10_png = [i.replace('.mp4', '.png') for i in file_parts_display_10_mp4]
 print(temp:="file_parts_display_10_png");print(len(temp)*'=')
 print(*file_parts_display_10_png,sep='\n')
+
+file_parts_display_11 = ['trajectory_data_IC_3_point_008519_1_point_0_0_point_75_1_point_0_0_point_18_Variational_.mp4', 'trajectory_data_IC_2_point_7615_1_point_0_0_point_75_1_point_0_0_point_18_pde_.mp4']
+file_parts_display_11_mp4 = file_parts_display_11.copy()
+file_parts_display_11 = [extract_parts(filename) for filename in file_parts_display_11]
+file_parts_display_11 = [[string_to_float(part) for part in file] for file in file_parts_display_11]
+file_parts_display_11_png = [i.replace('.mp4', '.png') for i in file_parts_display_11_mp4]
 
 for parts in file_float_parts:
     if parts[-3:] == base_parts[-3:] and parts != base_parts and not (1.4 < parts[1] < 1.5):
@@ -216,6 +221,10 @@ L_val = f"{1.394529}"+r" \times 10^{-2}\)"
 display_9_titles = [display_8_titles[-1], r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.25)\) from (A = 1.080, b = 0.800, Ω = 0.230) \(\,\rightarrow \,\mathcal{L} = "+L_val]
 display_10_str = r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 1,\, \Omega = 0.2; \, \rho = 0.25)\) \(\,\rightarrow \,\mathcal{L} = "+L_val
 display_10_titles = [display_10_str]
+L_val_sol = f"{8.9076}"+r" \times 10^{0}\)"
+display_11_strs = (r"\(U_{\text{patched}}(x,\, A = 1,\, \mathcal{A}_0 = 0.75,\, \Omega = 0.18; \, \rho = 0.3333335)\) \(\,\rightarrow \,\mathcal{L} = 2.011102 \times 10^{-2}\)", r"\(V_{\text{sol}}(x, A = 1, b = 0.75, m = 1, \Omega = 0.18)\)  \(\,\rightarrow \,\mathcal{L} = 8.9076 \times 10^{0}\)")
+display_11_titles = [*display_11_strs]
+
 start_b, end_b = 1.0, 0.75
 start_Ω, end_Ω = 0.2, 0.18
 num_points = 25
@@ -458,7 +467,8 @@ def generate_html(file_data):
 <div class = "scroll-container" style = "text-align: center">
     <div class="latex-equation">
         $$\begin{align*}
-        m \ddot{x} &= -\frac{d}{dx} \left(V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \right) \\
+        m \ddot{x} &= -\frac{d}{dx} \left(V(x) \right) \\
+        V(x) &= V_{\text{MT}}(x) + V_{\text{sech}}(x-\xi) \\
         V_{\text{MT}}(x) &= \frac{1}{2} \Omega^2 x^2 \\
         V_{\text{sech}}(x-\xi) &= A \operatorname{sech}^{2}\left(b \left(x - {\xi}\right)\right)
         \end{align*}$$<br>
@@ -601,7 +611,8 @@ file_data = [
     {"png": file_parts_display_7_png, "mp4": file_parts_display_7_mp4, "index": 0, "titles": display_7_titles},
     {"png": file_parts_display_8_png, "mp4": file_parts_display_8_mp4, "index": 0, "titles": display_8_titles},
     {"png": file_parts_display_9_png, "mp4": file_parts_display_9_mp4, "index": 0, "titles": display_9_titles},
-    {"png": file_parts_display_10_png, "mp4": file_parts_display_10_mp4, "index": 0, "titles": display_10_titles}
+    {"png": file_parts_display_10_png, "mp4": file_parts_display_10_mp4, "index": 0, "titles": display_10_titles},
+    {"png": file_parts_display_11_png, "mp4": file_parts_display_11_mp4, "index": 0, "titles": display_11_titles},
 ]
 
 #[os.system(f"ls {i}") for i in file_parts_display_8_png]
