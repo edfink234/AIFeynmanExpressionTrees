@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Track Fit Report</title>
+
+        <!-- MathJax for LaTeX rendering -->
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                chtml: {
+                    // Use MathJax's TeX font (Computer Modern-like), not system fonts
+                    fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/tex"
+                }
+            };
+        </script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <style>
+            body, h1, summary, .meta, .mono {
+                font-family: "Latin Modern Roman", "Computer Modern", "CMU Serif", serif;
+            }
+            summary {
+                line-height: 1.4;
+            }
+            body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+            h1 { margin-bottom: 8px; }
+            .subtle { color: #555; margin-top: 0; }
+            details { border: 1px solid #ddd; border-radius: 10px; padding: 10px 12px; margin: 14px 0; }
+            summary { cursor: pointer; font-weight: 700; }
+            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; margin-top: 12px; }
+            .card { border: 1px solid #eee; border-radius: 12px; padding: 10px; background: #fff; }
+            .card img { width: 100%; height: auto; border-radius: 10px; border: 1px solid #eee; }
+            .meta { font-size: 13px; color: #444; margin: 8px 0 0; }
+            .eq { font-size: 13px; margin-top: 8px; }
+            .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; }
+        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman/index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-math/index.css">
+    </head>
+<body>
+<h1>Track Fit Report</h1>
+<p class="subtle">Grouped by 3D family id \(F_x, F_y, F_z\).</p>
+
+<details open>
+  <summary>Family 0 &nbsp; <span class="mono">($F_x=0$, $F_y=1$, $F_z=6$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 2</b> (event100000002-hits)</div>
+      <div class="meta">$R^2:\; \mathrm{x}=0.969,\;\mathrm{y}=1.000,\;\mathrm{z}=1.000\;\mid\;\chi^2_\nu:\;\mathrm{x}=4.004 \times 10^{11},\;\mathrm{y}=1.269 \times 10^{-1},\;\mathrm{z}=5.409 \times 10^{10}$</div><br>
+      <a href="../pngs/SR_track_event100000002-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000002-hits.png" alt="Track 1 plot"/>
+      </a>
+      <div class="eq">$x(s) = \left(151.324 \tanh{\left(s \right)} - 134.448\right) \tanh{\left(s \right)}$<br/>$y(s) = - 54.3 s \tanh{\left(2 s \right)} + 0.828$<br/>$z(s) = - 109.225 s \cos{\left(\sin{\left(s \right)} - 0.721 \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 1 &nbsp; <span class="mono">($F_x=3$, $F_y=3$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 4</b> (event100000004-hits)</div>
+      <div class="meta">$R^2:\; \mathrm{x}=0.975,\;\mathrm{y}=0.996,\;\mathrm{z}=0.997\;\mid\;\chi^2_\nu:\;\mathrm{x}=2.495 \times 10^{-1},\;\mathrm{y}=2.191 \times 10^{-2},\;\mathrm{z}=8.977 \times 10^{-3}$</div><br>
+      <a href="../pngs/SR_track_event100000004-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000004-hits.png" alt="Track 3 plot"/>
+      </a>
+      <div class="eq">$x(s) = - \sinh{\left(2.394 s + 1.852 \right)}$<br/>$y(s) = 22.687 e^{\sin{\left(s + \sin{\left(s \right)} \right)}} - 19.796$<br/>$z(s) = s \left(25.199 - 29.185 s\right) + 1.422$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 2 &nbsp; <span class="mono">($F_x=5$, $F_y=2$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 3</b> (event100000003-hits)</div>
+      <div class="meta">$R^2:\; \mathrm{x}=0.994,\;\mathrm{y}=0.975,\;\mathrm{z}=0.997\;\mid\;\chi^2_\nu:\;\mathrm{x}=1.192 \times 10^{-1},\;\mathrm{y}=1.311 \times 10^{0},\;\mathrm{z}=1.334 \times 10^{-1}$</div><br>
+      <a href="../pngs/SR_track_event100000003-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000003-hits.png" alt="Track 2 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 39.697 \sin{\left(3.83 s \right)} - 3.123$<br/>$y(s) = 40.612 s \cos{\left(6.177 s \right)} + 6.676$<br/>$z(s) = {0.509}^{\cos{\left(7.324 s \right)} - 5.129} \left(\operatorname{sech}{\left(11.196 s - 2.154 \right)} - 0.635\right) + \left(s + 0.992\right)^{-118.048} + \cos{\left(4^{2.488 - s} \right)} + \cos{\left(33.363 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 3 &nbsp; <span class="mono">($F_x=5$, $F_y=5$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 5</b> (event100000005-hits)</div>
+      <div class="meta">$R^2:\; \mathrm{x}=0.992,\;\mathrm{y}=1.000,\;\mathrm{z}=1.000\;\mid\;\chi^2_\nu:\;\mathrm{x}=2.995 \times 10^{-2},\;\mathrm{y}=1.243 \times 10^{-2},\;\mathrm{z}=2.912 \times 10^{-5}$</div><br>
+      <a href="../pngs/SR_track_event100000005-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000005-hits.png" alt="Track 4 plot"/>
+      </a>
+      <div class="eq">$x(s) = 3.977 \sin{\left(3.74 s \right)} + 1.945$<br/>$y(s) = 32.506 e^{\sin{\left(1.173 s \right)}} - 29.209$<br/>$z(s) = s \left(19.851 s - 23.241\right) - 1.718$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 4 &nbsp; <span class="mono">($F_x=6$, $F_y=5$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 1</b> (event100000001-hits)</div>
+      <div class="meta">$R^2:\; \mathrm{x}=0.990,\;\mathrm{y}=0.987,\;\mathrm{z}=0.995\;\mid\;\chi^2_\nu:\;\mathrm{x}=1.116 \times 10^{0},\;\mathrm{y}=6.247 \times 10^{-1},\;\mathrm{z}=3.307 \times 10^{-1}$</div><br>
+      <a href="../pngs/SR_track_event100000001-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000001-hits.png" alt="Track 0 plot"/>
+      </a>
+      <div class="eq">$x(s) = 2.628 - 37.513 \sin{\left(4.603 s \right)}$<br/>$y(s) = 22.332 e^{\sin{\left(2.207 s \right)}} - 24.108$<br/>$z(s) = {0.334}^{\cos{\left(7.553 s \right)} - 2.934} \left(\operatorname{sech}{\left(11.123 s - 1.199 \right)} + 0.122\right) + \cos{\left(4^{2.405 - s} \right)} + \cos{\left(35.553 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+</body>
+</html>
