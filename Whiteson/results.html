@@ -1,0 +1,1752 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Track Fit Report</title>
+
+        <!-- MathJax for LaTeX rendering -->
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+                chtml: {
+                    // Use MathJax's TeX font (Computer Modern-like), not system fonts
+                    fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/tex"
+                }
+            };
+        </script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <style>
+            body, h1, summary, .meta, .mono {
+                font-family: "Latin Modern Roman", "Computer Modern", "CMU Serif", serif;
+            }
+            summary {
+                line-height: 2;
+            }
+            summary mjx-container {
+              display: inline-block;
+              vertical-align: middle;
+            }
+
+            body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+            h1 { margin-bottom: 8px; }
+            .subtle { color: #555; margin-top: 0; }
+            details { border: 1px solid #ddd; border-radius: 10px; padding: 10px 12px; margin: 14px 0; }
+            summary { cursor: pointer; font-weight: 700; }
+            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; margin-top: 12px; }
+            .card { border: 1px solid #eee; border-radius: 12px; padding: 10px; background: #fff; }
+            .card img { width: 100%; height: auto; border-radius: 10px; border: 1px solid #eee; }
+            .meta { font-size: 13px; color: #444; margin: 8px 0 0; }
+            .eq { font-size: 13px; margin-top: 8px; }
+            .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; }
+        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman/index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-math/index.css">
+    </head>
+<body>
+<h1>Track Fit Report</h1>
+<p class="subtle">Grouped by 3D family id \(F_x, F_y, F_z\).</p>
+
+<details open>
+  <summary>Family 0 &nbsp; <span class="mono">($F_x=0$, $F_y=37$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 98</b> (event100000098-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.997,\;y=0.998,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.044 \times 10^{10},\;\mathrm{y}=2.810 \times 10^{11},\;\mathrm{z}=1.370 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000098-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000098-hits.png" alt="Track 97 plot"/>
+      </a>
+      <div class="eq">$x(s) = \left(56.723 \tanh{\left(s \right)} - 35.252\right) \tanh{\left(s \right)}$<br/>$y(s) = 121.704 \sqrt{s} \left(\sin{\left(s \right)} - 0.41\right)$<br/>$z(s) = {0.656}^{\cos{\left(3.309 s \right)} - 8.467} \left(\operatorname{sech}{\left(10.173 s - 0.666 \right)} - 0.945\right) + \left(s + 0.986\right)^{-52.27} + \cos{\left(4^{2.109 - s} \right)} + \cos{\left(33.834 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 1 &nbsp; <span class="mono">($F_x=2$, $F_y=19$, $F_z=32$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 20</b> (event100000020-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=0.985,\;z=0.996\\&amp;\chi^2_\nu:\;\mathrm{x}=1.744 \times 10^{10},\;\mathrm{y}=1.908 \times 10^{-1},\;\mathrm{z}=1.169 \times 10^{9}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000020-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000020-hits.png" alt="Track 19 plot"/>
+      </a>
+      <div class="eq">$x(s) = \left(140.75 \tanh{\left(s \right)} - 40.419\right) \tanh{\left(s \right)}$<br/>$y(s) = 35.174 \sin{\left(3.278 \sin{\left(s \right)} \right)} + 1.241$<br/>$z(s) = 14.599 \sin{\left(1.937 \sin{\left(s^{3.074} \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 2 &nbsp; <span class="mono">($F_x=2$, $F_y=20$, $F_z=14$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 21</b> (event100000021-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=5.489 \times 10^{8},\;\mathrm{y}=1.065 \times 10^{-2},\;\mathrm{z}=2.868 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000021-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000021-hits.png" alt="Track 20 plot"/>
+      </a>
+      <div class="eq">$x(s) = \left(54.139 \tanh{\left(s \right)} + 14.23\right) \tanh{\left(s \right)}$<br/>$y(s) = 34.157 \sqrt{s + 0.027} - 3.008$<br/>$z(s) = 20.187 \sqrt{s^{3.002}} + 0.013$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 3 &nbsp; <span class="mono">($F_x=5$, $F_y=23$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 31</b> (event100000031-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.196 \times 10^{-3},\;\mathrm{y}=2.703 \times 10^{-3},\;\mathrm{z}=5.427 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000031-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000031-hits.png" alt="Track 30 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 145.562 \sin{\left(0.353 s \right)} - 2.809$<br/>$y(s) = 3.307 \sin{\left(3.226 s \right)} + 0.721$<br/>$z(s) = s \left(16.391 s - 12.925\right) - 0.427$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 4 &nbsp; <span class="mono">($F_x=5$, $F_y=26$, $F_z=31$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 62</b> (event100000062-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.946,\;y=0.985,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.664 \times 10^{0},\;\mathrm{y}=4.577 \times 10^{10},\;\mathrm{z}=2.982 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000062-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000062-hits.png" alt="Track 61 plot"/>
+      </a>
+      <div class="eq">$x(s) = 11.186 - 20.374 \sin{\left(4.114 s \right)}$<br/>$y(s) = - 43.84 s \cos{\left(4.093 \tanh{\left(s \right)} \right)}$<br/>$z(s) = 12.76 \sqrt{s} \cosh{\left(s + 0.953 \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 5 &nbsp; <span class="mono">($F_x=6$, $F_y=38$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 81</b> (event100000081-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.376 \times 10^{-5},\;\mathrm{y}=3.232 \times 10^{-6},\;\mathrm{z}=1.253 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000081-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000081-hits.png" alt="Track 80 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 129.308 \sin{\left(0.225 s \right)} - 1.782$<br/>$y(s) = s \left(- {1.982}^{s} - 38.769\right) - 2.503$<br/>$z(s) = s \left(3.566 s - 13.898\right) - 1.0$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 6 &nbsp; <span class="mono">($F_x=7$, $F_y=13$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 56</b> (event100000056-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=5.199 \times 10^{-5},\;\mathrm{y}=1.018 \times 10^{-3},\;\mathrm{z}=3.019 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000056-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000056-hits.png" alt="Track 55 plot"/>
+      </a>
+      <div class="eq">$x(s) = 439.307 \sin{\left(0.114 s \right)} + 2.991$<br/>$y(s) = 5.184 \tanh{\left(\tanh{\left(s^{0.734} \right)} \right)} + 0.55$<br/>$z(s) = s \left(2.376 - 5.527 s\right) + 0.099$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 7 &nbsp; <span class="mono">($F_x=7$, $F_y=13$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 36</b> (event100000036-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.984,\;y=0.850,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.445 \times 10^{-1},\;\mathrm{y}=1.553 \times 10^{0},\;\mathrm{z}=7.893 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000036-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000036-hits.png" alt="Track 35 plot"/>
+      </a>
+      <div class="eq">$x(s) = 19.297 \sin{\left(4.95 s \right)} - 4.267$<br/>$y(s) = 53.702 \tanh{\left(\tanh{\left(s^{6.218} \right)} \right)} + 11.466$<br/>$z(s) = {0.472}^{\cos{\left(4.721 s \right)} - 5.248} \left(\operatorname{sech}{\left(10.462 s - 1.009 \right)} - 0.484\right) + \cos{\left(4^{2.24 - s} \right)} + \cos{\left(36.358 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 8 &nbsp; <span class="mono">($F_x=7$, $F_y=36$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 61</b> (event100000061-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.997,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.873 \times 10^{-7},\;\mathrm{y}=1.753 \times 10^{-2},\;\mathrm{z}=4.267 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000061-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000061-hits.png" alt="Track 60 plot"/>
+      </a>
+      <div class="eq">$x(s) = 316.771 \sin{\left(0.158 s \right)} + 3.089$<br/>$y(s) = 2.375 s \cos{\left(e^{s} \right)} + 0.306$<br/>$z(s) = s \left(- 2.178 s - 1.231\right) - 0.118$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 9 &nbsp; <span class="mono">($F_x=7$, $F_y=45$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 78</b> (event100000078-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.962,\;y=0.971,\;z=0.970\\&amp;\chi^2_\nu:\;\mathrm{x}=1.531 \times 10^{0},\;\mathrm{y}=7.967 \times 10^{10},\;\mathrm{z}=2.967 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000078-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000078-hits.png" alt="Track 77 plot"/>
+      </a>
+      <div class="eq">$x(s) = 34.617 \sin{\left(3.949 s \right)} - 14.932$<br/>$y(s) = s \left(435.459 - 407.124 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = 1.076 - 6.528 e^{\sin{\left(4.723 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 10 &nbsp; <span class="mono">($F_x=8$, $F_y=7$, $F_z=11$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 1</b> (event100000001-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.990,\;y=0.985,\;z=0.990\\&amp;\chi^2_\nu:\;\mathrm{x}=1.166 \times 10^{0},\;\mathrm{y}=5.703 \times 10^{-1},\;\mathrm{z}=1.324 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000001-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000001-hits.png" alt="Track 0 plot"/>
+      </a>
+      <div class="eq">$x(s) = 2.626 - 36.988 \sin{\left(4.589 s \right)}$<br/>$y(s) = 21.757 e^{\sin{\left(2.173 s \right)}} - 23.348$<br/>$z(s) = 18.449 \left(\frac{1}{\cosh{\left(\tanh{\left(s \right)} - 0.252 \right)}}\right)^{35.091}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 11 &nbsp; <span class="mono">($F_x=8$, $F_y=27$, $F_z=1$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 40</b> (event100000040-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=2.334 \times 10^{-3},\;\mathrm{y}=3.100 \times 10^{10},\;\mathrm{z}=1.416 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000040-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000040-hits.png" alt="Track 39 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 49.156 \sin{\left(1.211 s \right)} - 2.706$<br/>$y(s) = - 58.49 \left(\sin{\left(s \right)} - 0.431\right) \sin{\left(s \right)}$<br/>$z(s) = \left(31.307 s - 17.477\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 12 &nbsp; <span class="mono">($F_x=10$, $F_y=1$, $F_z=6$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 2</b> (event100000002-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.994,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.068 \times 10^{-2},\;\mathrm{y}=1.267 \times 10^{-1},\;\mathrm{z}=5.409 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000002-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000002-hits.png" alt="Track 1 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 25.163 \sin{\left(3.524 \tanh{\left(s \right)} \right)} - 4.356$<br/>$y(s) = - 54.303 s \tanh{\left(2 s \right)} + 0.828$<br/>$z(s) = - 109.222 s \cos{\left(\sin{\left(s \right)} - 0.721 \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 13 &nbsp; <span class="mono">($F_x=10$, $F_y=33$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 16</b> (event100000016-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.992,\;y=0.997,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=5.156 \times 10^{-2},\;\mathrm{y}=2.255 \times 10^{9},\;\mathrm{z}=1.983 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000016-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000016-hits.png" alt="Track 15 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 38.569 \sin{\left(3.548 \tanh{\left(s \right)} \right)} - 2.319$<br/>$y(s) = \left(30.088 - 126.441 \tanh{\left(s \right)}\right) \tanh{\left(s \right)}$<br/>$z(s) = {0.805}^{\cos{\left(3.07 s \right)} - 19.763} \left(\operatorname{sech}{\left(2.501 s + 0.002 \right)} - 1.02\right) + \cos{\left(4^{2.589 - s} \right)} + \cos{\left(31.671 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 14 &nbsp; <span class="mono">($F_x=10$, $F_y=38$, $F_z=30$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 22</b> (event100000022-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=1.000,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=4.834 \times 10^{-2},\;\mathrm{y}=5.003 \times 10^{-3},\;\mathrm{z}=5.257 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000022-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000022-hits.png" alt="Track 21 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 45.182 \sin{\left(2.036 \tanh{\left(s \right)} \right)} - 1.858$<br/>$y(s) = s \left(- {9.864}^{s} - 13.139\right) - 1.056$<br/>$z(s) = - 152.451 \left(\tanh{\left(s \right)} - 0.389\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 15 &nbsp; <span class="mono">($F_x=10$, $F_y=45$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 69</b> (event100000069-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.995,\;y=1.000,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.442 \times 10^{-2},\;\mathrm{y}=1.510 \times 10^{10},\;\mathrm{z}=6.241 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000069-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000069-hits.png" alt="Track 68 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 20.683 \sin{\left(3.752 \tanh{\left(s \right)} \right)} - 3.656$<br/>$y(s) = s \left(268.794 - 322.994 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = 31.083 - 31.51 e^{\sin{\left(1.477 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 16 &nbsp; <span class="mono">($F_x=11$, $F_y=2$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 3</b> (event100000003-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.994,\;y=0.974,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=1.225 \times 10^{-1},\;\mathrm{y}=1.265 \times 10^{0},\;\mathrm{z}=1.595 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000003-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000003-hits.png" alt="Track 2 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 39.33 \sin{\left(3.838 s \right)} - 3.301$<br/>$y(s) = 39.517 s \cos{\left(6.162 s \right)} + 7.02$<br/>$z(s) = {0.512}^{\cos{\left(7.315 s \right)} - 5.177} \left(\operatorname{sech}{\left(11.28 s - 2.169 \right)} - 0.633\right) + \left(s + 0.992\right)^{-110.228} + \cos{\left(4^{2.487 - s} \right)} + \cos{\left(33.458 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 17 &nbsp; <span class="mono">($F_x=11$, $F_y=14$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 51</b> (event100000051-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.832,\;y=0.926,\;z=0.948\\&amp;\chi^2_\nu:\;\mathrm{x}=1.939 \times 10^{0},\;\mathrm{y}=7.962 \times 10^{10},\;\mathrm{z}=1.032 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000051-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000051-hits.png" alt="Track 50 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 23.68 \sin{\left(6.76 s \right)} - 11.984$<br/>$y(s) = \left(53.659 - 103.521 s\right) \sqrt{\tanh{\left(s \right)}}$<br/>$z(s) = {0.436}^{\cos{\left(4.134 s \right)} - 5.055} \left(\operatorname{sech}{\left(8.951 s - 2.325 \right)} + 0.078\right) + \cos{\left(4^{- s - 2.661} \right)} + \cos{\left(34.063 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 18 &nbsp; <span class="mono">($F_x=12$, $F_y=3$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 4</b> (event100000004-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.979,\;y=0.996,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=2.384 \times 10^{-1},\;\mathrm{y}=2.064 \times 10^{-2},\;\mathrm{z}=8.923 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000004-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000004-hits.png" alt="Track 3 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 0.923 e^{{5.36}^{\tanh{\left(s \right)}}} - 2.028$<br/>$y(s) = 22.84 e^{\sin{\left(s + \sin{\left(s \right)} \right)}} - 20.048$<br/>$z(s) = s \left(25.207 - 29.191 s\right) + 1.421$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 19 &nbsp; <span class="mono">($F_x=12$, $F_y=17$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 18</b> (event100000018-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.997,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=2.058 \times 10^{-3},\;\mathrm{y}=3.293 \times 10^{-2},\;\mathrm{z}=9.873 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000018-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000018-hits.png" alt="Track 17 plot"/>
+      </a>
+      <div class="eq">$x(s) = 103.848 - 39.162 e^{{1.529}^{\tanh{\left(s \right)}}}$<br/>$y(s) = 10.919 \cos{\left(2.1 e^{s} \right)} + 2.866$<br/>$z(s) = 10.214 - 12.006 e^{\sin{\left(2.198 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 20 &nbsp; <span class="mono">($F_x=12$, $F_y=32$, $F_z=36$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 49</b> (event100000049-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.080 \times 10^{-2},\;\mathrm{y}=1.600 \times 10^{-3},\;\mathrm{z}=1.138 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000049-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000049-hits.png" alt="Track 48 plot"/>
+      </a>
+      <div class="eq">$x(s) = 8.601 - 2.824 e^{{3.094}^{\tanh{\left(s \right)}}}$<br/>$y(s) = 140.504 - 163.692 \sin{\left(e^{- 0.517 s} \right)}$<br/>$z(s) = - 21.468 \sin^{0.761}{\left(s \right)} - 4.205$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 21 &nbsp; <span class="mono">($F_x=12$, $F_y=35$, $F_z=4$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 60</b> (event100000060-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.988,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=7.558 \times 10^{-3},\;\mathrm{y}=7.982 \times 10^{-3},\;\mathrm{z}=6.493 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000060-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000060-hits.png" alt="Track 59 plot"/>
+      </a>
+      <div class="eq">$x(s) = 40.79 - 15.668 e^{{2.134}^{\tanh{\left(s \right)}}}$<br/>$y(s) = - 3.329 e^{\sqrt{s}} + \sin{\left(e^{s} \right)}$<br/>$z(s) = 21.213 \sin{\left(\sin{\left(2.134 s \right)} \right)} + 6.06$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 22 &nbsp; <span class="mono">($F_x=13$, $F_y=10$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 7</b> (event100000007-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.452,\;y=0.889,\;z=0.967\\&amp;\chi^2_\nu:\;\mathrm{x}=6.083 \times 10^{0},\;\mathrm{y}=6.389 \times 10^{10},\;\mathrm{z}=2.142 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000007-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000007-hits.png" alt="Track 6 plot"/>
+      </a>
+      <div class="eq">$x(s) = 20.779 \sqrt{s} - \cos{\left(12.767 s \right)}$<br/>$y(s) = - 65.574 \sin{\left(s \right)} \cos{\left(5.991 s \right)}$<br/>$z(s) = 131.49 - 76.497 e^{\sin{\left(3.513 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 23 &nbsp; <span class="mono">($F_x=14$, $F_y=6$, $F_z=3$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 10</b> (event100000010-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.398 \times 10^{-4},\;\mathrm{y}=6.112 \times 10^{-5},\;\mathrm{z}=6.979 \times 10^{6}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000010-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000010-hits.png" alt="Track 9 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 38.048 \sin{\left(\sin{\left(1.236 s \right)} \right)} - 2.495$<br/>$y(s) = 63.731 - 65.471 e^{\sin{\left(0.494 s \right)}}$<br/>$z(s) = \left(29.657 s - 1.583\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 24 &nbsp; <span class="mono">($F_x=14$, $F_y=17$, $F_z=4$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 91</b> (event100000091-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=8.456 \times 10^{-5},\;\mathrm{y}=6.082 \times 10^{-3},\;\mathrm{z}=7.403 \times 10^{-7}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000091-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000091-hits.png" alt="Track 90 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 22.876 \sin{\left(\sin{\left(2.079 s \right)} \right)} - 2.907$<br/>$y(s) = 33.07 \cos{\left(0.961 e^{s} \right)} - 19.814$<br/>$z(s) = 53.661 \sin{\left(\sin{\left(0.644 s \right)} \right)} + 2.035$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 25 &nbsp; <span class="mono">($F_x=14$, $F_y=32$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 5</b> (event100000005-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.996,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=1.128 \times 10^{-2},\;\mathrm{y}=9.137 \times 10^{-3},\;\mathrm{z}=2.912 \times 10^{-5}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000005-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000005-hits.png" alt="Track 4 plot"/>
+      </a>
+      <div class="eq">$x(s) = 4.56 \sin{\left(\sin{\left(3.717 s \right)} \right)} + 1.892$<br/>$y(s) = 253.984 - 299.395 \sin{\left(e^{- 0.308 s} \right)}$<br/>$z(s) = s \left(19.851 s - 23.241\right) - 1.718$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 26 &nbsp; <span class="mono">($F_x=15$, $F_y=11$, $F_z=13$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 9</b> (event100000009-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.883,\;y=0.751,\;z=0.833\\&amp;\chi^2_\nu:\;\mathrm{x}=6.459 \times 10^{10},\;\mathrm{y}=2.125 \times 10^{0},\;\mathrm{z}=3.118 \times 10^{1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000009-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000009-hits.png" alt="Track 8 plot"/>
+      </a>
+      <div class="eq">$x(s) = 61.09 s \tanh{\left(\sin{\left(5.252 s \right)} \right)}$<br/>$y(s) = - 41.003 e^{- e^{\cos{\left(18.611 \sin{\left(s \right)} \right)}}}$<br/>$z(s) = 143.135 \cos{\left(s \right)} \tanh{\left(s \right)} - 19.686$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 27 &nbsp; <span class="mono">($F_x=15$, $F_y=19$, $F_z=38$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 94</b> (event100000094-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.925 \times 10^{9},\;\mathrm{y}=2.581 \times 10^{-4},\;\mathrm{z}=1.488 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000094-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000094-hits.png" alt="Track 93 plot"/>
+      </a>
+      <div class="eq">$x(s) = 57.935 s \tanh{\left(\sin{\left(1.273 s \right)} \right)}$<br/>$y(s) = - 27.42 \sin{\left(1.837 \sin{\left(s \right)} \right)} - 3.162$<br/>$z(s) = 6.242 - 8.051 \left(0.501 s\right)^{- s}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 28 &nbsp; <span class="mono">($F_x=16$, $F_y=39$, $F_z=34$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 74</b> (event100000074-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.996,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=6.997 \times 10^{8},\;\mathrm{y}=2.193 \times 10^{-2},\;\mathrm{z}=2.727 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000074-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000074-hits.png" alt="Track 73 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 70.831 \tanh{\left(0.961 s^{1.552} \right)}$<br/>$y(s) = 18.99 \sin{\left(3.128 s \right)} + 4.161$<br/>$z(s) = - 125.858 \sin{\left(0.635 s \right)} - 1.701$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 29 &nbsp; <span class="mono">($F_x=16$, $F_y=44$, $F_z=15$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 12</b> (event100000012-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.680,\;y=0.700,\;z=0.920\\&amp;\chi^2_\nu:\;\mathrm{x}=3.544 \times 10^{9},\;\mathrm{y}=1.715 \times 10^{11},\;\mathrm{z}=1.221 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000012-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000012-hits.png" alt="Track 11 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 36.218 \tanh{\left(25.831 s^{2.08} \right)}$<br/>$y(s) = - 14.411 \sin{\left(9.767 s \right)} + 14.411 \tanh{\left(s \right)}$<br/>$z(s) = - 26.82 \sin{\left(5.646 e^{s} \right)} - 18.066$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 30 &nbsp; <span class="mono">($F_x=17$, $F_y=15$, $F_z=35$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 15</b> (event100000015-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.991,\;y=0.818,\;z=0.970\\&amp;\chi^2_\nu:\;\mathrm{x}=1.675 \times 10^{11},\;\mathrm{y}=5.902 \times 10^{1},\;\mathrm{z}=2.060 \times 10^{1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000015-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000015-hits.png" alt="Track 14 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 39.937 \sin{\left(5.691 s \right)} \cos{\left(s \right)}$<br/>$y(s) = - \frac{25.151 s}{\sin{\left(e^{s} \right)}} + 4.12$<br/>$z(s) = {4.351}^{e^{s}} \cos{\left(4.261 s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 31 &nbsp; <span class="mono">($F_x=18$, $F_y=16$, $F_z=17$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 17</b> (event100000017-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.977,\;y=0.999,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=4.179 \times 10^{11},\;\mathrm{y}=1.851 \times 10^{-1},\;\mathrm{z}=5.498 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000017-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000017-hits.png" alt="Track 16 plot"/>
+      </a>
+      <div class="eq">$x(s) = 24.023 \sin{\left(4.397 \tanh{\left(\tanh{\left(\tanh{\left(s \right)} \right)} \right)} \right)}$<br/>$y(s) = 0.453 - 151.473 \tanh^{2.445}{\left(\tanh{\left(s \right)} \right)}$<br/>$z(s) = - 298.32 s \left(\tanh{\left(e^{s} \right)} - 0.929\right)$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 32 &nbsp; <span class="mono">($F_x=20$, $F_y=9$, $F_z=34$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 24</b> (event100000024-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=5.598 \times 10^{-4},\;\mathrm{y}=9.114 \times 10^{-2},\;\mathrm{z}=1.147 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000024-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000024-hits.png" alt="Track 23 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 3.358 s - 3.358 e^{s} + 2.103$<br/>$y(s) = 58.562 e^{\sin{\left(0.658 s \right)}} - 57.186$<br/>$z(s) = - 44.376 \sin{\left(1.266 s \right)} - 8.45$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 33 &nbsp; <span class="mono">($F_x=20$, $F_y=40$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 26</b> (event100000026-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=6.162 \times 10^{-3},\;\mathrm{y}=5.123 \times 10^{-5},\;\mathrm{z}=9.937 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000026-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000026-hits.png" alt="Track 25 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 9.752 s - 9.752 e^{s} + 9.047$<br/>$y(s) = 97.996 \tanh{\left(\sin{\left(0.483 s \right)} \right)} + 2.993$<br/>$z(s) = s \left(3.211 s + 15.554\right) + 1.191$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 34 &nbsp; <span class="mono">($F_x=21$, $F_y=12$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 27</b> (event100000027-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.994,\;y=0.994,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=1.395 \times 10^{-1},\;\mathrm{y}=7.603 \times 10^{9},\;\mathrm{z}=3.177 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000027-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000027-hits.png" alt="Track 26 plot"/>
+      </a>
+      <div class="eq">$x(s) = 3.004 {22.199}^{\sin{\left(s \right)}} + 1.963$<br/>$y(s) = s^{1.371} \left(15.454 s - 46.791\right)$<br/>$z(s) = {0.316}^{\cos{\left(2.62 s \right)} - 4.0} \left(\operatorname{sech}{\left(6.866 s - 1.325 \right)} - 0.143\right) + \cos{\left(4^{2.815 - s} \right)} + \cos{\left(33.742 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 35 &nbsp; <span class="mono">($F_x=21$, $F_y=12$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 83</b> (event100000083-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.998,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=5.505 \times 10^{-4},\;\mathrm{y}=1.111 \times 10^{10},\;\mathrm{z}=1.940 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000083-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000083-hits.png" alt="Track 82 plot"/>
+      </a>
+      <div class="eq">$x(s) = 35.645 {2.763}^{\sin{\left(s \right)}} - 32.731$<br/>$y(s) = s^{0.889} \left(10.132 s + 4.144\right)$<br/>$z(s) = 17.008 \sin{\left(2.326 s \right)} + 4.65$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 36 &nbsp; <span class="mono">($F_x=21$, $F_y=14$, $F_z=37$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 14</b> (event100000014-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=0.995,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=1.486 \times 10^{-1},\;\mathrm{y}=3.845 \times 10^{11},\;\mathrm{z}=2.547 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000014-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000014-hits.png" alt="Track 13 plot"/>
+      </a>
+      <div class="eq">$x(s) = 30.471 {2.351}^{\sin{\left(s \right)}} - 31.686$<br/>$y(s) = \left(47.205 - 97.361 s\right) \sqrt{\tanh{\left(s \right)}}$<br/>$z(s) = 114.568 \tanh{\left(0.699 \tanh{\left(s \right)} \right)} - 1.245$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 37 &nbsp; <span class="mono">($F_x=21$, $F_y=19$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 76</b> (event100000076-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.758 \times 10^{-4},\;\mathrm{y}=2.731 \times 10^{-4},\;\mathrm{z}=2.846 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000076-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000076-hits.png" alt="Track 75 plot"/>
+      </a>
+      <div class="eq">$x(s) = 9.316 {6.105}^{\sin{\left(s \right)}} - 8.234$<br/>$y(s) = - 44.717 \sin{\left(1.178 \sin{\left(s \right)} \right)} - 2.84$<br/>$z(s) = s \left(3.563 - 18.267 s\right) + 0.162$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 38 &nbsp; <span class="mono">($F_x=21$, $F_y=19$, $F_z=38$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 23</b> (event100000023-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.907 \times 10^{-4},\;\mathrm{y}=1.683 \times 10^{-3},\;\mathrm{z}=4.398 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000023-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000023-hits.png" alt="Track 22 plot"/>
+      </a>
+      <div class="eq">$x(s) = 94.727 - 93.49 {1.599}^{\sin{\left(s \right)}}$<br/>$y(s) = - 31.281 \sin{\left(1.199 \sin{\left(s \right)} \right)} - 3.137$<br/>$z(s) = 4.336 - 2.456 \left(0.077 s\right)^{- s}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 39 &nbsp; <span class="mono">($F_x=21$, $F_y=22$, $F_z=14$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 92</b> (event100000092-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.998,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=1.164 \times 10^{-4},\;\mathrm{y}=4.019 \times 10^{-3},\;\mathrm{z}=1.433 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000092-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000092-hits.png" alt="Track 91 plot"/>
+      </a>
+      <div class="eq">$x(s) = 84.141 {1.749}^{\sin{\left(s \right)}} - 81.647$<br/>$y(s) = - 10.022 \sin{\left(3.04 s \right)} - 1.737$<br/>$z(s) = - 17.612 \sqrt{s^{2.613}} - 0.527$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 40 &nbsp; <span class="mono">($F_x=21$, $F_y=30$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 54</b> (event100000054-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.996,\;z=0.975\\&amp;\chi^2_\nu:\;\mathrm{x}=9.726 \times 10^{-3},\;\mathrm{y}=8.245 \times 10^{-2},\;\mathrm{z}=5.297 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000054-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000054-hits.png" alt="Track 53 plot"/>
+      </a>
+      <div class="eq">$x(s) = 114.201 {1.543}^{\sin{\left(s \right)}} - 111.796$<br/>$y(s) = 3.234 - 3.365 e^{\sin{\left(2.175 s \right)}}$<br/>$z(s) = s \left(25.953 - 40.834 s\right) - 2.545$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 41 &nbsp; <span class="mono">($F_x=21$, $F_y=40$, $F_z=36$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 73</b> (event100000073-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=0.990,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=9.711 \times 10^{-2},\;\mathrm{y}=4.231 \times 10^{-2},\;\mathrm{z}=9.958 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000073-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000073-hits.png" alt="Track 72 plot"/>
+      </a>
+      <div class="eq">$x(s) = 52.188 - 46.348 {2.613}^{\sin{\left(s \right)}}$<br/>$y(s) = 6.875 \tanh{\left(\sin{\left(2.474 s \right)} \right)} - 1.078$<br/>$z(s) = 89.637 \sin^{1.246}{\left(s \right)} - 8.1$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 42 &nbsp; <span class="mono">($F_x=21$, $F_y=43$, $F_z=37$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 86</b> (event100000086-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.990,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=4.530 \times 10^{-3},\;\mathrm{y}=3.337 \times 10^{-2},\;\mathrm{z}=1.969 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000086-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000086-hits.png" alt="Track 85 plot"/>
+      </a>
+      <div class="eq">$x(s) = 45.721 - 47.054 {2.396}^{\sin{\left(s \right)}}$<br/>$y(s) = 7.683 s + 7.683 s^{s} - 11.253$<br/>$z(s) = - 11.739 \tanh{\left(3.068 \tanh{\left(s \right)} \right)} - 3.903$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 43 &nbsp; <span class="mono">($F_x=23$, $F_y=22$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 29</b> (event100000029-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.997,\;y=0.998,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=6.915 \times 10^{10},\;\mathrm{y}=5.819 \times 10^{-2},\;\mathrm{z}=8.039 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000029-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000029-hits.png" alt="Track 28 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 99.472 \tanh{\left(s \right)} \tanh{\left(s - 0.548 \right)}$<br/>$y(s) = - 42.006 \sin{\left(1.833 s \right)} - 1.677$<br/>$z(s) = 10.011 - 11.345 e^{\sin{\left(1.914 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 44 &nbsp; <span class="mono">($F_x=24$, $F_y=37$, $F_z=21$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 30</b> (event100000030-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.990,\;y=0.962,\;z=0.993\\&amp;\chi^2_\nu:\;\mathrm{x}=1.564 \times 10^{11},\;\mathrm{y}=1.753 \times 10^{11},\;\mathrm{z}=4.137 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000030-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000030-hits.png" alt="Track 29 plot"/>
+      </a>
+      <div class="eq">$x(s) = - s - 36.997 \sin{\left(4.206 \sin{\left(s \right)} \right)}$<br/>$y(s) = 130.436 \sqrt{s} \left(\sin{\left(s \right)} - 0.433\right)$<br/>$z(s) = 61.408 s \cos{\left(e^{s} \right)} - 1.225$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 45 &nbsp; <span class="mono">($F_x=25$, $F_y=11$, $F_z=22$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 33</b> (event100000033-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.952,\;y=0.596,\;z=0.930\\&amp;\chi^2_\nu:\;\mathrm{x}=5.640 \times 10^{10},\;\mathrm{y}=6.453 \times 10^{0},\;\mathrm{z}=6.004 \times 10^{9}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000033-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000033-hits.png" alt="Track 32 plot"/>
+      </a>
+      <div class="eq">$x(s) = 50.88 \sqrt{s} \cos{\left(5.388 s \right)}$<br/>$y(s) = - 51.885 e^{- e^{\cos{\left(18.766 \sin{\left(s \right)} \right)}}}$<br/>$z(s) = \sqrt{s} \left(146.821 \tanh{\left(s \right)} - 22.809\right)$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 46 &nbsp; <span class="mono">($F_x=25$, $F_y=30$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 46</b> (event100000046-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.990,\;y=0.942,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=2.812 \times 10^{11},\;\mathrm{y}=1.339 \times 10^{0},\;\mathrm{z}=4.842 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000046-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000046-hits.png" alt="Track 45 plot"/>
+      </a>
+      <div class="eq">$x(s) = 48.661 \sqrt{s} \cos{\left(3.373 s \right)}$<br/>$y(s) = 12.398 - 9.082 e^{\sin{\left(2.924 s \right)}}$<br/>$z(s) = {0.414}^{\cos{\left(2.626 s \right)} - 2.716} \left(\operatorname{sech}{\left(41.688 s - 2.966 \right)} - 2.035\right) + \left(s + 0.93\right)^{-25.134} + \cos{\left(4^{2.851 - s} \right)} + \cos{\left(33.012 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 47 &nbsp; <span class="mono">($F_x=25$, $F_y=39$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 19</b> (event100000019-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.989,\;y=0.859,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=1.233 \times 10^{11},\;\mathrm{y}=4.151 \times 10^{-1},\;\mathrm{z}=7.966 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000019-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000019-hits.png" alt="Track 18 plot"/>
+      </a>
+      <div class="eq">$x(s) = 46.586 \sqrt{s} \cos{\left(3.211 s \right)}$<br/>$y(s) = - 4.383 \sin{\left(6.924 s \right)} - 3.475$<br/>$z(s) = 6.015 - 5.971 e^{\sin{\left(1.541 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 48 &nbsp; <span class="mono">($F_x=26$, $F_y=24$, $F_z=23$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 34</b> (event100000034-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.989,\;y=0.990,\;z=0.994\\&amp;\chi^2_\nu:\;\mathrm{x}=1.719 \times 10^{11},\;\mathrm{y}=1.003 \times 10^{11},\;\mathrm{z}=6.854 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000034-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000034-hits.png" alt="Track 33 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 273.415 \left(\tanh{\left(s \right)} - 0.556\right) \tanh{\left(s \right)}$<br/>$y(s) = - 27.428 \sqrt{s \cosh{\left(\cos{\left(e^{s} \right)} \right)}}$<br/>$z(s) = {47.045}^{\sin{\left(1.542 \sqrt{s} + s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 49 &nbsp; <span class="mono">($F_x=27$, $F_y=6$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 53</b> (event100000053-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.997,\;y=0.997,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=6.507 \times 10^{-2},\;\mathrm{y}=1.532 \times 10^{-2},\;\mathrm{z}=1.933 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000053-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000053-hits.png" alt="Track 52 plot"/>
+      </a>
+      <div class="eq">$x(s) = 108.642 - 140.721 \tanh{\left(e^{s^{2.91}} \right)}$<br/>$y(s) = 19.971 - 22.83 e^{\sin{\left(1.778 s \right)}}$<br/>$z(s) = 11.083 - 17.622 e^{\sin{\left(3.215 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 50 &nbsp; <span class="mono">($F_x=27$, $F_y=10$, $F_z=30$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 71</b> (event100000071-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.961,\;y=0.992,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=8.755 \times 10^{-1},\;\mathrm{y}=2.841 \times 10^{10},\;\mathrm{z}=4.668 \times 10^{11}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000071-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000071-hits.png" alt="Track 70 plot"/>
+      </a>
+      <div class="eq">$x(s) = 113.78 - 162.083 \tanh{\left(e^{s^{6.404}} \right)}$<br/>$y(s) = - 78.098 \sin{\left(s \right)} \cos{\left(1.914 s \right)}$<br/>$z(s) = 16.112 \left(\tanh{\left(s \right)} + 10.753\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 51 &nbsp; <span class="mono">($F_x=27$, $F_y=19$, $F_z=18$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 82</b> (event100000082-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=0.996,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=3.498 \times 10^{-1},\;\mathrm{y}=3.881 \times 10^{-2},\;\mathrm{z}=1.167 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000082-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000082-hits.png" alt="Track 81 plot"/>
+      </a>
+      <div class="eq">$x(s) = 241.77 \tanh{\left(e^{s^{2.019}} \right)} - 188.063$<br/>$y(s) = - 26.426 \sin{\left(3.432 \sin{\left(s \right)} \right)} - 1.913$<br/>$z(s) = 6.839 - 7.02 e^{\sin{\left(2.822 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 52 &nbsp; <span class="mono">($F_x=27$, $F_y=20$, $F_z=33$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 67</b> (event100000067-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=0.999,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=3.145 \times 10^{-3},\;\mathrm{y}=1.764 \times 10^{-2},\;\mathrm{z}=1.582 \times 10^{11}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000067-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000067-hits.png" alt="Track 66 plot"/>
+      </a>
+      <div class="eq">$x(s) = 117.65 - 156.411 \tanh{\left(e^{s^{1.254}} \right)}$<br/>$y(s) = 1457.073 \sqrt{0.045 s + 1} - 1453.354$<br/>$z(s) = - 45.444 \sqrt{s} \tanh{\left(s - 0.461 \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 53 &nbsp; <span class="mono">($F_x=27$, $F_y=21$, $F_z=5$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 28</b> (event100000028-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.710,\;y=0.869,\;z=0.742\\&amp;\chi^2_\nu:\;\mathrm{x}=4.742 \times 10^{0},\;\mathrm{y}=4.780 \times 10^{2},\;\mathrm{z}=3.048 \times 10^{2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000028-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000028-hits.png" alt="Track 27 plot"/>
+      </a>
+      <div class="eq">$x(s) = 116.332 - 169.308 \tanh{\left(e^{s^{4.978}} \right)}$<br/>$y(s) = {27.727}^{\tanh{\left(3.23 \sin{\left(5.559 s \right)} \right)}}$<br/>$z(s) = 23.51 e^{\sin{\left(9.048 s \right)}} - 33.852$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 54 &nbsp; <span class="mono">($F_x=27$, $F_y=45$, $F_z=11$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 44</b> (event100000044-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=0.996,\;z=0.981\\&amp;\chi^2_\nu:\;\mathrm{x}=3.344 \times 10^{0},\;\mathrm{y}=3.943 \times 10^{11},\;\mathrm{z}=1.737 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000044-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000044-hits.png" alt="Track 43 plot"/>
+      </a>
+      <div class="eq">$x(s) = 192.367 \tanh{\left(e^{s^{1.27}} \right)} - 146.498$<br/>$y(s) = s \left(562.296 - 594.278 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = - 6.962 \left(\frac{1}{\cosh{\left(\tanh{\left(s \right)} - 0.252 \right)}}\right)^{27.422}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 55 &nbsp; <span class="mono">($F_x=28$, $F_y=5$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 80</b> (event100000080-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=4.864 \times 10^{-6},\;\mathrm{y}=3.737 \times 10^{-3},\;\mathrm{z}=2.269 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000080-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000080-hits.png" alt="Track 79 plot"/>
+      </a>
+      <div class="eq">$x(s) = {8.147}^{s} + 9.193 s - 0.132$<br/>$y(s) = 32.558 e^{\sin{\left(1.096 s \right)}} - 29.163$<br/>$z(s) = - 14.63 \sin{\left(2.202 s \right)} - 3.13$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 56 &nbsp; <span class="mono">($F_x=28$, $F_y=7$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 32</b> (event100000032-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=1.107 \times 10^{-3},\;\mathrm{y}=7.964 \times 10^{-3},\;\mathrm{z}=2.985 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000032-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000032-hits.png" alt="Track 31 plot"/>
+      </a>
+      <div class="eq">$x(s) = {1.0}^{s} - 14.09 s - 1.817$<br/>$y(s) = 37.474 e^{\sin{\left(0.95 s \right)}} - 33.91$<br/>$z(s) = s \left(11.812 s - 34.249\right) - 2.963$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 57 &nbsp; <span class="mono">($F_x=28$, $F_y=20$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 95</b> (event100000095-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.118 \times 10^{-3},\;\mathrm{y}=5.480 \times 10^{-4},\;\mathrm{z}=2.243 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000095-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000095-hits.png" alt="Track 94 plot"/>
+      </a>
+      <div class="eq">$x(s) = {1.0}^{s} - 45.42 s - 2.967$<br/>$y(s) = 34.923 \sqrt{s + 0.224} - 14.588$<br/>$z(s) = s \left(- 9.31 s - 8.291\right) - 0.562$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 58 &nbsp; <span class="mono">($F_x=28$, $F_y=34$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 25</b> (event100000025-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.069 \times 10^{-3},\;\mathrm{y}=1.656 \times 10^{-3},\;\mathrm{z}=8.674 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000025-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000025-hits.png" alt="Track 24 plot"/>
+      </a>
+      <div class="eq">$x(s) = {14.111}^{s} + 35.801 s + 2.345$<br/>$y(s) = - s - 35.527 \cos{\left(\frac{1}{\cosh{\left(s \right)}} \right)} + 18.903$<br/>$z(s) = - 104.674 \sin{\left(0.767 s \right)} - 3.474$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 59 &nbsp; <span class="mono">($F_x=29$, $F_y=16$, $F_z=22$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 38</b> (event100000038-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.947,\;y=0.998,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=6.776 \times 10^{-2},\;\mathrm{y}=1.106 \times 10^{0},\;\mathrm{z}=3.113 \times 10^{9}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000038-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000038-hits.png" alt="Track 37 plot"/>
+      </a>
+      <div class="eq">$x(s) = e^{e^{\sin^{0.498}{\left(2.517 \sqrt{s} \right)}}}$<br/>$y(s) = 2.77 - 126.157 \tanh^{1.935}{\left(\tanh{\left(s \right)} \right)}$<br/>$z(s) = \sqrt{s} \left(4.574 - 63.248 \tanh{\left(s \right)}\right)$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 60 &nbsp; <span class="mono">($F_x=30$, $F_y=2$, $F_z=25$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 39</b> (event100000039-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.365,\;y=0.678,\;z=0.950\\&amp;\chi^2_\nu:\;\mathrm{x}=2.027 \times 10^{0},\;\mathrm{y}=1.354 \times 10^{1},\;\mathrm{z}=1.686 \times 10^{2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000039-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000039-hits.png" alt="Track 38 plot"/>
+      </a>
+      <div class="eq">$x(s) = 27.392 - 8.086 \cos{\left(15.943 s \right)}$<br/>$y(s) = 37.268 s \cos{\left(8.231 s \right)} - 18.3$<br/>$z(s) = - 0.079 s^{- 16.831 s^{0.848}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 61 &nbsp; <span class="mono">($F_x=31$, $F_y=5$, $F_z=11$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 58</b> (event100000058-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=0.988,\;z=0.923\\&amp;\chi^2_\nu:\;\mathrm{x}=2.568 \times 10^{9},\;\mathrm{y}=3.249 \times 10^{-1},\;\mathrm{z}=7.772 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000058-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000058-hits.png" alt="Track 57 plot"/>
+      </a>
+      <div class="eq">$x(s) = 36.314 s + 17.65 s^{7.059}$<br/>$y(s) = 15.861 e^{\sin{\left(3.937 s \right)}} - 14.179$<br/>$z(s) = 45.681 \left(\frac{1}{\cosh{\left(\tanh{\left(s \right)} - 0.452 \right)}}\right)^{24.063}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 62 &nbsp; <span class="mono">($F_x=31$, $F_y=18$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 13</b> (event100000013-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.997,\;y=0.999,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=2.924 \times 10^{11},\;\mathrm{y}=3.917 \times 10^{-2},\;\mathrm{z}=2.838 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000013-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000013-hits.png" alt="Track 12 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 184.635 s + 212.73 s^{1.317}$<br/>$y(s) = \frac{46.394}{\cosh{\left(4.237 \tanh{\left(s \right)} - 3.403 \right)}}$<br/>$z(s) = 43.606 \sin{\left(2.141 s \right)} + 0.585$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 63 &nbsp; <span class="mono">($F_x=31$, $F_y=22$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 77</b> (event100000077-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=7.726 \times 10^{8},\;\mathrm{y}=9.392 \times 10^{-4},\;\mathrm{z}=1.184 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000077-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000077-hits.png" alt="Track 76 plot"/>
+      </a>
+      <div class="eq">$x(s) = 1.232 s - 19.176 s^{2.633}$<br/>$y(s) = - 89.606 \sin{\left(0.555 s \right)} - 2.929$<br/>$z(s) = 50.548 \sin{\left(0.909 s \right)} + 2.716$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 64 &nbsp; <span class="mono">($F_x=31$, $F_y=31$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 41</b> (event100000041-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.951,\;y=0.952,\;z=0.992\\&amp;\chi^2_\nu:\;\mathrm{x}=4.869 \times 10^{10},\;\mathrm{y}=1.166 \times 10^{0},\;\mathrm{z}=2.927 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000041-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000041-hits.png" alt="Track 40 plot"/>
+      </a>
+      <div class="eq">$x(s) = 39.606 s + 13.806 s^{20.737}$<br/>$y(s) = - 20.986 \sin{\left(8.102 \tanh{\left(s \right)} \right)} - 4.838$<br/>$z(s) = {0.631}^{\cos{\left(12.455 s \right)} - 10.234} \left(\operatorname{sech}{\left(4.5 s - 1.035 \right)} - 0.62\right) + \cos{\left(4^{2.802 - s} \right)} + \cos{\left(36.982 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 65 &nbsp; <span class="mono">($F_x=31$, $F_y=31$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 47</b> (event100000047-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=2.782 \times 10^{10},\;\mathrm{y}=6.099 \times 10^{-3},\;\mathrm{z}=4.543 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000047-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000047-hits.png" alt="Track 46 plot"/>
+      </a>
+      <div class="eq">$x(s) = 20.264 s - 68.951 s^{2.383}$<br/>$y(s) = 23.297 \sin{\left(3.065 \tanh{\left(s \right)} \right)} + 3.535$<br/>$z(s) = - 148.924 \sin{\left(0.987 s \right)} - 0.801$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 66 &nbsp; <span class="mono">($F_x=31$, $F_y=32$, $F_z=14$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 11</b> (event100000011-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=7.419 \times 10^{8},\;\mathrm{y}=1.055 \times 10^{-3},\;\mathrm{z}=3.522 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000011-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000011-hits.png" alt="Track 10 plot"/>
+      </a>
+      <div class="eq">$x(s) = 4.166 s - 10.168 s^{1.679}$<br/>$y(s) = 275.517 - 324.016 \sin{\left(e^{- 0.277 s} \right)}$<br/>$z(s) = 12.796 \sqrt{s^{1.389}} + 2.003$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 67 &nbsp; <span class="mono">($F_x=31$, $F_y=32$, $F_z=38$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 79</b> (event100000079-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=2.403 \times 10^{9},\;\mathrm{y}=6.439 \times 10^{-4},\;\mathrm{z}=2.769 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000079-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000079-hits.png" alt="Track 78 plot"/>
+      </a>
+      <div class="eq">$x(s) = 34.551 s - 65.653 s^{1.311}$<br/>$y(s) = 58.538 - 65.693 \sin{\left(e^{- 1.429 s} \right)}$<br/>$z(s) = 7.04 - 7.273 \left(2.598 s\right)^{- s}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 68 &nbsp; <span class="mono">($F_x=31$, $F_y=34$, $F_z=26$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 45</b> (event100000045-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.998,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=2.162 \times 10^{9},\;\mathrm{y}=4.745 \times 10^{-2},\;\mathrm{z}=1.111 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000045-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000045-hits.png" alt="Track 44 plot"/>
+      </a>
+      <div class="eq">$x(s) = 54.875 s - 10.964 s^{2.194}$<br/>$y(s) = - s + 126.572 \cos{\left(\frac{1}{\cosh{\left(s \right)}} \right)} - 71.016$<br/>$z(s) = - s + 6.166 e^{\sqrt{s}} - 3.591$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 69 &nbsp; <span class="mono">($F_x=32$, $F_y=29$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 42</b> (event100000042-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.638,\;y=0.815,\;z=0.755\\&amp;\chi^2_\nu:\;\mathrm{x}=8.802 \times 10^{0},\;\mathrm{y}=8.275 \times 10^{0},\;\mathrm{z}=1.333 \times 10^{1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000042-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000042-hits.png" alt="Track 41 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 16.043 e^{- \cos{\left(15.34 s^{0.889} \right)}}$<br/>$y(s) = 25.543 \sin{\left(5.294 e^{s} \right)} + 2.825$<br/>$z(s) = {0.429}^{\cos{\left(6.695 s \right)} - 4.83} \left(\operatorname{sech}{\left(15.335 s - 1.444 \right)} - 0.09\right) + \frac{0.001}{\left(0.906 s + 1\right)^{72.498}} + \cos{\left(4^{2.421 - s} \right)} + \cos{\left(33.009 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 70 &nbsp; <span class="mono">($F_x=33$, $F_y=32$, $F_z=27$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 48</b> (event100000048-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.917,\;y=0.925,\;z=0.983\\&amp;\chi^2_\nu:\;\mathrm{x}=2.027 \times 10^{11},\;\mathrm{y}=3.643 \times 10^{0},\;\mathrm{z}=9.098 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000048-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000048-hits.png" alt="Track 47 plot"/>
+      </a>
+      <div class="eq">$x(s) = \sqrt[4]{s} \left(32.004 - 83.616 s\right)$<br/>$y(s) = 12.312 \sin{\left(e^{1.912 s} \right)} - 6.056$<br/>$z(s) = 63.406 \sin{\left(2.751 s \right)} \cosh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 71 &nbsp; <span class="mono">($F_x=33$, $F_y=45$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 68</b> (event100000068-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.994,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=4.105 \times 10^{11},\;\mathrm{y}=7.475 \times 10^{9},\;\mathrm{z}=4.854 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000068-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000068-hits.png" alt="Track 67 plot"/>
+      </a>
+      <div class="eq">$x(s) = \sqrt[4]{s} \left(57.782 s - 20.082\right)$<br/>$y(s) = s \left(63.067 - 25.267 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = {0.589}^{\cos{\left(2.889 s \right)} - 5.833} \left(\operatorname{sech}{\left(10.522 s - 0.494 \right)} - 1.019\right) + \cos{\left(4^{2.604 - s} \right)} + \cos{\left(31.956 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 72 &nbsp; <span class="mono">($F_x=33$, $F_y=45$, $F_z=35$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 85</b> (event100000085-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.991,\;y=0.999,\;z=0.975\\&amp;\chi^2_\nu:\;\mathrm{x}=3.240 \times 10^{11},\;\mathrm{y}=9.412 \times 10^{10},\;\mathrm{z}=1.140 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000085-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000085-hits.png" alt="Track 84 plot"/>
+      </a>
+      <div class="eq">$x(s) = \sqrt[4]{s} \left(57.733 s - 20.417\right)$<br/>$y(s) = s \left(180.647 - 142.102 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = {1.952}^{e^{s}} \cos{\left(5.901 s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 73 &nbsp; <span class="mono">($F_x=34$, $F_y=18$, $F_z=28$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 50</b> (event100000050-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=0.999,\;z=0.982\\&amp;\chi^2_\nu:\;\mathrm{x}=1.370 \times 10^{11},\;\mathrm{y}=7.380 \times 10^{-2},\;\mathrm{z}=1.280 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000050-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000050-hits.png" alt="Track 49 plot"/>
+      </a>
+      <div class="eq">$x(s) = 28.892 \sin{\left(\left(s + 3.707\right) \tanh{\left(s \right)} \right)}$<br/>$y(s) = \frac{88.884}{\cosh{\left(3.303 \tanh{\left(s \right)} - 3.662 \right)}}$<br/>$z(s) = {39.253}^{\sin{\left(s + \sin{\left(s \right)} \right)}} - 7.684$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 74 &nbsp; <span class="mono">($F_x=34$, $F_y=34$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 55</b> (event100000055-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.996,\;y=0.997,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=4.464 \times 10^{8},\;\mathrm{y}=2.952 \times 10^{-1},\;\mathrm{z}=6.731 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000055-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000055-hits.png" alt="Track 54 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 21.363 \sin{\left(\left(s + 2.558\right) \tanh{\left(s \right)} \right)}$<br/>$y(s) = - s + 236.749 \cos{\left(\frac{1}{\cosh{\left(s \right)}} \right)} - 135.263$<br/>$z(s) = {0.535}^{\cos{\left(3.486 s \right)} - 4.879} \left(\operatorname{sech}{\left(9.962 s - 0.687 \right)} - 0.628\right) + \cos{\left(4^{2.588 - s} \right)} + \cos{\left(32.786 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 75 &nbsp; <span class="mono">($F_x=35$, $F_y=33$, $F_z=29$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 52</b> (event100000052-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.960,\;y=0.993,\;z=0.995\\&amp;\chi^2_\nu:\;\mathrm{x}=2.189 \times 10^{-1},\;\mathrm{y}=1.143 \times 10^{11},\;\mathrm{z}=1.005 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000052-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000052-hits.png" alt="Track 51 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 24.019 \sqrt{s} - \cos{\left(7.471 s \right)}$<br/>$y(s) = \left(78.594 - 185.111 \tanh{\left(s \right)}\right) \tanh{\left(s \right)}$<br/>$z(s) = 29.453 \sin{\left(3.124 \tanh{\left(s \right)} \right)} + 5.743$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 76 &nbsp; <span class="mono">($F_x=35$, $F_y=42$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 84</b> (event100000084-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.924,\;y=0.999,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=6.069 \times 10^{-2},\;\mathrm{y}=2.700 \times 10^{-2},\;\mathrm{z}=7.938 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000084-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000084-hits.png" alt="Track 83 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 8.48 \sqrt{s} - \cos{\left(3.469 s \right)}$<br/>$y(s) = - s - 144.05 + \frac{227.35}{\cosh{\left(\cos{\left(s \right)} \right)}}$<br/>$z(s) = {0.91}^{\cos{\left(4.631 s \right)} - 40.724} \left(\operatorname{sech}{\left(3.286 s + 0.343 \right)} - 1.183\right) + \cos{\left(4^{2.85 - s} \right)} + \cos{\left(32.703 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 77 &nbsp; <span class="mono">($F_x=36$, $F_y=18$, $F_z=30$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 57</b> (event100000057-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.960,\;y=0.876,\;z=0.977\\&amp;\chi^2_\nu:\;\mathrm{x}=2.245 \times 10^{11},\;\mathrm{y}=1.187 \times 10^{0},\;\mathrm{z}=2.617 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000057-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000057-hits.png" alt="Track 56 plot"/>
+      </a>
+      <div class="eq">$x(s) = \left(134.473 s - 75.453\right) \tanh{\left(\sqrt{s} \right)}$<br/>$y(s) = - \frac{35.423}{\cosh{\left(6.358 \tanh{\left(s \right)} - 3.102 \right)}}$<br/>$z(s) = 209.05 \left(\tanh{\left(s \right)} - 0.458\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 78 &nbsp; <span class="mono">($F_x=37$, $F_y=37$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 63</b> (event100000063-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.919,\;y=0.998,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=3.934 \times 10^{0},\;\mathrm{y}=3.882 \times 10^{11},\;\mathrm{z}=1.748 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000063-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000063-hits.png" alt="Track 62 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 26.015 \sin{\left(\sin^{14.893}{\left(e^{\sin{\left(s \right)}} \right)} \right)}$<br/>$y(s) = 109.685 \sqrt{s} \left(\sin{\left(s \right)} - 0.355\right)$<br/>$z(s) = {0.699}^{\cos{\left(4.561 s \right)} - 9.421} \left(\operatorname{sech}{\left(6.677 s + 0.795 \right)} - 0.839\right) + \cos{\left(4^{2.412 - s} \right)} + \cos{\left(35.003 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 79 &nbsp; <span class="mono">($F_x=38$, $F_y=38$, $F_z=32$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 64</b> (event100000064-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.786,\;y=0.756,\;z=0.994\\&amp;\chi^2_\nu:\;\mathrm{x}=1.336 \times 10^{10},\;\mathrm{y}=5.226 \times 10^{0},\;\mathrm{z}=1.204 \times 10^{11}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000064-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000064-hits.png" alt="Track 63 plot"/>
+      </a>
+      <div class="eq">$x(s) = \sqrt{s} \left({138.53}^{\sin{\left(s \right)}} - 24.342\right)$<br/>$y(s) = s \left(44.819 - {101.707}^{s}\right) + 8.544$<br/>$z(s) = 148.504 \sin{\left(3.012 \sin{\left(s^{1.112} \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 80 &nbsp; <span class="mono">($F_x=39$, $F_y=13$, $F_z=20$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 65</b> (event100000065-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.920,\;y=0.998,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=1.925 \times 10^{-1},\;\mathrm{y}=1.351 \times 10^{-1},\;\mathrm{z}=9.584 \times 10^{10}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000065-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000065-hits.png" alt="Track 64 plot"/>
+      </a>
+      <div class="eq">$x(s) = - e^{s} + 5.442 \tanh{\left(6.356 s \right)}$<br/>$y(s) = 89.458 \tanh{\left(\tanh{\left(s^{1.448} \right)} \right)} - 5.71$<br/>$z(s) = 145.119 \left(\tanh{\left(s \right)} - 0.586\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 81 &nbsp; <span class="mono">($F_x=40$, $F_y=19$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 75</b> (event100000075-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=6.711 \times 10^{-4},\;\mathrm{y}=1.027 \times 10^{-3},\;\mathrm{z}=6.087 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000075-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000075-hits.png" alt="Track 74 plot"/>
+      </a>
+      <div class="eq">$x(s) = 7.609 s \left(s + 4.797\right) + 1.851$<br/>$y(s) = - 28.818 \sin{\left(1.182 \sin{\left(s \right)} \right)} - 2.553$<br/>$z(s) = - 3.935 \sin{\left(1.273 s \right)} - 0.433$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 82 &nbsp; <span class="mono">($F_x=40$, $F_y=22$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 70</b> (event100000070-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.989,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.285 \times 10^{-2},\;\mathrm{y}=2.301 \times 10^{-5},\;\mathrm{z}=4.374 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000070-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000070-hits.png" alt="Track 69 plot"/>
+      </a>
+      <div class="eq">$x(s) = - 11.494 s \left(s - 0.985\right) + 0.331$<br/>$y(s) = - 78.856 \sin{\left(0.687 s \right)} - 3.047$<br/>$z(s) = s \left(- 9.869 s - 19.519\right) - 1.227$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 83 &nbsp; <span class="mono">($F_x=40$, $F_y=30$, $F_z=38$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 6</b> (event100000006-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=0.999,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=2.133 \times 10^{-4},\;\mathrm{y}=3.152 \times 10^{-2},\;\mathrm{z}=1.602 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000006-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000006-hits.png" alt="Track 5 plot"/>
+      </a>
+      <div class="eq">$x(s) = 1.954 s \left(s - 24.593\right) - 3.131$<br/>$y(s) = 20.252 - 20.498 e^{\sin{\left(0.714 s \right)}}$<br/>$z(s) = 3.109 - 3.95 \left(0.176 s\right)^{- s}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 84 &nbsp; <span class="mono">($F_x=40$, $F_y=32$, $F_z=14$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 8</b> (event100000008-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=4.134 \times 10^{-4},\;\mathrm{y}=1.132 \times 10^{-4},\;\mathrm{z}=1.541 \times 10^{-4}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000008-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000008-hits.png" alt="Track 7 plot"/>
+      </a>
+      <div class="eq">$x(s) = 17.704 s \left(s - 1.142\right) - 1.273$<br/>$y(s) = 235.344 - 276.408 \sin{\left(e^{- 0.328 s} \right)}$<br/>$z(s) = 20.904 \sqrt{s^{2.145}} + 1.087$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 85 &nbsp; <span class="mono">($F_x=40$, $F_y=39$, $F_z=39$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 66</b> (event100000066-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=3.039 \times 10^{-2},\;\mathrm{y}=1.619 \times 10^{-3},\;\mathrm{z}=9.064 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000066-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000066-hits.png" alt="Track 65 plot"/>
+      </a>
+      <div class="eq">$x(s) = 37.056 s \left(s - 0.602\right) + 1.054$<br/>$y(s) = 54.737 \sin{\left(1.07 s \right)} + 2.785$<br/>$z(s) = 125.39 - 127.013 \cos{\left(0.632 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 86 &nbsp; <span class="mono">($F_x=42$, $F_y=44$, $F_z=4$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 87</b> (event100000087-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.996,\;y=0.962,\;z=0.911\\&amp;\chi^2_\nu:\;\mathrm{x}=2.815 \times 10^{-1},\;\mathrm{y}=3.542 \times 10^{11},\;\mathrm{z}=1.303 \times 10^{0}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000087-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000087-hits.png" alt="Track 86 plot"/>
+      </a>
+      <div class="eq">$x(s) = 106.013 \tanh^{1.755}{\left(\sin{\left(s \right)} \right)} - 1.208$<br/>$y(s) = 17.02 \sin{\left(7.976 s \right)} - 17.02 \tanh{\left(s \right)}$<br/>$z(s) = 22.043 \sin{\left(\sin{\left(6.578 s \right)} \right)} + 12.536$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 87 &nbsp; <span class="mono">($F_x=43$, $F_y=32$, $F_z=36$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 88</b> (event100000088-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.998,\;y=1.000,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=3.151 \times 10^{-3},\;\mathrm{y}=9.852 \times 10^{-5},\;\mathrm{z}=4.331 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000088-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000088-hits.png" alt="Track 87 plot"/>
+      </a>
+      <div class="eq">$x(s) = {11.899}^{s^{0.383}} - s + 0.374$<br/>$y(s) = 112.788 - 130.803 \sin{\left(e^{- 0.721 s} \right)}$<br/>$z(s) = 27.918 \sin^{2.764}{\left(s \right)} - 2.342$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 88 &nbsp; <span class="mono">($F_x=44$, $F_y=4$, $F_z=16$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 89</b> (event100000089-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.963,\;y=0.998,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=6.756 \times 10^{-2},\;\mathrm{y}=4.784 \times 10^{-2},\;\mathrm{z}=1.570 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000089-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000089-hits.png" alt="Track 88 plot"/>
+      </a>
+      <div class="eq">$x(s) = e^{e^{s}} + 7.92 \tanh{\left(\sqrt{s} \right)}$<br/>$y(s) = 47.469 s \tanh{\left(2 s \right)} + 3.005$<br/>$z(s) = 49.256 \sin{\left(1.372 s \right)} + 5.317$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 89 &nbsp; <span class="mono">($F_x=45$, $F_y=2$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 90</b> (event100000090-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.916,\;y=0.973,\;z=0.998\\&amp;\chi^2_\nu:\;\mathrm{x}=7.254 \times 10^{0},\;\mathrm{y}=5.908 \times 10^{-1},\;\mathrm{z}=1.228 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000090-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000090-hits.png" alt="Track 89 plot"/>
+      </a>
+      <div class="eq">$x(s) = 52.995 s^{s^{s}} - 10.27$<br/>$y(s) = 17.22 s \cos{\left(6.684 s \right)} + 2.251$<br/>$z(s) = {0.193}^{\cos{\left(4.515 s \right)} - 2.502} \left(\operatorname{sech}{\left(8.86 s - 1.511 \right)} - 0.076\right) + \cos{\left(4^{2.435 - s} \right)} + \cos{\left(35.005 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 90 &nbsp; <span class="mono">($F_x=46$, $F_y=6$, $F_z=37$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 93</b> (event100000093-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.981,\;y=0.880,\;z=0.975\\&amp;\chi^2_\nu:\;\mathrm{x}=7.277 \times 10^{-1},\;\mathrm{y}=4.278 \times 10^{0},\;\mathrm{z}=9.179 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000093-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000093-hits.png" alt="Track 92 plot"/>
+      </a>
+      <div class="eq">$x(s) = 64.569 \sin{\left(\frac{8.971}{\cosh{\left(s \right)}} \right)} - 21.635$<br/>$y(s) = 24.941 - 16.895 e^{\sin{\left(4.275 s \right)}}$<br/>$z(s) = 179.77 \tanh{\left(1.635 \tanh{\left(s \right)} \right)} - 11.958$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 91 &nbsp; <span class="mono">($F_x=46$, $F_y=23$, $F_z=5$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 59</b> (event100000059-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.999,\;y=0.992,\;z=0.996\\&amp;\chi^2_\nu:\;\mathrm{x}=7.701 \times 10^{-2},\;\mathrm{y}=5.332 \times 10^{-1},\;\mathrm{z}=5.579 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000059-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000059-hits.png" alt="Track 58 plot"/>
+      </a>
+      <div class="eq">$x(s) = 26.072 \sin{\left(\frac{7.585}{\cosh{\left(s \right)}} \right)} - 24.063$<br/>$y(s) = 29.23 \sin{\left(3.745 s \right)} + 0.661$<br/>$z(s) = 32.328 - 36.723 e^{\sin{\left(2.186 s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 92 &nbsp; <span class="mono">($F_x=46$, $F_y=25$, $F_z=10$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 35</b> (event100000035-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.955,\;y=0.986,\;z=0.988\\&amp;\chi^2_\nu:\;\mathrm{x}=7.445 \times 10^{1},\;\mathrm{y}=1.981 \times 10^{9},\;\mathrm{z}=8.485 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000035-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000035-hits.png" alt="Track 34 plot"/>
+      </a>
+      <div class="eq">$x(s) = 24.673 \sin{\left(\frac{8.731}{\cosh{\left(s \right)}} \right)} - 24.607$<br/>$y(s) = - 19.676 \sqrt{s} \cos^{- s}{\left(s \right)}$<br/>$z(s) = {0.916}^{\cos{\left(8.998 s \right)} - 39.203} \left(\operatorname{sech}{\left(9.377 s - 0.455 \right)} - 1.2\right) + \left(s + 0.979\right)^{-64.594} + \cos{\left(4^{2.479 - s} \right)} + \cos{\left(30.713 \sin{\left(s \right)} \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 93 &nbsp; <span class="mono">($F_x=46$, $F_y=39$, $F_z=34$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 72</b> (event100000072-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.892,\;y=0.954,\;z=0.993\\&amp;\chi^2_\nu:\;\mathrm{x}=5.340 \times 10^{0},\;\mathrm{y}=4.025 \times 10^{-1},\;\mathrm{z}=1.899 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000072-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000072-hits.png" alt="Track 71 plot"/>
+      </a>
+      <div class="eq">$x(s) = 71.866 \sin{\left(\frac{6.331}{\cosh{\left(s \right)}} \right)} + 15.567$<br/>$y(s) = 9.726 \sin{\left(10.403 s \right)} + 1.798$<br/>$z(s) = - 46.867 \sin{\left(4.717 s \right)} - 9.634$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 94 &nbsp; <span class="mono">($F_x=47$, $F_y=45$, $F_z=23$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 96</b> (event100000096-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.978,\;y=0.993,\;z=0.979\\&amp;\chi^2_\nu:\;\mathrm{x}=1.052 \times 10^{0},\;\mathrm{y}=1.235 \times 10^{11},\;\mathrm{z}=1.944 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000096-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000096-hits.png" alt="Track 95 plot"/>
+      </a>
+      <div class="eq">$x(s) = 17.602 \sin{\left(6.272 \tanh{\left(s \right)} \right)} - 2.65$<br/>$y(s) = s \left(920.734 \tanh{\left(e^{s} \right)} - 864.378\right)$<br/>$z(s) = {29.571}^{\sin{\left(1.595 \sqrt{s} + s \right)}}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 95 &nbsp; <span class="mono">($F_x=48$, $F_y=4$, $F_z=7$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 97</b> (event100000097-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.990,\;y=1.000,\;z=0.997\\&amp;\chi^2_\nu:\;\mathrm{x}=6.575 \times 10^{-3},\;\mathrm{y}=3.889 \times 10^{-2},\;\mathrm{z}=2.259 \times 10^{-2}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000097-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000097-hits.png" alt="Track 96 plot"/>
+      </a>
+      <div class="eq">$x(s) = 8.683 \left(s + 0.005\right)^{0.259 - s}$<br/>$y(s) = 56.264 s \tanh{\left(2 s \right)} - 2.216$<br/>$z(s) = s \left(52.005 - 20.314 s\right) + 5.033$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 96 &nbsp; <span class="mono">($F_x=48$, $F_y=17$, $F_z=5$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 43</b> (event100000043-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=1.000,\;y=1.000,\;z=1.000\\&amp;\chi^2_\nu:\;\mathrm{x}=3.505 \times 10^{-4},\;\mathrm{y}=7.912 \times 10^{-3},\;\mathrm{z}=6.082 \times 10^{-3}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000043-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000043-hits.png" alt="Track 42 plot"/>
+      </a>
+      <div class="eq">$x(s) = 25.321 \left(s + 0.04\right)^{0.678 - s}$<br/>$y(s) = 39.16 \cos{\left(0.733 e^{s} \right)} - 30.559$<br/>$z(s) = 27.492 e^{\sin{\left(1.507 s \right)}} - 24.617$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 97 &nbsp; <span class="mono">($F_x=49$, $F_y=13$, $F_z=1$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 99</b> (event100000099-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.938,\;y=1.000,\;z=0.999\\&amp;\chi^2_\nu:\;\mathrm{x}=6.797 \times 10^{-2},\;\mathrm{y}=9.024 \times 10^{-3},\;\mathrm{z}=4.037 \times 10^{9}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000099-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000099-hits.png" alt="Track 98 plot"/>
+      </a>
+      <div class="eq">$x(s) = 14.111 \sqrt{s} + e^{\frac{1}{\cosh{\left(\tanh{\left(s \right)} \right)}}}$<br/>$y(s) = - 76.626 \tanh{\left(\tanh{\left(s^{1.127} \right)} \right)} - 1.277$<br/>$z(s) = \left(16.166 - 62.669 s\right) \tanh{\left(s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 98 &nbsp; <span class="mono">($F_x=50$, $F_y=26$, $F_z=24$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 37</b> (event100000037-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.861,\;y=0.911,\;z=0.988\\&amp;\chi^2_\nu:\;\mathrm{x}=1.996 \times 10^{0},\;\mathrm{y}=4.874 \times 10^{9},\;\mathrm{z}=8.548 \times 10^{9}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000037-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000037-hits.png" alt="Track 36 plot"/>
+      </a>
+      <div class="eq">$x(s) = 4.56 e^{e^{\tanh{\left(\sin{\left(8.329 s \right)} \right)}}}$<br/>$y(s) = - 51.203 s \cos{\left(6.772 \tanh{\left(s \right)} \right)}$<br/>$z(s) = 189.604 s \sin{\left(2.506 s \right)}$</div>
+    </div>
+
+  </div>
+</details>
+
+<details open>
+  <summary>Family 99 &nbsp; <span class="mono">($F_x=50$, $F_y=45$, $F_z=39$)</span>
+  &nbsp; — 1 track(s)</summary><br>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta"><b>Track 100</b> (event100000100-hits)</div>
+      <div class="meta">\begin{align*}&amp;R^2:\, x=0.954,\;y=0.991,\;z=0.957\\&amp;\chi^2_\nu:\;\mathrm{x}=1.685 \times 10^{-1},\;\mathrm{y}=1.919 \times 10^{9},\;\mathrm{z}=3.602 \times 10^{-1}\end{align*}</div><br>
+      <a href="../pngs/SR_track_event100000100-hits.png" target="_blank" rel="noopener">
+        <img src="../pngs/SR_track_event100000100-hits.png" alt="Track 99 plot"/>
+      </a>
+      <div class="eq">$x(s) = 1.909 e^{e^{\tanh{\left(\sin{\left(6.325 s \right)} \right)}}}$<br/>$y(s) = s \left(766.985 - 827.564 \tanh{\left(e^{s} \right)}\right)$<br/>$z(s) = - 11.903 \cos{\left(6.913 \sin{\left(s \right)} \right)} - 2.175$</div>
+    </div>
+
+  </div>
+</details>
+
+</body>
+</html>
