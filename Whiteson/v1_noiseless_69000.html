@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Track Fit Report - v1_noiseless_69000 (no sigma columns)</title>
+
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: "global" }   // SVG output; no webfont fetches
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+
+  <!-- TeX-y text fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-math/index.css">
+
+  <style>
+    body {
+      font-family: "Latin Modern Roman", "Computer Modern", "CMU Serif", serif;
+      margin: 24px;
+      background: #fafafa;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .subtle { color: #555; margin-top: 0; }
+
+    .toolbar {
+      display: flex; align-items: center; gap: 12px;
+      position: sticky; top: 0; background: #fafafa;
+      padding: 12px 0; z-index: 2;
+      border-bottom: 1px solid #eee;
+    }
+    button {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    button:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    .counter { color: #444; font-size: 14px; }
+
+    .card {
+      border-radius: 16px;
+      padding: 16px 20px 20px;
+      background: #fff;
+      max-width: 980px;
+      margin: 0 auto; 
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid #eee;
+    }
+    
+    .eqJump {
+      text-decoration: none;
+      border-bottom: 1px dotted #888;
+      color: inherit;
+    }
+    .eqJump:hover {
+      border-bottom-style: solid;
+    }
+
+    
+    .meta { font-size: 13px; color: #444; margin: 6px 0 0; }
+    .meta b { font-weight: 600; }
+
+    .metrics {
+      text-align: center;
+      margin: 14px 0 8px;
+    }
+    .metrics mjx-container {
+      font-size: 1.05em;
+    }
+
+    .eq {
+      font-size: 14px;
+      margin-top: 14px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .eq mjx-container {
+      font-size: 1.02em;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid #eee;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Track Fit Report - v1_noiseless_69000 (no sigma columns)</h1>
+  <p class="subtle">Dataset: <span class="mono">../tracks_for_ed/v1_noiseless_69000/</span></p>
+  <p class="subtle">Use ← / → or the buttons to scroll through tracks (grouped by family).</p>
+
+  <div class="toolbar">
+    <button id="prevBtn">← Prev</button>
+    <button id="nextBtn">Next →</button>
+    <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="card" id="card"></div>
+
+  <script>
+    // Data injected from Python below
+    const slides = [{"fid": 0, "Fx": 8, "Fy": 7, "Fz": 11, "track_idx": 0, "event_id": "event100000001-hits", "png": "pngs/SR_track_v1_noiseless_69000event100000001-hits.png", "img_src": "pngs/SR_track_v1_noiseless_69000event100000001-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.990,\\;y=0.985,\\;z=0.990\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=1.166 \\times 10^{0},\\;\\mathrm{y}=5.703 \\times 10^{-1},\\;\\mathrm{z}=1.324 \\times 10^{0}\\end{align*}", "eqx": "$x(s) = 2.626 - 36.988 \\sin{\\left(4.589 s \\right)}$", "eqy": "$y(s) = 21.757 e^{\\sin{\\left(2.173 s \\right)}} - 23.348$", "eqz": "$z(s) = 18.449 \\left(\\frac{1}{\\cosh{\\left(\\tanh{\\left(s \\right)} - 0.252 \\right)}}\\right)^{35.091}$"}, {"fid": 1, "Fx": 10, "Fy": 1, "Fz": 6, "track_idx": 1, "event_id": "event100000002-hits", "png": "pngs/SR_track_v1_noiseless_69000event100000002-hits.png", "img_src": "pngs/SR_track_v1_noiseless_69000event100000002-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.994,\\;y=1.000,\\;z=1.000\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=4.068 \\times 10^{-2},\\;\\mathrm{y}=1.267 \\times 10^{-1},\\;\\mathrm{z}=5.409 \\times 10^{10}\\end{align*}", "eqx": "$x(s) = - 25.163 \\sin{\\left(3.524 \\tanh{\\left(s \\right)} \\right)} - 4.356$", "eqy": "$y(s) = - 54.303 s \\tanh{\\left(2 s \\right)} + 0.828$", "eqz": "$z(s) = - 109.222 s \\cos{\\left(\\sin{\\left(s \\right)} - 0.721 \\right)}$"}, {"fid": 2, "Fx": 11, "Fy": 2, "Fz": 10, "track_idx": 2, "event_id": "event100000003-hits", "png": "pngs/SR_track_v1_noiseless_69000event100000003-hits.png", "img_src": "pngs/SR_track_v1_noiseless_69000event100000003-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.994,\\;y=0.974,\\;z=0.997\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=1.225 \\times 10^{-1},\\;\\mathrm{y}=1.265 \\times 10^{0},\\;\\mathrm{z}=1.595 \\times 10^{-1}\\end{align*}", "eqx": "$x(s) = - 39.33 \\sin{\\left(3.838 s \\right)} - 3.301$", "eqy": "$y(s) = 39.517 s \\cos{\\left(6.162 s \\right)} + 7.02$", "eqz": "$z(s) = {0.512}^{\\cos{\\left(7.315 s \\right)} - 5.177} \\left(\\operatorname{sech}{\\left(11.28 s - 2.169 \\right)} - 0.633\\right) + \\left(s + 0.992\\right)^{-110.228} + \\cos{\\left(4^{2.487 - s} \\right)} + \\cos{\\left(33.458 \\sin{\\left(s \\right)} \\right)}$"}, {"fid": 3, "Fx": 12, "Fy": 3, "Fz": 7, "track_idx": 3, "event_id": "event100000004-hits", "png": "pngs/SR_track_v1_noiseless_69000event100000004-hits.png", "img_src": "pngs/SR_track_v1_noiseless_69000event100000004-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.979,\\;y=0.996,\\;z=0.997\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=2.384 \\times 10^{-1},\\;\\mathrm{y}=2.064 \\times 10^{-2},\\;\\mathrm{z}=8.923 \\times 10^{-3}\\end{align*}", "eqx": "$x(s) = - 0.923 e^{{5.36}^{\\tanh{\\left(s \\right)}}} - 2.028$", "eqy": "$y(s) = 22.84 e^{\\sin{\\left(s + \\sin{\\left(s \\right)} \\right)}} - 20.048$", "eqz": "$z(s) = s \\left(25.207 - 29.191 s\\right) + 1.421$"}, {"fid": 4, "Fx": 14, "Fy": 32, "Fz": 7, "track_idx": 4, "event_id": "event100000005-hits", "png": "pngs/SR_track_v1_noiseless_69000event100000005-hits.png", "img_src": "pngs/SR_track_v1_noiseless_69000event100000005-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.996,\\;y=1.000,\\;z=1.000\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=1.128 \\times 10^{-2},\\;\\mathrm{y}=9.137 \\times 10^{-3},\\;\\mathrm{z}=2.912 \\times 10^{-5}\\end{align*}", "eqx": "$x(s) = 4.56 \\sin{\\left(\\sin{\\left(3.717 s \\right)} \\right)} + 1.892$", "eqy": "$y(s) = 253.984 - 299.395 \\sin{\\left(e^{- 0.308 s} \\right)}$", "eqz": "$z(s) = s \\left(19.851 s - 23.241\\right) - 1.718$"}];
+    const eqSlides = [{"key": ["x", "Add(Mul(Symbol('a0'), sin(Mul(Symbol('a2'), Symbol('s')))), Symbol('a1'))"], "eq": "$x(s) = a_{0} \\sin{\\left(a_{2} s \\right)} + a_{1}$", "uses": [{"slide": 0, "label": "1-x", "rep_fam": 8}]}, {"key": ["y", "Add(Symbol('a0'), Mul(Symbol('a2'), exp(sin(Mul(Symbol('a1'), Symbol('s'))))))"], "eq": "$y(s) = a_{0} + a_{2} e^{\\sin{\\left(a_{1} s \\right)}}$", "uses": [{"slide": 0, "label": "1-y", "rep_fam": 7}]}, {"key": ["z", "Mul(Symbol('a1'), Pow(Pow(cosh(Add(Symbol('a0'), tanh(Symbol('x0')))), Integer(-1)), Symbol('a2')))"], "eq": "$z(s) = a_{1} \\left(\\frac{1}{\\cosh{\\left(a_{0} + \\tanh{\\left(s \\right)} \\right)}}\\right)^{a_{2}}$", "uses": [{"slide": 0, "label": "1-z", "rep_fam": 11}]}, {"key": ["x", "Add(Mul(Symbol('a0'), sin(Mul(Pow(Symbol('a2'), Integer(-1)), tanh(Symbol('x0'))))), Symbol('a1'))"], "eq": "$x(s) = a_{0} \\sin{\\left(\\frac{\\tanh{\\left(s \\right)}}{a_{2}} \\right)} + a_{1}$", "uses": [{"slide": 1, "label": "2-x", "rep_fam": 10}]}, {"key": ["y", "Add(Mul(Symbol('a0'), Symbol('s'), tanh(Mul(Integer(2), Symbol('s')))), Symbol('a1'))"], "eq": "$y(s) = a_{0} s \\tanh{\\left(2 s \\right)} + a_{1}$", "uses": [{"slide": 1, "label": "2-y", "rep_fam": 1}]}, {"key": ["z", "Mul(Symbol('a0'), Symbol('s'), cos(Add(Symbol('a1'), sin(Symbol('s')))))"], "eq": "$z(s) = a_{0} s \\cos{\\left(a_{1} + \\sin{\\left(s \\right)} \\right)}$", "uses": [{"slide": 1, "label": "2-z", "rep_fam": 6}]}, {"key": ["x", "Add(Mul(Symbol('a0'), sin(Mul(Symbol('a2'), Symbol('x0')))), Symbol('a1'))"], "eq": "$x(s) = a_{0} \\sin{\\left(a_{2} s \\right)} + a_{1}$", "uses": [{"slide": 2, "label": "3-x", "rep_fam": 11}]}, {"key": ["y", "Add(Symbol('a1'), Mul(Symbol('a2'), Symbol('s'), cos(Mul(Symbol('a0'), Symbol('s')))))"], "eq": "$y(s) = a_{1} + a_{2} s \\cos{\\left(a_{0} s \\right)}$", "uses": [{"slide": 2, "label": "3-y", "rep_fam": 2}]}, {"key": ["z", "Add(Mul(Pow(Symbol('a4'), Add(Symbol('a1'), cos(Mul(Symbol('a7'), Symbol('s'))))), Add(Symbol('a3'), sech(Add(Symbol('a2'), Mul(Symbol('a8'), Symbol('s')))))), Pow(Add(Symbol('a5'), Symbol('s')), Symbol('a0')), cos(Pow(Integer(4), Add(Symbol('a6'), Mul(Integer(-1), Symbol('s'))))), cos(Mul(Symbol('a9'), sin(Symbol('s')))))"], "eq": "$z(s) = a_{4}^{a_{1} + \\cos{\\left(a_{7} s \\right)}} \\left(a_{3} + \\operatorname{sech}{\\left(a_{2} + a_{8} s \\right)}\\right) + \\left(a_{5} + s\\right)^{a_{0}} + \\cos{\\left(4^{a_{6} - s} \\right)} + \\cos{\\left(a_{9} \\sin{\\left(s \\right)} \\right)}$", "uses": [{"slide": 2, "label": "3-z", "rep_fam": 10}]}, {"key": ["x", "Add(Symbol('a0'), Mul(Pow(Symbol('a1'), Integer(-1)), exp(Pow(Symbol('a2'), tanh(Symbol('x0'))))))"], "eq": "$x(s) = a_{0} + \\frac{e^{a_{2}^{\\tanh{\\left(s \\right)}}}}{a_{1}}$", "uses": [{"slide": 3, "label": "4-x", "rep_fam": 12}]}, {"key": ["y", "Add(Symbol('a0'), Mul(Symbol('a1'), exp(sin(Add(Symbol('s'), sin(Symbol('s')))))))"], "eq": "$y(s) = a_{0} + a_{1} e^{\\sin{\\left(s + \\sin{\\left(s \\right)} \\right)}}$", "uses": [{"slide": 3, "label": "4-y", "rep_fam": 3}]}, {"key": ["z", "Add(Symbol('a1'), Mul(Symbol('s'), Add(Symbol('a0'), Mul(Symbol('a2'), Symbol('s')))))"], "eq": "$z(s) = a_{1} + s \\left(a_{0} + a_{2} s\\right)$", "uses": [{"slide": 3, "label": "4-z", "rep_fam": 7}, {"slide": 4, "label": "5-z", "rep_fam": 7}]}, {"key": ["x", "Add(Mul(Symbol('a0'), sin(sin(Mul(Symbol('a2'), Symbol('x0'))))), Mul(Integer(-1), Symbol('a1')))"], "eq": "$x(s) = a_{0} \\sin{\\left(\\sin{\\left(a_{2} s \\right)} \\right)} - a_{1}$", "uses": [{"slide": 4, "label": "5-x", "rep_fam": 14}]}, {"key": ["y", "Add(Mul(Integer(-1), Symbol('a1')), Mul(Symbol('a2'), sin(exp(Mul(Pow(Symbol('a0'), Integer(-1)), Symbol('x0'))))))"], "eq": "$y(s) = - a_{1} + a_{2} \\sin{\\left(e^{\\frac{s}{a_{0}}} \\right)}$", "uses": [{"slide": 4, "label": "5-y", "rep_fam": 32}]}];
+    const eqStats  = {"unique": 14, "total_components": 15};
+
+    function escapeHtml(s) {
+      return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    function render(i) {
+      const t = slides[i];
+
+      // NOTE: eqx/eqy/eqz are already "$...$" strings.
+      const eqBlock = `${t.eqx}<br/>${t.eqy}<br/>${t.eqz}`;
+
+      const html = `
+      <div class="meta">
+        <b>Family ${t.fid}</b>
+        <span class="mono"> (F_x=${t.Fx}, F_y=${t.Fy}, F_z=${t.Fz})</span>
+      </div>
+
+      <div id="eqViewer"></div>
+
+      <div class="meta">
+        <b>Track ${t.track_idx + 1}</b> (${escapeHtml(t.event_id)})
+      </div>
+
+      <div class="meta metrics">${t.metrics_line}</div>
+
+      <a href="${escapeHtml(t.png)}" target="_blank" rel="noopener">
+        <img id="trackImg" src="${escapeHtml(t.img_src)}" alt="Track ${t.track_idx} plot"/>
+      </a>
+
+      <div class="eq">${eqBlock}</div>
+    `;
+
+    
+        document.getElementById("card").innerHTML = html;
+
+        document.getElementById("counter").textContent =
+        `Item ${i+1} / ${slides.length}`;
+        
+        renderEqViewer();
+
+      // Re-typeset MathJax after DOM update
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    let idx = 0;
+
+    function goTo(newIndex) {
+      // wrap around
+      idx = (newIndex + slides.length) % slides.length;
+      render(idx);
+    }
+    
+    // -----------------------
+    // Equation viewer (global)
+    // -----------------------
+    let eqIdx = 0;
+
+    function renderEqViewer() {
+      const container = document.getElementById("eqViewer");
+      if (!container) return;
+
+      const e = eqSlides[eqIdx];
+
+      // build the list of clickable uses
+      const usesHtml = e.uses.map(u =>
+        `<a href="#" class="eqJump" data-slide="${u.slide}">${escapeHtml(u.label)}</a>`
+      ).join(", ");
+
+      container.innerHTML = `
+        <div class="meta" style="margin-top:10px;">
+          <b>${eqStats.unique}</b> unique equation templates used out of
+          <b>${eqStats.total_components}</b> track-components.
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+          <button id="eqPrev">←</button>
+          <button id="eqNext">→</button>
+          <span class="counter">Equation ${eqIdx + 1} / ${eqSlides.length}</span>
+        </div>
+
+        <div class="eq" style="margin-top:10px;">
+          <div><b>Equation ${eqIdx + 1}:</b></div>
+          <div style="margin-top:6px;">${e.eq}</div>
+          <div class="meta" style="margin-top:10px;">
+            ${usesHtml}
+          </div>
+        </div>
+      `;
+
+      // hook up arrow buttons with wrap
+      document.getElementById("eqPrev").onclick = () => {
+        eqIdx = (eqIdx - 1 + eqSlides.length) % eqSlides.length;
+        renderEqViewer();
+      };
+      document.getElementById("eqNext").onclick = () => {
+        eqIdx = (eqIdx + 1) % eqSlides.length;
+        renderEqViewer();
+      };
+
+      // hook up each jump link
+      for (const a of container.querySelectorAll(".eqJump")) {
+        a.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          const target = parseInt(a.dataset.slide, 10);
+          goTo(target);
+
+          // after the card re-renders, scroll the image into view
+          setTimeout(() => {
+            const img = document.getElementById("trackImg");
+            if (img) img.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 0);
+        });
+      }
+
+      // typeset just-updated math
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      goTo(idx - 1);
+    });
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      goTo(idx + 1);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft")  { goTo(idx - 1); }
+      if (e.key === "ArrowRight") { goTo(idx + 1); }
+    });
+
+    render(idx);
+
+  </script>
+</body>
+</html>
