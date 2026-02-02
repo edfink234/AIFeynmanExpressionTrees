@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Track Fit Report - v20260122_163839 train/test (noise XY=0.01, Z=0.01) Standard Model</title>
+
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: "global" }   // SVG output; no webfont fetches
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+
+  <!-- TeX-y text fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-math/index.css">
+
+  <style>
+    body {
+      font-family: "Latin Modern Roman", "Computer Modern", "CMU Serif", serif;
+      margin: 24px;
+      background: #fafafa;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .subtle { color: #555; margin-top: 0; }
+
+    .toolbar {
+      display: flex; align-items: center; gap: 12px;
+      position: sticky; top: 0; background: #fafafa;
+      padding: 12px 0; z-index: 2;
+      border-bottom: 1px solid #eee;
+    }
+    button {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    button:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    .counter { color: #444; font-size: 14px; }
+
+    .card {
+      border-radius: 16px;
+      padding: 16px 20px 20px;
+      background: #fff;
+      max-width: 980px;
+      margin: 0 auto; 
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      border: 1px solid #eee;
+    }
+    
+    .eqJump {
+      text-decoration: none;
+      border-bottom: 1px dotted #888;
+      color: inherit;
+    }
+    .eqJump:hover {
+      border-bottom-style: solid;
+    }
+
+    
+    .meta { font-size: 13px; color: #444; margin: 6px 0 0; }
+    .meta b { font-weight: 600; }
+
+    .metrics {
+      text-align: center;
+      margin: 14px 0 8px;
+    }
+    .metrics mjx-container {
+      font-size: 1.05em;
+    }
+
+    .eq {
+      font-size: 14px;
+      margin-top: 14px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .eq mjx-container {
+      font-size: 1.02em;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid #eee;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Track Fit Report - v20260122_163839 train/test (noise XY=0.01, Z=0.01) Standard Model</h1>
+  <p class="subtle">Dataset: <span class="mono">../tracks_for_ed/v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel</span></p>
+  <p class="subtle">Use ← / → or the buttons to scroll through tracks (grouped by family).</p>
+
+  <div class="toolbar">
+    <button id="prevBtn">← Prev</button>
+    <button id="nextBtn">Next →</button>
+    <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="card" id="card"></div>
+
+  <script>
+    // Data injected from Python below
+    const slides = [{"fid": 0, "Fx": 3, "Fy": 17, "Fz": 32, "track_idx": 3, "event_id": "event100000004-hits", "png": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000004-hits.png", "img_src": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000004-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.349,\\;y=0.605,\\;z=0.906\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=2.576 \\times 10^{6},\\;\\mathrm{y}=2.023 \\times 10^{6},\\;\\mathrm{z}=6.103 \\times 10^{5}\\end{align*}", "eqx": "$x(s) = - \\sinh{\\left(5.798 s - 1.291 \\right)}$", "eqy": "$y(s) = 2.552 - 29.033 \\cos{\\left(15.055 e^{s} \\right)}$", "eqz": "$z(s) = 177.467 \\sin{\\left(1.244 \\sin{\\left(s^{0.214} \\right)} \\right)}$"}, {"fid": 1, "Fx": 13, "Fy": 22, "Fz": 39, "track_idx": 2, "event_id": "event100000003-hits", "png": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000003-hits.png", "img_src": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000003-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.063,\\;y=0.278,\\;z=0.923\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=4.493 \\times 10^{5},\\;\\mathrm{y}=4.339 \\times 10^{5},\\;\\mathrm{z}=1.749 \\times 10^{6}\\end{align*}", "eqx": "$x(s) = 0.614 \\sqrt{s} - \\cos{\\left(38.166 s \\right)}$", "eqy": "$y(s) = 10.086 \\sin{\\left(50.399 s \\right)} + 0.978$", "eqz": "$z(s) = 179.26 \\cos{\\left(1.567 \\sin{\\left(s \\right)} \\right)} - 208.545$"}, {"fid": 2, "Fx": 17, "Fy": 2, "Fz": 7, "track_idx": 0, "event_id": "event100000001-hits", "png": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000001-hits.png", "img_src": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000001-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.366,\\;y=0.084,\\;z=0.883\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=2.410 \\times 10^{6},\\;\\mathrm{y}=3.365 \\times 10^{6},\\;\\mathrm{z}=3.120 \\times 10^{6}\\end{align*}", "eqx": "$x(s) = - 20.076 \\sin{\\left(47.688 s \\right)} \\cos{\\left(s \\right)}$", "eqy": "$y(s) = 22.48 s \\cos{\\left(36.345 s \\right)} - 2.687$", "eqz": "$z(s) = s \\left(11.362 s + 104.962\\right) - 40.76$"}, {"fid": 2, "Fx": 17, "Fy": 2, "Fz": 7, "track_idx": 4, "event_id": "event100000005-hits", "png": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000005-hits.png", "img_src": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000005-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.366,\\;y=0.084,\\;z=0.883\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=2.412 \\times 10^{6},\\;\\mathrm{y}=3.365 \\times 10^{6},\\;\\mathrm{z}=3.120 \\times 10^{6}\\end{align*}", "eqx": "$x(s) = - 20.07 \\sin{\\left(47.687 s \\right)} \\cos{\\left(s \\right)}$", "eqy": "$y(s) = 22.471 s \\cos{\\left(36.344 s \\right)} - 2.692$", "eqz": "$z(s) = s \\left(11.231 s + 105.079\\right) - 40.761$"}, {"fid": 3, "Fx": 24, "Fy": 18, "Fz": 38, "track_idx": 1, "event_id": "event100000002-hits", "png": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000002-hits.png", "img_src": "pngs/SR_track_v20260128_185949__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModelevent100000002-hits.png", "metrics_line": "\\begin{align*}&R^2:\\, x=0.286,\\;y=0.218,\\;z=0.879\\\\&\\chi^2_\\nu:\\;\\mathrm{x}=9.565 \\times 10^{5},\\;\\mathrm{y}=7.324 \\times 10^{5},\\;\\mathrm{z}=3.090 \\times 10^{6}\\end{align*}", "eqx": "$x(s) = - s - 10.44 \\sin{\\left(67.445 \\sin{\\left(s \\right)} \\right)}$", "eqy": "$y(s) = \\frac{21.023}{\\cosh{\\left(143.533 \\tanh{\\left(s \\right)} - 0.284 \\right)}}$", "eqz": "$z(s) = 132.842 - 130.98 \\left(15.456 s\\right)^{- s}$"}];
+    const eqSlides = [{"key": ["x", "Mul(Integer(-1), sinh(Add(Symbol('a0'), Mul(Symbol('a1'), Symbol('s')))))"], "eq": "$x(s) = - \\sinh{\\left(a_{0} + a_{1} s \\right)}$", "uses": [{"slide": 0, "label": "4-x", "rep_fam": 3}]}, {"key": ["y", "Add(Symbol('a1'), Mul(Symbol('a2'), cos(Mul(Symbol('a0'), exp(Symbol('x0'))))))"], "eq": "$y(s) = a_{1} + a_{2} \\cos{\\left(a_{0} e^{s} \\right)}$", "uses": [{"slide": 0, "label": "4-y", "rep_fam": 17}]}, {"key": ["z", "Mul(Symbol('a2'), sin(Mul(Pow(Symbol('a0'), Integer(-1)), sin(Pow(Symbol('x0'), Symbol('a1'))))))"], "eq": "$z(s) = a_{2} \\sin{\\left(\\frac{\\sin{\\left(s^{a_{1}} \\right)}}{a_{0}} \\right)}$", "uses": [{"slide": 0, "label": "4-z", "rep_fam": 32}]}, {"key": ["x", "Add(Mul(Symbol('a1'), Pow(Symbol('x0'), Rational(1, 2))), Mul(Integer(-1), cos(Mul(Symbol('a0'), Symbol('x0')))))"], "eq": "$x(s) = a_{1} \\sqrt{s} - \\cos{\\left(a_{0} s \\right)}$", "uses": [{"slide": 1, "label": "3-x", "rep_fam": 13}]}, {"key": ["y", "Add(Mul(Symbol('a0'), sin(Mul(Symbol('a2'), Symbol('x0')))), Mul(Integer(-1), Symbol('a1')))"], "eq": "$y(s) = a_{0} \\sin{\\left(a_{2} s \\right)} - a_{1}$", "uses": [{"slide": 1, "label": "3-y", "rep_fam": 22}]}, {"key": ["z", "Add(Mul(Symbol('a0'), cos(Mul(Pow(Symbol('a1'), Integer(-1)), sin(Symbol('x0'))))), Mul(Integer(-1), Symbol('a2')))"], "eq": "$z(s) = a_{0} \\cos{\\left(\\frac{\\sin{\\left(s \\right)}}{a_{1}} \\right)} - a_{2}$", "uses": [{"slide": 1, "label": "3-z", "rep_fam": 39}]}, {"key": ["x", "Mul(Symbol('a0'), sin(Mul(Symbol('a1'), Symbol('x0'))), cos(Symbol('x0')))"], "eq": "$x(s) = a_{0} \\sin{\\left(a_{1} s \\right)} \\cos{\\left(s \\right)}$", "uses": [{"slide": 2, "label": "1-x", "rep_fam": 17}, {"slide": 3, "label": "5-x", "rep_fam": 17}]}, {"key": ["y", "Add(Symbol('a1'), Mul(Symbol('a2'), Symbol('s'), cos(Mul(Symbol('a0'), Symbol('s')))))"], "eq": "$y(s) = a_{1} + a_{2} s \\cos{\\left(a_{0} s \\right)}$", "uses": [{"slide": 2, "label": "1-y", "rep_fam": 2}, {"slide": 3, "label": "5-y", "rep_fam": 2}]}, {"key": ["z", "Add(Symbol('a1'), Mul(Symbol('s'), Add(Symbol('a0'), Mul(Symbol('a2'), Symbol('s')))))"], "eq": "$z(s) = a_{1} + s \\left(a_{0} + a_{2} s\\right)$", "uses": [{"slide": 2, "label": "1-z", "rep_fam": 7}, {"slide": 3, "label": "5-z", "rep_fam": 7}]}, {"key": ["x", "Add(Mul(Symbol('a0'), sin(Mul(Symbol('a1'), sin(Symbol('x0'))))), Mul(Integer(-1), Symbol('x0')))"], "eq": "$x(s) = a_{0} \\sin{\\left(a_{1} \\sin{\\left(s \\right)} \\right)} - s$", "uses": [{"slide": 4, "label": "2-x", "rep_fam": 24}]}, {"key": ["y", "Mul(Symbol('a0'), Pow(cosh(Add(Symbol('a1'), Mul(Symbol('a2'), tanh(Symbol('x0'))))), Integer(-1)))"], "eq": "$y(s) = \\frac{a_{0}}{\\cosh{\\left(a_{1} + a_{2} \\tanh{\\left(s \\right)} \\right)}}$", "uses": [{"slide": 4, "label": "2-y", "rep_fam": 18}]}, {"key": ["z", "Add(Mul(Symbol('a0'), Pow(Mul(Symbol('a2'), Symbol('x0')), Mul(Integer(-1), Symbol('x0')))), Mul(Integer(-1), Symbol('a1')))"], "eq": "$z(s) = a_{0} \\left(a_{2} s\\right)^{- s} - a_{1}$", "uses": [{"slide": 4, "label": "2-z", "rep_fam": 38}]}];
+    const eqStats  = {"unique": 12, "total_components": 15};
+
+    function escapeHtml(s) {
+      return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    function render(i) {
+      const t = slides[i];
+
+      // NOTE: eqx/eqy/eqz are already "$...$" strings.
+      const eqBlock = `${t.eqx}<br/>${t.eqy}<br/>${t.eqz}`;
+
+      const html = `
+      <div class="meta">
+        <b>Family ${t.fid}</b>
+        <span class="mono"> (F_x=${t.Fx}, F_y=${t.Fy}, F_z=${t.Fz})</span>
+      </div>
+
+      <div id="eqViewer"></div>
+
+      <div class="meta">
+        <b>Track ${t.track_idx + 1}</b> (${escapeHtml(t.event_id)})
+      </div>
+
+      <div class="meta metrics">${t.metrics_line}</div>
+
+      <a href="${escapeHtml(t.png)}" target="_blank" rel="noopener">
+        <img id="trackImg" src="${escapeHtml(t.img_src)}" alt="Track ${t.track_idx} plot"/>
+      </a>
+
+      <div class="eq">${eqBlock}</div>
+    `;
+
+    
+        document.getElementById("card").innerHTML = html;
+
+        document.getElementById("counter").textContent =
+        `Item ${i+1} / ${slides.length}`;
+        
+        renderEqViewer();
+
+      // Re-typeset MathJax after DOM update
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    let idx = 0;
+
+    function goTo(newIndex) {
+      // wrap around
+      idx = (newIndex + slides.length) % slides.length;
+      render(idx);
+    }
+    
+    // -----------------------
+    // Equation viewer (global)
+    // -----------------------
+    let eqIdx = 0;
+
+    function renderEqViewer() {
+      const container = document.getElementById("eqViewer");
+      if (!container) return;
+
+      const e = eqSlides[eqIdx];
+
+      // build the list of clickable uses
+      const usesHtml = e.uses.map(u =>
+        `<a href="#" class="eqJump" data-slide="${u.slide}">${escapeHtml(u.label)}</a>`
+      ).join(", ");
+
+      container.innerHTML = `
+        <div class="meta" style="margin-top:10px;">
+          <b>${eqStats.unique}</b> unique equation templates used out of
+          <b>${eqStats.total_components}</b> track-components.
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+          <button id="eqPrev">←</button>
+          <button id="eqNext">→</button>
+          <span class="counter">Equation ${eqIdx + 1} / ${eqSlides.length}</span>
+        </div>
+
+        <div class="eq" style="margin-top:10px;">
+          <div><b>Equation ${eqIdx + 1}:</b></div>
+          <div style="margin-top:6px;">${e.eq}</div>
+          <div class="meta" style="margin-top:10px;">
+            ${usesHtml}
+          </div>
+        </div>
+      `;
+
+      // hook up arrow buttons with wrap
+      document.getElementById("eqPrev").onclick = () => {
+        eqIdx = (eqIdx - 1 + eqSlides.length) % eqSlides.length;
+        renderEqViewer();
+      };
+      document.getElementById("eqNext").onclick = () => {
+        eqIdx = (eqIdx + 1) % eqSlides.length;
+        renderEqViewer();
+      };
+
+      // hook up each jump link
+      for (const a of container.querySelectorAll(".eqJump")) {
+        a.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          const target = parseInt(a.dataset.slide, 10);
+          goTo(target);
+
+          // after the card re-renders, scroll the image into view
+          setTimeout(() => {
+            const img = document.getElementById("trackImg");
+            if (img) img.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 0);
+        });
+      }
+
+      // typeset just-updated math
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      goTo(idx - 1);
+    });
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      goTo(idx + 1);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft")  { goTo(idx - 1); }
+      if (e.key === "ArrowRight") { goTo(idx + 1); }
+    });
+
+    render(idx);
+
+  </script>
+</body>
+</html>
