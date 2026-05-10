@@ -1,219 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-
-<title>Edward Finkelstein</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Edward Finkelstein | PhD Student Researcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style type="text/css">
-            body{margin-top:20px;}
-            .card-style1 {
-                box-shadow: 0px 0px 10px 0px rgb(89 75 128 / 9%);
-            }
-            .border-0 {
-                border: 0!important;
-            }
-            .card {
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                min-width: 0;
-                word-wrap: break-word;
-                background-color: #fff;
-                background-clip: border-box;
-                border: 1px solid rgba(0,0,0,.125);
-                border-radius: 0.25rem;
-            }
-            
-            section {
-                padding: 120px 0;
-                overflow: hidden;
-                background: #fff;
-            }
-            .mb-2-3, .my-2-3 {
-                margin-bottom: 2.3rem;
-            }
-            
-            .section-title {
-                font-weight: 600;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                margin-bottom: 10px;
-                position: relative;
-                display: inline-block;
-            }
-            .text-primary {
-                color: #ceaa4d !important;
-            }
-            .text-secondary {
-                color: #15395A !important;
-            }
-            .font-weight-600 {
-                font-weight: 600;
-            }
-            .display-26 {
-                font-size: 1.3rem;
-            }
-            
-            @media screen and (min-width: 992px){
-                .p-lg-7 {
-                    padding: 4rem;
-                }
-            }
-            @media screen and (min-width: 768px){
-                .p-md-6 {
-                    padding: 3.5rem;
-                }
-            }
-            @media screen and (min-width: 576px){
-                .p-sm-2-3 {
-                    padding: 2.3rem;
-                }
-            }
-            .p-1-9 {
-                padding: 1.9rem;
-            }
-            
-            .bg-secondary {
-                background: #15395A !important;
-            }
-            @media screen and (min-width: 576px){
-                .pe-sm-6, .px-sm-6 {
-                    padding-right: 3.5rem;
-                }
-            }
-            @media screen and (min-width: 576px){
-                .ps-sm-6, .px-sm-6 {
-                    padding-left: 3.5rem;
-                }
-            }
-            .pe-1-9, .px-1-9 {
-                padding-right: 1.9rem;
-            }
-            .ps-1-9, .px-1-9 {
-                padding-left: 1.9rem;
-            }
-            .pb-1-9, .py-1-9 {
-                padding-bottom: 1.9rem;
-            }
-            .pt-1-9, .py-1-9 {
-                padding-top: 1.9rem;
-            }
-            .mb-1-9, .my-1-9 {
-                margin-bottom: 1.9rem;
-            }
-            @media (min-width: 992px){
-                .d-lg-inline-block {
-                    display: inline-block!important;
-                }
-            }
-            .rounded {
-                border-radius: 0.25rem!important;
-            }
-            a {
-                  text-decoration:none;
-            }
-            
-            li {
-              margin: 9px 0;
-            }
-        </style>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style type="text/css">
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
+        .hero-section { background: #15395A; color: white; padding: 60px 0; margin-bottom: 40px; border-bottom: 5px solid #ceaa4d; }
+        .profile-img { border: 4px solid #ceaa4d; border-radius: 8px; max-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .section-card { background: white; border: none; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px; padding: 30px; }
+        .section-title { color: #15395A; border-bottom: 2px solid #ceaa4d; display: inline-block; margin-bottom: 25px; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-size: 1.25rem; font-weight: bold; }
+        .advisor-link { color: #ceaa4d; text-decoration: none; font-weight: 600; }
+        .advisor-link:hover { text-decoration: underline; }
+        .project-list li { margin-bottom: 12px; }
+        .project-list a { color: #15395A; font-weight: 500; text-decoration: none; border-bottom: 1px dotted #15395A; }
+        .project-list a:hover { color: #ceaa4d; border-bottom: 1px solid #ceaa4d; }
+        .nested-list { font-size: 0.9rem; color: #666; margin-top: 5px; }
+        .contact-info a { color: #ceaa4d; text-decoration: none; }
+        iframe { border-radius: 8px; border: 1px solid #ddd; width: 100%; }
+    </style>
 </head>
 <body>
-<section class="bg-light">
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 mb-4 mb-sm-5">
-            <div class="card card-style1 border-0">
-                <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 mb-4 mb-lg-0">
-                            <img src="EdwardF.png" alt="..." style = "height: 20%; width: 40%">
-                        </div>
-                        <div class="col-lg-6 px-xl-10">
-                            <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
-                                <h3 class="h2 text-white mb-0">Edward Finkelstein</h3>
-                                <span class="text-primary">Researcher</span>
-                            </div>
-                            <ul class="list-unstyled mb-1-9">
-                                <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> <a href="mailto:edfink234@gmail.com" class="__cf_email__" data-cfemail="610405081509210c00080d4f020e0c">edfink234@gmail.com</a></li>
-                                <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> <a href = "tel: 516-246-4231">516-246-4231</a></li>
-                            </ul>
-                            <ul class="social-icon-style1 list-unstyled mb-0 ps-0">
-                                <li><a href="#!"><i class="ti-twitter-alt"></i></a></li>
-                                <li><a href="#!"><i class="ti-facebook"></i></a></li>
-                                <li><a href="#!"><i class="ti-pinterest"></i></a></li>
-                                <li><a href="#!"><i class="ti-instagram"></i></a></li>
-                            </ul>
-                        </div>
+
+<header class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center mb-4 mb-md-0">
+                <img src="EdwardF.png" alt="Edward Finkelstein" class="profile-img img-fluid">
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-4 fw-bold">Edward Finkelstein</h1>
+                <p class="lead text-uppercase" style="color: #ceaa4d; letter-spacing: 2px;">PhD Student Researcher</p>
+                <div class="row contact-info">
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Email:</strong> <a href="mailto:edfink234@gmail.com">edfink234@gmail.com</a></p>
+                        <p class="mb-1"><strong>Phone:</strong> <a href="tel:516-246-4231">516-246-4231</a></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-0"><strong>Advisors:</strong></p>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><a href="https://sites.uci.edu/daniel/" target="_blank" class="advisor-link">Prof. Daniel Whiteson (UCI)</a></li>
+                            <li class="list-inline-item">|</li>
+                            <li class="list-inline-item"><a href="https://valeriabarra.org/" target="_blank" class="advisor-link">Prof. Valeria Barra (SDSU)</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <h3> Some things I've made in my "Free Time" 🙂 </h3>
+    </div>
+</header>
 
-        <ul style="list-style-position: inside;">
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/ColorPicker.html" target="_blank">RGB Color Picker </a> </li>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/ImaginaryLink.html" target="_blank">Imaginary Link </a> </li>
+<main class="container">
+    <div class="row">
+        <!-- Left Column: Research and Projects -->
+        <div class="col-lg-8">
             
-            <li> Preprint: <a href="https://arxiv.org/abs/2410.08137" target="_blank"> Generalized Fixed-Depth Prefix and Postfix Symbolic Regression Grammars</li>
-            
-            <ul style="list-style-position: inside;">
-                <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/AIFeynmanExpressionTrees/AIFeynmanExpressionTrees.html" target="_blank">Expression Trees for AI-Feynman Formulae </a> </li>
-            </ul>
-            
-
-            <li> Preprint: <a href="https://arxiv.org/abs/2410.08137" target="_blank"> Solving the 2D Advection-Diffusion Equation using Fixed-Depth Symbolic Regression and Symbolic Differentiation without Expression Trees</li>
-            
-            <ul style="list-style-position: inside;">
-                <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/AE601/MidtermCase_1.html" target="_blank">Case 1 Problem Description and Formulae </a> </li>
-                <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/AE601/MidtermCase_2.html" target="_blank">Case 2 Problem Description and Formulae </a> </li>
-            </ul>
-            
-            <li> Preprint: <a href="https://www.arxiv.org/abs/2510.02551" target="_blank"> Deducing Closed-Form Expressions for Bright-Solitons in Strongly Magnetized Plasmas with Physics Informed Symbolic Regression (PISR)</a> </li>
-        </ul>
-        
-        <h3 id = "ResearchWithProfC"> Research I've done in <a href="https://carretero.sdsu.edu/" target="_blank">Professor Carretero</a>'s group</h3>
-        <ul style="list-style-position: inside;">
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/ip_comparison_on_the_fly.html" target="_blank"> Interactive Pendulum Simulator </a>
-            </li>
-            <ul style="list-style-position: inside;">
-                <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/ip_comparison.html" target="_blank">An older display gallery of some <em>precomputed</em> simulation results for the system \(\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) \), and 1st and 2nd order Taylor expansions about \( \theta = \pi \)</a>
-                </li>
-            </ul>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/IP_figures/gallery.html" target="_blank">A pendulum simulation gallery for the system \(\;\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t) \right), \; \theta_0 = \frac{\pi}{6}, \; \dot{\theta}_0 = 0\)</a>
-            </li>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_trap_plus_sech_squared_x_star_0_Omega_0_point_2_x0_min_automated_learning_on_the_fly_test/control_displays" target="_blank">Control problem: guiding a particle to the top of hills (Most recent/comprehensive results; below are some older results) </a>
-            </li>
-                <ul style="list-style-position: inside;">
-                    <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_movies_trap_plus_sech_squared_x_star_0_Omega_0_point_2/trajectory_movies_trap_plus_sech_squared_x_star_0_Omega_0_point_2.html" target="_blank">Experimenting with different starting positions \( x_0 \) </a>
-                    </li>
-                    <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_trap_plus_sech_squared_x_star_0_Omega_0_point_2_x0_min.html" target="_blank">One lone study of a specific case of potential parameters 😅 </a>
-                    </li>
-                    <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_movies_trap_plus_sech_squared.html" target="_blank">Getting to \(x_0 = 0.5\), i.e., not an eliquibrium point, quite inefficiently 😤</a>
+            <section class="section-card">
+                <h3 class="section-title">Research with Prof. Whiteson</h3>
+                <ul class="project-list">
+                    <li>
+                        <strong>Wierd Tracks:</strong> High-energy physics track reconstruction using symbolic regression.
+                        <div class="mt-3">
+                            <p class="text-muted small fw-bold text-uppercase">Latest Reconstruction Results:</p>
+                            <ul class="nested-list">
+                                <!-- The most recent/comprehensive results first -->
+                                <li>
+                                    <a href="Whiteson/v20260407_091434__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel_using_Phi.html" target="_blank">v20260407_091434__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel_using_Phi</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260305_002410__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01.html" target="_blank">v20260305_002410__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260430_193549__train5_test5__layers25_len320p0__r3p1-53p0__fd5-5__func3-3__noiseXY0p01_Z0p01__randomNoise.html" target="_blank">v20260430_193549__train5_test5__layers25_len320p0__r3p1-53p0__fd5-5__func3-3__noiseXY0p01_Z0p01__randomNoise</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260430_092453__train5_test5__layers25_len320p0__r3p1-53p0__fd5-5__func3-3__noiseXY0p01_Z0p01.html" target="_blank">v20260430_092453__train5_test5__layers25_len320p0__r3p1-53p0__fd5-5__func3-3__noiseXY0p01_Z0p01</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260407_091434__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel.html" target="_blank">v20260407_091434__train5_test5__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260202_142140__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel.html" target="_blank">v20260202_142140__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01__standardModel</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v20260122_163839__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01.html" target="_blank">v20260122_163839__train10_test10__layers25_len320p0__r3p1-53p0__fd25-25__func3-3__noiseXY0p01_Z0p01</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/v1_noiseless_69000.html" target="_blank">v1_noiseless_69000</a>
+                                </li>
+                                <li>
+                                    <a href="Whiteson/track_results.html" target="_blank">track_results</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/xi_t.html" target="_blank">Control problem: Applet to view the Neural-Network control-function \(\xi(t)\) utilized in the "Control problem" studies in the bullet point right above this one</a>
-            </li>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/ParticleVsSolitonDynamics.html" target="_blank">Simulator for ODE (Particle) vs PDE (Bright Soliton) Dynamics</a>
-            </li>
-            <li> <a href = "https://edfink234.github.io/AIFeynmanExpressionTrees/PDE_vs_ODE_trajectories/PDE_vs_ODE_trajectories.html" target="_blank">A <em>deceiving</em> display comparing ODE (Particle) vs PDE (Bright Soliton) center of mass trajectories for different initial velocities \( v_0 \), & also PDE conservation of "total mass"</a>
-            </li>
-        </ul>
-        
-        
-        
-        <h3> Tabular Resume </h1>
-        <!--<embed src="Edward_Finkelstein_Tabular_Resume.pdf" type="application/pdf">-->
-        <script src="pdfobject.min.js"></script>
-        <!--<div id = "Edward_Finkelstein_Tabular_Resume" style = "background-color: #15395A;"> </div>-->
-        <!--    <script>PDFObject.embed("Edward_Finkelstein_Tabular_Resume.pdf", "#Edward_Finkelstein_Tabular_Resume");</script>-->
-        <iframe src="Edward_Finkelstein_Tabular_Resume.pdf" width="400px" height="1000px"  />
-        
-        
+            </section>
+
+            <section class="section-card">
+                <h3 class="section-title">Research with Prof. Carretero</h3>
+                <ul class="project-list">
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ip_comparison_on_the_fly.html" target="_blank">Interactive Pendulum Simulator</a>
+                        <ul class="nested-list">
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ip_comparison.html" target="_blank">An older display gallery of some <em>precomputed</em> simulation results for the system \(\ddot{\theta} + \frac{g}{l} \sin (\theta) =  \frac{ A \omega^2}{l} \left( \cos (\theta) \cos(\omega t) \right) \), and 1st and 2nd order Taylor expansions about \( \theta = \pi \)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/IP_figures/gallery.html" target="_blank">Pendulum simulation gallery for \(\;\ddot{\theta} + \frac{g}{l} \sin (\theta) = \frac{A \omega}{l} \left( \cos (\theta) \omega \cos(\omega t) \right), \; \theta_0 = \frac{\pi}{6}, \; \dot{\theta}_0 = 0\)</a></li>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_trap_plus_sech_squared_x_star_0_Omega_0_point_2_x0_min_automated_learning_on_the_fly_test/control_displays" target="_blank">Control problem: guiding a particle to the top of hills (Most recent/comprehensive results; below are some older results)</a>
+                        <ul class="nested-list">
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_movies_trap_plus_sech_squared_x_star_0_Omega_0_point_2/trajectory_movies_trap_plus_sech_squared_x_star_0_Omega_0_point_2.html" target="_blank">Experimenting with different starting positions \( x_0 \)</a></li>
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_trap_plus_sech_squared_x_star_0_Omega_0_point_2_x0_min.html" target="_blank">One lone study of a specific case of potential parameters 😅</a></li>
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/trajectory_movies_trap_plus_sech_squared.html" target="_blank">Getting to \(x_0 = 0.5\), i.e., not an eliquibrium point, quite inefficiently 😤</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/xi_t.html" target="_blank">Control problem: Applet to view the Neural-Network control-function \(\xi(t)\) utilized in the "Control problem" studies in the bullet point right above this one</a></li>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ParticleVsSolitonDynamics.html" target="_blank">Simulator for ODE (Particle) vs PDE (Bright Soliton) Dynamics (C++ 🚀)</a></li>
+                        <ul class="nested-list">
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ParticleVsSolitonDynamicsJsWorking.html" target="_blank">Simulator for ODE (Particle) vs PDE (Bright Soliton) Dynamics (Javascript 🐌)</a></li>
+                        </ul>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/PDE_vs_ODE_trajectories/PDE_vs_ODE_trajectories.html" target="_blank">A <em>deceiving</em> display comparing ODE (Particle) vs PDE (Bright Soliton) center of mass trajectories for different initial velocities \( v_0 \), & also PDE conservation of "total mass"</a></li>
+                </ul>
+            </section>
+
+            <section class="section-card">
+                <h3 class="section-title">Preprints & Publications</h3>
+                <ul class="project-list">
+                    <li>Preprint: <a href="https://arxiv.org/abs/2410.08137" target="_blank">Generalized Fixed-Depth Prefix and Postfix Symbolic Regression Grammars</a>
+                        <ul class="nested-list">
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/AIFeynmanExpressionTrees/AIFeynmanExpressionTrees.html" target="_blank">Expression Trees for AI-Feynman Formulae</a></li>
+                        </ul>
+                    </li>
+                    <li>Preprint: <a href="https://arxiv.org/abs/2410.08137" target="_blank">Solving the 2D Advection-Diffusion Equation using Fixed-Depth Symbolic Regression and Symbolic Differentiation without Expression Trees</a>
+                        <ul class="nested-list">
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/AE601/MidtermCase_1.html" target="_blank">Case 1 Problem Description and Formulae</a> </li>
+                            <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/AE601/MidtermCase_2.html" target="_blank">Case 2 Problem Description and Formulae</a></li>
+                        </ul>
+                    </li>
+                    <li>Preprint: <a href="https://www.arxiv.org/abs/2510.02551" target="_blank">Deducing Closed-Form Expressions for Bright-Solitons in Strongly Magnetized Plasmas with Physics Informed Symbolic Regression (PISR)</a></li>
+                    <li>AI2ASE Workshop Paper: <a href="https://ai-2-ase.github.io/papers/CameraReadys%203-41/10/CameraReady/Physics_Informed_Symbolic_Regression_Discovers_Simple_Analytic_Approximations_for_the_Steady_Swift__Hohenberg_Equation_in_Polar_Coordinates__Camera_.pdf" target="_blank">Physics-Informed Symbolic Regression Discovers Simple Analytic Approximations for the Steady Swift–Hohenberg Equation in Polar Coordinates</a>
+                        <ul class="nested-list">
+                            <li><a href="https://drive.google.com/file/d/1YnpHqYa08oWft7g_wmlR60az1S_iHl4z/view?usp=sharing" target="_blank">SDSU ACSESS 2026 Poster</a></li>
+                            <li><a href="https://docs.google.com/presentation/d/11YRvkZ2o9TBRSwIOQ4RcDrl1GS1Sbh_QVH6S8en5ngM/edit?usp=sharing" target="_blank">Symbolic Regression Solution Progression (\(\mu = \nu = 1\))</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Right Column: Personal Projects & Resume -->
+        <div class="col-lg-4">
+            <section class="section-card">
+                <h3 class="section-title">Free Time 🙂</h3>
+                <ul class="project-list">
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ColorPicker.html" target="_blank">RGB Color Picker</a></li>
+                    <li><a href="https://edfink234.github.io/AIFeynmanExpressionTrees/ImaginaryLink.html" target="_blank">Imaginary Link</a></li>
+                </ul>
+            </section>
+
+            <section class="section-card">
+                <h3 class="section-title">Resume</h3>
+                <iframe src="Edward_Finkelstein_Tabular_Resume.pdf" height="600px"></iframe>
+                <div class="mt-2 text-center">
+                    <small><a href="Edward_Finkelstein_Tabular_Resume.pdf" target="_blank" style="color: #15395A;">Open PDF in New Tab</a></small>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<footer class="text-center py-4 text-muted">
+    <div class="container">
+        <hr>
+        <p>&copy; 2026 Edward Finkelstein</p>
+    </div>
+</footer>
+
 </body>
 </html>
