@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Generalized Fixed-Depth Postfix Symbolic Regression Grammar Generator</title>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --danger: #dc2626;
+      --danger-dark: #b91c1c;
+      --code-bg: #f3f4f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 800px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+      padding: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 650;
+      margin: 14px 0 6px;
+    }
+
+    label:first-child { margin-top: 0; }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 4px 0 0;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      background: white;
+      color: var(--text);
+    }
+
+    input:focus {
+      outline: 3px solid rgba(37, 99, 235, 0.2);
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 15px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    button:hover { background: var(--accent-dark); }
+    button:active { transform: translateY(1px); }
+    button:disabled { cursor: not-allowed; opacity: 0.55; }
+
+    .secondary { background: #374151; }
+    .secondary:hover { background: #111827; }
+
+    .danger { background: var(--danger); }
+    .danger:hover { background: var(--danger-dark); }
+
+    .status {
+      min-height: 1.4em;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .status.error { color: var(--danger); }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .output-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .counter {
+      color: var(--muted);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    #equations {
+      display: grid;
+      gap: 12px;
+      max-height: 68vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .equation-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: #fff;
+    }
+
+    .equation-index {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+    }
+
+    .latex {
+      overflow-x: auto;
+      padding: 6px 0;
+    }
+
+    details {
+      margin-top: 8px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .display-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      font-weight: 650;
+    }
+
+    .tree-wrap {
+      margin-top: 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fcfcfd;
+      padding: 10px;
+    }
+
+    .tree-svg {
+      display: block;
+      max-width: none;
+    }
+
+    .tree-edge {
+      stroke: #9ca3af;
+      stroke-width: 1.5;
+    }
+
+      .tree-node circle,
+      .tree-node ellipse {
+        fill: #ffffff;
+        stroke: #334155;
+        stroke-width: 2.5;
+      }
+
+    .tree-node text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      dominant-baseline: middle;
+      text-anchor: middle;
+      fill: var(--text);
+    }
+
+    code {
+      display: block;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: var(--code-bg);
+      padding: 8px;
+      border-radius: 8px;
+      margin-top: 6px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Generalized Fixed-Depth Postfix Symbolic Regression Grammar Generator</h1>
+      <p class="subtitle">
+        Randomly generates complete postfix expressions of exactly the selected tree depth, then renders the result as LaTeX with MathJax.
+      </p>
+    </header>
+
+    <section class="grid">
+      <form id="settings" class="card">
+        <label for="unaryOps">Unary ops</label>
+        <input id="unaryOps" type="text" value="~ log ln exp cos sin sqrt arcsin arccos tanh sech abs" />
+        <p class="hint">Separate tokens with spaces or commas. Use <strong>~</strong> for unary minus.</p>
+
+        <label for="binaryOps">Binary ops</label>
+        <input id="binaryOps" type="text" value="+ - * / ^" />
+
+        <label for="leafNodes">Leaf nodes</label>
+        <input id="leafNodes" type="text" value="x y z" />
+
+        <label for="depth">Fixed depth</label>
+        <input id="depth" type="number" min="0" max="25" step="1" value="5" />
+        <p class="hint">Depth 0 means a leaf only. Large depths can generate very long equations.</p>
+
+        <div class="display-options">
+          <label class="check-label">
+            <input id="showPostfix" type="checkbox" checked />
+            Show postfix
+          </label>
+          <label class="check-label">
+            <input id="showTree" type="checkbox" checked />
+            Show expression tree
+          </label>
+        </div>
+
+        <div class="controls">
+          <button type="button" id="generateOne">Generate one</button>
+          <button type="button" id="generateMany" class="secondary">Generate infinitely many</button>
+          <button type="button" id="stop" class="danger" disabled>Stop</button>
+          <button type="button" id="clear" class="secondary">Clear</button>
+        </div>
+        <p id="status" class="status"></p>
+      </form>
+
+      <section class="card">
+        <div class="output-header">
+          <h2>Generated equations</h2>
+          <span id="counter" class="counter">0 equations</span>
+        </div>
+        <div id="equations" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const els = {
+      unaryOps: document.getElementById('unaryOps'),
+      binaryOps: document.getElementById('binaryOps'),
+      leafNodes: document.getElementById('leafNodes'),
+      depth: document.getElementById('depth'),
+      showPostfix: document.getElementById('showPostfix'),
+      showTree: document.getElementById('showTree'),
+      generateOne: document.getElementById('generateOne'),
+      generateMany: document.getElementById('generateMany'),
+      stop: document.getElementById('stop'),
+      clear: document.getElementById('clear'),
+      status: document.getElementById('status'),
+      counter: document.getElementById('counter'),
+      equations: document.getElementById('equations')
+    };
+
+    let timer = null;
+    let equationCount = 0;
+
+    function parseTokens(text) {
+      return [...new Set(
+        text
+          .split(/[\s,]+/)
+          .map(s => s.trim())
+          .filter(Boolean)
+      )];
+    }
+
+    function randomChoice(items) {
+      return items[Math.floor(Math.random() * items.length)];
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('\"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function getConfig() {
+      const unaryOps = parseTokens(els.unaryOps.value);
+      const binaryOps = parseTokens(els.binaryOps.value);
+      const leaves = parseTokens(els.leafNodes.value);
+      const depth = Number.parseInt(els.depth.value, 10);
+
+      if (!Number.isInteger(depth) || depth < 0) {
+        throw new Error('Fixed depth must be a nonnegative integer.');
+      }
+      if (leaves.length === 0) {
+        throw new Error('Please provide at least one leaf node.');
+      }
+      if (depth > 0 && unaryOps.length === 0 && binaryOps.length === 0) {
+        throw new Error('Depth above 0 requires at least one unary or binary operator.');
+      }
+
+      return {
+        unaryOps,
+        binaryOps,
+        leaves,
+        unarySet: new Set(unaryOps),
+        binarySet: new Set(binaryOps),
+        depth
+      };
+    }
+
+    function isUnary(token, cfg) {
+      return cfg.unarySet.has(token);
+    }
+
+    function isBinary(token, cfg) {
+      return cfg.binarySet.has(token);
+    }
+
+    function isLeaf(token, cfg) {
+      return !isUnary(token, cfg) && !isBinary(token, cfg);
+    }
+
+    function getRPNDepth(expression, cfg) {
+      if (expression.length === 0) {
+        return { depth: 0, complete: false };
+      }
+
+      const stack = [];
+      let complete = true;
+
+      for (const token of expression) {
+        if (isUnary(token, cfg)) {
+          if (stack.length < 1) return { depth: Infinity, complete: false };
+          stack[stack.length - 1] += 1;
+        } else if (isBinary(token, cfg)) {
+          if (stack.length < 2) return { depth: Infinity, complete: false };
+          const op2 = stack.pop();
+          const op1 = stack.pop();
+          stack.push(Math.max(op1, op2) + 1);
+        } else {
+          stack.push(1);
+        }
+      }
+
+      while (stack.length > 1) {
+        const op2 = stack.pop();
+        const op1 = stack.pop();
+        stack.push(Math.max(op1, op2) + 1);
+        complete = false;
+      }
+
+      return { depth: stack[0] - 1, complete };
+    }
+
+    function numBinaryOps(expression, cfg) {
+      return expression.filter(token => isBinary(token, cfg)).length;
+    }
+
+    function numLeaves(expression, cfg) {
+      return expression.filter(token => isLeaf(token, cfg)).length;
+    }
+
+    function getLegalMoves(expression, cfg) {
+      if (expression.length === 0) {
+        return cfg.leaves.slice();
+      }
+
+      const nBinary = numBinaryOps(expression, cfg);
+      const nLeaves = numLeaves(expression, cfg);
+      const binAllowed = cfg.binaryOps.length > 0 && nBinary !== nLeaves - 1;
+
+      let unaryAllowed = false;
+      if (cfg.unaryOps.length > 0 && nLeaves >= 1) {
+        const trial = expression.concat(cfg.unaryOps[0]);
+        unaryAllowed = getRPNDepth(trial, cfg).depth <= cfg.depth;
+      }
+
+      const leafTrial = expression.concat(cfg.leaves[0]);
+      const leafAllowed = getRPNDepth(leafTrial, cfg).depth <= cfg.depth;
+
+      const moves = [];
+      if (unaryAllowed) moves.push(...cfg.unaryOps);
+      if (binAllowed) moves.push(...cfg.binaryOps);
+      if (leafAllowed) moves.push(...cfg.leaves);
+      return moves;
+    }
+
+    function isComplete(expression, cfg) {
+      const result = getRPNDepth(expression, cfg);
+      return result.complete && result.depth === cfg.depth;
+    }
+
+    function generateFunction(cfg) {
+      if (cfg.depth === 0) {
+        return [randomChoice(cfg.leaves)];
+      }
+
+      const expr = [];
+      const maxSteps = 100000;
+
+      for (let step = 0; step < maxSteps && !isComplete(expr, cfg); step++) {
+        const legalMoves = getLegalMoves(expr, cfg);
+        if (legalMoves.length === 0) {
+          throw new Error('No legal moves remain. Try adding leaves/operators or lowering the depth.');
+        }
+        expr.push(randomChoice(legalMoves));
+      }
+
+      if (!isComplete(expr, cfg)) {
+        throw new Error('Generation exceeded the safety step limit. Try a smaller depth.');
+      }
+
+      return expr;
+    }
+
+    function latexEscapeLeaf(token) {
+      if (/^[a-zA-Z][a-zA-Z0-9_]*$/.test(token)) return token;
+      if (/^-?\d+(\.\d+)?$/.test(token)) return token;
+      return `\\mathrm{${token.replace(/[{}]/g, '')}}`;
+    }
+
+    function latexUnary(token, operand) {
+      const lower = token.toLowerCase();
+      if (token === '~' || lower === 'neg') return `-\\left(${operand}\\right)`;
+      if (lower === 'sqrt') return `\\sqrt{${operand}}`;
+      if (['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'arcsin', 'arccos', 'arctan', 'sinh', 'cosh', 'tanh', 'sech', 'log', 'ln', 'exp', 'abs'].includes(lower)) {
+        if (lower === 'abs') return `\\left|${operand}\\right|`;
+        return `\\operatorname{${lower}}\\left(${operand}\\right)`;
+      }
+      return `\\operatorname{${token.replace(/[{}\\]/g, '')}}\\left(${operand}\\right)`;
+    }
+
+    function toInfixLatex(expression, cfg) {
+      const stack = [];
+
+      for (const token of expression) {
+        if (isLeaf(token, cfg)) {
+          stack.push(latexEscapeLeaf(token));
+        } else if (isUnary(token, cfg)) {
+          const operand = stack.pop();
+          stack.push(latexUnary(token, operand));
+        } else {
+          const right = stack.pop();
+          const left = stack.pop();
+
+          if (token === '/') {
+            stack.push(`\\dfrac{${left}}{${right}}`);
+          } else if (token === '^') {
+            stack.push(`\\left(${left}\\right)^{${right}}`);
+          } else if (token === '*') {
+            stack.push(`\\left(${left} \\cdot ${right}\\right)`);
+          } else {
+            stack.push(`\\left(${left} ${token} ${right}\\right)`);
+          }
+        }
+      }
+
+      return stack[0];
+    }
+
+    function toPlainInfix(expression, cfg) {
+      const stack = [];
+      for (const token of expression) {
+        if (isLeaf(token, cfg)) {
+          stack.push(token);
+        } else if (isUnary(token, cfg)) {
+          const operand = stack.pop();
+          stack.push(`${token}(${operand})`);
+        } else {
+          const right = stack.pop();
+          const left = stack.pop();
+          stack.push(`(${left} ${token} ${right})`);
+        }
+      }
+      return stack[0];
+    }
+
+    function buildExpressionTree(expression, cfg) {
+      const stack = [];
+      let uniqueId = 0;
+
+      for (const token of expression) {
+        uniqueId += 1;
+
+        if (isLeaf(token, cfg)) {
+          stack.push({ id: uniqueId, value: token, children: [] });
+        } else if (isUnary(token, cfg)) {
+          const child = stack.pop();
+          stack.push({ id: uniqueId, value: token, children: [child] });
+        } else {
+          const right = stack.pop();
+          const left = stack.pop();
+          stack.push({ id: uniqueId, value: token, children: [left, right] });
+        }
+      }
+
+      return stack.pop();
+    }
+
+      function layoutTree(root) {
+        const levelGap = 86;
+        const siblingGap = 28;
+        const margin = 36;
+        const ry = 22;
+
+        function getNodeRx(node) {
+          const label = String(node.value);
+          return Math.max(24, label.length * 7.5 + 10);
+        }
+
+        function measure(node) {
+          node.rx = getNodeRx(node);
+
+          if (!node.children || node.children.length === 0) {
+            node.subtreeWidth = 2 * node.rx;
+            return node.subtreeWidth;
+          }
+
+          const childWidths = node.children.map(measure);
+          const childrenWidth =
+            childWidths.reduce((a, b) => a + b, 0) +
+            siblingGap * (childWidths.length - 1);
+
+          node.subtreeWidth = Math.max(2 * node.rx, childrenWidth);
+          return node.subtreeWidth;
+        }
+
+        function assign(node, left, depth) {
+          node.x = left + node.subtreeWidth / 2;
+          node.y = margin + depth * levelGap;
+
+          if (!node.children || node.children.length === 0) return;
+
+          const totalChildrenWidth =
+            node.children.reduce((sum, child) => sum + child.subtreeWidth, 0) +
+            siblingGap * (node.children.length - 1);
+
+          let childLeft = node.x - totalChildrenWidth / 2;
+
+          for (const child of node.children) {
+            assign(child, childLeft, depth + 1);
+            childLeft += child.subtreeWidth + siblingGap;
+          }
+        }
+
+        function collect(node, nodes, edges) {
+          nodes.push(node);
+
+          for (const child of node.children || []) {
+            edges.push({ from: node, to: child });
+            collect(child, nodes, edges);
+          }
+        }
+
+        function maxDepth(node) {
+          if (!node.children || node.children.length === 0) return 0;
+          return 1 + Math.max(...node.children.map(maxDepth));
+        }
+
+        measure(root);
+        assign(root, margin, 0);
+
+        const nodes = [];
+        const edges = [];
+        collect(root, nodes, edges);
+
+        const minX = Math.min(...nodes.map(node => node.x - node.rx));
+        const maxX = Math.max(...nodes.map(node => node.x + node.rx));
+
+        const shiftX = margin - minX;
+        for (const node of nodes) {
+          node.x += shiftX;
+        }
+
+        const width = Math.ceil(maxX - minX + 2 * margin);
+        const height = Math.ceil(2 * margin + maxDepth(root) * levelGap + 2 * ry);
+
+        return { nodes, edges, width, height };
+      }
+
+      function renderTreeSVG(expression, cfg) {
+        const root = buildExpressionTree(expression, cfg);
+        const { nodes, edges, width, height } = layoutTree(root);
+
+        const ry = 22;
+
+        const edgeMarkup = edges.map(({ from, to }) => `
+          <line
+            class="tree-edge"
+            x1="${from.x}"
+            y1="${from.y + ry}"
+            x2="${to.x}"
+            y2="${to.y - ry}"
+          ></line>
+        `).join('');
+
+        const nodeMarkup = nodes.map(node => `
+          <g class="tree-node">
+            <ellipse
+              cx="${node.x}"
+              cy="${node.y}"
+              rx="${node.rx}"
+              ry="${ry}"
+            ></ellipse>
+            <text
+              x="${node.x}"
+              y="${node.y}"
+            >${escapeHTML(node.value)}</text>
+          </g>
+        `).join('');
+
+        return `
+          <div class="tree-wrap">
+            <svg
+              class="tree-svg"
+              width="${width}"
+              height="${height}"
+              viewBox="0 0 ${width} ${height}"
+              role="img"
+              aria-label="Expression tree"
+            >
+              ${edgeMarkup}
+              ${nodeMarkup}
+            </svg>
+          </div>
+        `;
+      }
+
+    function setStatus(message, isError = false) {
+      els.status.textContent = message;
+      els.status.classList.toggle('error', isError);
+    }
+
+    function updateCounter() {
+      els.counter.textContent = `${equationCount} equation${equationCount === 1 ? '' : 's'}`;
+    }
+
+    async function renderMath() {
+      if (window.MathJax && MathJax.typesetPromise) {
+        await MathJax.typesetPromise([els.equations]);
+      }
+    }
+
+    async function addEquation() {
+      try {
+        const cfg = getConfig();
+        const expr = generateFunction(cfg);
+        const latex = toInfixLatex(expr, cfg);
+        const plain = toPlainInfix(expr, cfg);
+        equationCount += 1;
+
+        const card = document.createElement('article');
+        card.className = 'equation-card';
+        const postfixHTML = els.showPostfix.checked
+          ? ` | postfix: <code>${escapeHTML(expr.join(' '))}</code>`
+          : '';
+        const treeHTML = els.showTree.checked
+          ? renderTreeSVG(expr, cfg)
+          : '';
+
+        card.innerHTML = `
+          <div class="equation-index">#${equationCount}${postfixHTML}</div>
+          <div class="latex">\\[${latex}\\]</div>
+          ${treeHTML}
+          <details>
+            <summary>Show plain infix and LaTeX source</summary>
+            <code>Infix: ${escapeHTML(plain)}\nLaTeX: ${escapeHTML(latex)}</code>
+          </details>
+        `;
+
+        els.equations.prepend(card);
+        updateCounter();
+        setStatus(timer ? 'Generating...' : 'Generated one equation.');
+        await renderMath();
+      } catch (err) {
+        stopGenerating();
+        setStatus(err.message, true);
+      }
+    }
+
+    function startGenerating() {
+      if (timer) return;
+      els.generateMany.disabled = true;
+      els.stop.disabled = false;
+      setStatus('Generating...');
+      addEquation();
+      timer = setInterval(addEquation, 200);
+    }
+
+    function stopGenerating() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+      els.generateMany.disabled = false;
+      els.stop.disabled = true;
+      if (!els.status.classList.contains('error')) {
+        setStatus('Stopped.');
+      }
+    }
+
+    els.generateOne.addEventListener('click', addEquation);
+    els.generateMany.addEventListener('click', startGenerating);
+    els.stop.addEventListener('click', stopGenerating);
+    els.clear.addEventListener('click', () => {
+      els.equations.innerHTML = '';
+      equationCount = 0;
+      updateCounter();
+      setStatus('Cleared.');
+    });
+  </script>
+</body>
+</html>
