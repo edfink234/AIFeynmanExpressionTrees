@@ -28,6 +28,91 @@
     }
 
     * { box-sizing: border-box; }
+    
+    @media (max-width: 640px) {
+      main {
+        padding: 18px 10px 32px;
+      }
+
+      header {
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: clamp(1.45rem, 8vw, 2rem);
+      }
+
+      .subtitle {
+        font-size: 0.95rem;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 14px;
+      }
+
+      .output-header {
+        align-items: flex-start;
+      }
+
+      .output-header h2 {
+        font-size: 1.05rem;
+      }
+
+      .counter {
+        font-size: 0.85rem;
+      }
+
+      #equations {
+        max-height: none;
+        overflow: visible;
+        padding-right: 0;
+      }
+
+      .equation-card {
+        padding: 11px 10px;
+      }
+
+      .latex {
+        font-size: 0.95rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .tree-wrap {
+        padding: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px 14px;
+      }
+
+      .display-options {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        font-size: 16px;
+      }
+
+      code {
+        font-size: 0.82rem;
+        overflow-x: auto;
+        white-space: pre;
+      }
+    }
 
     body {
       margin: 0;
@@ -60,15 +145,19 @@
     }
 
     .grid {
-      display: grid;
-      grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
-      gap: 20px;
-      align-items: start;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        align-items: start;
     }
+      
+      .grid > .card:first-child {
+        order: 2;
+      }
 
-    @media (max-width: 820px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+      .grid > .card:last-child {
+        order: 1;
+      }
 
     .card {
       background: var(--panel);
@@ -164,13 +253,13 @@
       white-space: nowrap;
     }
 
-    #equations {
-      display: grid;
-      gap: 12px;
-      max-height: 68vh;
-      overflow: auto;
-      padding-right: 4px;
-    }
+      #equations {
+        display: grid;
+        gap: 12px;
+        max-height: 78vh;
+        overflow: auto;
+        padding-right: 4px;
+      }
 
     .equation-card {
       border: 1px solid var(--border);
@@ -216,18 +305,20 @@
     }
 
     .tree-wrap {
-      margin-top: 10px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #fcfcfd;
-      padding: 10px;
+        margin-top: 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fcfcfd;
+        padding: 10px;
+        text-align: center;
     }
 
     .tree-svg {
       display: block;
       max-width: none;
+      margin-inline: auto;
     }
 
     .tree-edge {
@@ -289,11 +380,11 @@
 
         <div class="display-options">
           <label class="check-label">
-            <input id="showPostfix" type="checkbox" checked />
+            <input id="showPostfix" type="checkbox" />
             Show postfix
           </label>
           <label class="check-label">
-            <input id="showTree" type="checkbox" checked />
+            <input id="showTree" type="checkbox" />
             Show expression tree
           </label>
         </div>
@@ -761,7 +852,7 @@
       els.stop.disabled = false;
       setStatus('Generating...');
       addEquation();
-      timer = setInterval(addEquation, 200);
+      timer = setInterval(addEquation, 100);
     }
 
     function stopGenerating() {
