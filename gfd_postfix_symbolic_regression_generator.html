@@ -42,10 +42,6 @@
         font-size: clamp(1.45rem, 8vw, 2rem);
       }
 
-      .subtitle {
-        font-size: 0.95rem;
-      }
-
       .card {
         padding: 14px;
         border-radius: 14px;
@@ -141,7 +137,7 @@
     .subtitle {
       margin: 0;
       color: var(--muted);
-      max-width: 800px;
+      text-align: center;
     }
 
     .grid {
@@ -314,6 +310,11 @@
         padding: 10px;
         text-align: center;
     }
+      
+      .interval-label input {
+        width: 90px;
+        padding: 6px 8px;
+      }
 
     .tree-svg {
       display: block;
@@ -356,9 +357,9 @@
 <body>
   <main>
     <header>
-      <h1>Generalized Fixed-Depth Postfix Symbolic Regression Grammar Generator</h1>
-      <p class="subtitle">
-        Randomly generates complete postfix expressions of exactly the selected tree depth, then renders the result as LaTeX with MathJax.
+      <h1 style="text-align:center">Generalized Fixed-Depth Symbolic Regression Grammar Generator</h1>
+      <p class="subtitle" style="text-align:center">
+        Randomly generates valid expressions of exactly the selected tree depth, using the grammar <a href = "https://arxiv.org/abs/2410.08137" target = "_blank">here</a>, then renders the result as LaTeX with MathJax.
       </p>
     </header>
 
@@ -375,7 +376,7 @@
         <input id="leafNodes" type="text" value="x y z" />
 
         <label for="depth">Fixed depth</label>
-        <input id="depth" type="number" min="0" max="25" step="1" value="5" />
+        <input id="depth" type="number" min="0" max="30" step="1" value="3" />
         <p class="hint">Depth 0 means a leaf only. Large depths can generate very long equations.</p>
 
         <div class="display-options">
@@ -384,9 +385,17 @@
             Show postfix
           </label>
           <label class="check-label">
+            <input id="showPrefix" type="checkbox" />
+            Show prefix
+          </label>
+          <label class="check-label">
             <input id="showTree" type="checkbox" />
             Show expression tree
           </label>
+          <label class="check-label interval-label">
+              Interval ms
+              <input id="intervalMs" type="number" min="10" step="10" value="100" />
+            </label>
         </div>
 
         <div class="controls">
@@ -415,7 +424,9 @@
       leafNodes: document.getElementById('leafNodes'),
       depth: document.getElementById('depth'),
       showPostfix: document.getElementById('showPostfix'),
+      showPrefix: document.getElementById('showPrefix'),
       showTree: document.getElementById('showTree'),
+      intervalMs: document.getElementById('intervalMs'),
       generateOne: document.getElementById('generateOne'),
       generateMany: document.getElementById('generateMany'),
       stop: document.getElementById('stop'),
@@ -474,6 +485,16 @@
         binarySet: new Set(binaryOps),
         depth
       };
+    }
+      
+    function getIntervalMs() {
+        const intervalMs = Number.parseInt(els.intervalMs.value, 10);
+
+        if (!Number.isInteger(intervalMs) || intervalMs < 10) {
+          throw new Error('Interval must be an integer at least 10 ms.');
+        }
+
+        return intervalMs;
     }
 
     function isUnary(token, cfg) {
@@ -642,6 +663,25 @@
       }
       return stack[0];
     }
+      
+      function postfixToPrefix(expression, cfg) {
+        const stack = [];
+
+        for (const token of expression) {
+          if (isBinary(token, cfg)) {
+            const right = stack.pop();
+            const left = stack.pop();
+            stack.push(`${token} ${left} ${right}`);
+          } else if (isUnary(token, cfg)) {
+            const operand = stack.pop();
+            stack.push(`${token} ${operand}`);
+          } else {
+            stack.push(token);
+          }
+        }
+
+        return stack[stack.length - 1];
+      }
 
     function buildExpressionTree(expression, cfg) {
       const stack = [];
@@ -815,26 +855,33 @@
         const expr = generateFunction(cfg);
         const latex = toInfixLatex(expr, cfg);
         const plain = toPlainInfix(expr, cfg);
+        const prefix = postfixToPrefix(expr, cfg);
         equationCount += 1;
 
         const card = document.createElement('article');
         card.className = 'equation-card';
+        const prefixHTML = els.showPrefix.checked
+          ? `<div class="equation-format-label">prefix:</div><code>${escapeHTML(prefix)}</code>`
+          : '';
+
         const postfixHTML = els.showPostfix.checked
-          ? ` | postfix: <code>${escapeHTML(expr.join(' '))}</code>`
+          ? `<div class="equation-format-label">postfix:</div><code>${escapeHTML(expr.join(' '))}</code>`
           : '';
         const treeHTML = els.showTree.checked
           ? renderTreeSVG(expr, cfg)
           : '';
 
-        card.innerHTML = `
-          <div class="equation-index">#${equationCount}${postfixHTML}</div>
-          <div class="latex">\\[${latex}\\]</div>
-          ${treeHTML}
-          <details>
-            <summary>Show plain infix and LaTeX source</summary>
-            <code>Infix: ${escapeHTML(plain)}\nLaTeX: ${escapeHTML(latex)}</code>
-          </details>
-        `;
+          card.innerHTML = `
+            <div class="equation-index">#${equationCount}</div>
+            ${prefixHTML}
+            ${postfixHTML}
+            <div class="latex">\\[${latex}\\]</div>
+            ${treeHTML}
+<!--            <details>-->
+<!--              <summary>Show plain infix and LaTeX source</summary>-->
+<!--              <code>Infix: ${escapeHTML(plain)}\nPrefix: ${escapeHTML(prefix)}\nPostfix: ${escapeHTML(expr.join(' '))}\nLaTeX: ${escapeHTML(latex)}</code>-->
+<!--            </details>-->
+          `;
 
         els.equations.prepend(card);
         updateCounter();
@@ -846,14 +893,23 @@
       }
     }
 
-    function startGenerating() {
-      if (timer) return;
-      els.generateMany.disabled = true;
-      els.stop.disabled = false;
-      setStatus('Generating...');
-      addEquation();
-      timer = setInterval(addEquation, 100);
-    }
+      function startGenerating() {
+        if (timer) return;
+
+        let intervalMs;
+        try {
+          intervalMs = getIntervalMs();
+        } catch (err) {
+          setStatus(err.message, true);
+          return;
+        }
+
+        els.generateMany.disabled = true;
+        els.stop.disabled = false;
+        setStatus(`Generating every ${intervalMs} ms...`);
+        addEquation();
+        timer = setInterval(addEquation, intervalMs);
+      }
 
     function stopGenerating() {
       if (timer) {
