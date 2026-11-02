@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Happy 58th Birthday, Mom</title>
+  <style>
+    :root {
+      --ink: #3c2941;
+      --plum: #704b70;
+      --rose: #c9788b;
+      --cream: #fff8ed;
+      --lavender: #eee5f2;
+      --blueberry: #52639a;
+      --sage: #9bab82;
+      --gold: #e5b965;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(229,185,101,.23) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 22%, rgba(82,99,154,.16) 0 3px, transparent 4px),
+        linear-gradient(145deg, #f8e9e7, #eee5f2 53%, #fff7e8);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    }
+
+    .page {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      padding: 22px 0 42px;
+      position: relative;
+    }
+
+    .top-note {
+      text-align: center;
+      color: var(--plum);
+      font: 700 0.75rem/1.3 Arial, sans-serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin: 3px 0 15px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255, 248, 237, .88);
+      border: 1px solid rgba(112, 75, 112, .18);
+      border-radius: 30px;
+      padding: 31px 22px 26px;
+      box-shadow: 0 20px 60px rgba(90, 52, 83, .16);
+      overflow: hidden;
+      backdrop-filter: blur(7px);
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      filter: blur(3px);
+      opacity: .35;
+      z-index: -1;
+    }
+
+    .card::before {
+      background: var(--rose);
+      top: -70px;
+      left: -64px;
+    }
+
+    .card::after {
+      background: var(--sage);
+      bottom: -72px;
+      right: -60px;
+    }
+
+    .vine {
+      text-align: center;
+      font-size: 1.55rem;
+      letter-spacing: .2em;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      color: var(--plum);
+      font-size: clamp(2.35rem, 11vw, 4.5rem);
+      line-height: .95;
+      font-weight: 500;
+      letter-spacing: -.04em;
+    }
+
+    .age {
+      text-align: center;
+      color: var(--rose);
+      font-size: 1.35rem;
+      margin: 15px 0 25px;
+      font-style: italic;
+    }
+
+    .intro {
+      text-align: center;
+      font-size: 1.16rem;
+      line-height: 1.65;
+      margin: 0 auto 25px;
+      max-width: 440px;
+    }
+
+    .seal {
+      display: block;
+      margin: 0 auto 28px;
+      width: 112px;
+      height: 112px;
+      border: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f9d5d8, #c9788b 72%);
+      color: white;
+      box-shadow: 0 8px 18px rgba(112, 75, 112, .2);
+      font: 700 .85rem/1.2 Arial, sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .seal:active {
+      transform: scale(.94) rotate(-3deg);
+    }
+
+    .seal:hover {
+      transform: translateY(-3px) rotate(2deg);
+      box-shadow: 0 13px 26px rgba(112, 75, 112, .25);
+    }
+
+    .hidden-message {
+      display: none;
+      animation: rise .65s ease both;
+    }
+
+    .hidden-message.show { display: block; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter {
+      border-top: 1px solid rgba(112,75,112,.2);
+      padding-top: 25px;
+    }
+
+    .letter p {
+      font-size: 1.13rem;
+      line-height: 1.72;
+      margin: 0 0 19px;
+    }
+
+    .letter p:first-child::first-letter {
+      color: var(--rose);
+      font-size: 3.5rem;
+      float: left;
+      line-height: .75;
+      padding: 8px 7px 0 0;
+    }
+
+    .highlight {
+      margin: 23px 0;
+      padding: 20px 18px;
+      background: rgba(238,229,242,.72);
+      border-left: 4px solid var(--rose);
+      border-radius: 0 18px 18px 0;
+      font-size: 1.16rem;
+      line-height: 1.65;
+    }
+
+    .little-things {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 22px 0 27px;
+    }
+
+    .thing {
+      min-height: 74px;
+      padding: 12px 9px;
+      background: rgba(255,255,255,.57);
+      border: 1px solid rgba(112,75,112,.12);
+      border-radius: 17px;
+      text-align: center;
+      font-size: .98rem;
+      line-height: 1.35;
+    }
+
+    .thing span {
+      display: block;
+      font-size: 1.55rem;
+      margin-bottom: 3px;
+    }
+
+    .truth {
+      color: var(--plum);
+      text-align: center;
+      font-size: 1.35rem;
+      line-height: 1.45;
+      font-style: italic;
+      margin: 28px 8px;
+    }
+
+    .signature {
+      text-align: right;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      margin-top: 27px;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 18px;
+      background: var(--plum);
+      color: white;
+      font: 700 1rem Arial, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(112,75,112,.22);
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .button:active { transform: scale(.98); }
+    .button:hover { background: #5b3b5b; }
+
+    .toast {
+      display: none;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      background: #fff;
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.45;
+      animation: rise .4s ease both;
+    }
+
+    .toast.show { display: block; }
+
+    .footer {
+      text-align: center;
+      color: var(--plum);
+      font: .76rem/1.4 Arial, sans-serif;
+      letter-spacing: .08em;
+      margin-top: 20px;
+      opacity: .78;
+    }
+
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 20;
+      animation: floatAway 1.5s ease-out forwards;
+      font-size: 1.3rem;
+    }
+
+    @keyframes floatAway {
+      0% { opacity: 1; transform: translate(0, 0) scale(.7) rotate(0); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.35) rotate(140deg); }
+    }
+
+    @media (min-width: 480px) {
+      .card { padding: 42px 42px 35px; }
+      .little-things { grid-template-columns: repeat(4, 1fr); }
+      .thing { min-height: 106px; padding: 15px 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="top-note">A birthday letter for mommy 🐐</div>
+
+    <section class="card" aria-label="Happy birthday card">
+      <div class="vine" aria-hidden="true">🍇 ✦ 🫐 ✦ 🐐</div>
+
+      <h1>Happy<br>Birthday, Mom</h1>
+      <div class="age">58 beautiful years of you</div>
+
+      <p class="intro">
+        I made this little corner of the internet for the person who has given
+        me more care, honesty, and love than I have always known how to recognize.
+      </p>
+
+      <button class="seal" id="openBtn" aria-expanded="false">
+        Tap to<br>open<br>♥
+      </button>
+
+      <div class="hidden-message" id="message">
+        <div class="letter">
+          <p>
+            Mom, you are one of the most caring and kind people I know. You have
+            done so much for me—often quietly, often before I even understood
+            what you were doing.
+          </p>
+
+          <p>
+            You found PhD programs for me. You found the SMART scholarship that
+            changed what was possible for me. You researched, noticed, questioned,
+            and kept looking until you found something useful. That is who you are:
+            a natural researcher with an extraordinary eye for what matters.
+          </p>
+
+          <div class="highlight">
+            You see things clearly. You say what you truly think. You do not hide
+            behind a mask just to make other people comfortable—and your honesty,
+            even when it is hard for me to hear, is one of the things I value most
+            about you.
+          </div>
+
+          <p>
+            I also want to say something plainly: I know I have caused you pain,
+            misunderstood you, and taken your care for granted in ways I never
+            meant to. I am deeply sorry. You deserved to be seen, listened to,
+            and cared for—not only relied upon.
+          </p>
+
+          <p>
+            I am trying to understand you better: your sensitive, perceptive
+            nervous system; how much your body asks you to carry; the pain and
+            exhaustion that do not make you any less strong. You should not have
+            to prove how much you feel or how much you do.
+          </p>
+
+          <div class="little-things" aria-label="Things Mom loves">
+            <div class="thing"><span>🧀</span>goat cheese</div>
+            <div class="thing"><span>🥛</span>goat milk</div>
+            <div class="thing"><span>🍇</span>black grapes</div>
+            <div class="thing"><span>🫐</span>blueberries</div>
+          </div>
+
+          <p class="truth">
+            I hope this year gives back to you some of the gentleness,
+            attention, and care you have given to everyone else.
+          </p>
+
+          <p>
+            You are brilliant, brave, funny, deeply feeling, and impossible to
+            replace. I am lucky that you are my mom, and I love you more than I
+            always know how to say.
+          </p>
+
+          <div class="signature">
+            Happy 58th birthday.<br>
+            With all my love,<br>
+            <strong>Edward</strong> ♥
+          </div>
+
+          <button class="button" id="celebrateBtn">
+            Sprinkle a little birthday magic ✨
+          </button>
+          <div class="toast" id="toast">
+            May today be soft, delicious, honest, and entirely yours.
+            <br><br>
+            <strong>You deserve to be celebrated, Mom.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">made with love, gratitude, and an unreasonable number of blueberries</div>
+  </main>
+
+  <script>
+    const openBtn = document.getElementById("openBtn");
+    const message = document.getElementById("message");
+    const celebrateBtn = document.getElementById("celebrateBtn");
+    const toast = document.getElementById("toast");
+
+    openBtn.addEventListener("click", () => {
+      const isOpen = message.classList.toggle("show");
+      openBtn.setAttribute("aria-expanded", isOpen);
+      openBtn.innerHTML = isOpen
+        ? "Opened<br>with love<br>♥"
+        : "Tap to<br>open<br>♥";
+
+      if (isOpen) {
+        setTimeout(() => {
+          message.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+        sprinkle(openBtn);
+      }
+    });
+
+    celebrateBtn.addEventListener("click", () => {
+      toast.classList.toggle("show");
+      celebrateBtn.textContent = toast.classList.contains("show")
+        ? "More magic ✨"
+        : "Sprinkle a little birthday magic ✨";
+      sprinkle(celebrateBtn, 24);
+    });
+
+    function sprinkle(source, count = 12) {
+      const symbols = ["✦", "✧", "♥", "🍇", "🫐", "✨", "🌿"];
+      const rect = source.getBoundingClientRect();
+
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement("span");
+        item.className = "sparkle";
+        item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        item.style.left = `${rect.left + rect.width / 2}px`;
+        item.style.top = `${rect.top + rect.height / 2}px`;
+        item.style.setProperty("--x", `${(Math.random() - .5) * 230}px`);
+        item.style.setProperty("--y", `${-40 - Math.random() * 210}px`);
+        item.style.animationDelay = `${Math.random() * .3}s`;
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 1900);
+      }
+    }
+  </script>
+</body>
+</html>
+
